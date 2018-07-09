@@ -1,0 +1,6 @@
+rootProject.name = 'livedronemap'
+include ':livedronemap-admin'
+include ':livedronemap-user'
+
+project(':livedronemap-admin').projectDir = "$rootDir/livedronemap-admin" as File
+project(':livedronemap-user').projectDir = "$rootDir/livedronemap-user" as File
