@@ -1,6 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.3.RELEASE'
+		lombokVersion = '1.18.0'
 	}
 	repositories {
 		mavenCentral()
@@ -29,18 +30,27 @@ configurations {
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-actuator')
+	//compile('org.springframework.boot:spring-boot-starter-actuator')
+	//compile('org.springframework.boot:spring-boot-starter-mail')
+	//compile('org.springframework.boot:spring-boot-starter-quartz')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile ('org.mybatis:mybatis-spring:1.3.2')
-	
-	compileOnly('org.projectlombok:lombok')
+	compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
+	compile('javax.servlet:jstl')
 	
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')
-	
-	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+
+	// gradle 빌드하면 gradle5에서 lombok 관련 deprecated 오류 발생 버그 대응	
+	//annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+	//compileOnly("org.projectlombok:lombok:$lombokVersion")
+	//testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+	//testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+	compileOnly("org.projectlombok:lombok:$lombokVersion")
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	providedRuntime('org.apache.tomcat.embed:tomcat-embed-jasper')
 	
 }

@@ -16,4 +16,6 @@ public class HelloWorldController {
 		log.info("Hello!!");
 		return "/hello/hello";
 	}
+	
+	
 }
