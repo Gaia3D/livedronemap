@@ -41,7 +41,7 @@ dependencies {
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')
 
-	// gradle ºôµåÇÏ¸é gradle5¿¡¼­ lombok °ü·Ã deprecated ¿À·ù ¹ß»ı ¹ö±× ´ëÀÀ	
+	// gradle ë¹Œë“œí•˜ë©´ gradle5ì—ì„œ lombok ê´€ë ¨ deprecated ì˜¤ë¥˜ ë°œìƒ ë²„ê·¸ ëŒ€ì‘	
 	//annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 	//compileOnly("org.projectlombok:lombok:$lombokVersion")
 	//testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
