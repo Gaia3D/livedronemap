@@ -9,7 +9,7 @@
 	</settings>
 	
 	<typeAliases>
-		<!-- <typeAlias type="com.gaia3d.domain.AccessLog" alias="accessLog"/> -->
+		<typeAlias type="gaia3d.persistence.FileMapper" alias="fileInfo"/>
 	</typeAliases>
 	
 </configuration>
