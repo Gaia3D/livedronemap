@@ -35,6 +35,7 @@ function getOriginalName(fileName) {
 	$(".fileDrop").on("dragenter dragover", function(event) {
 		event.preventDefault();
 	});
+	
 	$(".fileDrop").on("drop", function(event) {
 		event.preventDefault();
 		
@@ -59,10 +60,28 @@ function getOriginalName(fileName) {
 			success: function(data) {
 				alert(data);
 				
-				var str= "<div><a href='displayFile?fileName=" + data + "'>" + getOriginalName(data) + "</a></div>";
+				var str= "<div><a href='displayFile?fileName=" + data + "'>" + getOriginalName(data) + "</a>"
+						+ "\t<small data-src=" + data + ">[X]</samll></div>";
 
 				$(".uploadedList").append(str);
 				
+			}
+		});
+	});
+	
+	$('.uploadedList').on("click", "small", function(event) {
+		var that = $(this);
+		console.log(that);
+		
+		$.ajax({
+			url: "/file/deleteFile",
+			type: "POST",
+			data: {fileName: $(this).attr("data-src")},
+			dataType: "text",
+			success: function(result) {
+				if(result = 'delete') {
+					alert("deleted");
+				}
 			}
 		});
 	});

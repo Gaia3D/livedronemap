@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import gaia3d.config.PropertiesConfig;
-import gaia3d.domain.FileInfo;
 import gaia3d.service.FileService;
 import gaia3d.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -44,13 +41,6 @@ public class FileController {
 	FileService fileService;
 	
 	
-	@GetMapping("list")
-	public List<FileInfo> listFil(FileInfo fileInfo){
-		List<FileInfo> fileList = new ArrayList<>();
-		fileList = fileService.getFileList(fileInfo);
-		
-		return fileList;
-	}
 /*	
 	@GetMapping("uploadForm")
 	public String uploadFileForm() {
@@ -104,18 +94,6 @@ public class FileController {
 		
 		return saveName;
 	}
-/*	
-	@PostMapping("uploadAjax")
-	@ResponseBody
-	public ResponseEntity<String> uploadAjax(MultipartFile file) throws IOException {
-		log.info("@@ OriginalName : " + file.getOriginalFilename());
-		log.info("@@ size : " + file.getSize());
-		log.info("@@ contentType : " + file.getContentType());
-		
-		return new ResponseEntity<>(file.getOriginalFilename(), HttpStatus.CREATED);
-		
-	}
-*/
 	
 	@PostMapping("uploadAjax")
 	@ResponseBody
@@ -144,7 +122,7 @@ public class FileController {
 			
 			in = new FileInputStream(propertiesConfig.getSampleUploadDir() + fileName);
 			
-			fileName = fileName.substring(fileName.lastIndexOf(".") + 1);
+			fileName = fileName.substring(fileName.lastIndexOf("_") + 1);
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			headers.add("Content-Disposition", "attachment; filename=\"" 
 							+ new String(fileName.getBytes("UTF-8"), "ISO-8859-1") + "\""); 
@@ -162,6 +140,21 @@ public class FileController {
 		return entity;
 	}
 	
+	@PostMapping("deleteFile")
+	@ResponseBody
+	public ResponseEntity<String> deleteFile(String fileName) {
+		log.info("delete file : " + fileName);
+		String formatName = fileName.substring(fileName.lastIndexOf("."));
+		
+		String front = fileName.substring(0, 12);
+		String end = fileName.substring(12);
+		log.info("@@@@ front : " + front);
+		log.info("@@@@ end : " + end);
+		
+		new File(propertiesConfig.getSampleUploadDir() + fileName.replace('/', File.separatorChar)).delete();
+		
+		return new ResponseEntity<String>("delete", HttpStatus.OK);
+	}
 	
 	
 	
