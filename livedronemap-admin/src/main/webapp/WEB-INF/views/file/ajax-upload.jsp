@@ -14,8 +14,8 @@ samll {
 	font-weight: bold;
 	color: gray;		}
 </style>
-</head>
 <script src="../../../externlib/jquery/jquery.js"></script>
+</head>
 <body>
 	
 	<h3>Ajax File Upload</h3>
