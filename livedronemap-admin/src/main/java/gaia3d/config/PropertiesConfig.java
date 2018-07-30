@@ -20,8 +20,9 @@ public class PropertiesConfig {
 //	private String licenseFile;
 //	private String licenseFileChecker;
 	
-
-	// 파일 업로드 폴더
-	private String sampleUploadDir;
+	
+	// User excel batch registration
+	private String userUploadDir;
+	private String userConverterDir;
 	
 }
