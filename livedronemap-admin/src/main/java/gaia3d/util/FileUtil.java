@@ -242,7 +242,7 @@ public class FileUtil {
 		String extension = fileNameValues[1];
 		List<String> extList = new ArrayList<String>();
 		
-		String[] uploadTypes = {"ifc", "txt", "png", "jpg"};
+		String[] uploadTypes = {"ifc", "txt", "png", "jpg", "JPG", "PNG"};
 		extList = Arrays.asList(uploadTypes);
 		
 		if(!extList.contains(extension.toLowerCase())) {
