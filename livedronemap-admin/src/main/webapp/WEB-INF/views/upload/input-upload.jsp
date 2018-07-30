@@ -99,8 +99,8 @@
 	            console.log("----------------------" + responseText);
 	        });
 			
-			this.on("error", function(file, response) {
-				console.log("-------error---------------" + responseText);
+			this.on("error", function(file, responseText) {
+				console.log("--------error--------" + responseText);
 
             });
 		}
