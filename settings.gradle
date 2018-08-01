@@ -1,8 +1,0 @@
-rootProject.name = 'livedronemap'
-include ':livedronemap-admin'
-include ':livedronemap-user'
-include ':livedronemap-doc'
-
-project(':livedronemap-admin').projectDir = "$rootDir/livedronemap-admin" as File
-project(':livedronemap-user').projectDir = "$rootDir/livedronemap-user" as File
-project(':livedronemap-doc').projectDir = "$rootDir/livedronemap-doc" as File
