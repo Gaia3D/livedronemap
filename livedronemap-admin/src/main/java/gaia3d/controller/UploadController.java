@@ -9,15 +9,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import gaia3d.config.PropertiesConfig;
 import gaia3d.domain.FileInfo;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/upload/")
 public class UploadController {
 	
@@ -42,8 +42,8 @@ public class UploadController {
 	 * @return
 	 */
 	@GetMapping(value = "input-upload.do")
-	public String inputUpload(HttpServletRequest request, Model model) {
-		return "/upload/input-upload";
+	public ModelAndView inputUpload(HttpServletRequest request, Model model) {
+		return new ModelAndView("/upload/input-upload");
 	}
 	
 	/**
@@ -52,8 +52,10 @@ public class UploadController {
 	 * @return
 	 */
 	@PostMapping(value = "insert-upload.do")
-	@ResponseBody
-	public Map<String, Object> insertUpload(MultipartHttpServletRequest request, Model model) {
+	public Map<String, Object> insertUpload(MultipartHttpServletRequest request,  Model model) {
+		
+		log.info(" --------------------- project_id = {}", request.getParameter("project_id"));
+		log.info(" --------------------- data_key = {}", request.getParameter("data_key"));
 		
 		Map<String, Object> map = new HashMap<>();
 		String result = "success";
