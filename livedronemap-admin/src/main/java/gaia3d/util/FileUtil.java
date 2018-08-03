@@ -13,6 +13,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import gaia3d.domain.FileInfo;
+import gaia3d.domain.Policy;
 import gaia3d.domain.UploadLog;
 import lombok.extern.slf4j.Slf4j;
 
@@ -105,9 +106,9 @@ public class FileUtil {
 	 * @param directory
 	 * @return
 	 */
-	public static FileInfo userUpload(int subDirectoryType, MultipartFile multipartFile, String directory) {
+	public static FileInfo userUpload(int subDirectoryType, MultipartFile multipartFile, Policy policy, String directory) {
 		// 파일 기본 validation 체크
-		FileInfo fileInfo = userFileValidation(multipartFile);
+		FileInfo fileInfo = userFileValidation(multipartFile, policy);
 		if(fileInfo.getError_code() != null && !"".equals(fileInfo.getError_code())) {
 			return fileInfo;
 		}
@@ -207,7 +208,7 @@ public class FileUtil {
 	 * @param fileInfo
 	 * @return
 	 */
-	private static UploadLog userFileValidation(MultipartFile multipartFile) {
+	private static UploadLog userFileValidation(MultipartFile multipartFile, Policy policy) {
 		
 		UploadLog uploadLog = new UploadLog();
 		// 1 파일 공백 체크
@@ -241,10 +242,10 @@ public class FileUtil {
 		// LowerCase로 비교
 		String extension = fileNameValues[1];
 		List<String> extList = new ArrayList<String>();
-		
-		String[] uploadTypes = {"ifc", "txt", "png", "jpg", "JPG", "PNG"};
-		extList = Arrays.asList(uploadTypes);
-		
+		if(policy.getUser_upload_type() != null && !"".equals(policy.getUser_upload_type())) {
+			String[] uploadTypes = policy.getUser_upload_type().toLowerCase().split(",");
+			extList = Arrays.asList(uploadTypes);
+		}
 		if(!extList.contains(extension.toLowerCase())) {
 			log.info("@@ extList = {}, extension = {}", extList, extension);
 			uploadLog.setError_code("fileinfo.ext.invalid");
@@ -255,8 +256,8 @@ public class FileUtil {
 		// TODO data object attribute 파일은 사이즈가 커서 제한을 하지 않음
 		long fileSize = multipartFile.getSize();
 		log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@ user upload file size = {} KB", (fileSize / 1000));
-		if( fileSize > 500 * 1000000l ) {
-			log.info("@@ fileSize = {}, user upload max filesize = {} M", (fileSize / 1000), 500);
+		if( fileSize > (policy.getUser_upload_max_filesize() * 1000000l)) {
+			log.info("@@ fileSize = {}, user upload max filesize = {} M", (fileSize / 1000), policy.getUser_upload_max_filesize());
 			uploadLog.setError_code("fileinfo.size.invalid");
 			return uploadLog;
 		}

@@ -22,6 +22,8 @@ import org.springframework.web.servlet.ModelAndView;
 import gaia3d.config.PropertiesConfig;
 import gaia3d.domain.FileInfo;
 import gaia3d.domain.UploadLog;
+import gaia3d.service.PolicyService;
+import gaia3d.service.UploadService;
 import gaia3d.util.DateUtil;
 import gaia3d.util.FileUtil;
 import gaia3d.util.StringUtil;
@@ -35,6 +37,10 @@ public class UploadController {
 	
 	@Autowired
 	private PropertiesConfig propertiesConfig;
+	@Autowired
+	private UploadService uploadService;
+	@Autowired
+	private PolicyService policyService;
 	
 	/**
 	 * data upload 화면
@@ -63,15 +69,15 @@ public class UploadController {
 			List<FileInfo> fileList = new ArrayList<>();
 			Map<String, MultipartFile> fileMap = request.getFileMap();
 	        for (MultipartFile multipartFile : fileMap.values()) {
-	        	FileInfo fileInfo = FileUtil.userUpload(FileUtil.SUBDIRECTORY_YEAR_MONTH_DAY, multipartFile, propertiesConfig.getUserUploadDir());
+	        	FileInfo fileInfo = FileUtil.userUpload(FileUtil.SUBDIRECTORY_YEAR_MONTH_DAY, multipartFile, policyService.getPolicy(), propertiesConfig.getUserUploadDir());
 				if(fileInfo.getError_code() != null && !"".equals(fileInfo.getError_code())) {
 					log.info("@@@@@@@@@@@@@@@@@@@@ error_code = {}", fileInfo.getError_code());
 					result = fileInfo.getError_code();
 					break;
 				}
-				
 				fileList.add(fileInfo);
 	        }
+	        uploadService.insertFiles(fileList);
 	        
 		} catch(Exception e) {
 			e.printStackTrace();

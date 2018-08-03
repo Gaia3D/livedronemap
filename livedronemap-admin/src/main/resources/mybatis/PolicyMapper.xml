@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.PolicyMapper">
+
+	<!-- 운영 정책 정보 -->
+	<select id="getPolicy" resultType="policy">
+		/* getPolicy */
+		SELECT * FROM policy ORDER BY policy_id DESC LIMIT 1
+	</select>
+	
+	<!-- 사용자 업로드 파일 정책 수정 -->
+	<update id="updatePolicyUserUpload" parameterType="policy">
+		/* updatePolicyUserUpload */
+		UPDATE policy
+		SET user_upload_type = #{user_upload_type},
+			user_upload_max_filesize = #{user_upload_max_filesize},
+			user_upload_max_count = #{user_upload_max_count}
+		WHERE policy_id = #{policy_id}
+	</update>
+	
+</mapper>

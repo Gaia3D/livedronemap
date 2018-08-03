@@ -47,8 +47,7 @@ public class UploadLog extends FileInfo {
 	private String file_size;
 	// fil ext
 	private String file_ext;
-	// f4d converter count
-	private Integer converter_count;
+	// 등록일
 	private String insert_date;
 	
 	public String validate() {

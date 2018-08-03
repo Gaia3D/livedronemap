@@ -73,7 +73,7 @@ public class RootConfig {
 		factory.setDataSource(dataSource());
 		factory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/*.xml"));
 		factory.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("mybatis-config.xml"));
-		factory.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
+		//factory.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
 		return factory.getObject();
     }
 
