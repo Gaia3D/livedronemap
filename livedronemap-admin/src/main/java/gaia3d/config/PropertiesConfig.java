@@ -8,8 +8,8 @@ import lombok.Data;
 
 @Data
 @Configuration
-@PropertySource("classpath:livedrone.properties")
-@ConfigurationProperties(prefix = "livedrone")
+@PropertySource("classpath:livedronemap.properties")
+@ConfigurationProperties(prefix = "livedronemap")
 public class PropertiesConfig {
 
 //	private String osType;
