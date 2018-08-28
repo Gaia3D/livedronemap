@@ -1,0 +1,35 @@
+
+jwt
+ - claim 기반 토큰
+ 
+
+1 토큰 생성
+ id, password 등을 주고 token을 요청한다
+ 이때 권한도 같이 요청한다. user, admin 같은....
+ 
+2 서버
+ 정보 확인하고 토큰을 생성 후 db 저장
+
+3 client
+ api를 호출하는데 토큰을 이용한다.
+ 
+ {
+ 	"api_key": "서버 식별자",
+ 	"role": "user, admin",
+ 	"기타....": ""
+ }
+ 이걸 base64로 encoding .... 이걸 변조 방지(무결성 integrity)
+ 이런 무결성을 보장하는 방법 중 하나가 서명이나 HMAC
+ 즉 원본 메세지에서 해쉬값을 추출한 후, 이를 비밀 키를 이용해서 복호화 시켜서 토큰의 뒤에 붙인다
+
+signature algorithm
+claim json
+hmac
+
+ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ .ew0KICAiaWQiOiJ0ZXJyeSINCiAgLCJyb2xlIjpbImFkbWluIiwidXNlciJdDQogICwiY29tcGFueSI6InBlcHNpIg0KfQ0K.
+ i22mRxfSB5gt0rLbtrogxbKj5aZmpYh7lA82HO1Di0E
+
+ 
+ 
+ 

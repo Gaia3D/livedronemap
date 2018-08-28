@@ -11,8 +11,7 @@ public class ProjectAPIController {
 
 	@PostMapping
 	public String createToken() {
-		//http://bcho.tistory.com/999
-		//http://alwayspr.tistory.com/8
+		
 		return "";
 	}
 	
