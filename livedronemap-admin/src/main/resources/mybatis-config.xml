@@ -9,9 +9,13 @@
 	</settings>
 	
 	<typeAliases>
+<<<<<<< HEAD
  		<typeAlias type="gaia3d.domain.Policy" alias="policy"/>
 		<typeAlias type="gaia3d.domain.FileInfo" alias="fileInfo"/>
 		<typeAlias type="gaia3d.domain.UploadLog" alias="uploadLog"/>
+=======
+		<!-- <typeAlias type="gaia3d.persistence.FileMapper" alias="fileInfo"/> -->
+>>>>>>> master
 	</typeAliases>
 	
 </configuration>
