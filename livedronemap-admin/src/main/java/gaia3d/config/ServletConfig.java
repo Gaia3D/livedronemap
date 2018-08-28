@@ -1,6 +1,5 @@
 package gaia3d.config;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -32,7 +31,6 @@ public class ServletConfig implements WebMvcConfigurer {
     }
     
     @Bean
-	@ConditionalOnMissingBean(InternalResourceViewResolver.class)
 	public InternalResourceViewResolver viewResolver() {
 		log.info(" @@@ ServletConfig viewResolver @@@");
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();

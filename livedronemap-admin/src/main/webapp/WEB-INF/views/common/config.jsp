@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Locale"%>
-<%@ page import="com.gaia3d.domain.SessionKey"%>
+<%@ page import="gaia3d.domain.SessionKey"%>
 <%
 	String accessibility = "en-US";
 	

@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.3.RELEASE'
-		lombokVersion = '1.18.0'
+		springBootVersion = '2.0.4.RELEASE'
+		lombokVersion = '1.18.2'
 	}
 	repositories {
 		mavenCentral()
@@ -39,7 +39,11 @@ dependencies {
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')
 	
+	// gradle 빌드하면 gradle5에서 lombok 관련 deprecated 오류 발생 버그 대응	
+	annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 	compileOnly("org.projectlombok:lombok:$lombokVersion")
+	testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+	testCompileOnly("org.projectlombok:lombok:$lombokVersion")
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	

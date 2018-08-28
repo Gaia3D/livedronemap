@@ -3,18 +3,15 @@ package gaia3d;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import gaia3d.config.PropertiesConfig;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootApplication
-@EnableConfigurationProperties({PropertiesConfig.class})
 public class LivedronemapAdminApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws Exception {

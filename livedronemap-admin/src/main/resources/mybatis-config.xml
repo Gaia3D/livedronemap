@@ -9,7 +9,7 @@
 	</settings>
 	
 	<typeAliases>
-		<typeAlias type="gaia3d.persistence.FileMapper" alias="fileInfo"/>
+		<!-- <typeAlias type="gaia3d.persistence.FileMapper" alias="fileInfo"/> -->
 	</typeAliases>
 	
 </configuration>
