@@ -1,6 +1,7 @@
 package gaia3d.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -8,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ProjectAPIController {
 
-	@GetMapping
-	public String getToken() {
+	@PostMapping
+	public String createToken() {
 		//http://bcho.tistory.com/999
 		//http://alwayspr.tistory.com/8
 		return "";
