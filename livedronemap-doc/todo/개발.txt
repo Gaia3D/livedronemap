@@ -1,3 +1,7 @@
+header - 암호화 알고리즘 
+payload - 메시지 body
+signature - 전달된 메시지에 대한 signature..... 여기만 암호화
+
 
 jwt
  - claim 기반 토큰
@@ -16,6 +20,7 @@ jwt
  {
  	"api_key": "서버 식별자",
  	"role": "user, admin",
+ 	"expire" : "파기 시간",
  	"기타....": ""
  }
  이걸 base64로 encoding .... 이걸 변조 방지(무결성 integrity)
@@ -30,6 +35,27 @@ hmac
  .ew0KICAiaWQiOiJ0ZXJyeSINCiAgLCJyb2xlIjpbImFkbWluIiwidXNlciJdDQogICwiY29tcGFueSI6InBlcHNpIg0KfQ0K.
  i22mRxfSB5gt0rLbtrogxbKj5aZmpYh7lA82HO1Di0E
 
+ 
+header
+payload - claim을 담고 있다.
+signature
+
+header
+algorithm : sha
+type : jwt
+
+
+{
+	timestamp
+	status : 401
+	error : Unauthorized
+	exception : xxxException
+	message : Unauthorized
+	
+}
+
+
+ 
  
  
  
