@@ -1,0 +1,49 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.4.RELEASE'
+		lombokVersion = '1.18.2'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'gaia3d'
+version = '0.0.1-SNAPSHOT'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter')
+	
+	// https://mvnrepository.com/artifact/org.gdal/gdal
+	compile('org.gdal:gdal:2.1.0')
+	
+	
+	runtime('org.springframework.boot:spring-boot-devtools')
+		
+	// gradle 빌드하면 gradle5에서 lombok 관련 deprecated 오류 발생 버그 대응	
+	annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+	compileOnly("org.projectlombok:lombok:$lombokVersion")
+	testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+	testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+	
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
