@@ -31,13 +31,9 @@ repositories {
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter')
+	compile('org.springframework.boot:spring-boot-starter')	
 	
-	// https://mvnrepository.com/artifact/org.gdal/gdal
-	compile('org.gdal:gdal:2.1.0')
-	
-	
-	runtime('org.springframework.boot:spring-boot-devtools')
+	runtime('org.springframework.boot:spring-boot-devtools')	
 		
 	// gradle 빌드하면 gradle5에서 lombok 관련 deprecated 오류 발생 버그 대응	
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")
