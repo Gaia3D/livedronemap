@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -24,9 +23,6 @@ public class ImageConvertUtil {
 	
 	@Value("${gdal.cmd.path}")
 	private String gdalCmdPath;
-	
-	@Autowired
-	private ProcessRunner processRunner;
 	
 	/**
 	 * Mago3D에서 서비스하는 EPSG:4326로 변환 
@@ -58,6 +54,7 @@ public class ImageConvertUtil {
 		cmdList.add(srcImage);
 		cmdList.add(targetImage);
 		
+		ProcessRunner processRunner = new ProcessRunner();
 		processRunner.execProcess(cmdList);
 		
 	}
@@ -93,6 +90,7 @@ public class ImageConvertUtil {
 		cmdList.add(srcImage);
 		cmdList.add(targetImage);
 		
+		ProcessRunner processRunner = new ProcessRunner();
 		processRunner.execProcess(cmdList);
 		
 	}
@@ -123,6 +121,7 @@ public class ImageConvertUtil {
 			initLevel *= 2;
 		}
 		
+		ProcessRunner processRunner = new ProcessRunner();
 		processRunner.execProcess(cmdList);
 		
 	}
