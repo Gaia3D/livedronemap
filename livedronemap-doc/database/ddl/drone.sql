@@ -4,7 +4,7 @@ drop table if exists dorne cascade;
 create table drone(
 	drone_id					bigint,
 	drone_name					varchar(100),					not null,	
-	constraint drone_id 		primary key (drone_id)
+	constraint drone_id_pk 		primary key (drone_id)
 );
 
 comment on table drone is 'Drone 정보'
