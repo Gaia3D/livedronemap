@@ -34,6 +34,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter')	
 	compile('org.springframework.boot:spring-boot-starter-web')
 	
+	compile('commons-io:commons-io:2.6')
+	
 	runtime('org.springframework.boot:spring-boot-devtools')	
 		
 	// gradle 빌드하면 gradle5에서 lombok 관련 deprecated 오류 발생 버그 대응	
