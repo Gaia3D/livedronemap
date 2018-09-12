@@ -22,7 +22,7 @@ public class ImageConverterServiceImpl implements ImageConverterService {
 	private GdalConfig gdalConfig;
 	
 	@Override
-	public void convertImage(ImageInfo imageInfo) {
+	public void createConvertedImage(ImageInfo imageInfo) {
 		String imagePath = imageInfo.getImagePath();
 		log.info("Start converting : {}", imagePath);
 		

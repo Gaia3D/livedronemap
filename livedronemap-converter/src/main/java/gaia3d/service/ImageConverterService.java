@@ -9,6 +9,6 @@ import gaia3d.persistence.ImageInfo;
  */
 public interface ImageConverterService {
 	
-	public void convertImage(ImageInfo imageInfo);
+	public void createConvertedImage(ImageInfo imageInfo);
 	
 }

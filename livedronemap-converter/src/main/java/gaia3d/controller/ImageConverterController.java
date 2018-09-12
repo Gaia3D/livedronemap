@@ -18,9 +18,9 @@ public class ImageConverterController {
 	 * 이미지 선처리 작업 실행 
 	 */
 	@PostMapping("/convert/images")
-	public String convertImage(@RequestBody ImageInfo imageInfo) {
+	public String createConvertedImage(@RequestBody ImageInfo imageInfo) {
 		
-		imageConverterService.convertImage(imageInfo);
+		imageConverterService.createConvertedImage(imageInfo);
 		
 		return "api test";
 	}
