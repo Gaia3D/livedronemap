@@ -54,7 +54,7 @@ type : jwt
 	
 }
 
-
+https://www.baeldung.com/global-error-handler-in-a-spring-rest-api
  
  
  
