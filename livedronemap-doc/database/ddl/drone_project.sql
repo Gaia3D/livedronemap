@@ -3,18 +3,18 @@ drop table if exists drone_project cascade;
 
 -- 프로젝트 관리
 create table drone_project(
-	project_id					bigint,
-	drone_id					bigint,							
-	project_name				varchar(300)					not null.
-	start_latitude				numeric(13,10),
-	start_longitude				numeric(13,10),
-	end_latitude				numeric(13,10),
-	end_longitude				numeric(13,10),
-	status						char(1),						default	'0',			
+	drone_project_id				bigint,
+	drone_id						bigint,							
+	project_name					varchar(300)					not null.
+	start_latitude					numeric(13,10),
+	start_longitude					numeric(13,10),
+	end_latitude					numeric(13,10),
+	end_longitude					numeric(13,10),
+	status							char(1),						default	'0',			
 	update_date					timestamp with time zone,
 	insert_date					timestamp with time zone		default now(),
 	capture_task_date			timestamp with time zone,		default now(),
-	constraint project_id_pk	primary key (project_id),
+	constraint drone_project_pk	primary key (drone_project_id),
 );
 
 comment on table project is '프로젝트 관리';
