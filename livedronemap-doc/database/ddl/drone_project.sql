@@ -4,16 +4,16 @@ drop table if exists drone_project cascade;
 create table drone_project(
 	drone_project_id				bigint,
 	drone_id						int,							
-	drone_project_name				varchar(256)					not null
+	drone_project_name				varchar(256)					not null,
 	start_latitude					numeric(13,10),
 	start_longitude					numeric(13,10),
 	end_latitude					numeric(13,10),
 	end_longitude					numeric(13,10),
-	status							char(1),						default	'0',			
+	status							char(1)							default	'0',			
 	shooting_date					timestamp with time zone,
 	update_date						timestamp with time zone,
 	insert_date						timestamp with time zone		default now(),
-	constraint drone_project_pk		primary key (drone_project_id),
+	constraint drone_project_pk		primary key (drone_project_id)
 );
 
 comment on table drone_project is '프로젝트';
