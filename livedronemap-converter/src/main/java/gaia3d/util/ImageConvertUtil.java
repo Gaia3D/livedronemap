@@ -57,6 +57,7 @@ public class ImageConvertUtil implements Runnable {
 	/**
 	 * Mago3D에서 서비스하는 EPSG:4326로 변환 
 	 * @param sourceImage 변환할 이미지 경로 
+	 * @return 변환된 이미지 경로 
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
@@ -101,10 +102,10 @@ public class ImageConvertUtil implements Runnable {
 	/**
 	 * 내부 타일 생성 
 	 * @param srcImage 변환할 이미지 경로 
-	 * @param targetImage 저장할 이미지 경로 
-	 * @param cmdOpt 기타 gdal_translate 옵션. 참고 : https://www.gdal.org/gdal_translate.html
+	 * @return 변환된 이미지 경로 
 	 * @throws IOException 
 	 * @throws InterruptedException 
+	 * 
 	 */
 	public String createInnerTile(String sourceImage) throws InterruptedException, IOException {
 		log.info("Start gdal_translate .. {}", sourceImage);
@@ -134,10 +135,10 @@ public class ImageConvertUtil implements Runnable {
 	/**
 	 * 오버뷰 생성 
 	 * @param srcImage 변환할 이미지 경로 
-	 * @param overviewLevel 
-	 * @param cmdOpt 기타 gdaladdo 옵션. 참고 : https://www.gdal.org/gdaladdo.html
+	 * @return 변환된 이미지 경로 
 	 * @throws IOException 
 	 * @throws InterruptedException 
+	 * 
 	 */
 	public String createOverview(String sourceImage) throws InterruptedException, IOException {
 		log.info("Start gdaladdo .. {}", sourceImage);
@@ -166,6 +167,14 @@ public class ImageConvertUtil implements Runnable {
 		
 	}
 	
+	/**
+	 * 저장할 이미지 경로 생성 
+	 * @param sourcePath 원본 경로 
+	 * @param suffix 파일명 뒤에 붙일 suffix
+	 * @param extension 확장자 
+	 * @return 저장할 이미지 경로
+	 * 
+	 */
 	private String getTargetPath(String sourcePath, String suffix, String extension) {
 		String soureceBaseName = FilenameUtils.getBaseName(sourcePath);
 		String targetName = String.format("%s_%s.%s", soureceBaseName, suffix, extension);
