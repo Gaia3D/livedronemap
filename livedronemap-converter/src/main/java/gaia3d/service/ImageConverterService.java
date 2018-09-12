@@ -1,17 +1,14 @@
 package gaia3d.service;
 
-import org.springframework.stereotype.Service;
-
-import gaia3d.util.ImageConvertUtil;
-import lombok.extern.slf4j.Slf4j;
+import gaia3d.persistence.ImageInfo;
 
 /**
- * 이미지 변환 클래스
+ * 이미지 변환 인터페이스 
  * @author Kim JeaSeon
  *
  */
-@Slf4j
-@Service
-public class ImageConverterService {
+public interface ImageConverterService {
+	
+	public void convertImage(ImageInfo imageInfo);
 	
 }

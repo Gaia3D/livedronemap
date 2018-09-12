@@ -5,57 +5,88 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.apache.commons.io.FilenameUtils;
 
+import gaia3d.config.GdalConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * 이미지 변환 using GDAL Command
  * @author jskim
  *
+ * TODO JAVA GDAL 라이브러리로 대체 또는 GeoTools 사용 
  */
 @Slf4j
-@Component
-public class ImageConvertUtil {
+public class ImageConvertUtil implements Runnable {
 	
-	@Value("${gdal.cmd.path}")
-	private String gdalCmdPath;
+	private GdalConfig gdalConfig;
+	
+	private String originImage;
+	
+	// TODO 이렇게 하는게 맞나 .. ?!
+	public ImageConvertUtil(GdalConfig gdalConfig, String originImage) {
+		this.gdalConfig = gdalConfig;
+		this.originImage = originImage;
+	}
+	
+	@Override
+	public void run() {
+		String soureceImage = originImage;
+		
+		try {
+			// TODO 단계별로 진행 여부 필요 
+			// TODO properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
+			soureceImage = convertProjection(soureceImage);
+			
+			soureceImage = createInnerTile(soureceImage);
+			
+			soureceImage = createOverview(soureceImage);
+			
+			// TODO 중간 결과 이미지 삭제 
+			
+		} catch (InterruptedException | IOException e) {
+			// TODO 결과 저장하는 API 호출 
+			log.warn("", e);
+		}
+		
+	}
 	
 	/**
 	 * Mago3D에서 서비스하는 EPSG:4326로 변환 
-	 * @param srcImage 변환할 이미지 경로 
-	 * @param targetImage 저장할 이미지 경로 
-	 * @param srcSrs 젼환할 이미지 좌표계 
-	 * @param targetSrs 저장할 이미지 좌표계 
-	 * @param cmdOpt 기타 gdalwarp 옵션. 참고 : https://www.gdal.org/gdalwarp.html 
+	 * @param sourceImage 변환할 이미지 경로 
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
-	public void convertProjection(
-			String srcImage, String targetImage, String srcSrs, String targetSrs, List<String> cmdOpt) 
-					throws InterruptedException, IOException {
-		log.info("Start gdalwarp .. {}", srcImage);
+	public String convertProjection(String sourceImage) throws InterruptedException, IOException {
+		log.info("Start gdalwarp .. {}", sourceImage);
+		
+		// TODO 확장자는 동적으로 처리 
+		String targetImage = getTargetPath(sourceImage, "warp", "tif");
 		checkFileExists(targetImage);
 		
-		Path cmdPath = Paths.get(gdalCmdPath, "gdalwarp");
+		Path cmdPath = Paths.get(gdalConfig.getGdalCmdPath(), "gdalwarp");
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
-		if (cmdOpt != null) {
+		
+		List<String> cmdOpt = Arrays.asList(gdalConfig.getGdalWarpOptions().split(","));
+		if (cmdOpt.size() > 0) {
 			cmdList.addAll(cmdOpt);
 		}
 		
 		cmdList.add("-s_srs");
-		cmdList.add(srcSrs);
+		cmdList.add(gdalConfig.getGdalWarpSourceSrs());
 		cmdList.add("-t_srs");
-		cmdList.add(targetSrs);
-		cmdList.add(srcImage);
+		cmdList.add(gdalConfig.getGdalServiceSrs());
+		cmdList.add(sourceImage);
 		cmdList.add(targetImage);
 		
 		ProcessRunner processRunner = new ProcessRunner();
 		processRunner.execProcess(cmdList);
+		
+		return targetImage;
 		
 	}
 	
@@ -75,23 +106,28 @@ public class ImageConvertUtil {
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
-	public void createInnerTile(String srcImage, String targetImage, List<String> cmdOpt) 
-			throws InterruptedException, IOException {
-		log.info("Start gdal_translate .. {}", srcImage);
+	public String createInnerTile(String sourceImage) throws InterruptedException, IOException {
+		log.info("Start gdal_translate .. {}", sourceImage);
 		
+		// TODO 확장자는 동적으로 처리 
+		String targetImage = getTargetPath(sourceImage, "tiled", "tif");
 		checkFileExists(targetImage);
 		
-		Path cmdPath = Paths.get(gdalCmdPath, "gdal_translate");
+		Path cmdPath = Paths.get(gdalConfig.getGdalCmdPath(), "gdal_translate");
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
+		
+		List<String> cmdOpt = Arrays.asList(gdalConfig.getGdalTranslateOptions().split(","));
 		if (cmdOpt != null) {
 			cmdList.addAll(cmdOpt);
 		}
-		cmdList.add(srcImage);
+		cmdList.add(sourceImage);
 		cmdList.add(targetImage);
 		
 		ProcessRunner processRunner = new ProcessRunner();
 		processRunner.execProcess(cmdList);
+		
+		return targetImage;
 		
 	}
 	
@@ -103,19 +139,21 @@ public class ImageConvertUtil {
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
-	public void createOverview(String srcImage, int overviewLevel, List<String> cmdOpt) 
-			throws InterruptedException, IOException {
-		log.info("Start gdaladdo .. {}", srcImage);
+	public String createOverview(String sourceImage) throws InterruptedException, IOException {
+		log.info("Start gdaladdo .. {}", sourceImage);
 		
-		Path cmdPath = Paths.get(gdalCmdPath, "gdaladdo");
+		Path cmdPath = Paths.get(gdalConfig.getGdalCmdPath(), "gdaladdo");
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
+		
+		List<String> cmdOpt = Arrays.asList(gdalConfig.getGdalAddoOptions().split(","));
 		if (cmdOpt != null) {
 			cmdList.addAll(cmdOpt);
 		}
-		cmdList.add(srcImage);
+		cmdList.add(sourceImage);
 		
 		int initLevel = 2;
+		int overviewLevel = gdalConfig.getGdalAddoLevel();
 		for (int i = 1; i <= overviewLevel; i++) {
 			cmdList.add(String.valueOf(initLevel));
 			initLevel *= 2;
@@ -124,6 +162,18 @@ public class ImageConvertUtil {
 		ProcessRunner processRunner = new ProcessRunner();
 		processRunner.execProcess(cmdList);
 		
+		return sourceImage;
+		
+	}
+	
+	private String getTargetPath(String sourcePath, String suffix, String extension) {
+		String soureceBaseName = FilenameUtils.getBaseName(sourcePath);
+		String targetName = String.format("%s_%s.%s", soureceBaseName, suffix, extension);
+		
+		String soureceDirectory = FilenameUtils.getFullPathNoEndSeparator(sourcePath);
+		
+		Path targetPath = Paths.get(soureceDirectory, targetName);
+		return targetPath.toString();
 	}
 	
 	private void checkFileExists(String path) {
