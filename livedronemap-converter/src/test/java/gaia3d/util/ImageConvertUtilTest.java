@@ -1,5 +1,6 @@
 package gaia3d.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ImageConvertUtilTest {
 	ImageConvertUtil imageConvertUtil;
 	
 	@Test
-	public void test000ConvertProjection() {
+	public void test000ConvertProjection() throws InterruptedException, IOException {
 		String srcImg = "/Volumes/macDATA/source/2018/livedronemap/livedronemap-converter/src/test/resources/img/DJI_0064.png";
 		String targetImg = "/Volumes/macDATA/source/2018/livedronemap/livedronemap-converter/src/test/resources/img/result/DJI_0064.tif";
 		String srcSrs = "EPSG:4326";
@@ -41,7 +42,7 @@ public class ImageConvertUtilTest {
 	}
 	
 	@Test
-	public void test001CreateInnerTile() {
+	public void test001CreateInnerTile() throws InterruptedException, IOException {
 		String srcImg = "/Volumes/macDATA/source/2018/livedronemap/livedronemap-converter/src/test/resources/img/result/DJI_0064.tif";
 		String targetImg = "/Volumes/macDATA/source/2018/livedronemap/livedronemap-converter/src/test/resources/img/result/DJI_0064_tiled.tif";
 		List<String> cmdOpt = new ArrayList<>();
@@ -58,7 +59,7 @@ public class ImageConvertUtilTest {
 	}
 	
 	@Test
-	public void test002C() {
+	public void test002C() throws InterruptedException, IOException {
 		String srcImg = "/Volumes/macDATA/source/2018/livedronemap/livedronemap-converter/src/test/resources/img/result/DJI_0064_tiled.tif";
 		int overviewLevel = 7;
 		List<String> cmdOpt = new ArrayList<>();
@@ -67,7 +68,7 @@ public class ImageConvertUtilTest {
 		cmdOpt.add("-r");
 		cmdOpt.add("average");
 		
-		imageConvertUtil.createOverview(srcImg, overviewLevel, cmdOpt);;
+		imageConvertUtil.createOverview(srcImg, overviewLevel, cmdOpt);
 	}
 
 }

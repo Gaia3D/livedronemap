@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author jskim
  *
  */
-@Component
 @Slf4j
+@Component
 public class ProcessRunner {
 	
 	ProcessBuilder builder = new ProcessBuilder();

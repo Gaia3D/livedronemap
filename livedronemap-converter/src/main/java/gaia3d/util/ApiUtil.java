@@ -2,11 +2,14 @@ package gaia3d.util;
 
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * RestAPI 호출 클래스 
  * @author jskim
  *
  */
+@Slf4j
 @Component
 public class ApiUtil {
 	
