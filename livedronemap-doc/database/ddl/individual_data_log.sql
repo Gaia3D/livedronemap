@@ -1,10 +1,10 @@
--- FK, IndexëŠ” ë³„ë„ íŒŒì¼ë¡œ ë¶„ë¦¬.
+-- FK, Index´Â º°µµ ÆÄÀÏ·Î ºĞ¸®.
 drop table if exists individual_data_log cascade;
 
--- ê°œë³„ ì •ì‚¬ì˜ìƒ ë°ì´í„° ì´ë ¥ ê´€ë¦¬
+-- °³º° Á¤»ç¿µ»ó µ¥ÀÌÅÍ ÀÌ·Â °ü¸®
 create table individual_data_log(
 	individual_data_log_id				bigint,
-	drone_proejct_id				bigint				not null,
+	drone_proejct_id					bigint				not null,
 	file_name
 	file_path
 	attribute
@@ -15,5 +15,5 @@ create table individual_data_log(
 
 );
 
-comment on table individual_data_log is 'ê°œë³„ì •ì‚¬ì˜ìƒ ë°ì´í„° ê´€ë¦¬';
-comment on column individual_data_log.individual_data_log_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on table individual_data_log is '°³º° Á¤»ç¿µ»ó µ¥ÀÌÅÍ ÀÌ·Â °ü¸®';
+comment on column individual_data_log.individual_data_log_id is '°³º° Á¤»ç¿µ»ó µ¥ÀÌÅÍ ÀÌ·Â °ü¸® °íÀ¯Å°';

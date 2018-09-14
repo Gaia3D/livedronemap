@@ -1,12 +1,13 @@
--- FK, IndexëŠ” ë³„ë„ íŒŒì¼ë¡œ ë¶„ë¦¬.
+-- FK, Index´Â º°µµ ÆÄÀÏ·Î ºĞ¸®.
 drop table if exists postprocessing_data_log cascade;
 
--- í›„ì²˜ë¦¬ ì˜ìƒ ë°ì´í„° ì´ë ¥ ê´€ë¦¬
+
+-- ÈÄÃ³¸® ¿µ»ó µ¥ÀÌÅÍ ÀÌ·Â °ü¸®
 create table postprocessing_data_log(
 	postprocessing_data_log_id					bigint,
 	
 	constraint postprocessing_data_log_pk	primary key (postprocessing_data_log_id)
 );
 
-comment on table postprocessing_data is 'í›„ì²˜ë¦¬ ì˜ìƒ ë°ì´í„° ê´€ë¦¬';
-comment on column postprocessing_data_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on table postprocessing_data is 'ÈÄÃ³¸® ¿µ»ó µ¥ÀÌÅÍ °ü¸®';
+comment on column postprocessing_data.postprocessing_data_id is 'ÈÄÃ³¸® ¿µ»ó µ¥ÀÌÅÍ °ü¸® °íÀ¯ ¹øÈ£';
