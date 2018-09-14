@@ -2,7 +2,7 @@ drop table if exists dorne cascade;
 drop table if exists drone_project cascade;
 
 
--- Drone ì •ë³´
+-- µå·Ğ Á¤º¸
 create table drone(
 	drone_id					int,
 	drone_name					varchar(100)					not null,
@@ -10,13 +10,13 @@ create table drone(
 	constraint drone_pk 		primary key (drone_id)
 );
 
-comment on table drone is 'Drone ì •ë³´';
-comment on column drone.drone_id is 'Drone ê³ ìœ ë²ˆí˜¸';
-comment on column drone.drone_name is 'Drone ì¥ë¹„ ëª…';
-comment on column drone.insert_date is 'ë“±ë¡ì¼';
+comment on table drone is 'µå·Ğ Á¤º¸';
+comment on column drone.drone_id is 'µå·Ğ °íÀ¯Å°';
+comment on column drone.drone_name is 'µå·Ğ ¸í';
+comment on column drone.insert_date is 'µî·ÏÀÏ';
 
 
--- í”„ë¡œì íŠ¸ ê´€ë¦¬
+-- µå·Ğ ÇÁ·ÎÁ§Æ® Á¤º¸
 create table drone_project(
 	drone_project_id				bigint,
 	drone_id						int,							
@@ -33,16 +33,16 @@ create table drone_project(
 	constraint drone_project_pk		primary key (drone_project_id)
 );
 
-comment on table drone_project is 'í”„ë¡œì íŠ¸';
-comment on column drone_project.drone_project_id is 'project ê³ ìœ ë²ˆí˜¸';
-comment on column drone_project.drone_id is 'drone ê³ ìœ ë²ˆí˜¸';
-comment on column drone_project.drone_project_name is 'project ì´ë¦„';
-comment on column drone_project.shooting_area is 'ì´¬ì˜ ì§€ì—­';
-comment on column drone_project.shooting_start_latitude is 'ì´¬ì˜ ì‹œì‘ ìœ„ë„';
-comment on column drone_project.shooting_start_longitude is 'ì´¬ì˜ ì‹œì‘ ê²½ë„';
-comment on column drone_project.shooting_end_latitude is 'ì´¬ì˜ ì¢…ë£Œ ìœ„ë„';
-comment on column drone_project.shooting_end_longitude is 'ì´¬ì˜ ì¢…ë£Œ ê²½ë„';
-comment on column drone_project.shooting_data is 'ì´¬ì˜ ì¼ì‹œ';
-comment on column drone_project.status is 'ìƒíƒœ. 0:ì¤€ë¹„ì¤‘, 1:ì ê²€/í…ŒìŠ¤íŠ¸, 2:ê°œë³„ì˜ìƒ, 3:í›„ì²˜ë¦¬ì˜ìƒ , 4:í”„ë¡œì íŠ¸ ì¢…ë£Œ, 5:ì—ëŸ¬';
-comment on column drone_project.update_date is 'ìˆ˜ì •ì¼';
-comment on column drone_project.insert_date is 'ë“±ë¡ì¼';
+comment on table drone_project is 'µå·Ğ ÇÁ·ÎÁ§Æ® Á¤º¸';
+comment on column drone_project.drone_project_id is 'ÇÁ·ÎÁ§Æ® °íÀ¯Å°';
+comment on column drone_project.drone_id is 'µå·Ğ °íÀ¯Å°';
+comment on column drone_project.drone_project_name is 'ÇÁ·ÎÁ§Æ® ¸í';
+comment on column drone_project.shooting_area is 'ÃÔ¿µ Áö¿ª';
+comment on column drone_project.shooting_start_latitude is 'ÃÔ¿µ ½ÃÀÛ ÁöÁ¡ÀÇ À§µµ';
+comment on column drone_project.shooting_start_longitude is 'ÃÔ¿µ ½ÃÀÛ ÁöÁ¡ÀÇ °æµµ';
+comment on column drone_project.shooting_end_latitude is 'ÃØ¿µ ¸¶Áö¸· ÁöÁ¡ÀÇ À§µµ';
+comment on column drone_project.shooting_end_longitude is 'ÃØ¿µ ¸¶Áö¸· ÁöÁ¡ÀÇ °æµµ';
+comment on column drone_project.shooting_date is 'ÃÔ¿µ ÀÏ½Ã';
+comment on column drone_project.status is '»óÅÂ. 0:ÁØºñÁß, 1:Á¡°Ë/Å×½ºÆ®, 2:°³º° Á¤»ç¿µ»ó, 3:ÈÄÃ³¸® ¿µ»ó , 4:ÇÁ·ÎÁ§Æ® Á¾·á, 5:¿¡·¯';
+comment on column drone_project.update_date is '¼öÁ¤ÀÏ';
+comment on column drone_project.insert_date is 'µî·ÏÀÏ';
