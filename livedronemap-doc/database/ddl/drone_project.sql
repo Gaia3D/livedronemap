@@ -11,7 +11,7 @@ create table drone(
 );
 
 comment on table drone is '드론 정보';
-comment on column drone.drone_id is '드론 고유키';
+comment on column drone.drone_id is '드론 고유번호';
 comment on column drone.drone_name is '드론 명';
 comment on column drone.insert_date is '등록일';
 
@@ -34,7 +34,7 @@ create table drone_project(
 );
 
 comment on table drone_project is '드론 프로젝트 정보';
-comment on column drone_project.drone_project_id is '프로젝트 고유키';
+comment on column drone_project.drone_project_id is '프로젝트 고유번호';
 comment on column drone_project.drone_id is '드론 고유키';
 comment on column drone_project.drone_project_name is '프로젝트 명';
 comment on column drone_project.shooting_area is '촬영 지역';

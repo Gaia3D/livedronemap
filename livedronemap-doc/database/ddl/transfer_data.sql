@@ -27,7 +27,6 @@ comment on column transfer_data.transfer_time is '전송 일시';
 comment on column transfer_data.transfer_sucessyn is '데이터 전송 성공 유무 ( Y : 전송 성공, N : 전송 실패 )';
 
 
-
 -- 개별 정사영상 데이터 관리
 create table individual_data(
 	individual_data_id				bigint,
@@ -50,7 +49,6 @@ comment on column individual_data.file_name is '개별정사영상 파일명';
 comment on column individual_data.file_path is '개별정사영상 파일경로';
 comment on column individual_data.update_date is '수정일';
 comment on column individual_data.insert_date is '등록일';
-
 
 
 -- 후처리 영상 데이터 관리

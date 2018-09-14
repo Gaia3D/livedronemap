@@ -16,4 +16,4 @@ create table individual_data_log(
 );
 
 comment on table individual_data_log is '개별 정사영상 데이터 이력 관리';
-comment on column individual_data_log.individual_data_log_id is '개별 정사영상 데이터 이력 관리 고유키';
+comment on column individual_data_log.individual_data_log_id is '개별 정사영상 데이터 이력 관리 고유번호';
