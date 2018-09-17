@@ -1,0 +1,36 @@
+
+- imagemosaic 저장소가 DB를 사용할 수 있도록 설정 
+
+1. datastore.properties 생성
+	.접속정보 암호화 필요 
+	. ex)
+SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory
+host=localhost
+port=5432
+database=postgres
+schema=public
+user=postgres
+passwd=postgres
+Loose\ bbox=true
+Estimated\ extends=true
+validate\ connections=true
+Connection\ timeout=10
+preparedStatements=true 
+
+2. GeoServer에서 Imagemosaic 저장소 생성 
+	. 저장소를 만들면 자동으로 폴더명 테이블 생성 
+	. 오류날 경우 1) DB 연결 및 권한 확인, 2) 파일 쓰기 권한 확인 
+	
+3. 생성된 테이블에 시간 칼럼, 프로젝트 아이디 칼럼 추가 
+	. ALTER TABLE schema.tablename ADD COLUMN image_dt TIMESTAMP WITHOUT TIME ZONE;
+	. ALTER TABLE schema.tablename ADD COLUMN project_id BIGINT;
+	
+4. GeoServer 설정 리로드 
+	. 로그인 -> 서버 상태 -> 환경구성 및 카탈로그 -> 다시 불러오기 
+
+5. Layer 설정 화면에서 차원탭에 시간이 활성화 가능한지 확인 
+	. 안되면 설정 다시 확인 
+	
+
+
+	

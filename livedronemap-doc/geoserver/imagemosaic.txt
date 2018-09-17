@@ -24,3 +24,8 @@
 - 레이어를 자동으로 발행할 때, 필터 조건을 줄 수 있는가 ???? / 이름을 변경해서 만들 수 있는가 ???? 
 	.. 두 가지만 해결하면 될 듯
 	 
+- ./new_coverage.txt 파일에서 name과 parameters-filter 부분만 수정하여 GeoServer에 등록하면 됨
+- 등록 test curl : curl -v -u admin:geoserver -H "Content-Type:application/json" -d @new_coverage.txt http://localhost:8080/geoserver/rest/workspaces/workspace_name/coveragestores/imagemosaic_store_name/coverages
+
+
+
