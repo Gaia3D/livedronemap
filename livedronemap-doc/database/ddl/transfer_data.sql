@@ -7,7 +7,7 @@ drop table if exists postprocessing_data cascade;
 -- 傈价等 单捞磐 包府
 create table transfer_data(
 	transfer_data_id				bigint,
-	drone_project_id				bigint						not null,
+	drone_project_id				int						not null,
 	data_name						varchar(100),
 	data_type						char(1),
 	attributes						jsonb,
