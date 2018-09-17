@@ -2,6 +2,7 @@ package gaia3d.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -35,17 +36,19 @@ public class ImageConvertUtil implements Runnable {
 	@Override
 	public void run() {
 		String soureceImage = originImage;
+		String soureceName = FilenameUtils.getBaseName(soureceImage);
 		
 		try {
-			// TODO 단계별로 진행 여부 필요 
-			// TODO properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
+			// TODO 단계별로 진행 여부 필요, properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
 			soureceImage = convertProjection(soureceImage);
-			
 			soureceImage = createInnerTile(soureceImage);
-			
 			soureceImage = createOverview(soureceImage);
 			
 			// TODO 중간 결과 이미지 삭제 
+			
+			Path completeFilePath = Paths.get(soureceImage);
+			Path resultFilePath = Paths.get(gdalConfig.getGdalResultPath());
+			Files.move(completeFilePath , resultFilePath.resolve(String.format("%s.tif", soureceName)));
 			
 		} catch (InterruptedException | IOException e) {
 			// TODO 결과 저장하는 API 호출 

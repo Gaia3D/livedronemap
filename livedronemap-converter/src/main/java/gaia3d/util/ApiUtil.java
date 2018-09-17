@@ -21,7 +21,7 @@ public class ApiUtil {
 		
 	}
 	
-	// TODO GeoServer 정보 저장
+	// TODO GeoServer 정보 저장 요청 / DB insert 
 	/**
 	 * GeoServer를 위한 이미지 정보 입력
 	 */
