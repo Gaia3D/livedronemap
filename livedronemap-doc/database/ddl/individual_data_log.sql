@@ -4,7 +4,7 @@ drop table if exists individual_data_log cascade;
 -- 개별 정사영상 데이터 이력 관리
 create table individual_data_log(
 	individual_data_log_id				bigint,
-	drone_proejct_id					bigint				not null,
+	drone_proejct_id					int				not null,
 	file_name
 	file_path
 	attribute

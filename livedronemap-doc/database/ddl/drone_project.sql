@@ -18,7 +18,7 @@ comment on column drone.insert_date is '등록일';
 
 -- 드론 프로젝트 정보
 create table drone_project(
-	drone_project_id				bigint,
+	drone_project_id				int,
 	drone_id						int,							
 	drone_project_name				varchar(256)					not null,
 	shooting_area					varchar(100),
