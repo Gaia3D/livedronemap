@@ -52,10 +52,22 @@ sourceSets {
 			if (profile == 'real') {
 				println " ===========> profile file is ${profile}"
 				srcDir "src/main/resources/${profile}"
+				
 				//copy {
-		        //	from "src/main/resources/${profile}"
-				//	into "src/main/resources"
-		        //}
+				//	from("src/main/resources/properties-$targetServer") {
+				//		exclude 'logback.xml'
+				//	}
+				//	into "src/main/resources/properties"
+				//}
+				
+				//copy {
+				//	from("src/main/resources/properties-$targetServer") {
+				//		include 'logback.xml'
+				//	}
+				//	into("src/main/resources/")
+				//}
+				
+				//delete file("src/main/resources/properties-dev")
 			} else {
 				println " ===========> profile file is ${profile}"
 				//srcDir "src/main/resources"
@@ -86,11 +98,11 @@ dependencies {
 	runtime('org.postgresql:postgresql')
 
 	// gradle 빌드하면 gradle5에서 lombok 관련 deprecated 오류 발생 버그 대응	
-	//annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-	//compileOnly("org.projectlombok:lombok:$lombokVersion")
-	//testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
-	//testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+	annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 	compileOnly("org.projectlombok:lombok:$lombokVersion")
+	testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
+	testCompileOnly("org.projectlombok:lombok:$lombokVersion")
+	//compileOnly("org.projectlombok:lombok:$lombokVersion")
 	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	
