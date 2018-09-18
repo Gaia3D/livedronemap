@@ -24,6 +24,21 @@ public class DroneProjectController {
 //		model.addAttribute("projectListSize", projectList.size());
 //		model.addAttribute("projectList", projectList);
 		
-		return "/drone-project/drone-list-project";
+		return "/drone-project/list-drone-project";
+	}
+	
+	/**
+	 * Project 목록
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "list-image")
+	public String imageList(Model model) {
+		//List<DroneProject> projectList = projectService.getListProject(new Project());
+		
+//		model.addAttribute("projectListSize", projectList.size());
+//		model.addAttribute("projectList", projectList);
+		
+		return "/drone-project/list-image";
 	}
 }

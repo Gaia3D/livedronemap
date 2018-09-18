@@ -129,60 +129,6 @@
 				</ul>
 				
 				<ul class="projectInfo">
-					<li class="title">굴업도 기름유출</li>
-					<li title="촬영일자">
-						<label class="date" >촬영일자</label> 2018.09.01
-						<label class="js">정사영상</label><span>45</span>장
-						<label class="hc">후처리영상</label><span>7</span>장
-					</li>
-				</ul>
-				
-				<ul class="projectInfo">
-					<li class="title">병풍도 주변해역 불법선박 정찰</li>
-					<li title="촬영일자">
-						<label class="date" >촬영일자</label> 2018.09.01
-						<label class="js">정사영상</label><span>45</span>장
-						<label class="hc">후처리영상</label><span>7</span>장
-					</li>
-				</ul>
-				
-				<ul class="projectInfo">
-					<li class="title">굴업도 기름유출</li>
-					<li title="촬영일자">
-						<label class="date" >촬영일자</label> 2018.09.01
-						<label class="js">정사영상</label><span>45</span>장
-						<label class="hc">후처리영상</label><span>7</span>장
-					</li>
-				</ul>
-				
-				<ul class="projectInfo">
-					<li class="title">병풍도 주변해역 불법선박 정찰</li>
-					<li title="촬영일자">
-						<label class="date" >촬영일자</label> 2018.09.01
-						<label class="js">정사영상</label><span>45</span>장
-						<label class="hc">후처리영상</label><span>7</span>장
-					</li>
-				</ul>
-				
-				<ul class="projectInfo">
-					<li class="title">굴업도 기름유출</li>
-					<li title="촬영일자">
-						<label class="date" >촬영일자</label> 2018.09.01
-						<label class="js">정사영상</label><span>45</span>장
-						<label class="hc">후처리영상</label><span>7</span>장
-					</li>
-				</ul>
-				
-				<ul class="projectInfo">
-					<li class="title">병풍도 주변해역 불법선박 정찰</li>
-					<li title="촬영일자">
-						<label class="date" >촬영일자</label> 2018.09.01
-						<label class="js">정사영상</label><span>45</span>장
-						<label class="hc">후처리영상</label><span>7</span>장
-					</li>
-				</ul>
-				
-				<ul class="projectInfo">
 					<li class="title">병풍도 주변해역 불법선박 정찰</li>
 					<li title="촬영일자">
 						<label class="date" >촬영일자</label> 2018.09.01
