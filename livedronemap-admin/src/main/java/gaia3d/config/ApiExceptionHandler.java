@@ -7,22 +7,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import gaia3d.domain.ApiResult;
+import gaia3d.domain.APIResult;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-	private ApiResult createApiResult(Exception ex) {
-		ApiResult apiResult = new ApiResult();
+	private APIResult createApiResult(Exception ex) {
+		APIResult apiResult = new APIResult();
 		apiResult.setMessage(ex.getMessage());
 		return apiResult;
 	}
 	
 	@Override
 	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
-		ApiResult apiResult = createApiResult(ex);
+		APIResult apiResult = createApiResult(ex);
 		return super.handleExceptionInternal(ex, apiResult, headers, status, request);
 	}
 	

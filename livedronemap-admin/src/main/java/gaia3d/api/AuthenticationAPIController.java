@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Cheon JeongDae
  *
  */
-@RequestMapping("/auth")
+@RequestMapping("/authentication/")
 @RestController
-public class AuthAPIController {
+public class AuthenticationAPIController {
 
-	@PostMapping
+	@PostMapping("/token")
 	public String createToken() {
 		// /auth/token
 		/*

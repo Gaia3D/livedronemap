@@ -6,25 +6,28 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Rest API 응답을 위한 범용
+ * @author Cheon JeongDae
+ *
+ */
 @Getter
 @Setter
 @ToString
-public class ApiResult implements Serializable {
+public class APIResult implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -64139596070084106L;
 	
-	//	timestamp
-//	status : 401
-//	error : Unauthorized
-//	exception : xxxException
-//	message : Unauthorized
+	// http status
 	private int statusCode;
-	private String reasonPhrase;
-	private String error;
+	// validation code;
+	private String validationCode;
+	// Exception
 	private String exception;
+	// detail message
 	private String message;
-	private String documentationUrl;
+	
 }
