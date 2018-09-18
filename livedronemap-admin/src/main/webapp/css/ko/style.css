@@ -215,6 +215,7 @@ div.ctrlBtn {
 position: absolute;
 top: 4px;
 right: 5px;
+z-index: 100;
 }
 
 /* 프로젝트 / 정보 */
@@ -547,6 +548,7 @@ right: 5px;
 width: 30px;
 height: 60px;
 background-color: rgba(53, 53, 61, 0.8);
+z-index: 100;
 }
 .zoom > button {
 width: 30px;

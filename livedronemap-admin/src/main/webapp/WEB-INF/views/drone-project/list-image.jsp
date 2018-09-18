@@ -10,7 +10,11 @@
 	<title>프로젝트 목록 | LiveDroneMap</title>
 	<!-- <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> -->
 	<link rel="stylesheet" href="/css/${lang}/style.css">
+    <link rel="stylesheet" href="/externlib/cesium/Widgets/widgets.css?cache_version=${cache_version}" /> 
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
+	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/js/mago3d.js"></script>
+    <script type="text/javascript" src="/externlib/cesium/Cesium.js"></script>
 </head>
 
 <body>
@@ -134,6 +138,7 @@
 			<span>100km</span>
 		</div>
 	</div>
+	
 	<!-- E: MAPWRAP -->
 	
 	<div id="viewWrap" style="width: 700px; display: ;">
@@ -153,7 +158,92 @@
 	function gotoList() {
 		location.href= "/drone-project/list-drone-project";
 	}
-
 </script>
+
+
+<script> 	
+//	var viewer = new Cesium.Viewer('cesiumContainer'); 
+//    flyToPosition(viewer, 126.08588218688966, 36.636128043375784, 1200, 0, -90, 6);
+    
+	var managerFactory = null;
+	var insertIssueEnable = false;
+
+	var imagePath = "/images/${lang}";
+	var dataInformationUrl = "/data/";
+	magoStart(null, "mapWrap", imagePath);
+	var intervalCount = 0;
+	var timerId = setInterval("startMogoUI()", 1000);
+
+	function startMogoUI() {
+		intervalCount++;
+		if(managerFactory != null && managerFactory.getMagoManagerState() === CODE.magoManagerState.READY) {
+			clearInterval(timerId);
+			console.log(" managerFactory != null, managerFactory.getMagoManagerState() = " + managerFactory.getMagoManagerState() + ", intervalCount = " + intervalCount);
+			return;
+		}
+		console.log("--------- intervalCount = " + intervalCount);
+	}
+
+    // mago3d start, policy loading
+	function magoStart(viewer, renderDivId, imagePath) {
+		$.ajax({
+			url:dataInformationUrl+"mago3d-policy-cesium.json",
+			type: "GET",
+			dataType: "json",
+			success: function(serverPolicy){
+				loadData(viewer, renderDivId, serverPolicy);
+			},
+			error: function(e){
+				alert(e.responseText);
+			}
+		});
+	}
+
+	// init project load
+	function loadData(viewer, renderDivId, serverPolicy) {
+		if(serverPolicy.geo_data_default_projects === null || serverPolicy.geo_data_default_projects.length < 1) {
+			managerFactory = new ManagerFactory(viewer, renderDivId, serverPolicy, null, null, null, imagePath);	
+		} else {
+			var defaultProjectArray = serverPolicy.geo_data_default_projects;
+			var projectIdArray = new Array(defaultProjectArray.length);
+			var projectDataArray = new Array(defaultProjectArray.length);
+			var projectDataFolderArray = new Array(defaultProjectArray.length);
+			
+			var dataCount = 0;
+			defaultProjectArray.forEach(function(projectId, index) {
+				projectIdArray[index] = projectId;
+				console.log("url = " + dataInformationUrl + projectId);
+				$.ajax({
+					url: dataInformationUrl + projectId,
+					type: "GET",
+					dataType: "json",
+					success: function(serverData) {
+						console.log("index = " + index + ", data = " + serverData);
+						projectDataArray[index] = serverData;
+						projectDataFolderArray[index] = serverData.data_key;
+						if(defaultProjectArray.length === (dataCount + 1)) {
+							createManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath);
+						}
+						dataCount++;
+					},
+					error: function(e){
+						alert(e.responseText);
+					}
+				});
+			});
+		}
+	}
+	
+	function createManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath) {
+		managerFactory = new ManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath);
+	}	
+	// click poisition call back function
+	function showClickPosition(position) {
+//		$("#positionLatitude").val(position.lat);
+//		$("#positionLongitude").val(position.lon);
+//		$("#positionAltitude").val(position.alt);
+	}
+	
+    </script>
 </body>
 </html>
