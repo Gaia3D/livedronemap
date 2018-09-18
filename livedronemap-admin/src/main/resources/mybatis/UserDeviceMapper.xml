@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.gaia3d.persistence.UserDeviceMapper">
+<mapper namespace="gaia3d.persistence.UserDeviceMapper">
 	
 	<!-- 사용자 디바이스 정보 -->
 	<select id="getUserDeviceByUserId" parameterType="string" resultType="userDevice">

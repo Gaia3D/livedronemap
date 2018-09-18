@@ -15,6 +15,7 @@
 		<typeAlias type="gaia3d.domain.Role" alias="role"/>
 		<typeAlias type="gaia3d.domain.UserGroupRole" alias="userGroupRole"/>
 		<typeAlias type="gaia3d.domain.UserDevice" alias="userDevice"/>
+		<typeAlias type="gaia3d.domain.Policy" alias="policy"/>
 	</typeAliases>
 	
 </configuration>

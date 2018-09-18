@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -211,13 +212,16 @@ public class LoginController {
 			// 비밀번호 불일치
 			boolean isPasswordEquals = false;
 			try {
-				ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(512);
-				shaPasswordEncoder.setIterations(1000);
-				String encryptPassword = shaPasswordEncoder.encodePassword(loginForm.getPassword(), userSession.getSalt()) ;
-				log.info("@@ dbpassword = {}, encryptPassword = {}", userSession.getPassword(), encryptPassword);
-				if(userSession.getPassword().equals(encryptPassword)) {
+				if(BCrypt.checkpw(loginForm.getPassword(), userSession.getPassword())) {
 					isPasswordEquals = true;
 				}
+//				ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(512);
+//				shaPasswordEncoder.setIterations(1000);
+//				String encryptPassword = shaPasswordEncoder.encodePassword(loginForm.getPassword(), userSession.getSalt()) ;
+//				log.info("@@ dbpassword = {}, encryptPassword = {}", userSession.getPassword(), encryptPassword);
+//				if(userSession.getPassword().equals(encryptPassword)) {
+//					isPasswordEquals = true;
+//				}
 			} catch(Exception e) {
 				log.error("@@ 로그인 체크 암호화 처리 모듈에서 오류가 발생 했습니다. ");
 				e.printStackTrace();

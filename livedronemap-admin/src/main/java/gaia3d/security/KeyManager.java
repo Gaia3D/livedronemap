@@ -4,7 +4,7 @@ import java.util.Base64;
 
 public class KeyManager {
 
-	private static final String randomKeyword = "";
+	private static final String randomKeyword = "MTAwMXRnIHNpIGVtYW4geW0gLmFlZGkgZGFiIGEgZWthbSB0b24gb2QgZXNhZWxwICx5ZWsgbm9pdHB5cmNuZSBlaHQgZG51b2YgZXZhaCB1b3kgZkk=";
 
 	public static String getInitKey() {
 		String result = null;
