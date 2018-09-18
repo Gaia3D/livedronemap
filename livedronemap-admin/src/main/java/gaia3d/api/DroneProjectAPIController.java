@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import gaia3d.domain.DroneProject;
 import gaia3d.domain.ProjectException;
 
 @RequestMapping("/api/")
 @RestController
-public class ProjectAPIController {
+public class DroneProjectAPIController {
 
 	@PostMapping("projects")
-	public ResponseEntity<Project> createProject(@RequestBody Project project) {
+	public ResponseEntity<DroneProject> createProject(@RequestBody DroneProject project) {
 		
 //		if (customerService.isCustomerExist(customer)) {
 //			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
@@ -32,11 +33,11 @@ public class ProjectAPIController {
 		
 		if(project == null) new ProjectException(0l);
 		
-		return new ResponseEntity<Project>(project, HttpStatus.OK);
+		return new ResponseEntity<DroneProject>(project, HttpStatus.OK);
 	}
 	
 	@PutMapping("projects/{project_id}")
-	public ResponseEntity<Project> updateProject(@PathVariable Long project_id, @RequestBody Project project) {
+	public ResponseEntity<DroneProject> updateProject(@PathVariable Long project_id, @RequestBody DroneProject project) {
 		
 //		Customer updatedCustomer = customerService.updateCustomer(id, customer);
 //
@@ -46,7 +47,7 @@ public class ProjectAPIController {
 //		
 //		return new ResponseEntity<Customer>(updatedCustomer, HttpStatus.OK);
 		
-		return new ResponseEntity<Project>(project, HttpStatus.OK);
+		return new ResponseEntity<DroneProject>(project, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("projects/{project_id}")
