@@ -1,7 +1,7 @@
-package gaia3d.persistence;
+package gaia3d.service;
 
 import java.util.List;
-import org.springframework.stereotype.Repository;
+
 import gaia3d.domain.UserInfo;
 
 /**
@@ -9,9 +9,8 @@ import gaia3d.domain.UserInfo;
  * @author jeongdae
  *
  */
-@Repository
-public interface UserMapper {
-
+public interface UserService {
+	
 	/**
 	 * 사용자 수
 	 * @param userInfo
@@ -62,18 +61,18 @@ public interface UserMapper {
 	int insertUser(UserInfo userInfo);
 	
 	/**
+	 * 사용자 그룹에 사용자 등록
+	 * @param userInfo
+	 * @return
+	 */
+	int updateUserGroupUser(UserInfo userInfo);
+	
+	/**
 	 * 사용자 수정
 	 * @param userInfo
 	 * @return
 	 */
 	int updateUser(UserInfo userInfo);
-	
-	/**
-	 * 사용자 테이블의 사용자 그룹 정보 변경
-	 * @param userInfo
-	 * @return
-	 */
-	int updateUserGroupUser(UserInfo userInfo);
 	
 	/**
 	 * 사용자 상태 수정
@@ -88,6 +87,18 @@ public interface UserMapper {
 	 * @return
 	 */
 	int updateUserStatusByInsertType(UserInfo userInfo);
+	
+	/**
+	 * 사용자 상태 수정
+	 * @param business_type
+	 * @param status_value
+	 * @param check_ids
+	 * @param business_type
+	 * @param status_value
+	 * @param check_ids
+	 * @return
+	 */
+	List<String> updateUserStatus(String business_type, String status_value, String check_ids);
 	
 	/**
 	 * 로그인 실패 횟수 초과로 잠김 상태 사용자 해제 처리
@@ -111,9 +122,23 @@ public interface UserMapper {
 	int updatePassword(UserInfo userInfo);
 	
 	/**
+	 * 사용자 비밀번호 초기화
+	 * @param userIds
+	 * @return
+	 */
+	int updateUserPasswordInit(String userIds);
+	
+	/**
 	 * 사용자 삭제
 	 * @param user_id
 	 * @return
 	 */
 	int deleteUser(String user_id);
+	
+	/**
+	 * 일괄 사용자 삭제
+	 * @param userIds
+	 * @return
+	 */
+	int deleteUserList(String userIds);
 }

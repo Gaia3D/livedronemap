@@ -9,7 +9,12 @@
 	</settings>
 	
 	<typeAliases>
-		<!-- <typeAlias type="gaia3d.persistence.FileMapper" alias="fileInfo"/> -->
+		<typeAlias type="gaia3d.domain.UserInfo" alias="userInfo"/>
+		<typeAlias type="gaia3d.domain.UserSession" alias="userSession"/>
+		<typeAlias type="gaia3d.domain.SSOLog" alias="sSOLog"/>
+		<typeAlias type="gaia3d.domain.Role" alias="role"/>
+		<typeAlias type="gaia3d.domain.UserGroupRole" alias="userGroupRole"/>
+		<typeAlias type="gaia3d.domain.UserDevice" alias="userDevice"/>
 	</typeAliases>
 	
 </configuration>
