@@ -7,16 +7,22 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Rest API 응답을 위한 범용
  * @author Cheon JeongDae
  *
  */
 @Getter
 @Setter
 @ToString
-public class APIResult implements Serializable {
+public class APIHeader implements Serializable {
 
-	private static final long serialVersionUID = -64139596070084106L;
+	private static final long serialVersionUID = -6764057655883300254L;
+	
+	private String userId;
+	private String apiKey;
+	private String token;
+	private String role;
+	private String algorithm;
+	private String type;
 	
 	// http status
 	private int statusCode;

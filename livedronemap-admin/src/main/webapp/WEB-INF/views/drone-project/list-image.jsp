@@ -154,13 +154,6 @@
 </div>
 <!-- E: warp -->
 
-<script type="text/javascript">
-	function gotoList() {
-		location.href= "/drone-project/list-drone-project";
-	}
-</script>
-
-
 <script> 	
 //	var viewer = new Cesium.Viewer('cesiumContainer'); 
 //    flyToPosition(viewer, 126.08588218688966, 36.636128043375784, 1200, 0, -90, 6);
@@ -237,11 +230,9 @@
 	function createManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath) {
 		managerFactory = new ManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath);
 	}	
-	// click poisition call back function
-	function showClickPosition(position) {
-//		$("#positionLatitude").val(position.lat);
-//		$("#positionLongitude").val(position.lon);
-//		$("#positionAltitude").val(position.alt);
+	
+	function gotoList() {
+		location.href= "/drone-project/list-drone-project";
 	}
 	
     </script>

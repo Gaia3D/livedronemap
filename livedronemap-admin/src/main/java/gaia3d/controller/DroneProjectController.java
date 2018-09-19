@@ -1,5 +1,7 @@
 package gaia3d.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,10 @@ public class DroneProjectController {
 	 * @return
 	 */
 	@GetMapping(value = "list-drone-project")
-	public String droneProjectList(Model model) {
+	public String droneProjectList(HttpServletRequest request, Model model) {
+		
+		log.info("@@@@@@@@@@ live drone header = {}", request.getHeader("live_drone_header"));
+		
 		//List<DroneProject> projectList = projectService.getListProject(new Project());
 		
 //		model.addAttribute("projectListSize", projectList.size());
@@ -33,7 +38,7 @@ public class DroneProjectController {
 	 * @return
 	 */
 	@GetMapping(value = "list-image")
-	public String imageList(Model model) {
+	public String imageList(HttpServletRequest request, Model model) {
 		//List<DroneProject> projectList = projectService.getListProject(new Project());
 		
 //		model.addAttribute("projectListSize", projectList.size());

@@ -1,5 +1,7 @@
 package gaia3d.api;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +22,7 @@ import gaia3d.domain.ProjectException;
 public class DroneProjectAPIController {
 
 	@PostMapping("projects")
-	public ResponseEntity<DroneProject> createProject(@RequestBody DroneProject project) {
+	public ResponseEntity<DroneProject> createProject(HttpServletRequest request, @RequestBody DroneProject project) {
 		
 //		if (customerService.isCustomerExist(customer)) {
 //			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
