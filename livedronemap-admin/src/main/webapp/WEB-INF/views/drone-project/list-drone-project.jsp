@@ -8,9 +8,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 	<title>프로젝트 목록 | LiveDroneMap</title>
-	<!-- <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> -->
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" href="/css/${lang}/style.css">
+    <link rel="stylesheet" href="/externlib/cesium/Widgets/widgets.css?cache_version=${cache_version}" /> 
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
+	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/js/mago3d.js"></script>
+    <script type="text/javascript" src="/externlib/cesium/Cesium.js"></script>
 </head>
 
 <body>
@@ -153,7 +157,7 @@
 	</div>
 	<!-- E: 1depth / 프로젝트 목록 -->
 	
-	<div id="mapWrap" style="width: 700px;">
+	<div id="mapWrap" >
 		<div class="ctrlBtn">
 			<button type="button" class="divide on" title="화면분할">화면분할</button><!-- 프로젝트 상세화면일때 보여짐-->
 			<button type="button" class="fullscreen" title="전체화면">전체화면</button>
@@ -171,7 +175,7 @@
 	</div>
 	<!-- E: MAPWRAP -->
 	
-	<div id="viewWrap" style="width: 700px; display: ;">
+<!--  	<div id="viewWrap" style="width: 700px; display: none;">
 		<div class="ctrlBtn">
 			<button type="button" class="connect on" title="동기화">동기화</button>
 		</div>
@@ -179,10 +183,124 @@
 			<button type="button" class="zoomin">확대</button>
 			<button type="button"  class="zoomout">축소</button>
 		</div>
-	</div>
+	</div> -->
 	<!-- E: VIEWWRAP -->
 </div>
 <!-- E: warp -->
+
+<script>
+	// resize
+	function mapWrapResize() {
+		var mapWrap = document.getElementById('mapWrap');
+		mapWrap.style.width = window.innerWidth - 410 + 'px';
+    }
+	mapWrapResize();
+	// 브라우저 크기가 변할 시 동적으로 사이즈를 조절해야 하는경우
+	window.addEventListener('resize', mapWrapResize);
+	
+	// mago3D
+	
+    var options = {homeButton: false, infoBox: false, sceneModePicker: false, baseLayerPicker: true, geocoder: false, navigationHelpButton: false};
+	var viewer = new Cesium.Viewer('mapWrap', options);
+	
+	var rectangle = new Cesium.RectangleOutlineGeometry({
+		  ellipsoid : Cesium.Ellipsoid.WGS84,
+		  rectangle : Cesium.Rectangle.fromDegrees(-100.0, 20.0, -90.0, 30.0),
+		  height : 10000.0
+		});
+	var geometry = Cesium.RectangleOutlineGeometry.createGeometry(rectangle);
+	
+	var redRectangle = viewer.entities.add({
+	    name : 'Red translucent rectangle',
+	    rectangle : {
+	        coordinates : Cesium.Rectangle.fromDegrees(-110.0, 20.0, -80.0, 25.0),
+	        material : Cesium.Color.RED.withAlpha(0.5)
+	    }
+	});
+	
+	var managerFactory = null;
+	var insertIssueEnable = false;
+
+	var imagePath = "/images/${lang}";
+	var dataInformationUrl = "/data/";
+	magoStart(viewer, "mapWrap", imagePath); 
+	var intervalCount = 0;
+	var timerId = setInterval("startMogoUI()", 1000);
+	
+
+
+
+	function startMogoUI() {
+		intervalCount++;
+		if(managerFactory != null && managerFactory.getMagoManagerState() === CODE.magoManagerState.READY) {
+			clearInterval(timerId);
+			console.log(" managerFactory != null, managerFactory.getMagoManagerState() = " + managerFactory.getMagoManagerState() + ", intervalCount = " + intervalCount);
+			return;
+		}
+		//console.log("--------- intervalCount = " + intervalCount);
+	}
+
+ 	// mago3d start, policy loading
+	function magoStart(viewer, renderDivId, imagePath) {
+ 		
+		$.ajax({
+			url:dataInformationUrl+"mago3d-policy-cesium.json",
+			type: "GET",
+			dataType: "json",
+			success: function(serverPolicy){
+				loadData(viewer, renderDivId, serverPolicy);
+			},
+			error: function(e){
+				alert(e.responseText);
+			}
+		});
+	}
+
+	// init project load
+	function loadData(viewer, renderDivId, serverPolicy) {
+		if(serverPolicy.geo_data_default_projects === null || serverPolicy.geo_data_default_projects.length < 1) {
+			managerFactory = new ManagerFactory(viewer, renderDivId, serverPolicy, null, null, null, imagePath);	
+		} else {
+			var defaultProjectArray = serverPolicy.geo_data_default_projects;
+			var projectIdArray = new Array(defaultProjectArray.length);
+			var projectDataArray = new Array(defaultProjectArray.length);
+			var projectDataFolderArray = new Array(defaultProjectArray.length);
+			
+			var dataCount = 0;
+			defaultProjectArray.forEach(function(projectId, index) {
+				projectIdArray[index] = projectId;
+				//console.log("url = " + dataInformationUrl + projectId);
+				$.ajax({
+					url: dataInformationUrl + projectId,
+					type: "GET",
+					dataType: "json",
+					success: function(serverData) {
+						//console.log("index = " + index + ", data = " + serverData);
+						projectDataArray[index] = serverData;
+						projectDataFolderArray[index] = serverData.data_key;
+						if(defaultProjectArray.length === (dataCount + 1)) {
+							createManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath);
+							//changeMagoStateAPI(managerFactory,false);
+
+						}
+						dataCount++;
+					},
+					error: function(e){
+						alert(e.responseText);
+					}
+				});
+			});
+		}
+	}
+	
+	function createManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath) {
+		managerFactory = new ManagerFactory(viewer, renderDivId, serverPolicy, projectIdArray, projectDataArray, projectDataFolderArray, imagePath);
+	}	
+	// click poisition call back function
+	function showClickPosition(position) {
+	}
+	
+</script>
 
 </body>
 </html>

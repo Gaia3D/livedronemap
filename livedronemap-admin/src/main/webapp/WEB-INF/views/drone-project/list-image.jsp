@@ -8,7 +8,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 	<title>프로젝트 목록 | LiveDroneMap</title>
-	<!-- <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> -->
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" href="/css/${lang}/style.css">
     <link rel="stylesheet" href="/externlib/cesium/Widgets/widgets.css?cache_version=${cache_version}" /> 
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
