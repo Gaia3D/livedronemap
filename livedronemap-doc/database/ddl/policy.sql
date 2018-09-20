@@ -26,30 +26,24 @@ create table policy(
 	password_create_char					varchar(32)			default '!@#',
 	password_exception_char					varchar(10)			default '<>&',
 	
-	geo_server_enable						varchar(5)			default 'false',
-	geo_server_url							varchar(256),
-	geo_server_layers						varchar(60),
-	geo_server_parameters_service			varchar(30),
-	geo_server_parameters_version			varchar(30),
-	geo_server_parameters_request			varchar(30),
-	geo_server_parameters_transparent		varchar(30),
-	geo_server_parameters_format			varchar(30),
-	geo_server_add_url						varchar(256),
-	geo_server_add_layers					varchar(60),
-	geo_server_add_parameters_service		varchar(30),
-	geo_server_add_parameters_version		varchar(30),
-	geo_server_add_parameters_request		varchar(30),
-	geo_server_add_parameters_transparent	varchar(30),
-	geo_server_add_parameters_format		varchar(30),
+	geoserver_enable						varchar(5)			default 'true',
+	geoserver_wms_version					varchar(5),
+	geoserver_backgroud_url					varchar(256),
+	geoserver_backgroud_workspace			varchar(60),
+	geoserver_backgroud_layer				varchar(60),
+	geoserver_backgroud_format				varchar(30),
+	geoserver_terrain_url					varchar(256),
+	geoserver_terrain_workspace				varchar(60),
+	geoserver_terrain_layer					varchar(60),
+	geoserver_terrain_format				varchar(30),
+	geoserver_data_url						varchar(256),
+	geoserver_data_workspace				varchar(60),
+	geoserver_data_format					varchar(30),
 	
 	rest_api_encryption_yn					char(1)				default 'Y',
 	
 	notice_service_yn						char(1)				default 'Y',
 	notice_service_send_type				char(1)				default '0',
-	notice_approval_request_yn				char(1)				default 'N',
-	notice_approval_sign_yn					char(1)				default 'N',
-	notice_password_update_yn				char(1)				default 'N',
-	notice_approval_delay_yn				char(1)				default 'N',
 	notice_risk_yn							char(1)				default 'N',
 	notice_risk_send_type					char(1)				default '0',
 	notice_risk_grade						char(1)				default '0',
@@ -77,7 +71,7 @@ create table policy(
 	content_server_group_root				varchar(60)			default 'LiveDroneMap',
 	content_data_group_root					varchar(60)			default 'LiveDroneMap',
 	
-	user_upload_type						varchar(256)		default '3ds,obj,ifc,dae',
+	user_upload_type						varchar(256)		default 'tif,tfw,png,pgw,jpg,jpeg,jgw',
 	user_upload_max_filesize				int					default 500,
 	user_upload_max_count					int					default 50,
 	
@@ -134,21 +128,19 @@ comment on column policy.password_create_type is '초기 패스워드 생성 방법. 0 : �
 comment on column policy.password_create_char is '초기 패스워드 생성 문자열. 엑셀 업로드 등';
 comment on column policy.password_exception_char is '패스워드로 사용할수 없는 특수문자(XSS). <,>,&,작은따음표,큰따움표';
 
-comment on column policy.geo_server_enable is 'geo server 사용유무';
-comment on column policy.geo_server_url is 'geo server 기본 Layers url';
-comment on column policy.geo_server_layers is 'geo server 기본 layers';
-comment on column policy.geo_server_parameters_service is 'geo server 기본 Layers service 변수값';
-comment on column policy.geo_server_parameters_version is 'geo server 기본 Layers version 변수값';
-comment on column policy.geo_server_parameters_request is 'geo server 기본 Layers request 변수값';
-comment on column policy.geo_server_parameters_transparent is 'geo server 기본 Layers transparent 변수값';
-comment on column policy.geo_server_parameters_format is 'geo server 기본 Layers format 변수값';
-comment on column policy.geo_server_add_url is 'geo server 추가 Layers url';
-comment on column policy.geo_server_add_layers is 'geo server 추가 Layers';
-comment on column policy.geo_server_add_parameters_service is 'geo server 추가 Layers service 변수값';
-comment on column policy.geo_server_add_parameters_version is 'geo server 추가 Layers version 변수값';
-comment on column policy.geo_server_add_parameters_request is 'geo server 추가 Layers request 변수값';
-comment on column policy.geo_server_add_parameters_transparent is 'geo server 추가 Layers transparent 변수값';
-comment on column policy.geo_server_add_parameters_format is 'geo server 추가 Layers format 변수값';
+comment on column policy.geoserver_enable is 'geoserver 사용유무';
+comment on column policy.geoserver_wms_version is 'geoserver wms 버전';
+comment on column policy.geoserver_backgroud_url is 'geoserver 배경지도 url';
+comment on column policy.geoserver_backgroud_workspace is 'geoserver 배경지도 작업공간';
+comment on column policy.geoserver_backgroud_layer is 'geoserver 배경지도 레이어';
+comment on column policy.geoserver_backgroud_format is 'geoserver 배경지도 요청 포맷';
+comment on column policy.geoserver_terrain_url is 'geoserver 지형 url';
+comment on column policy.geoserver_terrain_workspace is 'geoserver 지형 작업공간';
+comment on column policy.geoserver_terrain_layer is 'geoserver 지형 레이어';
+comment on column policy.geoserver_terrain_format is 'geoserver 지역 요청 포맷';
+comment on column policy.geoserver_data_url is 'geoserver 영상 데이터 url';
+comment on column policy.geoserver_data_workspace is 'geoserver 영상 데이터 작업공간';
+comment on column policy.geoserver_data_format is 'geoserver 영상 데이터 요청 포맷';
 	
 comment on column policy.rest_api_encryption_yn is 'rest api 암호화 유무. Y : 사용(기본값), N : 사용안함';
 
@@ -178,7 +170,7 @@ comment on column policy.content_menu_group_root is '메뉴 그룹 최상위 그룹명';
 comment on column policy.content_user_group_root is '사용자 그룹 최상위 그룹명';
 comment on column policy.content_data_group_root is '데이터 그룹 최상위 그룹명';
 
-comment on column policy.user_upload_type is '업로딩 가능 확장자. 3ds,obj,ifc,dae';
+comment on column policy.user_upload_type is '업로딩 가능 확장자. tif,tfw,png,pgw,jpg,jpeg,jgw';
 comment on column policy.user_upload_max_filesize is '최대 업로딩 사이즈(단위M). 500M';
 comment on column policy.user_upload_max_count is '1회, 최대 업로딩 파일 수. 50개';
 	
