@@ -9,20 +9,14 @@
 	<meta name="viewport" content="width=device-width">
 	<title>로그인</title>
 	<link rel="shortcut icon" href="/images/favicon.ico">
-	<link rel="stylesheet" href="/css/ko/font/font.css" />
-	<link rel="stylesheet" href="/images/ko/icon/glyph/glyphicon.css" />
-	<link rel="stylesheet" href="/externlib/normalize/normalize.min.css" />
-	<link rel="stylesheet" href="/css/ko/style.css" />
+	<link rel="stylesheet" href="/css/${lang}/style.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
-	<script type="text/javascript" src="/js/ko/common.js"></script>
-	<script type="text/javascript" src="/js/ko/message.js"></script>
-	<script type="text/javascript" src="/js/gibberish-aes.js"></script>
+	<script type="text/javascript" src="/js/${lang}/message.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/layouts/header.jsp" %>
 	
-	<div>
-		<div>Login</div>
+	<div style="margin-top:10%; text-align:center">
 		<form:form id="loginForm" modelAttribute="loginForm" method="post" action="/login/process-login.do" onsubmit="return check();">
 			<label for="user_id"><span class="icon-glyph glyph-users"></span>ID</label>
 			<input type="text" id="user_id" name="user_id" maxlength="32" title="ID" 
