@@ -14,20 +14,17 @@
 	<script type="text/javascript" src="/js/${lang}/message.js"></script>
 </head>
 <body>
-	<%@ include file="/WEB-INF/views/layouts/header.jsp" %>
-	
-	<div style="margin-top:10%; text-align:center">
-		<form:form id="loginForm" modelAttribute="loginForm" method="post" action="/login/process-login.do" onsubmit="return check();">
+<div style="height: 100%;">
+	<form:form id="loginForm" modelAttribute="loginForm" method="post" action="/login/process-login" onsubmit="return check();">
+	<div style="text-align:center; padding-top: 300px;">
 			<label for="user_id"><span class="icon-glyph glyph-users"></span>ID</label>
-			<input type="text" id="user_id" name="user_id" maxlength="32" title="ID" 
-			placeholder="ID" required="required" />
+			<input type="text" id="user_id" name="user_id" maxlength="32" title="ID" placeholder="ID" required="required" />
 			<label for="password"><span class="icon-glyph glyph-lock"></span>PASSWORD</label>
-			<input type="password" id="password" name="password" maxlength="32" title="PWD" 
-			placeholder="PWD" required="required" />
+			<input type="password" id="password" name="password" maxlength="32" title="PWD" placeholder="PWD" required="required" />
 			<input type="submit" value="Sign In" class="sign-submit" />
-		</form:form>					
 	</div>
-	
+	</form:form>
+</div>	
 <script type="text/javascript">
 	$(document).ready(function () {
 	});

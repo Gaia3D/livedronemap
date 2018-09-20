@@ -1,13 +1,9 @@
 package gaia3d.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.LocaleResolver;
 
 import gaia3d.domain.CacheManager;
 import gaia3d.domain.Policy;
@@ -31,6 +24,7 @@ import gaia3d.domain.UserGroupRole;
 import gaia3d.domain.UserInfo;
 import gaia3d.domain.UserSession;
 import gaia3d.helper.GroupRoleHelper;
+import gaia3d.helper.PasswordHelper;
 import gaia3d.helper.SessionUserHelper;
 import gaia3d.listener.Gaia3dHttpSessionBindingListener;
 import gaia3d.service.LoginService;
@@ -38,7 +32,6 @@ import gaia3d.service.RoleService;
 import gaia3d.service.UserService;
 import gaia3d.util.WebUtil;
 import gaia3d.validator.LoginValidator;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -68,7 +61,7 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping("/login.do")
+	@GetMapping("/login")
 	public String login(HttpServletRequest request, Model model) {
 		Policy policy = CacheManager.getPolicy();
 		log.info("@@ policy = {}", policy);
@@ -92,7 +85,7 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@PostMapping(value = "process-login.do")
+	@PostMapping(value = "process-login")
 	public String processLogin(HttpServletRequest request, @ModelAttribute("loginForm") UserInfo loginForm, BindingResult bindingResult, Model model) {
 		
 		Policy policy = CacheManager.getPolicy();
@@ -186,10 +179,10 @@ public class LoginController {
 
 		// 패스워드 변경 기간이 오버 되었거나 , 6:임시 비밀번호(비밀번호 찾기, 관리자 설정에 의한 임시 비밀번호 발급 시)
 		if(userSession.getPassword_change_term_over() || UserInfo.STATUS_TEMP_PASSWORD.equals(userSession.getStatus())){
-			return "redirect:/user/modify-password.do";
+			return "redirect:/user/modify-password";
 		}
 		
-		return "redirect:/main/index.do";
+		return "redirect:/main/index";
 	}
 	
 	/**
@@ -212,16 +205,10 @@ public class LoginController {
 			// 비밀번호 불일치
 			boolean isPasswordEquals = false;
 			try {
-				if(BCrypt.checkpw(loginForm.getPassword(), userSession.getPassword())) {
+				// TODO try, catch 는 삭제해도 될듯
+				if(PasswordHelper.isEqual(userSession.getPassword(), loginForm.getPassword(), userSession.getSalt())) {
 					isPasswordEquals = true;
 				}
-//				ShaPasswordEncoder shaPasswordEncoder = new ShaPasswordEncoder(512);
-//				shaPasswordEncoder.setIterations(1000);
-//				String encryptPassword = shaPasswordEncoder.encodePassword(loginForm.getPassword(), userSession.getSalt()) ;
-//				log.info("@@ dbpassword = {}, encryptPassword = {}", userSession.getPassword(), encryptPassword);
-//				if(userSession.getPassword().equals(encryptPassword)) {
-//					isPasswordEquals = true;
-//				}
 			} catch(Exception e) {
 				log.error("@@ 로그인 체크 암호화 처리 모듈에서 오류가 발생 했습니다. ");
 				e.printStackTrace();
@@ -317,25 +304,25 @@ public class LoginController {
 //		return map;
 //	}
 //	
-//	/**
-//	 * 로그아웃 페이지
-//	 * @param model
-//	 * @return
-//	 */
-//	@GetMapping(value = "logout.do")
-//	public String logout(HttpServletRequest request, Model model) {
-//		
-//		HttpSession session = request.getSession();
-//		UserSession userSession = (UserSession)session.getAttribute(UserSession.KEY);
-//		
-//		if(userSession == null) {
-//			return "redirect:/login/login.do";
-//		}
-//		
-//		session.removeAttribute(userSession.getUser_id());
-//		session.removeAttribute(UserSession.KEY);
-//		session.invalidate();
-//		
-//		return "redirect:/login/login.do";
-//	}
+	/**
+	 * 로그아웃 페이지
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value = "logout.do")
+	public String logout(HttpServletRequest request, Model model) {
+		
+		HttpSession session = request.getSession();
+		UserSession userSession = (UserSession)session.getAttribute(UserSession.KEY);
+		
+		if(userSession == null) {
+			return "redirect:/login/login";
+		}
+		
+		session.removeAttribute(userSession.getUser_id());
+		session.removeAttribute(UserSession.KEY);
+		session.invalidate();
+		
+		return "redirect:/login/login";
+	}
 }
