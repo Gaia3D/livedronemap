@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PasswordTest {
 	
-	private String plainTextPassword = "test";
-	private String dbSalt = "$2a$10$zhVPNNbdfBDGFs49XX8/B.";
+	private String plainTextPassword = "admin";
+	private String dbSalt = "$2a$10$5k31m5NLTdQEV7SgsV/lTO";
 	private String dbPassword = BCrypt.hashpw(plainTextPassword, dbSalt);
 	
 	@Test
@@ -30,11 +30,11 @@ public class PasswordTest {
 
 	@Test
 	public void 암호화된_비밀번호() {
-		log.info("password = {}", plainTextPassword);
+		log.info(">>password = {}", plainTextPassword);
 		String salt = BCrypt.gensalt();
-		log.info("salt = {}", salt);
+		log.info(">>salt = {}", salt);
 		String encryptPassword = BCrypt.hashpw(plainTextPassword, salt);
-		log.info("encryptPassword = {}", encryptPassword);
+		log.info(">>encryptPassword = {}", encryptPassword);
 	}
 	
 	@Test

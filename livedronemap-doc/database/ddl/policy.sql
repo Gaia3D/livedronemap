@@ -42,6 +42,8 @@ create table policy(
 	geo_server_add_parameters_transparent	varchar(30),
 	geo_server_add_parameters_format		varchar(30),
 	
+	rest_api_encryption_yn					char(1)				default 'Y',
+	
 	notice_service_yn						char(1)				default 'Y',
 	notice_service_send_type				char(1)				default '0',
 	notice_approval_request_yn				char(1)				default 'N',
@@ -70,10 +72,10 @@ create table policy(
 	content_monitoring_interval				int					default 1,
 	content_statistics_interval				char(1)				default '0',
 	content_load_balancing_interval			int					default 10,
-	content_menu_group_root					varchar(60)			default 'Mago3D',
-	content_user_group_root					varchar(60)			default 'Mago3D',
-	content_server_group_root				varchar(60)			default 'Mago3D',
-	content_data_group_root					varchar(60)			default 'Mago3D',
+	content_menu_group_root					varchar(60)			default 'LiveDroneMap',
+	content_user_group_root					varchar(60)			default 'LiveDroneMap',
+	content_server_group_root				varchar(60)			default 'LiveDroneMap',
+	content_data_group_root					varchar(60)			default 'LiveDroneMap',
 	
 	user_upload_type						varchar(256)		default '3ds,obj,ifc,dae',
 	user_upload_max_filesize				int					default 500,
@@ -148,6 +150,8 @@ comment on column policy.geo_server_add_parameters_request is 'geo server 추가 L
 comment on column policy.geo_server_add_parameters_transparent is 'geo server 추가 Layers transparent 변수값';
 comment on column policy.geo_server_add_parameters_format is 'geo server 추가 Layers format 변수값';
 	
+comment on column policy.rest_api_encryption_yn is 'rest api 암호화 유무. Y : 사용(기본값), N : 사용안함';
+
 comment on column policy.notice_service_yn is '알림 서비스 사용 유무. Y : 사용, N : 사용안함(기본값)';
 comment on column policy.notice_service_send_type is '알림 발송 매체. 0 : SMS(기본값), 1 : 이메일, 2 : 메신저';
 comment on column policy.notice_risk_yn is '알림 장애 발생시. Y : 사용, N 사용안함(기본값)';

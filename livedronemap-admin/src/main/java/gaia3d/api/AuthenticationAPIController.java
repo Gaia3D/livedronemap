@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gaia3d.domain.APIHeader;
 import gaia3d.domain.APIResult;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,16 +26,24 @@ public class AuthenticationAPIController implements APIController {
 	@PostMapping("token")
 	public ResponseEntity<APIResult> createToken(HttpServletRequest request) {
 		log.info("---- token create ----------------------------------------------------- ");
-		log.info("=============================== {}", request.getHeader("live_drone_header"));
-		getHeader(request);
-		
+		log.info("=============================== {}", request.getHeader("live_drone_map"));
 		APIResult aPIResult = new APIResult();
 		
-		// /auth/token
-		/*
-		 * paramenter api-key를 암호화 된 상태로 받으면 될거 같음
-		 */
-		
+		try {
+			APIHeader apiHeader = getHeader(log, request);
+			
+			log.info(" ************************* apiHeader {}", apiHeader);
+			
+			
+			// /auth/token
+			/*
+			 * paramenter api-key를 암호화 된 상태로 받으면 될거 같음
+			 */
+		} catch(Exception e) {
+			e.printStackTrace();
+			aPIResult.setException(e.getMessage());
+		}
+			
 		return new ResponseEntity<APIResult>(aPIResult, HttpStatus.OK);
 	}
 	

@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import gaia3d.domain.APIHeader;
 import gaia3d.domain.APIResult;
+import gaia3d.security.AES128Cipher;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,24 +41,28 @@ public class AuthenticationAPIControllerTest {
 	}
 	
 	@Test
-	public void createTokenWithHeader() {
+	public void createTokenWithHeader() throws Exception {
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+		parameters.add("test", "1234");
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("live_drone_header", "22322332");
-
+		headers.add("live_drone_map", getCustomHeader());
+		
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(parameters, headers);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://localhost/authentication/token";
 		ResponseEntity<APIResult> aPIResult = restTemplate.postForEntity(url, request, APIResult.class);
-		log.info("aaaa status code = {}", aPIResult.getStatusCodeValue());
-		log.info("aaa body = {}", aPIResult.getBody());
+		log.info("createTokenWithHeader status code = {}", aPIResult.getStatusCodeValue());
+		log.info("createTokenWithHeader aPIResult body = {}", aPIResult.getBody());
 	}
 	
-	private String getCustomHeader() {
-		String headerValue = null;
-		
+	/**
+	 * 암호화 된 header 값을 생성
+	 * @return
+	 * @throws Exception
+	 */
+	private String getCustomHeader() throws Exception {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("user_id=")
 				.append("test")
@@ -80,10 +85,6 @@ public class AuthenticationAPIControllerTest {
 				.append("timestamp=")
 				.append(System.nanoTime());
 		
-		String encodeHeaderValue = buffer.toString();
-		
-		
-		
-		return headerValue;
+		return AES128Cipher.encode(buffer.toString());
 	}
 }
