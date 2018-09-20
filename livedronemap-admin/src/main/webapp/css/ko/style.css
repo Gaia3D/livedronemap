@@ -89,7 +89,7 @@ padding: 5px 15px 5px 65px;
 text-align: left;
 cursor: pointer;
 border-right: 1px solid #4d4d59;
-background: url(../images/ico.png) no-repeat -740px -190px;
+background: url(../../images/ico.png) no-repeat -740px -190px;
 }
 ul.processing > li:hover {
 background-color: #2c2c38;
@@ -145,7 +145,7 @@ opacity: 1.0;
 width: 50px;
 height: 50px;
 cursor: pointer;
-background-image: url(../images/ico.png);
+background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 } 
 #nav > ul li span {
@@ -215,6 +215,7 @@ div.ctrlBtn {
 position: absolute;
 top: 4px;
 right: 5px;
+z-index: 100;
 }
 
 /* 프로젝트 / 정보 */
@@ -239,19 +240,19 @@ width: 20px;
 height: 20px;
 }
 .projectInfo li > label.date {
-background: url(../images/ico.png) no-repeat -400px -196px;
+background: url(../../images/ico.png) no-repeat -400px -196px;
 }
 .projectInfo li > label.location {
-background: url(../images/ico.png) no-repeat -347px -196px;
+background: url(../../images/ico.png) no-repeat -347px -196px;
 }
 .projectInfo li > label.js {
-background: url(../images/ico.png) no-repeat -450px -196px;
+background: url(../../images/ico.png) no-repeat -450px -196px;
 }
 .projectInfo li > label.hc {
-background: url(../images/ico.png) no-repeat -500px -196px;
+background: url(../../images/ico.png) no-repeat -500px -196px;
 }
 .projectInfo li > label.step {
-background: url(../images/ico.png) no-repeat -550px -196px;
+background: url(../../images/ico.png) no-repeat -550px -196px;
 }
 
 /* 프로젝트 / 이슈탐지 */
@@ -266,7 +267,7 @@ margin: 0;
 padding: 0 0 0 20px;
 font-size: 11px;
 color: #ff3000;
-background-image: url(../images/ico.png);
+background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 ul.detect li.ship {
@@ -372,7 +373,7 @@ width: 30px;
 height: 30px;
 text-indent: -999em;
 border: none;
-background: url(../images/ico.png) no-repeat -440px -390px;
+background: url(../../images/ico.png) no-repeat -440px -390px;
 }
 .searchWrap * {
 vertical-align: middle;
@@ -413,7 +414,7 @@ margin-left: 10px;
 padding-left: 18px;
 color:#3e81f6;
 font-size: 10pt;
-background: url(../images/ico.png) no-repeat 0 -193px;
+background: url(../../images/ico.png) no-repeat 0 -193px;
 }
 div.boardList > button.new {
 position: absolute;
@@ -455,7 +456,7 @@ text-decoration: underline;
 .pagination .ico {
 padding: 5px 7px;
 text-indent: -999em;
-background-image: url(../images/ico.png);
+background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 .pagination .first {
@@ -491,7 +492,7 @@ border-bottom: 1px solid #757575;
 .pagerInput div > button {
 margin: 0 -2px;
 background-color: #fff;
-background-image: url(../images/ico.png);
+background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 .pagerInput div > button.first {
@@ -547,6 +548,7 @@ right: 5px;
 width: 30px;
 height: 60px;
 background-color: rgba(53, 53, 61, 0.8);
+z-index: 100;
 }
 .zoom > button {
 width: 30px;
@@ -556,7 +558,7 @@ text-indent: -999em;
 cursor: pointer;
 border: none;
 border-radius: 2px;
-background-image: url(../images/ico.png);
+background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 .zoom > button.zoomin {
@@ -611,7 +613,7 @@ display: inline-block;
 margin: 0 auto;
 margin-bottom: 15px;
 padding-left: 150px;
-background: url(../images/ico.png) no-repeat -650px -470px;	
+background: url(../../images/ico.png) no-repeat -650px -470px;	
 }
 .drone > li > label {
 display: inline-block;
@@ -649,7 +651,7 @@ position: relative;
 margin: 0 auto;
 margin-bottom: 15px;
 padding-left: 150px;
-background: url(../images/ico.png) no-repeat 10px -500px;	
+background: url(../../images/ico.png) no-repeat 10px -500px;	
 }
 .monitoring > li {
 position: relative;
@@ -690,7 +692,7 @@ font-weight: normal;
 .ico {
 border: none;
 text-indent: -999em;
-background-image: url(../images/ico.png);
+background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 background-color: transparent;
 }
@@ -764,7 +766,7 @@ background-color: #5c7be8;
 div.ctrlBtn > button {
 text-indent: -999em;
 border: none;
-background-image: url(../images/ico.png);
+background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 background-color: transparent;
 }

@@ -3,8 +3,6 @@ package gaia3d.domain;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

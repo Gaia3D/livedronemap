@@ -14,22 +14,7 @@ import gaia3d.domain.CacheManager;
 import gaia3d.domain.CacheName;
 import gaia3d.domain.CacheParams;
 import gaia3d.domain.CacheType;
-import gaia3d.domain.CommonCode;
-import gaia3d.domain.ExternalService;
-import gaia3d.domain.Menu;
 import gaia3d.domain.Policy;
-import gaia3d.domain.Project;
-import gaia3d.domain.UserGroup;
-import gaia3d.domain.UserGroupMenu;
-import gaia3d.helper.HttpClientHelper;
-import gaia3d.security.Crypt;
-//import gaia3d.service.APIService;
-//import gaia3d.service.CommonCodeService;
-//import gaia3d.service.MenuService;
-import gaia3d.service.PolicyService;
-//import gaia3d.service.ProjectService;
-//import gaia3d.service.UserGroupService;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -37,28 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CacheConfig {
 
 //	@Autowired
-//	private APIService aPIService;
-//	@Autowired
-//	private ProjectService projectService;
-//	@Autowired
-//	private LicenseService licenseService;
-//	@Autowired
-//	private MenuService menuService;
-//	@Autowired
-//	private UserGroupService userGroupService;
-	@Autowired
-	private PolicyService policyService;
-//	@Autowired
-//	private APIService aPIService;
-//	@Autowired
-//	private CommonCodeService commonCodeService;
-//	@Autowired
-//	private ServerService serverService;
-	
-	@Autowired
-	private PropertiesConfig propertiesConfig;
-	
-	public static final String LOCALHOST = "localhost";
+//	private PolicyService policyService;
 
 	@PostConstruct
 	public void init() {
@@ -74,20 +38,15 @@ public class CacheConfig {
 		// 운영 정책 캐시 갱신
 		policy(cacheParams);
 		// 메뉴, 사용자 그룹 메뉴 갱신
-		// menu(cacheParams);
+		menu(cacheParams);
 		// 사용자 그룹 캐시, 확장용
 		// loadUserGroup();
-		// 서버 그룹 캐시 갱신, 확장용
-		// loadServerGroup();
 		// 공통 코드 캐시 갱신
 		
-//		// 데이터를 그룹별로 로딩
-//		project(cacheParams);
+		// Private API Cache 갱신
+		externalServiceCache(cacheParams);
 		
-//		// Private API Cache 갱신
-//		externalServiceCache(cacheParams);
-		
-//		commonCode(cacheParams);
+		commonCode(cacheParams);
 
 		log.info("*************************************************");
 		log.info("************* Admin Cache Init End **************");
@@ -99,10 +58,8 @@ public class CacheConfig {
 		
 		if(cacheName == CacheName.LICENSE) license(cacheParams);
 		else if(cacheName == CacheName.POLICY) policy(cacheParams);
-//		else if(cacheName == CacheName.MENU) menu(cacheParams);
-//		else if(cacheName == CacheName.COMMON_CODE) commonCode(cacheParams);
-//		else if(cacheName == CacheName.PROJECT) project(cacheParams);
-//		else if(cacheName == CacheName.DATA_INFO) data(cacheParams);
+		else if(cacheName == CacheName.MENU) menu(cacheParams);
+		else if(cacheName == CacheName.COMMON_CODE) commonCode(cacheParams);
 	}
 	
 	/**
@@ -125,24 +82,24 @@ public class CacheConfig {
 	 * @param cacheParams
 	 */
 	private void policy(CacheParams cacheParams) {
-		Policy policy = policyService.getPolicy();
-		CacheManager.setPolicy(policy);
-		
-		CacheType cacheType = cacheParams.getCacheType();
-		// 사용자 도메인 cache를 갱신
-		if(cacheType == CacheType.USER || cacheType == CacheType.BROADCAST) {
+//		Policy policy = policyService.getPolicy();
+//		CacheManager.setPolicy(policy);
+//		
+//		CacheType cacheType = cacheParams.getCacheType();
+//		// 사용자 도메인 cache를 갱신
+//		if(cacheType == CacheType.USER || cacheType == CacheType.BROADCAST) {
 //			callRemoteCache(cacheParams);
-		}
-		// 이중화 도메인 사용자, 관리자 cache를 갱신
-		if(cacheType == CacheType.BROADCAST) {
-			
-		}
+//		}
+//		// 이중화 도메인 사용자, 관리자 cache를 갱신
+//		if(cacheType == CacheType.BROADCAST) {
+//			
+//		}
 	}
 
-//	/**
-//	 * @param cacheParams
-//	 */
-//	private void menu(CacheParams cacheParams) {
+	/**
+	 * @param cacheParams
+	 */
+	private void menu(CacheParams cacheParams) {
 //		Map<Long, Menu> menuMap = new HashMap<>();
 //		Map<String, Long> menuUrlMap = new HashMap<>();
 //		Menu adminMenu = new Menu();
@@ -174,43 +131,12 @@ public class CacheConfig {
 //		if(cacheType == CacheType.BROADCAST) {
 //			
 //		}
-//	}
-//	
-//	/**
-//	 * @param cacheParams
-//	 */
-//	private void project(CacheParams cacheParams) {
-//		List<Project> projectList = projectService.getListProject(new Project());
-//		Map<Long, Project> projectMap = new HashMap<>();
-//		for(Project project : projectList) {
-//			projectMap.put(project.getProject_id(), project);
-//		}
-//		CacheManager.setProjectMap(projectMap);
-//		
-//		// init project 때문에 policy 도 갱신해야 함
-//		Policy policy = policyService.getPolicy();
-//		CacheManager.setPolicy(policy);
-//		
-//		CacheType cacheType = cacheParams.getCacheType();
-//		if(cacheType == CacheType.BROADCAST) {
-//			callRemoteCache(cacheParams);
-//		}
-//	}
-//	
-//	/**
-//	 * @param cacheParams
-//	 */
-//	private void data(CacheParams cacheParams) {
-//		CacheType cacheType = cacheParams.getCacheType();
-//		if(cacheType == CacheType.BROADCAST) {
-//			callRemoteCache(cacheParams);
-//		}
-//	}
-//
-//	/**
-//	 * @param cacheParams
-//	 */
-//	private void commonCode(CacheParams cacheParams) {
+	}
+	
+	/**
+	 * @param cacheParams
+	 */
+	private void commonCode(CacheParams cacheParams) {
 //		List<CommonCode> commonCodeList = commonCodeService.getListCommonCode();
 //		log.info(" commonCodeList size = {}", commonCodeList.size());
 //		Map<String, Object> commonCodeMap = new HashMap<>();
@@ -263,12 +189,12 @@ public class CacheConfig {
 //		if(cacheType == CacheType.BROADCAST) {
 //			
 //		}
-//	}
-//	
-//	/**
-//	 * Private API Cache 갱신
-//	 */
-//	private void externalServiceCache(CacheParams cacheParams) {
+	}
+	
+	/**
+	 * Private API Cache 갱신
+	 */
+	private void externalServiceCache(CacheParams cacheParams) {
 //		ExternalService service = new ExternalService();
 //		service.setStatus(ExternalService.STATUS_USE);
 //		List<ExternalService> externalCacheList = aPIService.getListExternalService(service);
@@ -283,14 +209,14 @@ public class CacheConfig {
 ////		}
 //		
 //		CacheManager.setRemoteCacheServiceList(externalCacheList);
-//	}
+	}
 	
-//	/**
-//	 * Remote Cache 갱신 요청
-//	 * @param cacheName
-//	 */
-//	private void callRemoteCache(CacheParams cacheParams) {
-//		
+	/**
+	 * Remote Cache 갱신 요청
+	 * @param cacheName
+	 */
+	private void callRemoteCache(CacheParams cacheParams) {
+		
 //		log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@ callRemoteCache start! ");
 //		if(!propertiesConfig.isCallRemoteEnable()) {
 //			log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@ isCallRemoteEnable = {}. skip callRemoteCache ", propertiesConfig.isCallRemoteEnable());
@@ -300,16 +226,16 @@ public class CacheConfig {
 //		CacheName cacheName = cacheParams.getCacheName();
 //		log.info("@@@@@@@@@@@@@@@@@@@@@@@@@@ cacheName ={}", cacheName.toString());
 //		
-//		StringBuilder stringBuilder = new StringBuilder();
-//		stringBuilder.append("api-key=" + Crypt.decrypt(propertiesConfig.getRestAuthKey()))
+//		StringBuffer buffer = new StringBuffer();
+//		buffer.append("api-key=" + Crypt.decrypt(propertiesConfig.getRestAuthKey()))
 //		.append("&")
 //		.append("cache_name=" + cacheName.toString())
 //		.append("&");
-//		if(cacheParams.getProject_id() != null) stringBuilder.append("project_id=" + cacheParams.getProject_id());
-//		stringBuilder.append("&")
+//		if(cacheParams.getProject_id() != null) buffer.append("project_id=" + cacheParams.getProject_id());
+//		buffer.append("&")
 //		.append("time=" + System.nanoTime());
 //		
-//		String authData = Crypt.encrypt(stringBuilder.toString());
+//		String authData = Crypt.encrypt(buffer.toString());
 //		
 //		// TODO 로컬, 이중화 등의 분기 처리가 생략되어 있음
 //		List<ExternalService> remoteCacheServerList = CacheManager.getRemoteCacheServiceList();
@@ -329,5 +255,5 @@ public class CacheConfig {
 //				e.printStackTrace();
 //			}
 //		}
-//	}
+	}
 }

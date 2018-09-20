@@ -22,7 +22,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Slf4j
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "gaia3d.config, gaia3d.controller, gaia3d.interceptor, gaia3d.validator" }, 
+@ComponentScan(basePackages = { "gaia3d.config, gaia3d.api, gaia3d.controller, gaia3d.interceptor, gaia3d.validator" }, 
 includeFilters = {
 		@Filter(type = FilterType.ANNOTATION, value = Component.class),
 		@Filter(type = FilterType.ANNOTATION, value = Controller.class),
