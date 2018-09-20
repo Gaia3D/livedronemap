@@ -203,21 +203,23 @@
     var options = {homeButton: false, infoBox: false, sceneModePicker: false, baseLayerPicker: true, geocoder: false, navigationHelpButton: false};
 	var viewer = new Cesium.Viewer('mapWrap', options);
 	
-	var rectangle = new Cesium.RectangleOutlineGeometry({
+	var rectangel_outline = new Cesium.RectangleOutlineGeometry({
 		  ellipsoid : Cesium.Ellipsoid.WGS84,
-		  rectangle : Cesium.Rectangle.fromDegrees(-100.0, 20.0, -90.0, 30.0),
-		  height : 10000.0
+		  rectangle : Cesium.Rectangle.fromDegrees(125.300158, 34.051440,125.445078, 34.159441),
 		});
-	var geometry = Cesium.RectangleOutlineGeometry.createGeometry(rectangle);
+	var geometry = Cesium.RectangleOutlineGeometry.createGeometry(rectangel_outline);
 	
-	var redRectangle = viewer.entities.add({
-	    name : 'Red translucent rectangle',
-	    rectangle : {
-	        coordinates : Cesium.Rectangle.fromDegrees(-110.0, 20.0, -80.0, 25.0),
-	        material : Cesium.Color.RED.withAlpha(0.5)
+	var rect = viewer.entities.add({
+			rectangle : {
+	        coordinates : Cesium.Rectangle.fromDegrees(125.300158, 34.051440,125.445078, 34.159441),
+//	        material : Cesium.Color.RED.withAlpha(0.5),
+			material : Cesium.Color.TRANSPARENT,
+	        outline : true,
+	        outlineColor : Cesium.Color.BLACK
 	    }
 	});
-	
+	viewer.zoomTo(viewer.rect);
+
 	var managerFactory = null;
 	var insertIssueEnable = false;
 
