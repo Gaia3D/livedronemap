@@ -1,17 +1,9 @@
 package gaia3d.security;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-
-public class JWTEncryptionHMAC implements JWTEncryption {
+public class JWTEncryptionHMAC {
 	
 	private final String HMAC_SHA_512 = "HmacSHA512";
 
-	@Override
 	public boolean verify(String privateKey, String secretKey, String receivedValue) {
 //		try {
 //			SecretKeySpec signingKey = new SecretKeySpec(secretKey.getBytes(),	HMAC_SHA_512);

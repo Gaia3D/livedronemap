@@ -74,4 +74,4 @@ comment on column client.use_yn is '사용유무, Y : 사용, N : 사용안함(기본)';
 comment on column client.api_key is 'API KEY';
 comment on column client.description is '설명';
 comment on column client.update_date is '수정일';
-comment on column client.register_date is '등록일';
+comment on column client.insert_date is '등록일';

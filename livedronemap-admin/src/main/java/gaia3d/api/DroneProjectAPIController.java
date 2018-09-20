@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import gaia3d.domain.DroneProject;
-import gaia3d.domain.ProjectException;
 
 @RequestMapping("/api/")
 @RestController
@@ -33,7 +31,7 @@ public class DroneProjectAPIController {
 //		headers.setLocation(ucBuilder.path("/customer/{id}").buildAndExpand(savedCustomer.getId()).toUri());
 //		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 		
-		if(project == null) new ProjectException(0l);
+		//if(project == null) new ProjectException(0l);
 		
 		return new ResponseEntity<DroneProject>(project, HttpStatus.OK);
 	}
