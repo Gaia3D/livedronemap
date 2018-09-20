@@ -15,14 +15,15 @@ import gaia3d.domain.CacheName;
 import gaia3d.domain.CacheParams;
 import gaia3d.domain.CacheType;
 import gaia3d.domain.Policy;
+import gaia3d.service.PolicyService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 public class CacheConfig {
 
-//	@Autowired
-//	private PolicyService policyService;
+	@Autowired
+	private PolicyService policyService;
 
 	@PostConstruct
 	public void init() {
@@ -82,18 +83,18 @@ public class CacheConfig {
 	 * @param cacheParams
 	 */
 	private void policy(CacheParams cacheParams) {
-//		Policy policy = policyService.getPolicy();
-//		CacheManager.setPolicy(policy);
-//		
-//		CacheType cacheType = cacheParams.getCacheType();
-//		// 사용자 도메인 cache를 갱신
-//		if(cacheType == CacheType.USER || cacheType == CacheType.BROADCAST) {
-//			callRemoteCache(cacheParams);
-//		}
-//		// 이중화 도메인 사용자, 관리자 cache를 갱신
-//		if(cacheType == CacheType.BROADCAST) {
-//			
-//		}
+		Policy policy = policyService.getPolicy();
+		CacheManager.setPolicy(policy);
+		
+		CacheType cacheType = cacheParams.getCacheType();
+		// 사용자 도메인 cache를 갱신
+		if(cacheType == CacheType.USER || cacheType == CacheType.BROADCAST) {
+			callRemoteCache(cacheParams);
+		}
+		// 이중화 도메인 사용자, 관리자 cache를 갱신
+		if(cacheType == CacheType.BROADCAST) {
+			
+		}
 	}
 
 	/**

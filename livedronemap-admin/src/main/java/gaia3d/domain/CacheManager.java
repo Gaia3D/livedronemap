@@ -47,14 +47,6 @@ public class CacheManager {
 	// StandBy Server 상태( ON, OFF, BUSY )
 	private String standByServerStatus = null;
 	
-	// project list
-	private List<Project> projectList = null;
-	private Map<Long, Project> projectMap = null;
-	// 프로젝트별 데이터 목록
-	private Map<Long, List<DataInfo>> projectDataMap = null;
-	// 프로젝트별 데이터 목록, json 변환 속도를 줄이기 위해 중복 보관
-	private Map<Long, String> projectDataJsonMap = null;
-		
 	// 원격 캐시 목록
 	private List<ExternalService> remoteCacheServiceList = null;
 	
@@ -173,20 +165,6 @@ public class CacheManager {
 		cacheManager.menuUrlMap = menuUrlMap;
 	}
 	
-	public static List<Project> getProjectList() {
-		return cacheManager.projectList;
-	}
-	public static void setProjectList(List<Project> projectList) {
-		cacheManager.projectList = projectList;
-	}
-	
-	public static Map<Long, Project> getProjectMap() {
-		return cacheManager.projectMap;
-	}
-	public static void setProjectMap(Map<Long, Project> projectMap) {
-		cacheManager.projectMap = projectMap;
-	}
-
 	/**
 	 * 사용자 그룹별 메뉴 목록을 취득
 	 * @param userGroupId
@@ -263,28 +241,5 @@ public class CacheManager {
 
 	public static void setRemoteCacheServiceList(List<ExternalService> remoteCacheServiceList) {
 		cacheManager.remoteCacheServiceList = remoteCacheServiceList;
-	}
-	
-	/**
-	 * 프로젝트별 데이터 목록
-	 * @return
-	 */
-	public static Map<Long, List<DataInfo>> getProjectDataMap() {
-		return cacheManager.projectDataMap;
-	}
-	public static void setProjectDataMap(Map<Long, List<DataInfo>> projectDataMap) {
-		cacheManager.projectDataMap = projectDataMap;
-	}
-	public static List<DataInfo> getProjectDataList(Long projectId) {
-		return cacheManager.projectDataMap.get(projectId);
-	}
-	public static Map<Long, String> getProjectDataJsonMap() {
-		return cacheManager.projectDataJsonMap;
-	}
-	public static void setProjectDataJsonMap(Map<Long, String> projectDataJsonMap) {
-		cacheManager.projectDataJsonMap = projectDataJsonMap;
-	}
-	public static String getProjectDataJson(Long projectId) {
-		return cacheManager.projectDataJsonMap.get(projectId);
 	}
 }
