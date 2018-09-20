@@ -20,11 +20,6 @@ import lombok.ToString;
 public class Policy {
 	public static final String Y = "Y";
 	
-	// 서버 시간 설정 쉘
-	public static final String SERVER_DATE_SHELL = "config_date.sh";
-	// 서버 하드웨어 시간 설정 쉘
-	public static final String SERVER_DATE_HWCLOCK_SHELL = "config_date_hwclock.sh";
-	
 	// 사용자 논리적/물리적 삭제
 	public static final String LOGICAL_DELETE_USER = "0";
 	public static final String PHYSICAL_DELETE_USER = "1";
@@ -33,10 +28,6 @@ public class Policy {
 	public static final String SECURITY_SESSION_HIJACKING_NOT_USE = "0";
 	public static final String SECURITY_SESSION_HIJACKING_USE = "1";
 	public static final String SECURITY_SESSION_HIJACKING_OTP = "2";
-	
-	// 데이터 정보 변경 요청 자동 승인
-	public static final String DATA_CHANGE_REQUEST_DECISION_AUTO = "0";
-	public static final String DATA_CHANGE_REQUEST_DECISION_CONFIRM = "1";
 	
 	// Single Sign-On 사용 안함
 	public static final String SECURITY_SSO_USE_N = "0";
@@ -103,69 +94,6 @@ public class Policy {
 	// 패스워드로 사용할수 없는 특수문자(XSS). <,>,&,작은따음표,큰따움표
 	private String password_exception_char;
 	
-	// view library. 기본 cesium
-	private String geo_view_library;
-	// data 폴더. 기본 /data
-	private String geo_data_path;
-	// 초기 로딩 프로젝트
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
-	private String geo_data_default_projects;
-	private String geo_data_default_projects_view;
-	// 데이터 정보 변경 요청에 대한 처리. 0 : 자동승인, 1 : 결재(초기값)
-	private String geo_data_change_request_decision;
-	// cullFace 사용유무. 기본 false
-	private String geo_cull_face_enable;
-	// timeLine 사용유무. 기본 false
-	private String geo_time_line_enable;
-	
-	// 초기 카메라 이동 유무. 기본 true
-	private String geo_init_camera_enable;
-	// 초기 카메라 이동 위도
-	private String geo_init_latitude;
-	// 초기 카메라 이동 경도
-	private String geo_init_longitude;
-	// 초기 카메라 이동 높이
-	private String geo_init_height;
-	// 초기 카메라 이동 시간. 초 단위
-	private Long geo_init_duration;
-	// 기본 Terrain
-	private String geo_init_default_terrain;
-	// field of view. 기본값 0(1.8 적용)
-	private Long geo_init_default_fov;
-	
-	// LOD0. 기본값 15M
-	private String geo_lod0;
-	// LOD1. 기본값 60M
-	private String geo_lod1;
-	// LOD2. 기본값 900M
-	private String geo_lod2;
-	// LOD3. 기본값 200M
-	private String geo_lod3;
-	// LOD3. 기본값 1000M
-	private String geo_lod4;
-	// LOD3. 기본값 50000M
-	private String geo_lod5;
-	
-	// 다이렉트 빛이 아닌 반사율 범위. 기본값 0.5
-	private String geo_ambient_reflection_coef;
-	// 자기 색깔의 반사율 범위. 기본값 1.0
-	private String geo_diffuse_reflection_coef;
-	// 표면의 반질거림 범위. 기본값 1.0
-	private String geo_specular_reflection_coef;
-	// 다이렉트 빛이 아닌 반사율 RGB, 콤마로 연결
-	private String geo_ambient_color;
-	private String geo_ambient_colorR;
-	private String geo_ambient_colorG;
-	private String geo_ambient_colorB;
-	// 표면의 반질거림 색깔. RGB, 콤마로 연결
-	private String geo_specular_color;
-	private String geo_specular_colorR;
-	private String geo_specular_colorG;
-	private String geo_specular_colorB;
-	// 그림자 반경
-	private String geo_ssao_radius;
-	
 	// geo server 사용유무
 	private String geo_server_enable;
 	// geo server 기본 layers url
@@ -197,22 +125,8 @@ public class Policy {
 	// geo server 추가 layers format 변수값
 	private String geo_server_add_parameters_format;
 	
-	// 콜백 function 사용유무. 기본값 false
-	private String geo_callback_enable;
-	// api 처리 결과 callback function 이름
-	private String geo_callback_apiresult;
-	// data info 표시 callback function 이름
-	private String geo_callback_dataInfo;
-	// moved data callback function 이름
-	private String geo_callback_moveddata;
-	// object 선택 callback function 이름
-	private String geo_callback_selectedobject;
-	// issue 등록 callback function 이름
-	private String geo_callback_insertissue;
-	// issue list callback function 이름
-	private String geo_callback_listissue;
-	// mouse click 시 위치 정보 callback function 이름
-	private String geo_callback_clickposition;
+	// rest api 암호화 유무. Y : 사용(기본값), N : 사용안함
+	private String rest_api_encryption_yn;
 	
 	// 알림 서비스 사용 유무. Y : 사용, N : 미사용(기본값)
 	private String notice_service_yn;
@@ -333,19 +247,6 @@ public class Policy {
 	
 	// 등록일
 	private String insert_date;
-	
-	public String getGeo_data_default_projects() {
-		return geo_data_default_projects;
-	}
-
-	public void setGeo_data_default_projects(String geo_data_default_projects) {
-		this.geo_data_default_projects = geo_data_default_projects;
-		if(this.geo_data_default_projects != null && !("").equals(this.geo_data_default_projects)) {
-			this.geo_data_default_projects = this.geo_data_default_projects.replace("{", "");
-			this.geo_data_default_projects = this.geo_data_default_projects.replace("}", "");
-			this.geo_data_default_projects = this.geo_data_default_projects.replaceAll("\"", "");
-		}
-	}
 	
 	public String getViewSiteAdminMobilePhone() {
 		return Crypt.decrypt(site_admin_mobile_phone);

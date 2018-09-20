@@ -2,6 +2,7 @@ package gaia3d.api;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gaia3d.domain.APIHeader;
 import gaia3d.domain.APIResult;
+import gaia3d.domain.Policy;
+import gaia3d.service.PolicyService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -23,13 +26,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class AuthenticationAPIController implements APIController {
 
+	@Autowired
+	private PolicyService policyService;
+	
 	@PostMapping("token")
 	public ResponseEntity<APIResult> createToken(HttpServletRequest request) {
-		log.info("---- token create ----------------------------------------------------- ");
-		log.info("=============================== {}", request.getHeader("live_drone_map"));
 		APIResult aPIResult = new APIResult();
-		
 		try {
+			Policy policy = policyService.getPolicy();
 			APIHeader apiHeader = getHeader(log, request);
 			
 			log.info(" ************************* apiHeader {}", apiHeader);
