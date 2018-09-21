@@ -42,6 +42,9 @@ create table policy(
 	
 	rest_api_encryption_yn					char(1)				default 'Y',
 	
+	project_drone_expired_time				varchar(3)			default '90',
+	project_max_idle_time					varchar(2)			default '10',
+	
 	notice_service_yn						char(1)				default 'Y',
 	notice_service_send_type				char(1)				default '0',
 	notice_risk_yn							char(1)				default 'N',
@@ -143,6 +146,9 @@ comment on column policy.geoserver_data_workspace is 'geoserver 영상 데이터 작업
 comment on column policy.geoserver_data_format is 'geoserver 영상 데이터 요청 포맷';
 	
 comment on column policy.rest_api_encryption_yn is 'rest api 암호화 유무. Y : 사용(기본값), N : 사용안함';
+
+comment on column policy.project_drone_expired_time is '드론 유효 기간, 기본값 90(일)';
+comment on column policy.project_max_idle_time is '프로젝트 최대 대기 시간, 기본값 10시간';
 
 comment on column policy.notice_service_yn is '알림 서비스 사용 유무. Y : 사용, N : 사용안함(기본값)';
 comment on column policy.notice_service_send_type is '알림 발송 매체. 0 : SMS(기본값), 1 : 이메일, 2 : 메신저';
