@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.ClientMapper">
+
+	<!-- client 정보를 취득 -->
+	<select id="getClientByAPIKey" parameterType="string" resultType="client">
+		/* getClientByAPIKey */
+		SELECT * FROM client WHERE api_Key = #{api_Key}
+	</select>
+</mapper>

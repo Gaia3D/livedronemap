@@ -6,6 +6,7 @@ encoding//database/ddl/client.sql=MS949
 encoding//database/ddl/common_code.sql=MS949
 encoding//database/ddl/drone_project.sql=MS949
 encoding//database/ddl/individual_data_log.sql=MS949
+encoding//database/ddl/individual_orthophoto_log.sql=MS949
 encoding//database/ddl/menu.sql=MS949
 encoding//database/ddl/policy.sql=MS949
 encoding//database/ddl/postprocessing_data_log.sql=MS949

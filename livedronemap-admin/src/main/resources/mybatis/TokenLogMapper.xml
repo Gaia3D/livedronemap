@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.TokenLogMapper">
+
+	<!-- 토근 로그 취득 -->
+	<select id="getTokenLog" parameterType="tokenLog" resultType="tokenLog">
+		/* getTokenLog */
+		SELECT * FROM token_log WHERE token_log_id = #{token_log_id}
+	</select>
+	
+	<!-- 토근 이력 등록 -->
+	<insert id="insertTokenLog" parameterType="tokenLog" >
+		/* insertTokenLog */
+		<selectKey keyProperty="token_log_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('token_log_seq')
+  		</selectKey>
+		INSERT INTO token_log (
+			token_log_id, client_id, user_id, token
+		) VALUES (
+			#{token_log_id}, #{client_id}, #{user_id}, #{token}
+		)
+	</insert>
+</mapper>

@@ -11,7 +11,6 @@ import gaia3d.domain.CacheManager;
 import gaia3d.domain.Policy;
 import gaia3d.domain.UserInfo;
 import gaia3d.persistence.UserMapper;
-import gaia3d.service.SSOService;
 import gaia3d.service.UserDeviceService;
 import gaia3d.service.UserService;
 import gaia3d.util.StringUtil;
@@ -28,8 +27,6 @@ public class UserServiceImpl implements UserService {
 	private UserMapper userMapper;
 	@Autowired
 	private UserDeviceService userDeviceService;
-	@Autowired
-	private SSOService sSOService;
 	
 	/**
 	 * 사용자 수

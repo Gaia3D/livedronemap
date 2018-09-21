@@ -23,15 +23,4 @@ public class APIHeader implements Serializable {
 	private String role;
 	private String algorithm;
 	private String type;
-	
-	// http status
-	private int statusCode;
-	// validation code
-	private String validity;
-	// Exception
-	private String exception;
-	// detail message
-	private String message;
-	// result
-	private String result;
 }
