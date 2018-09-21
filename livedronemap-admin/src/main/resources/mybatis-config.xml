@@ -9,6 +9,7 @@
 	</settings>
 	
 	<typeAliases>
+		<typeAlias type="gaia3d.domain.APILog" alias="aPILog"/>
 		<typeAlias type="gaia3d.domain.Client" alias="client"/>
 		<typeAlias type="gaia3d.domain.Policy" alias="policy"/>
 		<typeAlias type="gaia3d.domain.Role" alias="role"/>

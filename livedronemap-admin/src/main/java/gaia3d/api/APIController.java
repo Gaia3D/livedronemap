@@ -9,13 +9,14 @@ import org.springframework.util.StringUtils;
 import gaia3d.domain.APIHeader;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.APIValidationType;
+import gaia3d.domain.Client;
 import gaia3d.domain.EncryptionStatus;
 import gaia3d.exception.CustomSecurityException;
 import gaia3d.security.AES128Cipher;
 
 public interface APIController {
 	
-	void insertLog();
+	void insertLog(HttpServletRequest request, Client client, APIResult aPIResult);
 
 	/**
 	 * 검증

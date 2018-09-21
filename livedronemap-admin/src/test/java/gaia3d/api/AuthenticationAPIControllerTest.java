@@ -10,7 +10,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import gaia3d.domain.APIHeader;
 import gaia3d.domain.APIResult;
 import gaia3d.security.AES128Cipher;
 import lombok.extern.slf4j.Slf4j;

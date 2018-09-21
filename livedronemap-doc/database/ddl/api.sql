@@ -8,84 +8,66 @@ create table api_log(
 	client_name					varchar(30),
 	client_ip					varchar(45),
 	user_id						varchar(32),
-	insert_date				timestamp 			with time zone			default now(),
+	url							varchar(256),
+	status_code					int,
+	message						varchar(256),
+	insert_date					timestamp 			with time zone			default now(),
 	constraint api_log_pk primary key (api_log_id)	
 );
 
 comment on table api_log is 'API 호출 이력';
 comment on column api_log.api_log_id is '고유키';
-comment on column api_log.service_code is 'API 코드';
-comment on column api_log.service_name is 'API 이름 ';
-comment on column api_log.client_ip is '서비스 제공을 요청한 Client IP';
-comment on column api_log.client_server_name is '서비스 제공을 요청한 서버명';
-comment on column api_log.api_key is 'API KEY';
-comment on column api_log.device_kind is '사용 매체( 0 : 웹, 1 : 기타)';
-comment on column api_log.request_type is '서비스 요청 타입. 인증 : ADMIN_PASSWORD, 테스트 : ADMIN_TEST, 로그인 : ADMIN_LOGIN, 테스트 : USER_TEST, 로그인 : USER_LOGIN, 외부 : API';
-comment on column api_log.user_id is '사용자 아이디';
-comment on column api_log.user_ip is '사용자 IP';
-comment on column api_log.data_count is '데이터 건수';
-comment on column api_log.data_delimiter is '데어터 구분자';
-comment on column api_log.phone is '전화번호';
-comment on column api_log.email is 'email';
-comment on column api_log.messanger is '메신저';
-comment on column api_log.field1 is '임시 필드1';
-comment on column api_log.field2 is '임시 필드2';
-comment on column api_log.field3 is '임시 필드3';
-comment on column api_log.field4 is '임시 필드4';
-comment on column api_log.field5 is '임시 필드5';
-comment on column api_log.success_yn is 'API 호출 성공 유무( Y : 성공, N : 실패 )';
-comment on column api_log.business_success_yn is '업무 예외 발생 유무(오류가 발생했지만 무시해도 되는 경우, Y : 성공, N : 실패)';
-comment on column api_log.result_message is '서비스 호출 메시지';
-comment on column api_log.business_result_message is '업무 호출 메시지';
-comment on column api_log.result_value1 is '결과 값1';
-comment on column api_log.result_value2 is '결과 값2';
-comment on column api_log.result_value3 is '결과 값3';
-comment on column api_log.result_value4 is '결과 값4';
-comment on column api_log.result_value5 is '결과 값5';
+comment on column api_log.client_id is 'client 고유키';
+comment on column api_log.client_name is 'client명(중복)';
+comment on column api_log.client_ip is 'client IP';
+comment on column api_log.user_id is 'user id';
+comment on column api_log.url is 'url';
+comment on column api_log.status_code is 'http status code';
+comment on column api_log.message is '상세 메시지';
 comment on column api_log.insert_date is '등록일';
 
 
 create table api_log_2018 (
-	check ( insert_date >= to_timestamp('20180101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20190101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20180101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20190101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2019 (
-	check ( insert_date >= to_timestamp('20190101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20200101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20190101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20200101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2020 (
-	check ( insert_date >= to_timestamp('20200101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20210101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20200101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20210101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2021 (
-	check ( insert_date >= to_timestamp('20210101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20220101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20210101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20220101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2022 (
-	check ( insert_date >= to_timestamp('20220101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20230101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20220101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20230101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2023 (
-	check ( insert_date >= to_timestamp('20230101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20240101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20230101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20240101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2024 (
-	check ( insert_date >= to_timestamp('20240101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20250101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20240101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20250101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2025 (
-	check ( insert_date >= to_timestamp('20250101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20260101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20250101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20260101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2026 (
-	check ( insert_date >= to_timestamp('20260101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20270101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20260101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20270101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2027 (
-	check ( insert_date >= to_timestamp('20270101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20280101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20270101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20280101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2028 (
-	check ( insert_date >= to_timestamp('20280101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20290101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20280101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20290101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2029 (
-	check ( insert_date >= to_timestamp('20290101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20300101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20290101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20300101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2030 (
-	check ( insert_date >= to_timestamp('20300101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20310101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20300101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20310101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 create table api_log_2031 (
-	check ( insert_date >= to_timestamp('20310101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date <= to_timestamp('20320101000000000000', 'YYYYMMDDHH24MISSUS') )
+	check ( insert_date >= to_timestamp('20310101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20320101000000000000', 'YYYYMMDDHH24MISSUS') )
 ) inherits (api_log);
 
 

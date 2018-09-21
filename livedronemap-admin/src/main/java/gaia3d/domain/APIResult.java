@@ -26,6 +26,8 @@ public class APIResult implements Serializable {
 	private String exception;
 	// detail message
 	private String message;
+	// token
+	private String token;
 	// result
 	private String result;
 }
