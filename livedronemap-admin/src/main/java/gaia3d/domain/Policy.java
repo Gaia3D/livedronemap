@@ -124,7 +124,7 @@ public class Policy {
 	// rest api 암호화 유무. Y : 사용(기본값), N : 사용안함
 	private String rest_api_encryption_yn;
 	// rest api 토큰 유효 기간. 기본 120(분)
-	private Integer rest_api_token_expired_time;
+	private Integer rest_api_token_max_age;
 	
 	// 프로젝트 드론 유효 기간. 기본 90일 
 	private String project_drone_expired_time;

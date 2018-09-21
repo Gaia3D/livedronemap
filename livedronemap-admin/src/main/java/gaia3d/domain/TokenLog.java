@@ -1,5 +1,7 @@
 package gaia3d.domain;
 
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -24,8 +26,10 @@ public class TokenLog {
 	private String token;
 	// 토큰 상태. 토큰 상태. 0 : 사용중, 1 : 시간만료
 	private String token_status;
+	// 토근 유효 시간
+	private Integer rest_api_token_max_age;
 	// 토큰 지속 시간. 240분(기본값)
-	private Integer token_duration;
+	private Date expires;
 	// 년
 	private String year;
 	// 월
