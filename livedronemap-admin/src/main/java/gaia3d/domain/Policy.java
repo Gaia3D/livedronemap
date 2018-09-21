@@ -94,52 +94,47 @@ public class Policy {
 	// 패스워드로 사용할수 없는 특수문자(XSS). <,>,&,작은따음표,큰따움표
 	private String password_exception_char;
 	
-	// geo server 사용유무
-	private String geo_server_enable;
-	// geo server 기본 layers url
-	private String geo_server_url;
-	// geo server 기본 layers
-	private String geo_server_layers;
-	// geo server 기본 layers service 변수값
-	private String geo_server_parameters_service;
-	// geo server 기본 layers version 변수값
-	private String geo_server_parameters_version;
-	// geo server 기본 layers request 변수값
-	private String geo_server_parameters_request;
-	// geo server 기본 layers transparent 변수값
-	private String geo_server_parameters_transparent;
-	// geo server 기본 layers format 변수값
-	private String geo_server_parameters_format;
-	// geo server 추가 layers url
-	private String geo_server_add_url;
-	// geo server 추가 layers layers
-	private String geo_server_add_layers;
-	// geo server 추가 layers service 변수값
-	private String geo_server_add_parameters_service;
-	// geo server 추가 layers version 변수값
-	private String geo_server_add_parameters_version;
-	// geo server 추가 layers request 변수값
-	private String geo_server_add_parameters_request;
-	// geo server 추가 layers transparent 변수값
-	private String geo_server_add_parameters_transparent;
-	// geo server 추가 layers format 변수값
-	private String geo_server_add_parameters_format;
+	// geoserver 사용유무. true : 사용(기본값), false : 미사용 
+	private String geoserver_enable;
+	// geoserver wms 버전. 기본 1.1.1
+	private String geoserver_wms_version;
+	// geoserver 배경지도 url
+	private String geoserver_backgroud_url;
+	// geoserver 배경지도 작업공간 
+	private String geoserver_backgroud_workspace;
+	// geoserver 배경지도 레이어 
+	private String geoserver_backgroud_layer;
+	// geoserver 배경지도 요청포
+	private String geoserver_backgroud_format;
+	// geoserver 지형 url
+	private String geoserver_terrain_url;
+	// geoserver 지형 작업공간 
+	private String geoserver_terrain_workspace;
+	// geoserver 지형 레이어 
+	private String geoserver_terrain_layer;
+	// geoserver 지형 요청 포
+	private String geoserver_terrain_format;
+	// geoserver 영상 데이터 url 
+	private String geoserver_data_url;
+	// geoserver 영상 데이터 작업공간 
+	private String geoserver_data_workspace;
+	// geoserver 영상 데이터 포맷 
+	private String geoserver_data_format;
 	
 	// rest api 암호화 유무. Y : 사용(기본값), N : 사용안함
 	private String rest_api_encryption_yn;
+	// rest api 토큰 유효 기간. 기본 120(분)
+	private Integer rest_api_token_expired_time;
+	
+	// 프로젝트 드론 유효 기간. 기본 90일 
+	private String project_drone_expired_time;
+	// 프로젝트 최대 대기 시간. 기본 10시간 
+	private String project_max_idle_time;
 	
 	// 알림 서비스 사용 유무. Y : 사용, N : 미사용(기본값)
 	private String notice_service_yn;
 	// 알림 발송 매체. 0 : SMS(기본값), 1 : 이메일, 2 : 메신저
 	private String notice_service_send_type;
-	// 알림 결재 요청/대기시. Y : 사용, N 미사용(기본값)
-	private String notice_approval_request_yn;
-	// 알림 결재 완료시. Y : 사용, N 미사용(기본값)
-	private String notice_approval_sign_yn;
-	// 알림 관리 계정 패스워드 변경시. Y : 사용, N 미사용(기본값)
-	private String notice_password_update_yn;
-	// 알림 결재 대기시. Y : 사용, N 미사용(기본값)
-	private String notice_approval_delay_yn;
 	// 알림 장애 발생시. Y : 사용, N 미사용(기본값)
 	private String notice_risk_yn;
 	// 알림 장애 발송 매체. 0 : SMS(기본값), 1 : 이메일, 2 : 메신저
@@ -186,12 +181,10 @@ public class Policy {
 	private String content_menu_group_root;
 	// 사용자 그룹 최상위 그룹명
 	private String content_user_group_root;
-	// 서버 그룹 최상위 그룹명
-	private String content_server_group_root;
-	// 계정 그룹 최상위 그룹명
-	private String content_data_group_root;
+	// 클라이언트 그룹 최상위 그룹명
+	private String content_client_group_root;
 	
-	// 업로딩 가능 확장자. 3ds,obj,ifc,dae 등
+	// 업로딩 가능 확장자. tif,tfw,png,pgw,jpg,jpeg,jgw 등
 	private String user_upload_type;
 	// 최대 업로딩 사이즈(단위M). 기본값 500M
 	private Long user_upload_max_filesize;
@@ -208,8 +201,8 @@ public class Policy {
 	private String site_admin_email;
 //	private MultipartFile uploadfile_top;
 //	private MultipartFile uploadfile_bottom;
-	private String uploadfile_top_value;
-	private String uploadfile_bottom_value;
+//	private String uploadfile_top_value;
+//	private String uploadfile_bottom_value;
 	private String site_product_log;
 	private String site_company_log;
 	

@@ -27,7 +27,7 @@ create table policy(
 	password_exception_char					varchar(10)			default '<>&',
 	
 	geoserver_enable						varchar(5)			default 'true',
-	geoserver_wms_version					varchar(5),
+	geoserver_wms_version					varchar(5),			default '1.1.1'
 	geoserver_backgroud_url					varchar(256),
 	geoserver_backgroud_workspace			varchar(60),
 	geoserver_backgroud_layer				varchar(60),
