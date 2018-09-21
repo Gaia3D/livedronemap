@@ -42,7 +42,6 @@ public class TokenLogServiceImpl implements TokenLogService {
 	 * @return
 	 */
 	private String generateToken() {
-		//return UUID.randomUUID().toString();
-		return Long.toString(System.nanoTime()).substring(4, 12);
+		return UUID.randomUUID().toString();
 	}
 }

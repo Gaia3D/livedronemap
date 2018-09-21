@@ -27,7 +27,7 @@ create table policy(
 	password_exception_char					varchar(10)			default '<>&',
 	
 	geoserver_enable						varchar(5)			default 'true',
-	geoserver_wms_version					varchar(5)			default '1.1.1',
+	geoserver_wms_version					varchar(5),			default '1.1.1'
 	geoserver_backgroud_url					varchar(256),
 	geoserver_backgroud_workspace			varchar(60),
 	geoserver_backgroud_layer				varchar(60),
@@ -41,7 +41,7 @@ create table policy(
 	geoserver_data_format					varchar(30),
 	
 	rest_api_encryption_yn					char(1)				default 'Y',
-	rest_api_token_max_age					int					default 120,
+	rest_api_token_expired_time				int					default 120
 	
 	project_drone_expired_time				varchar(3)			default '90',
 	project_max_idle_time					varchar(2)			default '10',
@@ -146,7 +146,7 @@ comment on column policy.geoserver_data_workspace is 'geoserver 영상 데이터 작업
 comment on column policy.geoserver_data_format is 'geoserver 영상 데이터 요청 포맷';
 	
 comment on column policy.rest_api_encryption_yn is 'rest api 암호화 유무. Y : 사용(기본값), N : 사용안함';
-comment on column policy.rest_api_token_max_age is 'rest api 토큰 유효 시간, 기본 120분';
+comment on column policy.rest_api_token_expired_time is 'rest api 토큰 유효 시간, 기본 120'
 
 comment on column policy.project_drone_expired_time is '드론 유효 기간, 기본값 90(일)';
 comment on column policy.project_max_idle_time is '프로젝트 최대 대기 시간, 기본값 10시간';
@@ -175,7 +175,7 @@ comment on column policy.content_main_widget_interval is '메인 화면 위젯 Refresh
 comment on column policy.content_statistics_interval is '통계 기본 검색 기간. 0 : 1년 단위, 1 : 상/하반기, 2 : 분기 단위, 3 : 월 단위';
 comment on column policy.content_menu_group_root is '메뉴 그룹 최상위 그룹명';
 comment on column policy.content_user_group_root is '사용자 그룹 최상위 그룹명';
-comment on column policy.content_client_group_root is '클라이언트 그룹 최상위 그룹명';
+comment on column policy.content_client_group_root is '클라이언트 그룹 최상위 그룹명'
 
 comment on column policy.user_upload_type is '업로딩 가능 확장자. tif,tfw,png,pgw,jpg,jpeg,jgw';
 comment on column policy.user_upload_max_filesize is '최대 업로딩 사이즈(단위M). 500M';

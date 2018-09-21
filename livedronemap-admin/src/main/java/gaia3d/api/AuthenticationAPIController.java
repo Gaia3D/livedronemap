@@ -94,7 +94,7 @@ public class AuthenticationAPIController implements APIController {
 			aPIResult = validate(APIValidationType.TOKEN, getHeader(policy.getRest_api_encryption_yn(), log, request));
 			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			
-			// token 유효성 검증
+			// token expires 갱신
 			client = clientService.getClientByAPIKey(aPIHeader.getApiKey());
 			if(client == null || client.getClient_id() == null) {
 				aPIResult.setStatusCode(HttpStatus.FORBIDDEN.value());
@@ -102,7 +102,7 @@ public class AuthenticationAPIController implements APIController {
 				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			}
 			
-			// token expires 갱신
+			// token 발행
 			TokenLog tokenLog = new TokenLog();
 			tokenLog.setClient_id(client.getClient_id());
 			tokenLogService.getToken(tokenLog);
