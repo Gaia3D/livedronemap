@@ -8,7 +8,7 @@ create table token_log (
 	user_id 						varchar(30), 
 	token							varchar(256),
 	token_status 					char(1) 					default '0',
-	token_duration 					int 						default 240,
+	expires 						timestamp with time zone,
 	year							char(4)						default to_char(now(), 'YYYY'),
 	month							varchar(2)					default to_char(now(), 'MM'),
 	day								varchar(2)					default to_char(now(), 'DD'),
@@ -28,7 +28,7 @@ comment on column token_log.client_id is 'client 고유키';
 comment on column token_log.user_id is '사용자 아이디';
 comment on column token_log.token is '토큰';
 comment on column token_log.token_status is '토큰 상태. 0 : 사용중, 1 : 시간만료';
-comment on column token_log.token_duration is '토큰 지속 시간. 240분 (기본값)';
+comment on column token_log.expires is '토큰 지속 시간. 240분 (기본값)';
 comment on column token_log.year is '년';
 comment on column token_log.month is '월';
 comment on column token_log.day is '일';

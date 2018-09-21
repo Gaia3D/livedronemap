@@ -16,9 +16,9 @@
     		SELECT NEXTVAL('token_log_seq')
   		</selectKey>
 		INSERT INTO token_log (
-			token_log_id, client_id, user_id, token
+			token_log_id, client_id, user_id, token, expires
 		) VALUES (
-			#{token_log_id}, #{client_id}, #{user_id}, #{token}
+			#{token_log_id}, #{client_id}, #{user_id}, #{token}, NOW() + INTERVAL '${rest_api_token_max_age} MINUTES'
 		)
 	</insert>
 </mapper>
