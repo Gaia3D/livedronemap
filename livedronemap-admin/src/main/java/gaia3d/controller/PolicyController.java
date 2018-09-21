@@ -45,7 +45,7 @@ public class PolicyController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value = "modify-policy.do")
+	@GetMapping(value = "modify-policy")
 	public String modifyPolicy(Model model) {
 		
 		Policy policy = policyService.getPolicy();
