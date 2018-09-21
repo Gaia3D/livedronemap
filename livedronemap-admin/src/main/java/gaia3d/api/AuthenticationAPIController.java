@@ -18,7 +18,7 @@ import gaia3d.domain.Client;
 import gaia3d.domain.Policy;
 import gaia3d.domain.TokenLog;
 import gaia3d.service.ClientService;
-import gaia3d.service.TokenLogService;
+import gaia3d.service.PolicyService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -33,8 +33,6 @@ public class AuthenticationAPIController implements APIController {
 
 	@Autowired
 	private ClientService clientService;
-	@Autowired
-	private TokenLogService tokenLogService;
 	
 	@PostMapping("token")
 	public ResponseEntity<APIResult> createToken(HttpServletRequest request) {
@@ -59,8 +57,8 @@ public class AuthenticationAPIController implements APIController {
 			// token 발행
 			TokenLog tokenLog = new TokenLog();
 			tokenLog.setClient_id(client.getClient_id());
-			tokenLogService.getToken(tokenLog);
 			
+			// 로그
 			try {
 				//aPIService.insertAPILog(aPILog);
 			} catch(Exception ex) {
