@@ -87,7 +87,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-user.do")
+	@PostMapping(value = "ajax-update-policy-user")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyUser(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -132,7 +132,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-password.do")
+	@PostMapping(value = "ajax-update-policy-password")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyPassword(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -182,7 +182,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-geoserver.do")
+	@PostMapping(value = "ajax-update-policy-geoserver")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyGeoServer(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -216,7 +216,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-rest-api.do")
+	@PostMapping(value = "ajax-update-policy-rest-api")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyRestAPI(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -250,7 +250,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-project.do")
+	@PostMapping(value = "ajax-update-policy-project")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyProject(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -284,7 +284,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-notice.do")
+	@PostMapping(value = "ajax-update-policy-notice")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyNotice(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -328,7 +328,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-security.do")
+	@PostMapping(value = "ajax-update-policy-security")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicySecurity(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -370,7 +370,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-content.do")
+	@PostMapping(value = "ajax-update-policy-content")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyContent(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -423,7 +423,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-userupload.do")
+	@PostMapping(value = "ajax-update-policy-userupload")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyUserUpload(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -460,7 +460,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-site.do")
+	@PostMapping(value = "ajax-update-policy-site")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicySite(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -505,7 +505,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-os.do")
+	@PostMapping(value = "ajax-update-policy-os")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyOs(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -568,7 +568,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-backoffice.do")
+	@PostMapping(value = "ajax-update-policy-backoffice")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyBackoffice(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -606,7 +606,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-solution.do")
+	@PostMapping(value = "ajax-update-policy-solution")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicySolution(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
