@@ -30,16 +30,16 @@
 		<h2>환경설정</h2>
 			<div class="tabs">
 				<ul>
-					<li><a href="#user_tab">사용자</a></li>
-					<li><a href="#password_tab">비밀번호</a></li>
-					<li><a href="#geoserver_tab">GeoServer</a></li>
-					<li><a href="#restapi_tab">RestAPI</a></li>
-					<li><a href="#project_tab">프로젝트</a></li>
-					<li><a href="#notice_tab">알림</a></li>
-					<li><a href="#security_tab">보안</a></li>
-					<li><a href="#userupload_tab">파일 전송</a></li>
-					<li><a href="#site_tab">사이트 정보</a></li>
-					<li><a href="#solution_tab">제품 정보</a></li>
+					<li><a href="#user_tab"><spring:message code='config.user.title'/></a></li>
+					<li><a href="#password_tab"><spring:message code='config.password.title'/></a></li>
+					<li><a href="#geoserver_tab"><spring:message code='config.geoserver.title'/></a></li>
+					<li><a href="#restapi_tab"><spring:message code='config.restapi.title'/></a></li>
+					<li><a href="#project_tab"><spring:message code='config.project.title'/></a></li>
+					<li><a href="#notice_tab"><spring:message code='config.notice.title'/></a></li>
+					<li><a href="#security_tab"><spring:message code='config.security.title'/></a></li>
+					<li><a href="#userupload_tab"><spring:message code='config.uplaod.title'/></a></li>
+					<li><a href="#site_tab"><spring:message code='config.site.title'/></a></li>
+					<li><a href="#solution_tab"><spring:message code='config.product.title'/></a></li>
 				</ul>
 				
 				<%@ include file="/WEB-INF/views/config/modify-policy-user.jsp" %>

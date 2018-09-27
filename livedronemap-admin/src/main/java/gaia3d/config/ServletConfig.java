@@ -5,6 +5,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
@@ -53,4 +55,19 @@ public class ServletConfig implements WebMvcConfigurer {
                 .paths(PathSelectors.regex("/api.*"))
                 .build();
     }
+    
+	@Bean
+	public ReloadableResourceBundleMessageSource messageSource(){
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:/messages/messages");
+		messageSource.setDefaultEncoding("UTF-8");
+		//messageSource.setCacheSeconds(messagesCacheSeconds);
+		return messageSource;
+	}
+
+	@Bean
+	public MessageSourceAccessor getMessageSourceAccessor(){
+		ReloadableResourceBundleMessageSource m = messageSource();
+		return new MessageSourceAccessor(m);
+	}
 }
