@@ -2,6 +2,7 @@ package gaia3d.api;
 
 import java.util.UUID;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AuthenticationAPIControllerTest {
 	
-	@Test
+	@Ignore
 	public void createTokenReturnTypeIsEntity() {
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://localhost/authentication/token";
@@ -31,7 +32,7 @@ public class AuthenticationAPIControllerTest {
 		log.info("body = {}", aPIResult.getBody());
 	}
 	
-	@Test
+	@Ignore
 	public void createTokenReturnTypeIsString() {
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://localhost/authentication/token";
@@ -39,7 +40,7 @@ public class AuthenticationAPIControllerTest {
 		log.info("result = {}", result);
 	}
 	
-	@Test
+	@Ignore
 	public void createTokenWithHeader() throws Exception {
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 		parameters.add("test", "1234");
