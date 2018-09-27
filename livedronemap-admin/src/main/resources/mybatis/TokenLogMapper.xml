@@ -9,10 +9,23 @@
 		SELECT * FROM token_log WHERE token_log_id = #{token_log_id}
 	</select>
 	
+	<!-- token validation -->
+	<select id="getValidToken" parameterType="tokenLog" resultType="tokenLog">
+		/* getValidToken */
+		SELECT A.*, B.client_name 
+		FROM token_log A, client B 
+		WHERE A.client_id = B.client_id
+			AND token = #{token}
+			AND token_status = '0'
+			<![CDATA[
+			AND expires > NOW()
+			]]>
+	</select>
+	
 	<!-- 토근 이력 등록 -->
 	<insert id="insertTokenLog" parameterType="tokenLog" >
 		/* insertTokenLog */
-		<selectKey keyProperty="token_log_id" resultType="int" order="BEFORE">
+		<selectKey keyProperty="token_log_id" resultType="long" order="BEFORE">
     		SELECT NEXTVAL('token_log_seq')
   		</selectKey>
 		INSERT INTO token_log (
@@ -21,4 +34,12 @@
 			#{token_log_id}, #{client_id}, #{user_id}, #{token}, NOW() + INTERVAL '${rest_api_token_max_age} MINUTES'
 		)
 	</insert>
+	
+	<!-- token expires update -->
+	<update id="updateTokenExpires" parameterType="tokenLog" >
+		/* insertTokenLog */
+		UPDATE token_log
+		SET expires = NOW() + INTERVAL '${rest_api_token_max_age} MINUTES'
+		WHERE token_log_id = #{token_log_id}
+	</update>
 </mapper>

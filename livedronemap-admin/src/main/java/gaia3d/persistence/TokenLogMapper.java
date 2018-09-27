@@ -19,9 +19,23 @@ public interface TokenLogMapper {
 	TokenLog getTokenLog(TokenLog tokenLog);
 	
 	/**
+	 * token validation
+	 * @param tokenLog
+	 * @return
+	 */
+	TokenLog getValidToken(TokenLog tokenLog);
+	
+	/**
 	 * 토근 이력 등록
 	 * @param tokenLog
 	 * @return
 	 */
-	TokenLog insertTokenLog(TokenLog tokenLog);
+	int insertTokenLog(TokenLog tokenLog);
+	
+	/**
+	 * token expires update
+	 * @param tokenLog
+	 * @return
+	 */
+	TokenLog updateTokenExpires(TokenLog tokenLog);
 }

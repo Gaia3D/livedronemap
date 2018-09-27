@@ -19,8 +19,8 @@ public class APILogServiceImpl implements APILogService {
 	 * @param aPILog
 	 * @return
 	 */
-	@Transactional(readOnly=true)
-	public APILog insertAPILog(APILog aPILog) {
+	@Transactional
+	public int insertAPILog(APILog aPILog) {
 		return aPILogMapper.insertAPILog(aPILog);
 	}
 }

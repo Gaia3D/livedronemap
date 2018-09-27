@@ -9,5 +9,5 @@ public interface APILogService {
 	 * @param aPILog
 	 * @return
 	 */
-	APILog insertAPILog(APILog aPILog);
+	int insertAPILog(APILog aPILog);
 }

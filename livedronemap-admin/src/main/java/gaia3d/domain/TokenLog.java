@@ -16,8 +16,12 @@ import lombok.ToString;
 @ToString
 public class TokenLog {
 
+	// 환경 설정 token 유효 시간
+	private Integer rest_api_token_max_age;
+	private String client_name;
+	
 	// 고유키
-	private Integer token_log_id;
+	private Long token_log_id;
 	// client 고유키
 	private Integer client_id;
 	// 사용자 아이디

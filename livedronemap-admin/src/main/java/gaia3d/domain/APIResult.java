@@ -21,11 +21,13 @@ public class APIResult implements Serializable {
 	// http status
 	private int statusCode;
 	// validation code
-	private String validity;
+	private String validationCode;
 	// Exception
 	private String exception;
 	// detail message
 	private String message;
+	// token
+	private Integer droneProjectId;
 	// token
 	private String token;
 	// result

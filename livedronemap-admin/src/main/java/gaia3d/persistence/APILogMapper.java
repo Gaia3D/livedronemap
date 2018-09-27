@@ -12,5 +12,5 @@ public interface APILogMapper {
 	 * @param aPILog
 	 * @return
 	 */
-	public APILog insertAPILog(APILog aPILog);
+	public int insertAPILog(APILog aPILog);
 }

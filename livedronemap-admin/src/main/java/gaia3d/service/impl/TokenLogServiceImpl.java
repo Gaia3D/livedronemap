@@ -1,7 +1,5 @@
 package gaia3d.service.impl;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +22,8 @@ public class TokenLogServiceImpl implements TokenLogService {
 	@Transactional
 	public TokenLog getToken(TokenLog tokenLog) {
 		tokenLog.setToken(generateToken());
-		return tokenLogMapper.insertTokenLog(tokenLog);
+		tokenLogMapper.insertTokenLog(tokenLog);
+		return tokenLog;
 	}
 	
 	/**
@@ -38,11 +37,31 @@ public class TokenLogServiceImpl implements TokenLogService {
 	}
 	
 	/**
+	 * token validation
+	 * @param tokenLog
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public TokenLog getValidToken(TokenLog tokenLog) {
+		return tokenLogMapper.getValidToken(tokenLog);
+	}
+	
+	/**
 	 * token 발행
 	 * @return
 	 */
 	private String generateToken() {
 		//return UUID.randomUUID().toString();
 		return Long.toString(System.nanoTime()).substring(4, 12);
+	}
+	
+	/**
+	 * token expires update
+	 * @param tokenLog
+	 * @return
+	 */
+	@Transactional
+	public TokenLog updateTokenExpires(TokenLog tokenLog) {
+		return tokenLogMapper.updateTokenExpires(tokenLog);
 	}
 }
