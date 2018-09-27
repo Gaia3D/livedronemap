@@ -6,7 +6,7 @@ create table api_log(
 	api_log_id					bigint,
 	client_id					int,
 	client_name					varchar(30),
-	client_ip					varchar(45),
+	request_ip					varchar(45),
 	user_id						varchar(32),
 	url							varchar(256),
 	status_code					int,
@@ -19,7 +19,7 @@ comment on table api_log is 'API 호출 이력';
 comment on column api_log.api_log_id is '고유키';
 comment on column api_log.client_id is 'client 고유키';
 comment on column api_log.client_name is 'client명(중복)';
-comment on column api_log.client_ip is 'client IP';
+comment on column api_log.request_ip is 'request IP';
 comment on column api_log.user_id is 'user id';
 comment on column api_log.url is 'url';
 comment on column api_log.status_code is 'http status code';

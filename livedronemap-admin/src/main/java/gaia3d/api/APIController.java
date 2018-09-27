@@ -16,7 +16,7 @@ import gaia3d.security.AES128Cipher;
 
 public interface APIController {
 	
-	void insertLog(HttpServletRequest request, Client client, APIResult aPIResult);
+	void insertLog(HttpServletRequest request, String userId, Client client, APIResult aPIResult);
 
 	/**
 	 * 검증

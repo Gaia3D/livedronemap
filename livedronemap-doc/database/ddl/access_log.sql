@@ -5,7 +5,7 @@ create table access_log(
 	access_log_id				bigint,
 	user_id						varchar(32)	 		not null,
 	user_name					varchar(64)			not null,
-	client_ip					varchar(45)			not null,
+	request_ip					varchar(45)			not null,
 	request_uri					varchar(256)		not null,
 	parameters					varchar(1000),
 	user_agent					varchar(256),
@@ -26,7 +26,7 @@ comment on table access_log is '서비스 요청 이력';
 comment on column access_log.access_log_id is '고유번호';
 comment on column access_log.user_id is '사용자 아이디';
 comment on column access_log.user_name is '사용자 이름';
-comment on column access_log.client_ip is '요청 IP';
+comment on column access_log.request_ip is '요청 IP';
 comment on column access_log.request_uri is 'URI';
 comment on column access_log.parameters is '요청 Paramter';
 comment on column access_log.user_agent is 'User-Agent';

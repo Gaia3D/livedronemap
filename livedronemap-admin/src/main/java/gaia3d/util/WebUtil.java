@@ -96,7 +96,7 @@ public class WebUtil {
 	 * @param request
 	 * @return
 	 */
-	public static String getClientIp(HttpServletRequest request) {
+	public static String getRequestIp(HttpServletRequest request) {
 		
 		String ip = request.getHeader("HTTP_X_FORWARDED_FOR");
 		

@@ -168,7 +168,7 @@ public class LoginController {
 		// 암호화를 위한 키 삭제
 		request.getSession().removeAttribute(SessionKey.SESSION_TOKEN_AES_KEY.name());
 		
-		userSession.setLogin_ip(WebUtil.getClientIp(request));
+		userSession.setLogin_ip(WebUtil.getRequestIp(request));
 		Gaia3dHttpSessionBindingListener sessionListener = new Gaia3dHttpSessionBindingListener();
 		request.getSession().setAttribute(UserSession.KEY, userSession);
 		request.getSession().setAttribute(userSession.getUser_id(), sessionListener);

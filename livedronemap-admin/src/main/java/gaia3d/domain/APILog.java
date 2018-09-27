@@ -15,8 +15,8 @@ public class APILog {
 	private Integer client_id;
 	// client 명(중복 허용)
 	private String client_name;
-	// client ip
-	private String client_ip;
+	// request ip
+	private String request_ip;
 	// 사용자 아이디
 	private String user_id;
 	// url

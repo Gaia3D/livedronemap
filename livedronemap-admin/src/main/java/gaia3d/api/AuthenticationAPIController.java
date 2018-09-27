@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.WebUtils;
 
 import gaia3d.domain.APIHeader;
 import gaia3d.domain.APILog;
@@ -21,6 +22,7 @@ import gaia3d.domain.TokenLog;
 import gaia3d.service.APILogService;
 import gaia3d.service.ClientService;
 import gaia3d.service.TokenLogService;
+import gaia3d.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,6 +42,11 @@ public class AuthenticationAPIController implements APIController {
 	@Autowired
 	private TokenLogService tokenLogService;
 	
+	/**
+	 * token create request
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("token")
 	public ResponseEntity<APIResult> createToken(HttpServletRequest request) {
 		log.info("@@@@@@@@@@ createToken api call");
@@ -75,12 +82,17 @@ public class AuthenticationAPIController implements APIController {
 			aPIResult.setStatusCode(httpStatus.value());
 			aPIResult.setException(e.getMessage());
 		} finally {
-			insertLog(request, client, aPIResult);
+			insertLog(request, null, client, aPIResult);
 		}
 		
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
+	/**
+	 * new token request
+	 * @param request
+	 * @return
+	 */
 	@PutMapping("refreshToken")
 	public ResponseEntity<APIResult> refreshToken(HttpServletRequest request) {
 		log.info("@@@@@@@@@@ refreshToken api call");
@@ -88,46 +100,46 @@ public class AuthenticationAPIController implements APIController {
 		APIResult aPIResult = null;
 		HttpStatus httpStatus = null;
 		Policy policy = CacheManager.getPolicy();
-		Client client = null;
-		try {
-			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, request);
-			aPIResult = validate(APIValidationType.TOKEN, getHeader(policy.getRest_api_encryption_yn(), log, request));
-			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
-			
-			// token expires 갱신
-			client = clientService.getClientByAPIKey(aPIHeader.getApiKey());
-			if(client == null || client.getClient_id() == null) {
-				aPIResult.setStatusCode(HttpStatus.FORBIDDEN.value());
-				aPIResult.setMessage("Unregistered client");
-				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
-			}
-			
-			// token 발행
-			TokenLog tokenLog = new TokenLog();
-			tokenLog.setClient_id(client.getClient_id());
-			tokenLogService.getToken(tokenLog);
-
-			httpStatus = HttpStatus.OK;
-			aPIResult.setStatusCode(httpStatus.value());
-		} catch(Exception e) {
-			e.printStackTrace();
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			aPIResult.setStatusCode(httpStatus.value());
-			aPIResult.setException(e.getMessage());
-		} finally {
-			insertLog(request, client, aPIResult);
-		}
+		TokenLog tokenLog = null;
+//		try {
+//			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, request);
+//			aPIResult = validate(APIValidationType.TOKEN, getHeader(policy.getRest_api_encryption_yn(), log, request));
+//			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
+//			
+//			// token expires 갱신
+//			tokenLog = tokenLogService.getvalid
+//			if(client == null || client.getClient_id() == null) {
+//				aPIResult.setStatusCode(HttpStatus.FORBIDDEN.value());
+//				aPIResult.setMessage("Unregistered client");
+//				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
+//			}
+//			
+//			// token 발행
+//			TokenLog tokenLog = new TokenLog();
+//			tokenLog.setClient_id(client.getClient_id());
+//			tokenLogService.getToken(tokenLog);
+//
+//			httpStatus = HttpStatus.OK;
+//			aPIResult.setStatusCode(httpStatus.value());
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+//			aPIResult.setStatusCode(httpStatus.value());
+//			aPIResult.setException(e.getMessage());
+//		} finally {
+//			insertLog(request, null, client, aPIResult);
+//		}
 		
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
-	public void insertLog(HttpServletRequest request, Client client, APIResult aPIResult) {
+	public void insertLog(HttpServletRequest request, String user_id, Client client, APIResult aPIResult) {
 		try {
 			APILog aPILog = new APILog();
 			aPILog.setClient_id(client.getClient_id());
 			aPILog.setClient_name(client.getClient_name());
-			aPILog.setClient_ip(client.getClient_ip());
-			aPILog.setUser_id(null);
+			aPILog.setRequest_ip(WebUtil.getRequestIp(request));
+			aPILog.setUser_id(user_id);
 			aPILog.setUrl(request.getRequestURL().toString());
 			aPILog.setStatus_code(aPIResult.getStatusCode());
 			aPILog.setMessage(aPIResult.getMessage());
