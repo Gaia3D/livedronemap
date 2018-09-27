@@ -159,7 +159,6 @@
 	
 	<div id="mapWrap" >
 		<div class="ctrlBtn">
-			<button type="button" class="divide on" title="화면분할">화면분할</button><!-- 프로젝트 상세화면일때 보여짐-->
 			<button type="button" class="fullscreen" title="전체화면">전체화면</button>
 		</div>
 		
@@ -174,51 +173,48 @@
 		</div>
 	</div>
 	<!-- E: MAPWRAP -->
-	
-<!--  	<div id="viewWrap" style="width: 700px; display: none;">
-		<div class="ctrlBtn">
-			<button type="button" class="connect on" title="동기화">동기화</button>
-		</div>
-		<div class="zoom">
-			<button type="button" class="zoomin">확대</button>
-			<button type="button"  class="zoomout">축소</button>
-		</div>
-	</div> -->
-	<!-- E: VIEWWRAP -->
 </div>
-<!-- E: warp -->
+<!-- E: wrap -->
 
 <script>
 	// resize
 	function mapWrapResize() {
 		var mapWrap = document.getElementById('mapWrap');
-		mapWrap.style.width = window.innerWidth - 410 + 'px';
+		var Wrap =  document.getElementById('wrap');
+		mapWrap.style.width = window.innerWidth - 391 + 'px'; // 전체 윈도우 - nav - subWrap
+		Wrap.style.height = window.innerHeight - 50 + 'px'; // 전체 인도우 - header
     }
 	mapWrapResize();
 	// 브라우저 크기가 변할 시 동적으로 사이즈를 조절해야 하는경우
 	window.addEventListener('resize', mapWrapResize);
 	
 	// mago3D
-	
     var options = {homeButton: false, infoBox: false, sceneModePicker: false, baseLayerPicker: true, geocoder: false, navigationHelpButton: false};
 	var viewer = new Cesium.Viewer('mapWrap', options);
-	
-	var rectangel_outline = new Cesium.RectangleOutlineGeometry({
-		  ellipsoid : Cesium.Ellipsoid.WGS84,
-		  rectangle : Cesium.Rectangle.fromDegrees(125.300158, 34.051440,125.445078, 34.159441),
-		});
-	var geometry = Cesium.RectangleOutlineGeometry.createGeometry(rectangel_outline);
 	
 	var rect = viewer.entities.add({
 			rectangle : {
 	        coordinates : Cesium.Rectangle.fromDegrees(125.300158, 34.051440,125.445078, 34.159441),
-//	        material : Cesium.Color.RED.withAlpha(0.5),
 			material : Cesium.Color.TRANSPARENT,
 	        outline : true,
-	        outlineColor : Cesium.Color.BLACK
+	        outlineWidth : 1000,
+	        outlineColor : Cesium.Color.RED,
+	        height : 20
 	    }
-	});
-	viewer.zoomTo(viewer.rect);
+	});	
+	viewer.zoomTo(rect);
+	
+	viewer.entities.add({
+		rectangle : {
+        coordinates : Cesium.Rectangle.fromDegrees(125.300158, 34.051440,125.445078, 34.159441),
+		material : Cesium.Color.TRANSPARENT,
+        outline : true,
+        outlineWidth : 1000,
+        outlineColor : Cesium.Color.RED,
+        height : 20
+    }
+});	
+viewer.zoomTo(rect);
 
 	var managerFactory = null;
 	var insertIssueEnable = false;
@@ -229,9 +225,6 @@
 	var intervalCount = 0;
 	var timerId = setInterval("startMogoUI()", 1000);
 	
-
-
-
 	function startMogoUI() {
 		intervalCount++;
 		if(managerFactory != null && managerFactory.getMagoManagerState() === CODE.magoManagerState.READY) {
