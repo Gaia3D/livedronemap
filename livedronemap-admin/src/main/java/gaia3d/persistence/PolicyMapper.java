@@ -47,6 +47,13 @@ public interface PolicyMapper {
 	int updatePolicyRestAPI(Policy policy);
 	
 	/**
+	 * project 수정
+	 * @param policy
+	 * @return
+	 */
+	int updatePolicyProject(Policy policy);
+	
+	/**
 	 * 운영 정책 알림 수정
 	 * @param policy
 	 * @return

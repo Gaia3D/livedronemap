@@ -44,6 +44,13 @@ public interface PolicyService {
 	int updatePolicyRestAPI(Policy policy);
 	
 	/**
+	 * Project 수정
+	 * @param policy
+	 * @return
+	 */
+	int updatePolicyProject(Policy policy);
+	
+	/**
 	 * 운영 정책 알림 수정
 	 * @param policy
 	 * @return

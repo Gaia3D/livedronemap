@@ -70,6 +70,16 @@ public class PolicyServiceImpl implements PolicyService {
 	}
 	
 	/**
+	 * project 수정
+	 * @param policy
+	 * @return
+	 */
+	@Transactional
+	public int updatePolicyProject(Policy policy) {
+		return policyMapper.updatePolicyProject(policy);
+	}
+	
+	/**
 	 * 운영 정책 알림 수정
 	 * @param policy
 	 * @return

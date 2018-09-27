@@ -224,12 +224,46 @@ public class PolicyController {
 		try {
 			log.info("@@ policy = {} ", policy);
 			if(policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0) {
-				result = "policy.geo.invalid";
+				result = "policy.restapi.invalid";
 				map.put("result", result);
 				return map;
 			}
 			
 			policyService.updatePolicyRestAPI(policy);
+			
+			CacheParams cacheParams = new CacheParams();
+			cacheParams.setCacheName(CacheName.POLICY);
+			cacheParams.setCacheType(CacheType.BROADCAST);
+			cacheConfig.loadCache(cacheParams);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+	
+		map.put("result", result);
+		return map;
+	}
+	
+	/**
+	 * project
+	 * @param request
+	 * @param policy
+	 * @return
+	 */
+	@PostMapping(value = "ajax-update-policy-project.do")
+	@ResponseBody
+	public Map<String, String> ajaxUpdatePolicyProject(HttpServletRequest request, Policy policy) {
+		Map<String, String> map = new HashMap<>();
+		String result = "success";
+		try {
+			log.info("@@ policy = {} ", policy);
+			if(policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0) {
+				result = "policy.project.invalid";
+				map.put("result", result);
+				return map;
+			}
+			
+			policyService.updatePolicyProject(policy);
 			
 			CacheParams cacheParams = new CacheParams();
 			cacheParams.setCacheName(CacheName.POLICY);
