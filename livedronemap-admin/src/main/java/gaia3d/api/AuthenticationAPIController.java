@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.util.WebUtils;
 
 import gaia3d.domain.APIHeader;
-import gaia3d.domain.APILog;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.APIValidationType;
 import gaia3d.domain.CacheManager;
@@ -22,11 +20,12 @@ import gaia3d.domain.TokenLog;
 import gaia3d.service.APILogService;
 import gaia3d.service.ClientService;
 import gaia3d.service.TokenLogService;
-import gaia3d.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * rest api authentication
+ * TODO client_id 를 받어서 url 패턴을 /tokens/{client_id} 형태로 가져가야 하나 고민중...
+ * 
  * @author Cheon JeongDae
  *
  */
@@ -47,7 +46,7 @@ public class AuthenticationAPIController implements APIController {
 	 * @param request
 	 * @return
 	 */
-	@PostMapping("token")
+	@PostMapping("tokens")
 	public ResponseEntity<APIResult> createToken(HttpServletRequest request) {
 		log.info("@@@@@@@@@@ createToken api call");
 		
@@ -55,21 +54,30 @@ public class AuthenticationAPIController implements APIController {
 		HttpStatus httpStatus = null;
 		Policy policy = CacheManager.getPolicy();
 		Client client = null;
+		Integer clientId = null;
+		String clientName = null;
 		try {
 			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, request);
-			aPIResult = validate(APIValidationType.AUTHETICATION, getHeader(policy.getRest_api_encryption_yn(), log, request));
-			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
+			aPIResult = validate(log, APIValidationType.AUTHETICATION, aPIHeader);
+			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) {
+				log.info("@@ Unregistered client");
+				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
+			}
 			
 			// api key 조회
 			client = clientService.getClientByAPIKey(aPIHeader.getApiKey());
 			if(client == null || client.getClient_id() == null) {
 				aPIResult.setStatusCode(HttpStatus.FORBIDDEN.value());
 				aPIResult.setMessage("Unregistered client");
+				log.info("@@ Unregistered client");
 				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			}
+			clientId = client.getClient_id();
+			clientName = client.getClient_name();
 			
 			// token 발행
 			TokenLog tokenLog = new TokenLog();
+			tokenLog.setRest_api_token_max_age(policy.getRest_api_token_max_age());
 			tokenLog.setClient_id(client.getClient_id());
 			tokenLogService.getToken(tokenLog);
 			
@@ -82,7 +90,7 @@ public class AuthenticationAPIController implements APIController {
 			aPIResult.setStatusCode(httpStatus.value());
 			aPIResult.setException(e.getMessage());
 		} finally {
-			insertLog(request, null, client, aPIResult);
+			insertLog(aPILogService, request, null, clientId, clientName, aPIResult);
 		}
 		
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
@@ -100,53 +108,43 @@ public class AuthenticationAPIController implements APIController {
 		APIResult aPIResult = null;
 		HttpStatus httpStatus = null;
 		Policy policy = CacheManager.getPolicy();
-		TokenLog tokenLog = null;
-//		try {
-//			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, request);
-//			aPIResult = validate(APIValidationType.TOKEN, getHeader(policy.getRest_api_encryption_yn(), log, request));
-//			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
-//			
-//			// token expires 갱신
-//			tokenLog = tokenLogService.getvalid
-//			if(client == null || client.getClient_id() == null) {
-//				aPIResult.setStatusCode(HttpStatus.FORBIDDEN.value());
-//				aPIResult.setMessage("Unregistered client");
-//				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
-//			}
-//			
-//			// token 발행
-//			TokenLog tokenLog = new TokenLog();
-//			tokenLog.setClient_id(client.getClient_id());
-//			tokenLogService.getToken(tokenLog);
-//
-//			httpStatus = HttpStatus.OK;
-//			aPIResult.setStatusCode(httpStatus.value());
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-//			aPIResult.setStatusCode(httpStatus.value());
-//			aPIResult.setException(e.getMessage());
-//		} finally {
-//			insertLog(request, null, client, aPIResult);
-//		}
+		TokenLog tokenLog = new TokenLog();
+		Integer clientId = null;
+		String clientName = null;
+		try {
+			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, request);
+			aPIResult = validate(log, APIValidationType.TOKEN, aPIHeader);
+			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
+			
+			// token expires 갱신
+			tokenLog.setToken(aPIHeader.getToken());
+			//tokenLog.setRest_api_token_max_age(policy.getRest_api_token_max_age());
+			tokenLog = tokenLogService.getValidToken(tokenLog);
+			if(tokenLog == null) {
+				aPIResult.setStatusCode(HttpStatus.OK.value());
+				aPIResult.setValidationCode("token.expires.invalid");
+				aPIResult.setMessage("token The validity period has expired.");
+				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
+			}
+			clientId = tokenLog.getClient_id();
+			clientName = tokenLog.getClient_name();
+			
+			// token expires 갱신
+			tokenLog.setRest_api_token_max_age(policy.getRest_api_token_max_age());
+			tokenLogService.updateTokenExpires(tokenLog);
+
+			httpStatus = HttpStatus.OK;
+			aPIResult.setStatusCode(httpStatus.value());
+		} catch(Exception e) {
+			e.printStackTrace();
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			aPIResult.setStatusCode(httpStatus.value());
+			aPIResult.setException(e.getMessage());
+		} finally {
+			insertLog(aPILogService, request, null, clientId, clientName, aPIResult);
+		}
 		
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
-	public void insertLog(HttpServletRequest request, String user_id, Client client, APIResult aPIResult) {
-		try {
-			APILog aPILog = new APILog();
-			aPILog.setClient_id(client.getClient_id());
-			aPILog.setClient_name(client.getClient_name());
-			aPILog.setRequest_ip(WebUtil.getRequestIp(request));
-			aPILog.setUser_id(user_id);
-			aPILog.setUrl(request.getRequestURL().toString());
-			aPILog.setStatus_code(aPIResult.getStatusCode());
-			aPILog.setMessage(aPIResult.getMessage());
-			aPILogService.insertAPILog(aPILog);
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			log.error("@@@@@@@@ API 이력 저장 중 오류가 발생했지만... 무시");
-		}
-	}
 }

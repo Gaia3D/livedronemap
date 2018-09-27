@@ -4,15 +4,15 @@
 <mapper namespace="gaia3d.persistence.APILogMapper">
 
 	<!-- api log 등록 -->
-	<insert id="insertAPILog" parameterType="APILog" >
+	<insert id="insertAPILog" parameterType="aPILog" >
 		/* insertAPILog */
-		<selectKey keyProperty="api_log_id" resultType="int" order="BEFORE">
+		<selectKey keyProperty="api_log_id" resultType="long" order="BEFORE">
     		SELECT NEXTVAL('api_log_seq')
   		</selectKey>
 		INSERT INTO api_log (
-			api_log_id, client_id, client_name, client_ip, user_id, url, status_code, message
+			api_log_id, client_id, client_name, request_ip, user_id, url, status_code, message
 		) VALUES (
-			#{api_log_id}, #{client_id}, #{client_name}, #{client_ip}, #{user_id}, #{url}, #{status_code}, #{message}
+			#{api_log_id}, #{client_id}, #{client_name}, #{request_ip}, #{user_id}, #{url}, #{status_code}, #{message}
 		)
 	</insert>
 </mapper>

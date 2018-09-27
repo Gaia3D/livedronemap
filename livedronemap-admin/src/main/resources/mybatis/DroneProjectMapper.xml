@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.DroneProjectMapper">
+
+	<!-- drone project 등록 -->
+	<insert id="insertDroneProject" parameterType="droneProject" >
+		/* insertDroneProject */
+		<selectKey keyProperty="drone_project_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('drone_project_seq')
+  		</selectKey>
+		INSERT INTO drone_project (
+			drone_project_id, drone_id, drone_project_name, shooting_area,
+			shooting_latitude1, shooting_longitude1, shooting_latitude2, shooting_longitude2, 
+			shooting_latitude3, shooting_longitude3, shooting_latitude4, shooting_longitude4,
+			location, shooting_date, description 
+		) VALUES (
+			#{drone_project_id}, #{drone_id}, #{drone_project_name}, #{shooting_area},
+			#{shooting_latitude1}, #{shooting_longitude1}, #{shooting_latitude2}, #{shooting_longitude2}, 
+			#{shooting_latitude3}, #{shooting_longitude3}, #{shooting_latitude4}, #{shooting_longitude4},
+			#{location}, #{shooting_date}, #{description} 
+		)
+	</insert>
+</mapper>

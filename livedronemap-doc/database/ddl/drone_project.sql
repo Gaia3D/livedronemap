@@ -1,4 +1,4 @@
-drop table if exists dorne cascade;
+drop table if exists drone cascade;
 drop table if exists drone_project cascade;
 
 
