@@ -6,9 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gaia3d.domain.APILog;
 import gaia3d.persistence.APILogMapper;
+import gaia3d.service.APILogService;
 
 @Service
-public class APILogServiceImpl {
+public class APILogServiceImpl implements APILogService {
 
 	@Autowired
 	private APILogMapper aPILogMapper;
