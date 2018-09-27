@@ -23,10 +23,9 @@ public class ImageConverterServiceImpl implements ImageConverterService {
 	
 	@Override
 	public void createConvertedImage(ImageInfo imageInfo) {
-		String imagePath = imageInfo.getImagePath();
-		log.info("Start converting : {}", imagePath);
+		log.info("Start converting : {}", imageInfo.getImagePath());
 		
-		Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, imagePath);
+		Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 	}

@@ -12,6 +12,7 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 
 import gaia3d.config.GdalConfig;
+import gaia3d.persistence.ImageInfo;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -25,17 +26,17 @@ public class ImageConvertUtil implements Runnable {
 	
 	private GdalConfig gdalConfig;
 	
-	private String originImage;
+	private ImageInfo imageInfo;
 	
 	// TODO 이렇게 하는게 맞나 .. ?!
-	public ImageConvertUtil(GdalConfig gdalConfig, String originImage) {
+	public ImageConvertUtil(GdalConfig gdalConfig, ImageInfo imageInfo) {
 		this.gdalConfig = gdalConfig;
-		this.originImage = originImage;
+		this.imageInfo = imageInfo;
 	}
 	
 	@Override
 	public void run() {
-		String soureceImage = originImage;
+		String soureceImage = imageInfo.getImagePath();
 		String soureceName = FilenameUtils.getBaseName(soureceImage);
 		
 		try {
@@ -46,9 +47,20 @@ public class ImageConvertUtil implements Runnable {
 			
 			// TODO 중간 결과 이미지 삭제 
 			
+			// 최종 결과물 이동
 			Path completeFilePath = Paths.get(soureceImage);
 			Path resultFilePath = Paths.get(gdalConfig.getGdalResultPath());
+			resultFilePath = resultFilePath.resolve(String.valueOf(imageInfo.getProjectId()));
+			
+			File resultFile = resultFilePath.toFile();
+			if (!resultFile.exists()) {
+				resultFile.mkdirs();
+			}
+			
 			Files.move(completeFilePath , resultFilePath.resolve(String.format("%s.tif", soureceName)));
+			
+			// Geoserver 영상 등록 호출 
+			
 			
 		} catch (InterruptedException | IOException e) {
 			// TODO 결과 저장하는 API 호출 

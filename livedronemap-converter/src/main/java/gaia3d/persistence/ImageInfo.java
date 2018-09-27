@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 public class ImageInfo {
 		
-	private int projectId;
+	private Integer projectId;
 	
-	private int transferDataId;
+	private Integer imageId;
 	
 	private String imagePath;
 	
