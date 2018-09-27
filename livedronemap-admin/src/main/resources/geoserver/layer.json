@@ -1,0 +1,226 @@
+{
+    "coverage": {
+        "name": "livedronemap_{project_id}}",
+        "nativeName": "livedronemap",
+        "nativeCRS": "EPSG:4326",
+        "srs": "EPSG:4326",
+        "nativeBoundingBox": {
+            "minx": -180,
+            "maxx": 180,
+            "miny": -90,
+            "maxy": 90,
+            "crs": "EPSG:4326"
+        },
+        "latLonBoundingBox": {
+            "minx": -180,
+            "maxx": 180,
+            "miny": -90,
+            "maxy": 90,
+            "crs": "EPSG:4326"
+        },
+        "projectionPolicy": "NONE",
+        "enabled": true,
+        "metadata": {
+            "entry": [
+                {
+                    "@key": "time",
+                    "dimensionInfo": {
+                        "enabled": true,
+                        "presentation": "LIST",
+                        "defaultValue": {
+                            "strategy": "MAXIMUM"
+                        }
+                    }
+                }
+            ]
+        },
+        "nativeFormat": "ImageMosaic",
+        "supportedFormats": {
+            "string": [
+                "GIF",
+                "PNG",
+                "JPEG",
+                "TIFF",
+                "ArcGrid",
+                "GEOTIFF",
+                "Gtopo30",
+                "ImageMosaic"
+            ]
+        },
+        "interpolationMethods": {
+            "string": [
+                "nearest neighbor",
+                "bilinear",
+                "bicubic"
+            ]
+        },
+        "defaultInterpolationMethod": "nearest neighbor",
+        "dimensions": {
+            "coverageDimension": [
+                {
+                    "name": "RED_BAND",
+                    "description": "GridSampleDimension[0.0,0.0]",
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    },
+                    "nullValues": {
+                        "double": [
+                            0
+                        ]
+                    },
+                    "unit": "W.m-2.Sr-1",
+                    "dimensionType": {
+                        "name": "UNSIGNED_8BITS"
+                    }
+                },
+                {
+                    "name": "GREEN_BAND",
+                    "description": "GridSampleDimension[0.0,0.0]",
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    },
+                    "nullValues": {
+                        "double": [
+                            0
+                        ]
+                    },
+                    "unit": "W.m-2.Sr-1",
+                    "dimensionType": {
+                        "name": "UNSIGNED_8BITS"
+                    }
+                },
+                {
+                    "name": "BLUE_BAND",
+                    "description": "GridSampleDimension[0.0,0.0]",
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    },
+                    "nullValues": {
+                        "double": [
+                            0
+                        ]
+                    },
+                    "unit": "W.m-2.Sr-1",
+                    "dimensionType": {
+                        "name": "UNSIGNED_8BITS"
+                    }
+                },
+                {
+                    "name": "ALPHA_BAND",
+                    "description": "GridSampleDimension[0.0,0.0]",
+                    "range": {
+                        "min": 0,
+                        "max": 0
+                    },
+                    "nullValues": {
+                        "double": [
+                            0
+                        ]
+                    },
+                    "dimensionType": {
+                        "name": "UNSIGNED_8BITS"
+                    }
+                }
+            ]
+        },
+        "requestSRS": {
+            "string": [
+                "EPSG:4326"
+            ]
+        },
+        "responseSRS": {
+            "string": [
+                "EPSG:4326"
+            ]
+        },
+        "parameters": {
+            "entry": [
+                {
+                    "string": "BackgroundValues",
+                    "null": ""
+                },
+                {
+                    "string": [
+                        "OVERVIEW_POLICY",
+                        "QUALITY"
+                    ]
+                },
+                {
+                    "string": [
+                        "MergeBehavior",
+                        "FLAT"
+                    ]
+                },
+                {
+                    "string": [
+                        "AllowMultithreading",
+                        false
+                    ]
+                },
+                {
+                    "string": [
+                        "MaxAllowedTiles",
+                        -1
+                    ]
+                },
+                {
+                    "string": [
+                        "ExcessGranuleRemoval",
+                        "NONE"
+                    ]
+                },
+                {
+                    "string": "OutputTransparentColor",
+                    "null": ""
+                },
+                {
+                    "string": [
+                        "USE_JAI_IMAGEREAD",
+                        true
+                    ]
+                },
+                {
+                    "string": "Bands",
+                    "null": ""
+                },
+                {
+                    "string": [
+                        "Filter",
+                        "project_id={project_id}"
+                    ]
+                },
+                {
+                    "string": "InputTransparentColor",
+                    "null": ""
+                },
+                {
+                    "string": [
+                        "SUGGESTED_TILE_SIZE",
+                        "512,512"
+                    ]
+                },
+                {
+                    "string": [
+                        "Accurate resolution computation",
+                        false
+                    ]
+                },
+                {
+                    "string": [
+                        "SORTING",
+                        "image_dt D"
+                    ]
+                },
+                {
+                    "string": [
+                        "FootprintBehavior",
+                        "None"
+                    ]
+                }
+            ]
+        }
+    }
+}
