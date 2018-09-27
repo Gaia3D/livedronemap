@@ -104,7 +104,7 @@ public class Policy {
 	private String geoserver_backgroud_workspace;
 	// geoserver 배경지도 레이어 
 	private String geoserver_backgroud_layer;
-	// geoserver 배경지도 요청포
+	// geoserver 배경지도 요청 포맷 
 	private String geoserver_backgroud_format;
 	// geoserver 지형 url
 	private String geoserver_terrain_url;
@@ -112,7 +112,7 @@ public class Policy {
 	private String geoserver_terrain_workspace;
 	// geoserver 지형 레이어 
 	private String geoserver_terrain_layer;
-	// geoserver 지형 요청 포
+	// geoserver 지형 요청 포맷 
 	private String geoserver_terrain_format;
 	// geoserver 영상 데이터 url 
 	private String geoserver_data_url;
