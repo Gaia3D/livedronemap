@@ -1,7 +1,7 @@
 {
     "coverage": {
-        "name": "livedronemap_{project_id}}",
-        "nativeName": "livedronemap",
+        "name": "{workspaceName}_{projectId}",
+        "nativeName": "{workspaceName}",
         "nativeCRS": "EPSG:4326",
         "srs": "EPSG:4326",
         "nativeBoundingBox": {
@@ -189,7 +189,7 @@
                 {
                     "string": [
                         "Filter",
-                        "project_id={project_id}"
+                        "project_id={projectId}"
                     ]
                 },
                 {
