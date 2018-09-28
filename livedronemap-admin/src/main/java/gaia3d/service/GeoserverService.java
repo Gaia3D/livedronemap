@@ -10,17 +10,17 @@ public interface GeoserverService {
 	
 	/**
 	 * GeoServer 레이어 리스트 조회 
-	 * @param imageMosaic
+	 * @param projectId
 	 * @return
 	 */
-	ResponseEntity<APIResult> selectGeoserverLayer(String layerNm);
+	ResponseEntity<APIResult> selectGeoserverLayer(String projectId);
 	
 	/**
 	 * GeoServer에 Layer 등록 
-	 * @param imageMosaic
+	 * @param projectId
 	 * @return
 	 */
-	String createGeoserverLayer(String projectId);
+	String createGeoserverLayer(int projectId);
 	
 	/**
 	 * GeoServer에 영상 등록 
