@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import gaia3d.config.GdalConfig;
+import gaia3d.persistence.ImageInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -29,7 +30,13 @@ public class ImageConvertUtilTest {
 	public void test000ConvertProjection() throws InterruptedException, IOException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, srcImg);
+		
+		ImageInfo imageInfo = new ImageInfo();
+		imageInfo.setProjectId(1);
+		imageInfo.setImageId(1);
+		imageInfo.setImagePath(srcImg);
+		
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
 		imageConvertUtil.convertProjection(srcImg);
 	}
 	
@@ -38,7 +45,13 @@ public class ImageConvertUtilTest {
 	public void test001CreateInnerTile() throws InterruptedException, IOException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, srcImg);
+		
+		ImageInfo imageInfo = new ImageInfo();
+		imageInfo.setProjectId(1);
+		imageInfo.setImageId(1);
+		imageInfo.setImagePath(srcImg);
+		
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
 		imageConvertUtil.createInnerTile(srcImg);
 	}
 	
@@ -47,7 +60,13 @@ public class ImageConvertUtilTest {
 	public void test002CreateOverview() throws InterruptedException, IOException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp_tiled.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, srcImg);
+		
+		ImageInfo imageInfo = new ImageInfo();
+		imageInfo.setProjectId(1);
+		imageInfo.setImageId(1);
+		imageInfo.setImagePath(srcImg);
+		
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
 		imageConvertUtil.createOverview(srcImg);
 	}
 	
@@ -55,7 +74,13 @@ public class ImageConvertUtilTest {
 	public void test003() throws InterruptedException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
-		Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, srcImg);
+		
+		ImageInfo imageInfo = new ImageInfo();
+		imageInfo.setProjectId(1);
+		imageInfo.setImageId(1);
+		imageInfo.setImagePath(srcImg);
+		
+		Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 		
