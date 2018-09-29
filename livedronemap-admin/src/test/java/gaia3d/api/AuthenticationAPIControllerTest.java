@@ -26,7 +26,7 @@ public class AuthenticationAPIControllerTest {
 	@Ignore
 	public void createTokenReturnTypeIsEntity() {
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://localhost/authentication/token";
+		String url = "http://localhost/authentication/tokens";
 		ResponseEntity<APIResult> aPIResult = restTemplate.postForEntity(url, null, APIResult.class);
 		log.info("status code = {}", aPIResult.getStatusCodeValue());
 		log.info("body = {}", aPIResult.getBody());
@@ -35,7 +35,7 @@ public class AuthenticationAPIControllerTest {
 	@Ignore
 	public void createTokenReturnTypeIsString() {
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://localhost/authentication/token";
+		String url = "http://localhost/authentication/tokens";
 		String result = restTemplate.postForObject(url, null, String.class);
 		log.info("result = {}", result);
 	}
@@ -51,7 +51,7 @@ public class AuthenticationAPIControllerTest {
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(parameters, headers);
 		
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://localhost/authentication/token";
+		String url = "http://localhost/authentication/tokens";
 		ResponseEntity<APIResult> aPIResult = restTemplate.postForEntity(url, request, APIResult.class);
 		log.info("createTokenWithHeader status code = {}", aPIResult.getStatusCodeValue());
 		log.info("createTokenWithHeader aPIResult body = {}", aPIResult.getBody());
