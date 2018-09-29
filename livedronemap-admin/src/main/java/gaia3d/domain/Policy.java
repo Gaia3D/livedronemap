@@ -2,8 +2,6 @@ package gaia3d.domain;
 
 import gaia3d.security.Crypt;
 import gaia3d.security.Masking;
-
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,7 +1,5 @@
 package gaia3d.api;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
@@ -14,20 +12,20 @@ import gaia3d.domain.EncryptionStatus;
 import gaia3d.exception.CustomSecurityException;
 import gaia3d.security.AES128Cipher;
 import gaia3d.service.APILogService;
-import gaia3d.util.WebUtil;
 
 public interface APIController {
 	
-	default void insertLog(APILogService aPILogService, HttpServletRequest request, String user_id, Integer clientId, String clientName, APIResult aPIResult) {
+	default void insertLog(APILogService aPILogService, String requestIp, String user_id, String url, Integer clientId, String clientName, APIResult aPIResult) {
 		try {
 			APILog aPILog = new APILog();
 			aPILog.setClient_id(clientId);
 			aPILog.setClient_name(clientName);
-			aPILog.setRequest_ip(WebUtil.getRequestIp(request));
+			aPILog.setRequest_ip(requestIp);
 			aPILog.setUser_id(user_id);
-			aPILog.setUrl(request.getRequestURL().toString());
+			aPILog.setUrl(url);
 			aPILog.setStatus_code(aPIResult.getStatusCode());
 			aPILog.setMessage(aPIResult.getMessage());
+			
 			aPILogService.insertAPILog(aPILog);
 		} catch(Exception ex) {
 			ex.printStackTrace();
@@ -77,36 +75,34 @@ public interface APIController {
 	}
 	
 	/**
-	 * header 를 취득
-	 * @param request
+	 * header 복호화
+	 * @param encryptionStatus
+	 * @param log
+	 * @param liveDroneMapHeader
 	 * @return
 	 */
-	default APIHeader getHeader(String encryptionStatus, Logger log, HttpServletRequest request) {
+	default APIHeader getHeader(String encryptionStatus, Logger log, String customHeader) {
 		log.info("@@@@@@@@@@ encryptionStatus = {}", encryptionStatus);
 		
 		APIHeader apiHeader = null;
-		
-		String encodedCustomHeader = request.getHeader("live_drone_map");
-		if(StringUtils.isEmpty(encodedCustomHeader)) {
+		if(StringUtils.isEmpty(customHeader)) {
 			log.info("@@@@@@@@@@@@@@@@@@@ live_drone_map header is null or empty");
 			return apiHeader;
 		}
 		
-		String customHeader = null;
+		String decodeHeader = customHeader;
 		// TODO Enum 나중에 고치자... 귀찮음
 		if(EncryptionStatus.Y.name().equals(encryptionStatus)) {
 			try {
-				customHeader = AES128Cipher.decode(encodedCustomHeader);
+				decodeHeader = AES128Cipher.decode(customHeader);
 			} catch(Exception e) {
 				e.printStackTrace();
 				throw new CustomSecurityException(e);
 			}
-		} else {
-			customHeader = encodedCustomHeader;
 		}
-		log.info("@@@@@@@@@@@@@@@@@@@ customHeader = {}", customHeader);
+		log.info("@@@@@@@@@@@@@@@@@@@ customHeader = {}", decodeHeader);
 		
-		String[] headers = customHeader.split("&");
+		String[] headers = decodeHeader.split("&");
 		
 		apiHeader = new APIHeader();
 		apiHeader.setUserId(headers[0].substring(7));

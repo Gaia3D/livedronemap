@@ -12,6 +12,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class OrthoDetectedObject {
+	
+	// controller requestbody 용
+	private Integer number;
 
 	// 고유번호
 	private Long ortho_detected_object_id;

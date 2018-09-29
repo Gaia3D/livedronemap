@@ -1,40 +1,42 @@
 package gaia3d.api;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import gaia3d.domain.APIHeader;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.APIValidationType;
 import gaia3d.domain.CacheManager;
-import gaia3d.domain.DroneProject;
 import gaia3d.domain.Policy;
 import gaia3d.domain.TokenLog;
 import gaia3d.service.APILogService;
-import gaia3d.service.DroneProjectService;
 import gaia3d.service.TokenLogService;
 import gaia3d.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-public class DroneProjectAPIController implements APIController {
+public class TransferDataAPIController implements APIController {
 	
 	@Autowired
 	private APILogService aPILogService;
 	@Autowired
 	private TokenLogService tokenLogService;
-	@Autowired
-	private DroneProjectService droneProjectService;
+	
 
-	@PostMapping("/drone-projects")
-	public ResponseEntity<APIResult> insertProject(HttpServletRequest request, @RequestHeader("live_drone_map") String customHeader, DroneProject droneProject) {
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	// @PostMapping(value = "/transfer-data", headers = ("content-type=multipart/*")
+	@PostMapping("/transfer-data")
+	public ResponseEntity<APIResult> insertTransferData(MultipartHttpServletRequest request, @RequestHeader("live_drone_map") String customHeader) {
 		log.info("@@@@@@@@@@ project insert api call");
 		
 		APIResult aPIResult = null;
@@ -60,8 +62,26 @@ public class DroneProjectAPIController implements APIController {
 			clientId = tokenLog.getClient_id();
 			clientName = tokenLog.getClient_name();
 			
-			droneProjectService.insertDroneProject(droneProject);
-			aPIResult.setDroneProjectId(droneProject.getDrone_project_id());
+			
+			
+//			Map<String, MultipartFile> fileMap = request.getFileMap();
+//	        for (MultipartFile multipartFile : fileMap.values()) {
+//	        	FileInfo fileInfo = FileUtil.userUpload(userId, FileUtil.SUBDIRECTORY_YEAR_MONTH_DAY, multipartFile, CacheManager.getPolicy(), propertiesConfig.getUserUploadDir());
+//				if(fileInfo.getError_code() != null && !"".equals(fileInfo.getError_code())) {
+//					log.info("@@@@@@@@@@@@@@@@@@@@ error_code = {}", fileInfo.getError_code());
+//					result = fileInfo.getError_code();
+//					break;
+//				}
+//				
+//				fileInfo.setUser_id(userId);
+//				fileList.add(fileInfo);
+//	        }
+			
+			
+			
+			
+//			droneProjectService.insertDroneProject(droneProject);
+//			aPIResult.setDroneProjectId(droneProject.getDrone_project_id());
 
 			httpStatus = HttpStatus.OK;
 			aPIResult.setStatusCode(httpStatus.value());

@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import gaia3d.domain.TokenLog;
 import gaia3d.service.APILogService;
 import gaia3d.service.ClientService;
 import gaia3d.service.TokenLogService;
+import gaia3d.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -47,7 +49,7 @@ public class AuthenticationAPIController implements APIController {
 	 * @return
 	 */
 	@PostMapping("tokens")
-	public ResponseEntity<APIResult> createToken(HttpServletRequest request) {
+	public ResponseEntity<APIResult> createToken(HttpServletRequest request, @RequestHeader("live_drone_map") String customHeader) {
 		log.info("@@@@@@@@@@ createToken api call");
 		
 		APIResult aPIResult = null;
@@ -57,7 +59,7 @@ public class AuthenticationAPIController implements APIController {
 		Integer clientId = null;
 		String clientName = null;
 		try {
-			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, request);
+			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, customHeader);
 			aPIResult = validate(log, APIValidationType.AUTHETICATION, aPIHeader);
 			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) {
 				log.info("@@ Unregistered client");
@@ -90,7 +92,7 @@ public class AuthenticationAPIController implements APIController {
 			aPIResult.setStatusCode(httpStatus.value());
 			aPIResult.setException(e.getMessage());
 		} finally {
-			insertLog(aPILogService, request, null, clientId, clientName, aPIResult);
+			insertLog(aPILogService, WebUtil.getRequestIp(request), null, request.getRequestURL().toString(), clientId, clientName, aPIResult);
 		}
 		
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
@@ -102,7 +104,7 @@ public class AuthenticationAPIController implements APIController {
 	 * @return
 	 */
 	@PutMapping("refreshToken")
-	public ResponseEntity<APIResult> refreshToken(HttpServletRequest request) {
+	public ResponseEntity<APIResult> refreshToken(HttpServletRequest request, @RequestHeader("live_drone_map") String customHeader) {
 		log.info("@@@@@@@@@@ refreshToken api call");
 		
 		APIResult aPIResult = null;
@@ -112,7 +114,7 @@ public class AuthenticationAPIController implements APIController {
 		Integer clientId = null;
 		String clientName = null;
 		try {
-			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, request);
+			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, customHeader);
 			aPIResult = validate(log, APIValidationType.TOKEN, aPIHeader);
 			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			
@@ -141,7 +143,7 @@ public class AuthenticationAPIController implements APIController {
 			aPIResult.setStatusCode(httpStatus.value());
 			aPIResult.setException(e.getMessage());
 		} finally {
-			insertLog(aPILogService, request, null, clientId, clientName, aPIResult);
+			insertLog(aPILogService, WebUtil.getRequestIp(request), null, request.getRequestURL().toString(), clientId, clientName, aPIResult);
 		}
 		
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
