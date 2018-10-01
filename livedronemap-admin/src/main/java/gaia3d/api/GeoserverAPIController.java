@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageMosaic;
+import gaia3d.domain.PrivateAPIResult;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,27 +23,29 @@ import lombok.extern.slf4j.Slf4j;
 public class GeoserverAPIController {
 	
 	@Autowired
-	GeoserverService geoserverService;
+	private GeoserverService geoserverService;
 	
 	@GetMapping("layers/{projectId}")
-	public ResponseEntity<APIResult> getGeoserverLayer(HttpServletRequest request, @PathVariable("projectId") String projectId) {
+	public PrivateAPIResult getGeoserverLayer(HttpServletRequest request, @PathVariable("projectId") String projectId) {
 		// TODO 인증 
 		return geoserverService.selectGeoserverLayer(projectId);
 	}
 	
 	@PostMapping("layers")
-	public ResponseEntity<APIResult> createGeoserverLayer(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
+	public PrivateAPIResult createGeoserverLayer(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
 		// TODO 인증 
+		
 		Integer projectId = imageMosaic.getProject_id();
 		if (projectId == null) {
-			return null;
+			// TODO 오류 처리 수정 필요 
+			PrivateAPIResult aPIResult = new PrivateAPIResult();
+			aPIResult.setResult("fail");
+			aPIResult.setStatusCode(400);
+			aPIResult.setMessage("project_id is required.");
+			return aPIResult;
 		}
 		
-		log.info("@@ project id : {}", projectId);
-		
-		geoserverService.createGeoserverLayer(projectId);
-		
-		return null;
+		return geoserverService.createGeoserverLayer(projectId);
 	}
 	
 	@PostMapping("images")

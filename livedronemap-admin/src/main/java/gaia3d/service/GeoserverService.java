@@ -1,10 +1,7 @@
 package gaia3d.service;
 
-import org.springframework.http.ResponseEntity;
-
-import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageMosaic;
-import springfox.documentation.service.ResponseMessage;
+import gaia3d.domain.PrivateAPIResult;
 
 public interface GeoserverService {
 	
@@ -13,14 +10,14 @@ public interface GeoserverService {
 	 * @param projectId
 	 * @return
 	 */
-	ResponseEntity<APIResult> selectGeoserverLayer(String projectId);
+	PrivateAPIResult selectGeoserverLayer(String projectId);
 	
 	/**
 	 * GeoServer에 Layer 등록 
 	 * @param projectId
 	 * @return
 	 */
-	String createGeoserverLayer(int projectId);
+	PrivateAPIResult createGeoserverLayer(int projectId);
 	
 	/**
 	 * GeoServer에 영상 등록 
