@@ -62,7 +62,7 @@ public class AuthenticationAPIController implements APIController {
 			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, customHeader);
 			aPIResult = validate(log, APIValidationType.AUTHETICATION, aPIHeader);
 			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) {
-				log.info("@@ Unregistered client");
+				log.info("@@ authentication fail");
 				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			}
 			
@@ -125,7 +125,7 @@ public class AuthenticationAPIController implements APIController {
 			if(tokenLog == null) {
 				aPIResult.setStatusCode(HttpStatus.OK.value());
 				aPIResult.setValidationCode("token.expires.invalid");
-				aPIResult.setMessage("token The validity period has expired.");
+				aPIResult.setMessage("Your token validity period has expired.");
 				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			}
 			clientId = tokenLog.getClient_id();

@@ -105,9 +105,9 @@ public interface APIController {
 		String[] headers = decodeHeader.split("&");
 		
 		apiHeader = new APIHeader();
-		apiHeader.setUserId(headers[0].substring(7));
+		apiHeader.setUserId(headers[0].substring(8));
 		apiHeader.setApiKey(headers[1].substring(8));
-		apiHeader.setToken(headers[2].substring(5));
+		apiHeader.setToken(headers[2].substring(6));
 		apiHeader.setRole(headers[3].substring(5));
 		apiHeader.setAlgorithm(headers[4].substring(10));
 		apiHeader.setType(headers[5].substring(5));

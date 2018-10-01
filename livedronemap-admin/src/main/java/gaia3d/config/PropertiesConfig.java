@@ -16,13 +16,9 @@ public class PropertiesConfig {
 //	private boolean callRemoteEnable;
 //	private String serverIp;
 //	private String restAuthKey;
-//	
-//	private String licenseFile;
-//	private String licenseFileChecker;
 	
-	
-	// User excel batch registration
-	private String userUploadDir;
-	private String userConverterDir;
+	// transfer data
+	private String orthoImageDir;
+	private String postprocessingImageDir;
 	
 }
