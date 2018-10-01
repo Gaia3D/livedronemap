@@ -1,4 +1,4 @@
-package gaia3d.persistence;
+package gaia3d.domain;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -12,7 +12,7 @@ import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 
 import gaia3d.config.GdalConfig;
-import gaia3d.persistence.ImageInfo;
+import gaia3d.domain.ImageInfo;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -49,15 +49,22 @@ public class ImageConvertUtil implements Runnable {
 			
 			// 최종 결과물 이동
 			Path completeFilePath = Paths.get(soureceImage);
-			Path resultFilePath = Paths.get(gdalConfig.getGdalResultPath());
-			resultFilePath = resultFilePath.resolve(String.valueOf(imageInfo.getProjectId()));
+			Path resultDirectoryPath = Paths.get(gdalConfig.getResultPath());
+			resultDirectoryPath = resultDirectoryPath.resolve(String.valueOf(imageInfo.getProjectId()));
 			
-			File resultFile = resultFilePath.toFile();
-			if (!resultFile.exists()) {
-				resultFile.mkdirs();
+			File resultDirectory = resultDirectoryPath.toFile();
+			if (!resultDirectory.exists()) {
+				resultDirectory.mkdirs();
 			}
 			
-			Files.move(completeFilePath , resultFilePath.resolve(String.format("%s.tif", soureceName)));
+			Path resultFilePath = resultDirectoryPath.resolve(String.format("%s.tif", soureceName));
+			File resultFile = resultFilePath.toFile();
+			
+			if (resultFile.exists()) {
+				resultFile.delete();
+			}
+			
+			Files.move(completeFilePath, resultFilePath);
 			
 			// Geoserver 영상 등록 호출 
 			
@@ -83,19 +90,19 @@ public class ImageConvertUtil implements Runnable {
 		String targetImage = getTargetPath(sourceImage, "warp", "tif");
 		checkFileExists(targetImage);
 		
-		Path cmdPath = Paths.get(gdalConfig.getGdalCmdPath(), "gdalwarp");
+		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "gdalwarp");
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
 		
-		List<String> cmdOpt = Arrays.asList(gdalConfig.getGdalWarpOptions().split(","));
+		List<String> cmdOpt = Arrays.asList(gdalConfig.getWarpOptions().split(","));
 		if (cmdOpt.size() > 0) {
 			cmdList.addAll(cmdOpt);
 		}
 		
 		cmdList.add("-s_srs");
-		cmdList.add(gdalConfig.getGdalWarpSourceSrs());
+		cmdList.add(gdalConfig.getWarpSourceSrs());
 		cmdList.add("-t_srs");
-		cmdList.add(gdalConfig.getGdalServiceSrs());
+		cmdList.add(gdalConfig.getServiceSrs());
 		cmdList.add(sourceImage);
 		cmdList.add(targetImage);
 		
@@ -129,11 +136,11 @@ public class ImageConvertUtil implements Runnable {
 		String targetImage = getTargetPath(sourceImage, "tiled", "tif");
 		checkFileExists(targetImage);
 		
-		Path cmdPath = Paths.get(gdalConfig.getGdalCmdPath(), "gdal_translate");
+		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "gdal_translate");
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
 		
-		List<String> cmdOpt = Arrays.asList(gdalConfig.getGdalTranslateOptions().split(","));
+		List<String> cmdOpt = Arrays.asList(gdalConfig.getTranslateOptions().split(","));
 		if (cmdOpt != null) {
 			cmdList.addAll(cmdOpt);
 		}
@@ -158,18 +165,18 @@ public class ImageConvertUtil implements Runnable {
 	public String createOverview(String sourceImage) throws InterruptedException, IOException {
 		log.info("Start gdaladdo .. {}", sourceImage);
 		
-		Path cmdPath = Paths.get(gdalConfig.getGdalCmdPath(), "gdaladdo");
+		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "gdaladdo");
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
 		
-		List<String> cmdOpt = Arrays.asList(gdalConfig.getGdalAddoOptions().split(","));
+		List<String> cmdOpt = Arrays.asList(gdalConfig.getAddoOptions().split(","));
 		if (cmdOpt != null) {
 			cmdList.addAll(cmdOpt);
 		}
 		cmdList.add(sourceImage);
 		
 		int initLevel = 2;
-		int overviewLevel = gdalConfig.getGdalAddoLevel();
+		int overviewLevel = gdalConfig.getAddoLevel();
 		for (int i = 1; i <= overviewLevel; i++) {
 			cmdList.add(String.valueOf(initLevel));
 			initLevel *= 2;

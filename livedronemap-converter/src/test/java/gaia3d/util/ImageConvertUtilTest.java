@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import gaia3d.config.GdalConfig;
-import gaia3d.persistence.ImageInfo;
+import gaia3d.domain.ImageInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -71,7 +71,7 @@ public class ImageConvertUtilTest {
 	}
 	
 	@Test
-	public void test003() throws InterruptedException {
+	public void testConvertImage() throws InterruptedException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
 		
