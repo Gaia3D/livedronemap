@@ -19,6 +19,7 @@
 		<typeAlias type="gaia3d.domain.UserInfo" alias="userInfo"/>
 		<typeAlias type="gaia3d.domain.UserSession" alias="userSession"/>
 		<typeAlias type="gaia3d.domain.TokenLog" alias="tokenLog"/>
+		<typeAlias type="gaia3d.domain.ImageMosaic" alias="imageMosaic"/>
 	</typeAliases>
 	
 </configuration>

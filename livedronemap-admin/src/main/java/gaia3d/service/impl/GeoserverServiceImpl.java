@@ -6,17 +6,20 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.PrivateAPIResult;
+import gaia3d.persistence.GeoserverMapper;
 import gaia3d.security.Crypt;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class GeoserverServiceImpl implements GeoserverService {
+	
+	@Autowired
+	GeoserverMapper geoserverMapper;
 	
 	@Override
 	public PrivateAPIResult selectGeoserverLayer(String projectId) {
@@ -117,8 +123,23 @@ public class GeoserverServiceImpl implements GeoserverService {
 	}
 
 	@Override
-	public ImageMosaic insertGeoserverImage(ImageMosaic imageMosaic) {
-		return null;
+	@Transactional
+	public PrivateAPIResult insertGeoserverImage(ImageMosaic imageMosaic) {
+		PrivateAPIResult aPIResult = new PrivateAPIResult();
+		
+		try {
+			geoserverMapper.insertGeoserverImage(imageMosaic);
+			
+			aPIResult.setStatusCode(200);
+	    	aPIResult.setResult("success");  // TOOD 상수 전환 
+	    	
+		} catch (Exception e) {
+			aPIResult.setStatusCode(500);
+			aPIResult.setResult("fail");  // TOOD 상수 전환 
+			aPIResult.setMessage(e.getMessage());
+		}
+		
+		return aPIResult;
 	}
 	
 	private String encodeUserPassword(String user, String password) {

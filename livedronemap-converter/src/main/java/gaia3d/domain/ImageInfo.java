@@ -13,4 +13,6 @@ public class ImageInfo {
 	
 	private String imagePath;
 	
+	private String imageDt;
+	
 }

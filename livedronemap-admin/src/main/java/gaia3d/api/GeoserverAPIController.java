@@ -3,7 +3,6 @@ package gaia3d.api;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.PrivateAPIResult;
 import gaia3d.service.GeoserverService;
@@ -49,9 +47,8 @@ public class GeoserverAPIController {
 	}
 	
 	@PostMapping("images")
-	public ResponseEntity<APIResult> createGeoserverImage(HttpServletRequest request, ImageMosaic imageMosaic) {
-		// TODO 인증 
-		return null;
+	public PrivateAPIResult createGeoserverImage(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
+		return geoserverService.insertGeoserverImage(imageMosaic);
 	}
 	
 }

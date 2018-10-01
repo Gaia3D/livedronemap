@@ -7,6 +7,7 @@ import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageInfo;
 import gaia3d.service.ImageConverterService;
+import gaia3d.util.APIUtil;
 import gaia3d.util.ImageConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ImageConverterServiceImpl implements ImageConverterService {
 	
 	@Autowired
+	private APIUtil aPIUtil;
+	@Autowired
 	private GdalConfig gdalConfig;
 	
 	@Override
@@ -28,7 +31,7 @@ public class ImageConverterServiceImpl implements ImageConverterService {
 		APIResult aPIResult = new APIResult();
 		
 		try {
-			Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+			Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 			Thread thread = new Thread(imageConvertUtil);
 			thread.start();
 			

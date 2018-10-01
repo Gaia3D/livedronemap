@@ -24,6 +24,6 @@ public interface GeoserverService {
 	 * @param imageMosaic
 	 * @return
 	 */
-	ImageMosaic insertGeoserverImage(ImageMosaic imageMosaic);
+	PrivateAPIResult insertGeoserverImage(ImageMosaic imageMosaic);
 	
 }

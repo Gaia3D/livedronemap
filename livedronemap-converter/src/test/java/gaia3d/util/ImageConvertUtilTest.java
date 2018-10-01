@@ -23,7 +23,9 @@ import gaia3d.domain.ImageInfo;
 public class ImageConvertUtilTest {
 	
 	@Autowired
-	GdalConfig gdalConfig;
+	private APIUtil aPIUtil;
+	@Autowired
+	private GdalConfig gdalConfig;
 	
 	@Test
 	@Ignore
@@ -36,7 +38,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.convertProjection(srcImg);
 	}
 	
@@ -51,7 +53,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.createInnerTile(srcImg);
 	}
 	
@@ -66,7 +68,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.createOverview(srcImg);
 	}
 	
@@ -80,7 +82,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 		
