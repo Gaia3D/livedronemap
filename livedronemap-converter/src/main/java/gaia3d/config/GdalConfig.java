@@ -16,6 +16,8 @@ public class GdalConfig {
 	private String resultPath;
 	private String serviceSrs;
 	
+	private String nearblackOptions;
+	
 	private String warpOptions;
 	private String warpSourceSrs;
 	

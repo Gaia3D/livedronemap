@@ -56,6 +56,7 @@ public class ImageConvertUtil implements Runnable {
 		
 		try {
 			// TODO 단계별로 진행 여부 필요, properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
+			sourceImage = removeBackgroud(sourceImage);
 			sourceImage = convertProjection(sourceImage);
 			sourceImage = createInnerTile(sourceImage);
 			sourceImage = createOverview(sourceImage);
@@ -135,9 +136,33 @@ public class ImageConvertUtil implements Runnable {
 	// TODO 배경제거
 	/**
 	 * 배경을 제거하고 alpha 밴드 생성 
+	 * @throws IOException 
+	 * @throws InterruptedException 
 	 */
-	public void removeBackgroud() {
+	public String removeBackgroud(String sourceImage) throws InterruptedException, IOException {
+		log.info("Start nearblack .. {}", sourceImage);
 		
+		// TODO 확장자는 동적으로 처리 
+		String targetImage = getTargetPath(sourceImage, "nb", "tif");
+		checkFileExists(targetImage);
+		
+		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "nearblack");
+		List<String> cmdList = new ArrayList<>();
+		cmdList.add(cmdPath.toString());
+		
+		List<String> cmdOpt = Arrays.asList(gdalConfig.getNearblackOptions().split(","));
+		if (cmdOpt != null) {
+			cmdList.addAll(cmdOpt);
+		}
+		
+		cmdList.add("-o");
+		cmdList.add(targetImage);
+		cmdList.add(sourceImage);
+		
+		ProcessRunner processRunner = new ProcessRunner();
+		processRunner.execProcess(cmdList);
+		
+		return targetImage;
 	}
 	
 	/**
