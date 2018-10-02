@@ -35,11 +35,9 @@ public class ImageConverterServiceImpl implements ImageConverterService {
 			Thread thread = new Thread(imageConvertUtil);
 			thread.start();
 			
-			aPIResult.setResult("success");
 			aPIResult.setStatusCode(200);
 			
 		} catch (Exception e) {
-			aPIResult.setResult("fail");
 			aPIResult.setStatusCode(500);
 			aPIResult.setMessage(e.getMessage());
 		}

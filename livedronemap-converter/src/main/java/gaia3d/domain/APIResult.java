@@ -7,8 +7,6 @@ import lombok.Setter;
 @Setter
 public class APIResult {
 	
-	private String result;
-	
 	private int statusCode;
 	
 	private String message;

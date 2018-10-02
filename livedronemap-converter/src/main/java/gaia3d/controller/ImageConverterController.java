@@ -23,7 +23,6 @@ public class ImageConverterController {
 		APIResult aPIResult = new APIResult();
 		
 		if (imageInfo.getProjectId() == null || imageInfo.getImageId() == null || imageInfo.getImagePath() == null) {
-			aPIResult.setResult("fail");
 			aPIResult.setStatusCode(400);
 			aPIResult.setMessage("Parameters is invalid.");
 		} else {

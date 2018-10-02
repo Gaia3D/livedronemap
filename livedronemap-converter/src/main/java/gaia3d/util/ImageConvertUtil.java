@@ -79,14 +79,14 @@ public class ImageConvertUtil implements Runnable {
 			imageMosaic.setProject_id(projectId);
 			
 			APIResult insertResult = aPIUtil.insertImageInfoForGeoServer(imageMosaic);
-			log.info("@@@ {}", insertResult.getResult());
+			log.info("@@@ {}", insertResult.getStatusCode());
 			
 			APIResult checkResult = aPIUtil.checkGeoServerInfo(projectId);
-			log.info("@@@ {}", checkResult.getResult());
+			log.info("@@@ {}", checkResult.getStatusCode());
 			
-			if (!checkResult.getResult().equals("success")) {
+			if (checkResult.getStatusCode() != 200) {
 				APIResult createResult = aPIUtil.createLayer(imageMosaic);
-				log.info("@@@ {}", createResult.getResult());
+				log.info("@@@ {}", createResult.getStatusCode());
 			}
 
 		} catch (Exception e) {
