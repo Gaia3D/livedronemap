@@ -20,6 +20,9 @@ import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 
 import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
@@ -35,6 +38,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ImageConvertUtil implements Runnable {
+	
+	private String GDAL_USE_FLAG = "true";
 	
 	private APIUtil aPIUtil;
 	
@@ -56,10 +61,18 @@ public class ImageConvertUtil implements Runnable {
 		
 		try {
 			// TODO 단계별로 진행 여부 필요, properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
-			sourceImage = removeBackgroud(sourceImage);
-			sourceImage = convertProjection(sourceImage);
-			sourceImage = createInnerTile(sourceImage);
-			sourceImage = createOverview(sourceImage);
+			if (gdalConfig.getNearblackUse().equals(GDAL_USE_FLAG)) {
+				sourceImage = removeBackgroud(sourceImage);
+			}
+			if (gdalConfig.getWarpUse().equals(GDAL_USE_FLAG)) {
+				sourceImage = convertProjection(sourceImage);
+			}
+			if (gdalConfig.getTranslateUse().equals(GDAL_USE_FLAG)) {
+				sourceImage = createInnerTile(sourceImage);
+			}
+			if (gdalConfig.getAddoUse().equals(GDAL_USE_FLAG)) {
+				sourceImage = createOverview(sourceImage);
+			}
 			
 			// TODO 중간 결과 이미지 삭제 
 			
@@ -69,23 +82,22 @@ public class ImageConvertUtil implements Runnable {
 			// Geoserver 영상 등록 호출 
 			ImageMosaic imageMosaic = new ImageMosaic();
 			String imageName = FilenameUtils.getName(resultImagePath);
-			int projectId = imageInfo.getProjectId();
+			Long projectId = imageInfo.getProjectId();
 			String location = String.format("%d/%s", projectId, imageName);
 			imageMosaic.setLocation(location);
 			String theGeom = getImageBoundaryAsWKT(resultImagePath);
 			imageMosaic.setThe_geom(theGeom);
-			String imageDt = "2018-10-01 09:00:00.000";
-			imageMosaic.setImage_dt(imageDt);
+			imageMosaic.setImage_dt(imageInfo.getImageDt());
 			imageMosaic.setProject_id(projectId);
 			
-			APIResult insertResult = aPIUtil.insertImageInfoForGeoServer(imageMosaic);
+			ResponseEntity<APIResult> insertResult = aPIUtil.insertImageInfoForGeoServer(imageMosaic);
 			log.info("@@@ {}", insertResult.getStatusCode());
 			
-			APIResult checkResult = aPIUtil.checkGeoServerInfo(projectId);
-			log.info("@@@ {}", checkResult.getStatusCode());
-			
-			if (checkResult.getStatusCode() != 200) {
-				APIResult createResult = aPIUtil.createLayer(imageMosaic);
+			try {
+				ResponseEntity<APIResult> checkResult = aPIUtil.checkGeoServerInfo(projectId);
+				log.info("@@@ {}", checkResult.getStatusCode());
+			} catch (HttpClientErrorException e) {
+				ResponseEntity<APIResult> createResult = aPIUtil.createLayer(imageMosaic);
 				log.info("@@@ {}", createResult.getStatusCode());
 			}
 
@@ -284,7 +296,7 @@ public class ImageConvertUtil implements Runnable {
 		
 		CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
 		Hints hint = new Hints();
-		hint.put(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, sourceCRS );    
+		hint.put(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, sourceCRS);    
 		hint.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
 		AbstractGridFormat format = new GeoTiffFormat();
 		AbstractGridCoverage2DReader reader = format.getReader(imageFile, hint);

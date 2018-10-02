@@ -116,8 +116,12 @@ public class Policy {
 	private String geoserver_data_url;
 	// geoserver 영상 데이터 작업공간 
 	private String geoserver_data_workspace;
-	// geoserver 영상 데이터 포맷 
+	// geoserver 영상 데이터 요청 포맷 
 	private String geoserver_data_format;
+	// geoserver 계정
+	private String geoserver_user;
+	// geoserver 비밀번호 
+	private String geoserver_password;
 	
 	// rest api 암호화 유무. Y : 사용(기본값), N : 사용안함
 	private String rest_api_encryption_yn;

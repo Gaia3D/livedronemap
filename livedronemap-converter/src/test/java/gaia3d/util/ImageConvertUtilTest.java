@@ -32,10 +32,11 @@ public class ImageConvertUtilTest {
 	public void test000ConvertProjection() throws InterruptedException, IOException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1);
-		imageInfo.setImageId(1);
+		imageInfo.setProjectId(1L);
+		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
 		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
@@ -47,10 +48,11 @@ public class ImageConvertUtilTest {
 	public void test001CreateInnerTile() throws InterruptedException, IOException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
-		
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp.tif";
+				
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1);
-		imageInfo.setImageId(1);
+		imageInfo.setProjectId(1L);
+		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
 		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
@@ -62,10 +64,11 @@ public class ImageConvertUtilTest {
 	public void test002CreateOverview() throws InterruptedException, IOException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp_tiled.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp_tiled.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1);
-		imageInfo.setImageId(1);
+		imageInfo.setProjectId(1L);
+		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
 		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
@@ -73,13 +76,29 @@ public class ImageConvertUtilTest {
 	}
 	
 	@Test
+	@Ignore
+	public void test003RemoveBackground() throws InterruptedException, IOException {
+		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1.tif";
+		
+		ImageInfo imageInfo = new ImageInfo();
+		imageInfo.setProjectId(1L);
+		imageInfo.setImageId(1L);
+		imageInfo.setImagePath(srcImg);
+		
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+		imageConvertUtil.removeBackgroud(srcImg);
+	}
+	
+	@Test
+	@Ignore
 	public void testConvertImage() throws InterruptedException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_2.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1);
-		imageInfo.setImageId(1);
+		imageInfo.setProjectId(1L);
+		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
 		Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);

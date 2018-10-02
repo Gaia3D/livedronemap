@@ -12,6 +12,7 @@ import org.geotools.factory.Hints;
 import org.geotools.gce.geotiff.GeoTiffFormat;
 import org.geotools.geometry.Envelope2D;
 import org.geotools.referencing.CRS;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -20,6 +21,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class GeotoolsTest {
 
 	@Test
+	@Ignore
 	public void testGetImageBbox() throws IllegalArgumentException, IOException, NoSuchAuthorityCodeException, FactoryException {
 		
 		CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");

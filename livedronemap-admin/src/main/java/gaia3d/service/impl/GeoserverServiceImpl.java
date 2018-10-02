@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,39 +19,39 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import gaia3d.domain.ImageMosaic;
-import gaia3d.domain.PrivateAPIResult;
+import gaia3d.domain.Policy;
+import gaia3d.exception.GeoserverException;
 import gaia3d.persistence.GeoserverMapper;
 import gaia3d.security.Crypt;
 import gaia3d.service.GeoserverService;
-import lombok.extern.slf4j.Slf4j;
+import gaia3d.service.PolicyService;
 
-@Slf4j
 @Service
 public class GeoserverServiceImpl implements GeoserverService {
 	
 	@Autowired
-	GeoserverMapper geoserverMapper;
+	private GeoserverMapper geoserverMapper;
+	
+	@Autowired
+	private PolicyService policyService;
 	
 	@Override
-	public PrivateAPIResult selectGeoserverLayer(String projectId) {
-		PrivateAPIResult aPIResult = new PrivateAPIResult();
-		
+	public Long getGeoserverLayer(Long projectId) {
 		// TODO policy 연결 
 		// http://localhost:8080/geoserver/rest/workspaces/dronemap/coveragestores/dronemap/coverages/dronemap_t.json
-		String geoserverDataUrl = "http://localhost:8080";
-		String geoserverDataWorkspace = "dronemap";
+		Policy policy = policyService.getPolicy();
+		String geoserverDataUrl = policy.getGeoserver_data_url();
+		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
 		
-		String layerName = String.format("%s_%s", geoserverDataWorkspace, projectId);
-		String url = String.format("%s/geoserver/rest/workspaces/%s/coveragestores/%s/coverages/%s", 
+		String layerName = String.format("%s_%d", geoserverDataWorkspace, projectId);
+		String url = String.format("%s/rest/workspaces/%s/coveragestores/%s/coverages/%s", 
 				geoserverDataUrl, geoserverDataWorkspace, geoserverDataWorkspace, layerName);
-		
-		// TODO geoserver 계정 처리
 		
 		// set haeder
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		String user = "mkKxoOOBBWrvZK6yCF8l8w==";
-		String password = "GjKX1+xXvjlIl65JNgVFzg==";
+		String user = policy.getGeoserver_user();
+		String password = policy.getGeoserver_password();
 		String encodedUserPassword = encodeUserPassword(user, password);
 	    headers.add("Authorization", "Basic " + encodedUserPassword);
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
@@ -59,28 +60,26 @@ public class GeoserverServiceImpl implements GeoserverService {
 			RestTemplate restTemplate = new RestTemplate();
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 			
-	    	aPIResult.setStatusCode(response.getStatusCodeValue());
-	    	aPIResult.setResult("success");  // TOOD 상수 전환 
-			
+			if (response.getStatusCode() != HttpStatus.OK) {
+				throw new GeoserverException(response.getBody());
+			}
 		} catch (HttpClientErrorException e) {
-			aPIResult.setStatusCode(e.getRawStatusCode());
-			aPIResult.setResult("fail");  // TOOD 상수 전환 
-			aPIResult.setMessage(e.getResponseBodyAsString());
+			throw new GeoserverException(e.getResponseBodyAsString());
 		}
 
-		return aPIResult;
+		return projectId;
 	}
 
 	@Override
-	public PrivateAPIResult createGeoserverLayer(int projectId) {
-		PrivateAPIResult aPIResult = new PrivateAPIResult();
+	public Long inputGeoserverLayer(Long projectId) {
 		
 		// TODO policy 연결 
 		// http://localhost:8080/geoserver/rest/workspaces/dronemap/coveragestores/dronemap/coverages
-		String geoserverDataUrl = "http://localhost:8080";
-		String geoserverDataWorkspace = "dronemap";
+		Policy policy = policyService.getPolicy();
+		String geoserverDataUrl = policy.getGeoserver_data_url();
+		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
 		
-		String url = String.format("%s/geoserver/rest/workspaces/%s/coveragestores/%s/coverages", 
+		String url = String.format("%s/rest/workspaces/%s/coveragestores/%s/coverages", 
 				geoserverDataUrl, geoserverDataWorkspace, geoserverDataWorkspace);
 		
 		String layerInfo = null;
@@ -88,58 +87,36 @@ public class GeoserverServiceImpl implements GeoserverService {
 			layerInfo = new String(Files.readAllBytes(Paths.get("src/main/resources/geoserver/layer.json")), StandardCharsets.UTF_8);
 			layerInfo = layerInfo.replace("{projectId}", String.valueOf(projectId));
 			layerInfo = layerInfo.replace("{workspaceName}", geoserverDataWorkspace);
-			
-		} catch (IOException e) {
-			aPIResult.setResult("fail");
-			aPIResult.setStatusCode(500);
-			aPIResult.setMessage(e.getMessage());
-			log.warn("", e);
-			return aPIResult;
-		}
-		
-		// set haeder
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		String user = "mkKxoOOBBWrvZK6yCF8l8w==";
-		String password = "GjKX1+xXvjlIl65JNgVFzg==";
-		String encodedUserPassword = encodeUserPassword(user, password);
-	    headers.add("Authorization", "Basic " + encodedUserPassword);
-		HttpEntity<String> requestEntity =  new HttpEntity<String>(layerInfo, headers);
 
-		try {
+			// set haeder
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(MediaType.APPLICATION_JSON);
+			String user = policy.getGeoserver_user();
+			String password = policy.getGeoserver_password();
+			String encodedUserPassword = encodeUserPassword(user, password);
+		    headers.add("Authorization", "Basic " + encodedUserPassword);
+			HttpEntity<String> requestEntity =  new HttpEntity<String>(layerInfo, headers);
+
 			RestTemplate restTemplate = new RestTemplate();
-			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+			ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 			
-			aPIResult.setStatusCode(response.getStatusCodeValue());
-	    	aPIResult.setResult("success");  // TOOD 상수 전환 
+			if (response.getStatusCode() != HttpStatus.CREATED) {
+				throw new GeoserverException(response.getBody());
+			}
 			
 		} catch (HttpClientErrorException e) {
-			aPIResult.setStatusCode(e.getRawStatusCode());
-			aPIResult.setResult("fail");  // TOOD 상수 전환 
-			aPIResult.setMessage(e.getResponseBodyAsString());
+			throw new GeoserverException(e.getResponseBodyAsString());
+		} catch (IOException e) {
+			throw new GeoserverException(e.getMessage());
 		}
 		
-		return aPIResult;
+		return projectId;
 	}
 
 	@Override
 	@Transactional
-	public PrivateAPIResult insertGeoserverImage(ImageMosaic imageMosaic) {
-		PrivateAPIResult aPIResult = new PrivateAPIResult();
-		
-		try {
-			geoserverMapper.insertGeoserverImage(imageMosaic);
-			
-			aPIResult.setStatusCode(200);
-	    	aPIResult.setResult("success");  // TOOD 상수 전환 
-	    	
-		} catch (Exception e) {
-			aPIResult.setStatusCode(500);
-			aPIResult.setResult("fail");  // TOOD 상수 전환 
-			aPIResult.setMessage(e.getMessage());
-		}
-		
-		return aPIResult;
+	public int insertGeoserverImage(ImageMosaic imageMosaic) {
+		return geoserverMapper.insertGeoserverImage(imageMosaic);
 	}
 	
 	private String encodeUserPassword(String user, String password) {
