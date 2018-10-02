@@ -30,9 +30,9 @@ public class ImageConvertUtilTest {
 	@Test
 	@Ignore
 	public void test000ConvertProjection() throws InterruptedException, IOException {
-//		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
-//		String srcImg = targetPath.toAbsolutePath().toString();
-		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb.tif";
+		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		String srcImg = targetPath.toAbsolutePath().toString();
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1L);
@@ -46,9 +46,9 @@ public class ImageConvertUtilTest {
 	@Test
 	@Ignore
 	public void test001CreateInnerTile() throws InterruptedException, IOException {
-//		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp.tif");
-//		String srcImg = targetPath.toAbsolutePath().toString();
-		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp.tif";
+		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp.tif");
+		String srcImg = targetPath.toAbsolutePath().toString();
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp.tif";
 				
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1L);
@@ -62,9 +62,9 @@ public class ImageConvertUtilTest {
 	@Test
 	@Ignore
 	public void test002CreateOverview() throws InterruptedException, IOException {
-//		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp_tiled.tif");
-//		String srcImg = targetPath.toAbsolutePath().toString();
-		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp_tiled.tif";
+		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp_tiled.tif");
+		String srcImg = targetPath.toAbsolutePath().toString();
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp_tiled.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1L);
@@ -90,11 +90,11 @@ public class ImageConvertUtilTest {
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testConvertImage() throws InterruptedException {
-//		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
-//		String srcImg = targetPath.toAbsolutePath().toString();
-		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_2.tif";
+		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		String srcImg = targetPath.toAbsolutePath().toString();
+//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_2.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1L);
