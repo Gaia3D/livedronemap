@@ -15,6 +15,7 @@ import org.springframework.web.client.HttpServerErrorException;
 
 import gaia3d.domain.GeoserverAPIResult;
 import gaia3d.domain.ImageMosaic;
+import gaia3d.exception.GeoserverException;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,9 +40,15 @@ public class GeoserverAPIController {
 			aPIResult.setStatusCode(httpStatus.value());
 		} catch (Exception e) {
 			log.warn("", e);
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			aPIResult.setStatusCode(httpStatus.value());
-			aPIResult.setException(e.getMessage());
+			if (e instanceof GeoserverException) {
+				httpStatus = HttpStatus.NOT_FOUND;
+				aPIResult.setStatusCode(httpStatus.value());
+				aPIResult.setException(e.getMessage());
+			} else {
+				httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+				aPIResult.setStatusCode(httpStatus.value());
+				aPIResult.setException(e.getMessage());
+			}
 		}
 		
 		return new ResponseEntity<GeoserverAPIResult>(aPIResult, httpStatus); 
