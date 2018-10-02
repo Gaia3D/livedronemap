@@ -16,8 +16,12 @@ insert into user_info(
 );
 
 -- 운영 정책
-insert into policy(	policy_id, rest_api_encryption_yn) 
-			values( 1, 'N');
+insert into policy(	policy_id, rest_api_encryption_yn, 
+					geoserver_data_url, geoserver_data_workspace, geoserver_data_format, 
+					geoserver_user, geoserver_password) 
+			values( 1, 'N',
+					'http://localhost:8080/geoserver', 'dronemap', 'image/png',
+					'mkKxoOOBBWrvZK6yCF8l8w==', 'GjKX1+xXvjlIl65JNgVFzg==');
 
 commit;
 
