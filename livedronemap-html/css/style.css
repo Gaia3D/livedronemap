@@ -23,6 +23,8 @@ text-align: center;
 background-color: #3f3f4b;
 }
 #wrap {
+overflow: hidden;
+min-width: 1200px;
 height: 100%;
 }
 #wrap > div {
@@ -50,12 +52,14 @@ float: left;
 position: relative;
 width: 300px;	
 background-color: #eee;
+background: url(../images/@map.png);
 }
 #viewWrap {
 float: left;
 position: relative;
 width: 300px;
 border-left: 5px solid #ccc;
+background: url(../images/@view.png);
 }
 #contentsWrap {
 float: left;
@@ -432,6 +436,16 @@ background-color: #fff;
 }
 
 /* PAGINATION */
+.paginationWrap {
+position: relative;
+}
+.paginationWrap .count {
+float: left;
+margin-top: 5px;
+}
+.paginationWrap .count > span {
+color: #386ae8;
+}
 .pagination {
 position: relative;
 margin: 20px 0;
@@ -439,7 +453,7 @@ text-align: center;
 }
 .pagination li {
 display: inline-block;
-margin: 0;
+margin: 0 -5px;
 padding: 0;
 font-size: 10pt;
 padding: 4px 8px;
@@ -459,16 +473,16 @@ background-image: url(../images/ico.png);
 background-repeat: no-repeat;
 }
 .pagination .first {
-background-position: 0px -150px;
+background-position: -643px -390px;
 }
 .pagination .forward {
-background-position: -30px -150px;
+background-position: -670px -390px;
 }
 .pagination .back {
-background-position: -60px -150px;
+background-position: -697px -390px;
 }
 .pagination .end {
-background-position: -90px -150px;
+background-position: -726px -390px;
 }
 .pagerInput {
 padding:10px;

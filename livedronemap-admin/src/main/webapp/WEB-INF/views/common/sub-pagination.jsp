@@ -1,15 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- S: 페이징 -->
-<div class="pagerInput">
-	<span class="countPage">20</span> / 
-	<span class="countTotal">total 210</span>
-	<div>
-		<button type="button" class="forward" title="이전">이전</button>
-		<input type="text" size="1"> /
-		<span>11</span>
-		<button type="button" class="next" title="다음">다음</button>				
-		<button type="button" class="btnText">이동</button>
-	</div>
+<div class="paginationWrap">
+	<div class="count"><span>20</span> / 총123</div>
+		<ul class="pagination">
+			<li class="ico forward" title="앞으로">앞으로</li>
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li class="on">4</li>
+			<li>5</li>
+			<li>6</li>
+			<li class="ico back" title="뒤로">뒤로</li>
+		</ul>
 </div>
-<!-- E: 페이징 -->	
+<!-- E: 페이징 -->      
