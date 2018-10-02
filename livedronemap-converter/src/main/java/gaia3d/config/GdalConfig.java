@@ -16,13 +16,17 @@ public class GdalConfig {
 	private String resultPath;
 	private String serviceSrs;
 	
+	private String nearblackUse;
 	private String nearblackOptions;
 	
+	private String warpUse;
 	private String warpOptions;
 	private String warpSourceSrs;
 	
+	private String translateUse;
 	private String translateOptions;
 	
+	private String addoUse;
 	private String addoOptions;
 	private int addoLevel;
 	
