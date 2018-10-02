@@ -18,13 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import gaia3d.domain.CacheManager;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.Policy;
 import gaia3d.exception.GeoserverException;
 import gaia3d.persistence.GeoserverMapper;
 import gaia3d.security.Crypt;
 import gaia3d.service.GeoserverService;
-import gaia3d.service.PolicyService;
 
 /**
  * GeoServer 서비스 
@@ -37,16 +37,13 @@ public class GeoserverServiceImpl implements GeoserverService {
 	@Autowired
 	private GeoserverMapper geoserverMapper;
 	
-	@Autowired
-	private PolicyService policyService;
-	
 	/**
 	 * GeoServer 레이어 확인 
 	 * @param projectId
 	 * @return
 	 */
 	public Long getGeoserverLayer(Long projectId) {
-		Policy policy = policyService.getPolicy();
+		Policy policy = CacheManager.getPolicy();
 		String geoserverDataUrl = policy.getGeoserver_data_url();
 		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
 		
@@ -83,8 +80,8 @@ public class GeoserverServiceImpl implements GeoserverService {
 	 * @param projectId
 	 * @return
 	 */
-	public Long inputGeoserverLayer(Long projectId) {
-		Policy policy = policyService.getPolicy();
+	public Long insertGeoserverLayer(Long projectId) {
+		Policy policy = CacheManager.getPolicy();
 		String geoserverDataUrl = policy.getGeoserver_data_url();
 		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
 		

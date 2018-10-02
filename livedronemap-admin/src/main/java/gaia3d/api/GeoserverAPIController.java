@@ -42,27 +42,26 @@ public class GeoserverAPIController {
 	public ResponseEntity<GeoserverAPIResult> getGeoserverLayer(HttpServletRequest request, @PathVariable("projectId") Long projectId) {
 		// TODO 인증 
 		
-		GeoserverAPIResult aPIResult = new GeoserverAPIResult();
+		GeoserverAPIResult geoserverAPIResult = new GeoserverAPIResult();
 		HttpStatus httpStatus = null; 
 		try {
 			geoserverService.getGeoserverLayer(projectId);
 			
 			httpStatus = HttpStatus.OK;
-			aPIResult.setStatusCode(httpStatus.value());
+			geoserverAPIResult.setStatusCode(httpStatus.value());
 		} catch (Exception e) {
-			log.warn("", e);
+			e.printStackTrace();
 			if (e instanceof GeoserverException) {
 				httpStatus = HttpStatus.NOT_FOUND;
-				aPIResult.setStatusCode(httpStatus.value());
-				aPIResult.setException(e.getMessage());
 			} else {
 				httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-				aPIResult.setStatusCode(httpStatus.value());
-				aPIResult.setException(e.getMessage());
 			}
+			geoserverAPIResult.setStatusCode(httpStatus.value());
+			geoserverAPIResult.setException(e.getClass().getName());
+			geoserverAPIResult.setMessage(e.getMessage());
 		}
 		
-		return new ResponseEntity<GeoserverAPIResult>(aPIResult, httpStatus); 
+		return new ResponseEntity<GeoserverAPIResult>(geoserverAPIResult, httpStatus); 
 	}
 	
 	/**
@@ -72,37 +71,38 @@ public class GeoserverAPIController {
 	 * @return
 	 */
 	@PostMapping("layers")
-	public ResponseEntity<GeoserverAPIResult> inputGeoserverLayer(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
+	public ResponseEntity<GeoserverAPIResult> insertGeoserverLayer(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
 		// TODO 인증 
 		
-		GeoserverAPIResult aPIResult = new GeoserverAPIResult();
+		GeoserverAPIResult geoserverAPIResult = new GeoserverAPIResult();
 		HttpStatus httpStatus = null;
 		try {
 			Long projectId = imageMosaic.getProject_id();
 			if (projectId == null) {
 				httpStatus = HttpStatus.BAD_REQUEST;
-				aPIResult.setStatusCode(httpStatus.value());
-				aPIResult.setValidationCode("Required field is null.");
-			} else {
-				geoserverService.inputGeoserverLayer(projectId);
-				
-				httpStatus = HttpStatus.OK;
-				aPIResult.setStatusCode(httpStatus.value());
-			}
+				geoserverAPIResult.setStatusCode(httpStatus.value());
+				geoserverAPIResult.setMessage("Required field is null.");
+				return new ResponseEntity<GeoserverAPIResult>(geoserverAPIResult, httpStatus);
+			} 
+			geoserverService.insertGeoserverLayer(projectId);
+			
+			httpStatus = HttpStatus.OK;
+			geoserverAPIResult.setStatusCode(httpStatus.value());
+			
 		} catch (Exception e) {
-			log.warn("", e);
+			e.printStackTrace();
 			if (e instanceof HttpServerErrorException) {
 				httpStatus = ((HttpServerErrorException) e).getStatusCode();
-				aPIResult.setStatusCode(httpStatus.value());
-				aPIResult.setException(((HttpServerErrorException) e).getResponseBodyAsString());
+				geoserverAPIResult.setMessage(((HttpServerErrorException) e).getResponseBodyAsString());
 			} else {
 				httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-				aPIResult.setStatusCode(httpStatus.value());
-				aPIResult.setException(e.getMessage());
+				geoserverAPIResult.setMessage(e.getMessage());
 			}
+			geoserverAPIResult.setStatusCode(httpStatus.value());
+			geoserverAPIResult.setException(e.getClass().getName());
 		}
 		
-		return new ResponseEntity<GeoserverAPIResult>(aPIResult, httpStatus);
+		return new ResponseEntity<GeoserverAPIResult>(geoserverAPIResult, httpStatus);
 	}
 	
 	/**
@@ -115,29 +115,32 @@ public class GeoserverAPIController {
 	public ResponseEntity<GeoserverAPIResult> insertGeoserverImage(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
 		// TODO 인증 
 		
-		GeoserverAPIResult aPIResult = new GeoserverAPIResult();
+		GeoserverAPIResult geoserverAPIResult = new GeoserverAPIResult();
 		HttpStatus httpStatus = null;
 		try {
 			if (imageMosaic.getLocation() == null || imageMosaic.getThe_geom() == null 
 					|| imageMosaic.getImage_dt() == null || imageMosaic.getProject_id() == null) {
 				httpStatus = HttpStatus.BAD_REQUEST;
-				aPIResult.setStatusCode(httpStatus.value());
-				aPIResult.setValidationCode("Required field is null.");
-			} else {
-				geoserverService.insertGeoserverImage(imageMosaic);
+				geoserverAPIResult.setStatusCode(httpStatus.value());
+				geoserverAPIResult.setMessage("Required field is null.");
+				
+				return new ResponseEntity<GeoserverAPIResult>(geoserverAPIResult, httpStatus);
+			} 
+			
+			geoserverService.insertGeoserverImage(imageMosaic);
 
-				httpStatus = HttpStatus.OK;
-				aPIResult.setStatusCode(httpStatus.value());
-			}
+			httpStatus = HttpStatus.OK;
+			geoserverAPIResult.setStatusCode(httpStatus.value());
 			
 		} catch(Exception e) {
-			log.warn("", e);
+			e.printStackTrace();
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			aPIResult.setStatusCode(httpStatus.value());
-			aPIResult.setException(e.getMessage());
+			geoserverAPIResult.setStatusCode(httpStatus.value());
+			geoserverAPIResult.setException(e.getClass().getName());
+			geoserverAPIResult.setMessage(e.getMessage());
 		}
 		
-		return new ResponseEntity<GeoserverAPIResult>(aPIResult, httpStatus);
+		return new ResponseEntity<GeoserverAPIResult>(geoserverAPIResult, httpStatus);
 	}
 	
 }

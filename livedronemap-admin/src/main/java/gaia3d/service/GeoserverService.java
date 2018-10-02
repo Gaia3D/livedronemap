@@ -16,7 +16,7 @@ public interface GeoserverService {
 	 * @param projectId
 	 * @return
 	 */
-	Long inputGeoserverLayer(Long projectId);
+	Long insertGeoserverLayer(Long projectId);
 	
 	/**
 	 * GeoServer 서비스 영상 정보 입력 

@@ -20,7 +20,6 @@ import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -39,7 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ImageConvertUtil implements Runnable {
 	
-	private String GDAL_USE_FLAG = "true";
+	private final static String PROCESS_USE_FLAG = "true";
 	
 	private APIUtil aPIUtil;
 	
@@ -47,7 +46,6 @@ public class ImageConvertUtil implements Runnable {
 	
 	private ImageInfo imageInfo;
 	
-	// TODO 이렇게 하는게 맞나 .. ?!
 	public ImageConvertUtil(APIUtil aPIUtil, GdalConfig gdalConfig, ImageInfo imageInfo) {
 		this.aPIUtil = aPIUtil;
 		this.gdalConfig = gdalConfig;
@@ -60,20 +58,20 @@ public class ImageConvertUtil implements Runnable {
 		
 		try {
 			// TODO 단계별로 진행 여부 필요, properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
-			if (gdalConfig.getNearblackUse().equals(GDAL_USE_FLAG)) {
+			if (gdalConfig.getNearblackUse().equals(PROCESS_USE_FLAG)) {
 				sourceImage = removeBackgroud(sourceImage);
 			}
-			if (gdalConfig.getWarpUse().equals(GDAL_USE_FLAG)) {
+			if (gdalConfig.getWarpUse().equals(PROCESS_USE_FLAG)) {
 				sourceImage = convertProjection(sourceImage);
 			}
-			if (gdalConfig.getTranslateUse().equals(GDAL_USE_FLAG)) {
+			if (gdalConfig.getTranslateUse().equals(PROCESS_USE_FLAG)) {
 				sourceImage = createInnerTile(sourceImage);
 			}
-			if (gdalConfig.getAddoUse().equals(GDAL_USE_FLAG)) {
+			if (gdalConfig.getAddoUse().equals(PROCESS_USE_FLAG)) {
 				sourceImage = createOverview(sourceImage);
 			}
 			
-			// TODO 중간 결과 이미지 삭제 
+			// TODO 원본은 남기고, 중간 결과 이미지 삭제 
 			
 			// 최종 결과물 이동
 			String resultImagePath = moveResultImage(sourceName, sourceImage);
@@ -85,6 +83,9 @@ public class ImageConvertUtil implements Runnable {
 			String location = String.format("%d/%s", projectId, imageName);
 			imageMosaic.setLocation(location);
 			String theGeom = getImageBoundaryAsWKT(resultImagePath);
+			if (theGeom == null) {
+				throw new NullPointerException("Occur a error to get wkt.");
+			}
 			imageMosaic.setThe_geom(theGeom);
 			imageMosaic.setImage_dt(imageInfo.getImageDt());
 			imageMosaic.setProject_id(projectId);
@@ -102,7 +103,7 @@ public class ImageConvertUtil implements Runnable {
 
 		} catch (Exception e) {
 			// TODO 결과 저장하는 API 호출 
-			log.warn("", e);
+			e.printStackTrace();
 		}
 		
 	}
@@ -269,8 +270,6 @@ public class ImageConvertUtil implements Runnable {
 	 * @throws IOException 
 	 */
 	private String moveResultImage(String sourceName, String resultImage) throws IOException {
-		String resultPath = null;
-		
 		// 최종 이미지 결과
 		Path resultFilePath = Paths.get(resultImage);
 		
@@ -283,9 +282,8 @@ public class ImageConvertUtil implements Runnable {
 		checkFileExists(geoserverImageFilePath.toString());
 	
 		Files.move(resultFilePath, geoserverImageFilePath);
-		resultPath = geoserverImageFilePath.toString();
 
-		return resultPath;
+		return geoserverImageFilePath.toString();
 	}
 	
 	/**
@@ -297,22 +295,32 @@ public class ImageConvertUtil implements Runnable {
 	 * @throws IllegalArgumentException
 	 * @throws IOException
 	 */
-	private String getImageBoundaryAsWKT(String image) 
-			throws NoSuchAuthorityCodeException, FactoryException, IllegalArgumentException, IOException  {
+	private String getImageBoundaryAsWKT(String image) {
+		String wkt = null;
+		
 		File imageFile = new File(image);
 		
-		CoordinateReferenceSystem sourceCRS = CRS.decode("EPSG:4326");
-		Hints hint = new Hints();
-		hint.put(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, sourceCRS);    
-		hint.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
-		AbstractGridFormat format = new GeoTiffFormat();
-		AbstractGridCoverage2DReader reader = format.getReader(imageFile, hint);
+		AbstractGridCoverage2DReader abstractGridCoverage2DReader = null;
+		Envelope2D envelope2D = null;
+		try {
+			CoordinateReferenceSystem coordinateReferenceSystem = CRS.decode("EPSG:4326");
+			Hints hint = new Hints();
+			hint.put(Hints.DEFAULT_COORDINATE_REFERENCE_SYSTEM, coordinateReferenceSystem);    
+			hint.put(Hints.FORCE_LONGITUDE_FIRST_AXIS_ORDER, Boolean.TRUE);
+			AbstractGridFormat abstractGridFormat = new GeoTiffFormat();
+			
+			abstractGridCoverage2DReader = abstractGridFormat.getReader(imageFile, hint);
+			GridCoverage2D gridCoverage2D = abstractGridCoverage2DReader.read(null);
+			envelope2D = gridCoverage2D.getEnvelope2D();
+			wkt = String.format("POLYGON((%1$f %2$f, %1$f %4$f, %3$f %4$f, %3$f %2$f, %1$f %2$f))", 
+					envelope2D.getMinX(), envelope2D.getMinY(), envelope2D.getMaxX(), envelope2D.getMaxY());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			abstractGridCoverage2DReader.dispose();
+		}
 		
-		GridCoverage2D coverage = reader.read(null);
-		Envelope2D envelope = coverage.getEnvelope2D();
-		
-		return String.format("POLYGON((%1$f %2$f, %1$f %4$f, %3$f %4$f, %3$f %2$f, %1$f %2$f))", 
-				envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY());
+		return wkt;
 	}
 	
 	/**

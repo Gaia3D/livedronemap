@@ -8,40 +8,61 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageInfo;
-import gaia3d.service.ImageConverterService;
+import gaia3d.util.APIUtil;
+import gaia3d.util.ImageConvertUtil;
 
+/**
+ * 영상 컨버터 
+ * @author jskim
+ *
+ */
 @RequestMapping("/convert/")
 @RestController
 public class ImageConverterController {
 	
 	@Autowired
-	private ImageConverterService imageConverterService;
+	private APIUtil aPIUtil;
+	@Autowired
+	private GdalConfig gdalConfig;
 	
 	/**
-	 * 이미지 선처리 작업 실행 
+	 * 이미지 선처리 요청 처리 
+	 * @param imageInfo
+	 * @return
 	 */
 	@PostMapping("images")
 	public ResponseEntity<APIResult> createConvertedImage(@RequestBody ImageInfo imageInfo) {
 		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null; 
 		
-		if (imageInfo.getProjectId() == null || imageInfo.getImageId() == null || imageInfo.getImagePath() == null) {
-			httpStatus = HttpStatus.BAD_REQUEST;
-			aPIResult.setStatusCode(httpStatus.value());
-			aPIResult.setValidationCode("Required field is null.");
-		} else {
-			imageConverterService.createConvertedImage(imageInfo);
+		try {
+			if (imageInfo.getProjectId() == null || imageInfo.getImageId() == null || imageInfo.getImagePath() == null) {
+				httpStatus = HttpStatus.BAD_REQUEST;
+				aPIResult.setStatusCode(httpStatus.value());
+				aPIResult.setValidationCode("Required field is null.");
+				
+				return new ResponseEntity<APIResult>(aPIResult, httpStatus);
+			} 
+			
+			Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+			Thread thread = new Thread(imageConvertUtil);
+			thread.start();
 			
 			httpStatus = HttpStatus.OK;
 			aPIResult.setStatusCode(httpStatus.value());
+			
+		} catch (Exception e) {
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			aPIResult.setStatusCode(httpStatus.value());
+			aPIResult.setMessage(e.getMessage());
 		}
 		
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
 	// TODO 테스트 실행
-	
 	// TODO 헬스 체크 ?!
 }
