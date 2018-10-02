@@ -22,6 +22,7 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 
 import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
@@ -92,10 +93,10 @@ public class ImageConvertUtil implements Runnable {
 			ResponseEntity<APIResult> insertResult = aPIUtil.insertImageInfoForGeoServer(imageMosaic);
 			log.info("@@@ {}", insertResult.getStatusCode());
 			
-			ResponseEntity<APIResult> checkResult = aPIUtil.checkGeoServerInfo(projectId);
-			log.info("@@@ {}", checkResult.getStatusCode());
-			
-			if (checkResult.getStatusCode() != HttpStatus.OK) {
+			try {
+				ResponseEntity<APIResult> checkResult = aPIUtil.checkGeoServerInfo(projectId);
+				log.info("@@@ {}", checkResult.getStatusCode());
+			} catch (HttpClientErrorException e) {
 				ResponseEntity<APIResult> createResult = aPIUtil.createLayer(imageMosaic);
 				log.info("@@@ {}", createResult.getStatusCode());
 			}
