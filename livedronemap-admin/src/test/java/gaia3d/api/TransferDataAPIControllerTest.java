@@ -2,16 +2,35 @@ package gaia3d.api;
 
 import static org.junit.Assert.*;
 
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
+import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,14 +40,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
+import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import gaia3d.LivedronemapAdminApplicationTests;
+import gaia3d.domain.APIResult;
 import gaia3d.domain.Drone;
 import gaia3d.domain.OrthoDetectedObject;
 import gaia3d.domain.TransferDataResource;
+import gaia3d.security.AES128Cipher;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -52,34 +78,53 @@ public class TransferDataAPIControllerTest {
 		this.mockMvc = webAppContextSetup(context).build();
 	}
 	
-	@Test
-	public void test() throws Exception {
-//		MockHttpServletRequestBuilder createMessage = post("/messages/")
-//				.param("summary", "Spring Rocks")
-//				.param("text", "In case you didn't know, Spring Rocks!"); 
-//		
-//		mockMvc.perform(createMessage) 
-//			.andExpect(status().isOk())
-//			.andDo(print());
-
-	}
-	
 	/**
 	 * 데이터 전송 테스트
 	 * @throws Exception
 	 */
-	@Test
+	@Ignore
 	public void transferData() throws Exception {
 		TransferDataResource transferDataResource = getTransferDataResource();
 		String jsonContent = mapper.writeValueAsString(transferDataResource);
         log.info("{}", jsonContent);
 		
-		MvcResult mvcResult = mockMvc.perform(post("http://localhost/transfer-data")
-				.content(jsonContent))
-				.andExpect(status().isOk())
-				.andReturn();
+//		MvcResult mvcResult = mockMvc.perform(post("http://localhost/transfer-data")
+//				.content(jsonContent))
+//				.andExpect(status().isOk())
+//				.andReturn();
 		
-		log.info("{}", mvcResult.getResponse().getContentAsString());
+		ResultMatcher ok = MockMvcResultMatchers.status().isOk();
+		String fileName = "test.txt";
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("live_drone_map", getCustomHeader());
+		MockMultipartFile attachFile = new MockMultipartFile("file", fileName, "text/plain", "test data".getBytes());
+		MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("http://localhost/transfer-data").file(attachFile);
+		this.mockMvc.perform(builder.headers(headers).content(jsonContent))
+					.andExpect(ok)
+					.andDo(MockMvcResultHandlers.print());
+		
+		//log.info("{}", mvcResult.getResponse().getContentAsString());
+	}
+	
+	@Test
+	public void restTempateTransferData() throws Exception {
+		MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
+		bodyMap.add("file", getFileResource());
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		headers.add("live_drone_map", getCustomHeader());
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyMap, headers);
+		
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<APIResult> response = restTemplate.exchange("http://localhost/transfer-data", HttpMethod.POST, requestEntity, APIResult.class);
+		System.out.println("response status: " + response.getStatusCode());
+		System.out.println("response body: " + response.getBody());
+	}
+	
+	private Resource getFileResource() throws Exception {
+		String filePath = "D://marine_surveillance_1.tif";
+		return new FileSystemResource(filePath);
 	}
 	
 	private TransferDataResource getTransferDataResource() throws Exception {
@@ -121,6 +166,38 @@ public class TransferDataAPIControllerTest {
         log.info("{}", jsonStr);
         
         return transferDataResource;
+	}
+	
+	/**
+	 * 암호화 된 header 값을 생성
+	 * @return
+	 * @throws Exception
+	 */
+	private String getCustomHeader() throws Exception {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("user_id=")
+				.append("test")
+				.append("&")
+				.append("api_key=")
+				.append(UUID.randomUUID().toString())
+				.append("&")
+				.append("token=")
+				.append("22327341")
+				.append("&")
+				.append("role=")
+				.append("ADMIN")
+				.append("&")
+				.append("algorithm=")
+				.append("sha")
+				.append("&")
+				.append("type=")
+				.append("jwt, mac")
+				.append("&")
+				.append("timestamp=")
+				.append(System.nanoTime());
+		
+		return buffer.toString();
+		//return AES128Cipher.encode(buffer.toString());
 	}
 }
 

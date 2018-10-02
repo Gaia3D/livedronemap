@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.GeoserverMapper">
+
+	<insert id="insertGeoserverImage" parameterType="imageMosaic">
+		<!-- insertGeoserverImage -->
+		INSERT INTO geoserver.dronemap (
+			location,
+			the_geom,
+			image_dt,
+			project_id
+		)
+		VALUES (
+			#{location},
+			ST_GeomFromText(#{the_geom}, 4326),
+			#{image_dt}::TIMESTAMP,
+			#{project_id}
+		)
+	</insert>
+</mapper>

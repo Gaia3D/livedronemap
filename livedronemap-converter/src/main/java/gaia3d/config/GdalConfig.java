@@ -1,36 +1,29 @@
 package gaia3d.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Configuration
 @PropertySource("classpath:gdal.properties")
+@ConfigurationProperties(prefix = "gdal")
 public class GdalConfig {
 	
-	@Value("${gdal.cmd.path}")
-	private String gdalCmdPath;
-	@Value("${gdal.result.path}")
-	private String gdalResultPath;
-	@Value("${gdal.service.srs}")
-	private String gdalServiceSrs;
+	private String cmdPath;
+	private String resultPath;
+	private String serviceSrs;
 	
-	@Value("${gdal.warp.options}")
-	private String gdalWarpOptions;
-	@Value("${gdal.warp.source.srs}")
-	private String gdalWarpSourceSrs;
+	private String nearblackOptions;
 	
-	@Value("${gdal.translate.options}")
-	private String gdalTranslateOptions;
+	private String warpOptions;
+	private String warpSourceSrs;
 	
-	@Value("${gdal.addo.options}")
-	private String gdalAddoOptions;
-	@Value("${gdal.addo.level}")
-	private int gdalAddoLevel;
+	private String translateOptions;
+	
+	private String addoOptions;
+	private int addoLevel;
 	
 }	

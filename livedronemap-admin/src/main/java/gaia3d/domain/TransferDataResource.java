@@ -22,6 +22,11 @@ import lombok.ToString;
 public class TransferDataResource implements Serializable {
 
 	private static final long serialVersionUID = -509511198494213847L;
+	
+	// 개별 정사 영상
+	public static final String ORTHO_IMAGE = "0";
+	// 후처리 영상
+	public static final String POSTPROCESSING_IMAGE = "1";
 
 	private Integer drone_project_id;
 	private String data_type;
