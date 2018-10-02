@@ -19,6 +19,11 @@ import gaia3d.exception.GeoserverException;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * GeoServer 처리 API 
+ * @author jskim
+ *
+ */
 @Slf4j
 @RequestMapping("/geoserver/")
 @RestController
@@ -27,6 +32,12 @@ public class GeoserverAPIController {
 	@Autowired
 	private GeoserverService geoserverService;
 	
+	/**
+	 * GeoServer 레이어 확인 
+	 * @param request
+	 * @param projectId
+	 * @return
+	 */
 	@GetMapping("layers/{projectId:[0-9]+}")
 	public ResponseEntity<GeoserverAPIResult> getGeoserverLayer(HttpServletRequest request, @PathVariable("projectId") Long projectId) {
 		// TODO 인증 
@@ -54,6 +65,12 @@ public class GeoserverAPIController {
 		return new ResponseEntity<GeoserverAPIResult>(aPIResult, httpStatus); 
 	}
 	
+	/**
+	 * GeoServer 레이어 생성 
+	 * @param request
+	 * @param imageMosaic
+	 * @return
+	 */
 	@PostMapping("layers")
 	public ResponseEntity<GeoserverAPIResult> inputGeoserverLayer(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
 		// TODO 인증 
@@ -88,6 +105,12 @@ public class GeoserverAPIController {
 		return new ResponseEntity<GeoserverAPIResult>(aPIResult, httpStatus);
 	}
 	
+	/**
+	 * GeoServer 서비스 영상 정보 입력 
+	 * @param request
+	 * @param imageMosaic
+	 * @return
+	 */
 	@PostMapping("images")
 	public ResponseEntity<GeoserverAPIResult> insertGeoserverImage(HttpServletRequest request, @RequestBody ImageMosaic imageMosaic) {
 		// TODO 인증 

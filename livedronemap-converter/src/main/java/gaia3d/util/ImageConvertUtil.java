@@ -54,7 +54,6 @@ public class ImageConvertUtil implements Runnable {
 		this.imageInfo = imageInfo;
 	}
 	
-	@Override
 	public void run() {
 		String sourceImage = imageInfo.getImagePath();
 		String sourceName = FilenameUtils.getBaseName(sourceImage);
@@ -145,7 +144,6 @@ public class ImageConvertUtil implements Runnable {
 		
 	}
 	
-	// TODO 배경제거
 	/**
 	 * 배경을 제거하고 alpha 밴드 생성 
 	 * @throws IOException 
@@ -290,6 +288,15 @@ public class ImageConvertUtil implements Runnable {
 		return resultPath;
 	}
 	
+	/**
+	 * 이미지의 바운더리를 구함 
+	 * @param image
+	 * @return
+	 * @throws NoSuchAuthorityCodeException
+	 * @throws FactoryException
+	 * @throws IllegalArgumentException
+	 * @throws IOException
+	 */
 	private String getImageBoundaryAsWKT(String image) 
 			throws NoSuchAuthorityCodeException, FactoryException, IllegalArgumentException, IOException  {
 		File imageFile = new File(image);
@@ -308,6 +315,10 @@ public class ImageConvertUtil implements Runnable {
 				envelope.getMinX(), envelope.getMinY(), envelope.getMaxX(), envelope.getMaxY());
 	}
 	
+	/**
+	 * 파일 있는지 확인. 있으면 지움 
+	 * @param path
+	 */
 	private void checkFileExists(String path) {
 		File file = new File(path);
 		// TODO 에러 처리 필요 
@@ -316,6 +327,10 @@ public class ImageConvertUtil implements Runnable {
 		}
 	}
 	
+	/**
+	 * 폴더 있는지 확인. 없으면 지움  
+	 * @param path
+	 */
 	private void checkDirectoryExists(String path) {
 		File directory = new File(path);
 		// TODO 에러 처리 필요 

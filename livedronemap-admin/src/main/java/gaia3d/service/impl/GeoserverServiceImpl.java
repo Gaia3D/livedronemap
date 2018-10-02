@@ -26,6 +26,11 @@ import gaia3d.security.Crypt;
 import gaia3d.service.GeoserverService;
 import gaia3d.service.PolicyService;
 
+/**
+ * GeoServer 서비스 
+ * @author jskim
+ *
+ */
 @Service
 public class GeoserverServiceImpl implements GeoserverService {
 	
@@ -35,15 +40,18 @@ public class GeoserverServiceImpl implements GeoserverService {
 	@Autowired
 	private PolicyService policyService;
 	
-	@Override
+	/**
+	 * GeoServer 레이어 확인 
+	 * @param projectId
+	 * @return
+	 */
 	public Long getGeoserverLayer(Long projectId) {
-		// TODO policy 연결 
-		// http://localhost:8080/geoserver/rest/workspaces/dronemap/coveragestores/dronemap/coverages/dronemap_t.json
 		Policy policy = policyService.getPolicy();
 		String geoserverDataUrl = policy.getGeoserver_data_url();
 		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
 		
 		String layerName = String.format("%s_%d", geoserverDataWorkspace, projectId);
+		// TODO 이건 고민 좀 .. 
 		String url = String.format("%s/rest/workspaces/%s/coveragestores/%s/coverages/%s", 
 				geoserverDataUrl, geoserverDataWorkspace, geoserverDataWorkspace, layerName);
 		
@@ -70,20 +78,23 @@ public class GeoserverServiceImpl implements GeoserverService {
 		return projectId;
 	}
 
-	@Override
+	/**
+	 * GeoServer 레이어 생성
+	 * @param projectId
+	 * @return
+	 */
 	public Long inputGeoserverLayer(Long projectId) {
-		
-		// TODO policy 연결 
-		// http://localhost:8080/geoserver/rest/workspaces/dronemap/coveragestores/dronemap/coverages
 		Policy policy = policyService.getPolicy();
 		String geoserverDataUrl = policy.getGeoserver_data_url();
 		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
 		
+		// TODO 이건 고민 좀 .. 
 		String url = String.format("%s/rest/workspaces/%s/coveragestores/%s/coverages", 
 				geoserverDataUrl, geoserverDataWorkspace, geoserverDataWorkspace);
 		
 		String layerInfo = null;
 		try {
+			// TODO 경로 처리
 			layerInfo = new String(Files.readAllBytes(Paths.get("src/main/resources/geoserver/layer.json")), StandardCharsets.UTF_8);
 			layerInfo = layerInfo.replace("{projectId}", String.valueOf(projectId));
 			layerInfo = layerInfo.replace("{workspaceName}", geoserverDataWorkspace);
@@ -113,25 +124,25 @@ public class GeoserverServiceImpl implements GeoserverService {
 		return projectId;
 	}
 
-	@Override
+	/**
+	 * GeoServer 서비스 영상 정보 입력 
+	 * @param imageMosaic
+	 * @return
+	 */
 	@Transactional
 	public int insertGeoserverImage(ImageMosaic imageMosaic) {
 		return geoserverMapper.insertGeoserverImage(imageMosaic);
 	}
 	
+	/**
+	 * 유저 정보 Base64 인코딩 
+	 * @param user
+	 * @param password
+	 * @return
+	 */
 	private String encodeUserPassword(String user, String password) {
 		String plainUserPassword = Crypt.decrypt(user) + ":" + Crypt.decrypt(password);
 		return Base64.getEncoder().encodeToString(plainUserPassword.getBytes());
 	}
-	
-//	private HttpHeaders createHttpHeaders(String user, String password)
-//	{
-//	    String notEncoded = user + ":" + password;
-//	    String encodedAuth = "Basic " + Base64.getEncoder().encodeToString(notEncoded.getBytes());
-//	    HttpHeaders headers = new HttpHeaders();
-//	    headers.setContentType(MediaType.APPLICATION_JSON);
-//	    headers.add("Authorization", encodedAuth);
-//	    return headers;
-//	}
 
 }

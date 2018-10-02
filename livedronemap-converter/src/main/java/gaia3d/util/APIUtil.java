@@ -8,14 +8,12 @@ import org.springframework.web.client.RestTemplate;
 import gaia3d.config.APIServerConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageMosaic;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * RestAPI 호출 클래스 
  * @author jskim
  *
  */
-@Slf4j
 @Component
 public class APIUtil {
 	
@@ -30,7 +28,6 @@ public class APIUtil {
 		
 	}
 	
-	// TODO GeoServer 정보 저장 요청 / DB insert 
 	/**
 	 * GeoServer를 위한 이미지 정보 입력
 	 */
@@ -57,7 +54,6 @@ public class APIUtil {
 		
 	}
 	
-	// TODO GeoServer 레이어 발행
 	/**
 	 * GeoServer 레이어 생성
 	 */
@@ -67,8 +63,7 @@ public class APIUtil {
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(url, imageMosaic, APIResult.class);
 	}
-	
-	// TODO GeoServer 정보 확인
+
 	/**
 	 * GeoServer 레이어 확인 
 	 */
