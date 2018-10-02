@@ -1,24 +1,26 @@
 package gaia3d.service.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageMosaic;
+import gaia3d.domain.PrivateAPIResult;
+import gaia3d.persistence.GeoserverMapper;
+import gaia3d.security.Crypt;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,10 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class GeoserverServiceImpl implements GeoserverService {
 	
+	@Autowired
+	GeoserverMapper geoserverMapper;
+	
 	@Override
-	public ResponseEntity<APIResult> selectGeoserverLayer(String projectId) {
-		APIResult result = new APIResult();
-		int statusCode = 200;
+	public PrivateAPIResult selectGeoserverLayer(String projectId) {
+		PrivateAPIResult aPIResult = new PrivateAPIResult();
 		
 		// TODO policy 연결 
 		// http://localhost:8080/geoserver/rest/workspaces/dronemap/coveragestores/dronemap/coverages/dronemap_t.json
@@ -41,30 +45,35 @@ public class GeoserverServiceImpl implements GeoserverService {
 				geoserverDataUrl, geoserverDataWorkspace, geoserverDataWorkspace, layerName);
 		
 		// TODO geoserver 계정 처리
-		HttpHeaders headers = createHttpHeaders("admin", "geoserver");
-		HttpEntity<String> entity = new HttpEntity<String>("parameters", headers);
+		
+		// set haeder
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		String user = "mkKxoOOBBWrvZK6yCF8l8w==";
+		String password = "GjKX1+xXvjlIl65JNgVFzg==";
+		String encodedUserPassword = encodeUserPassword(user, password);
+	    headers.add("Authorization", "Basic " + encodedUserPassword);
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 			
-		    statusCode = response.getStatusCodeValue();		
-			result.setStatusCode(statusCode);
+	    	aPIResult.setStatusCode(response.getStatusCodeValue());
+	    	aPIResult.setResult("success");  // TOOD 상수 전환 
 			
 		} catch (HttpClientErrorException e) {
-			String code = e.getMessage().split(" ")[0];
-			statusCode = Integer.parseInt(code);
+			aPIResult.setStatusCode(e.getRawStatusCode());
+			aPIResult.setResult("fail");  // TOOD 상수 전환 
+			aPIResult.setMessage(e.getResponseBodyAsString());
 		}
-		
-		result.setStatusCode(statusCode);
-		HttpStatus httpStatus = HttpStatus.valueOf(statusCode);
-		result.setMessage(httpStatus.getReasonPhrase());
 
-		return new ResponseEntity<APIResult>(result, httpStatus);
+		return aPIResult;
 	}
 
 	@Override
-	public String createGeoserverLayer(int projectId) {
-		int statusCode = 200;
+	public PrivateAPIResult createGeoserverLayer(int projectId) {
+		PrivateAPIResult aPIResult = new PrivateAPIResult();
 		
 		// TODO policy 연결 
 		// http://localhost:8080/geoserver/rest/workspaces/dronemap/coveragestores/dronemap/coverages
@@ -81,43 +90,71 @@ public class GeoserverServiceImpl implements GeoserverService {
 			layerInfo = layerInfo.replace("{workspaceName}", geoserverDataWorkspace);
 			
 		} catch (IOException e) {
+			aPIResult.setResult("fail");
+			aPIResult.setStatusCode(500);
+			aPIResult.setMessage(e.getMessage());
 			log.warn("", e);
-			return null;
+			return aPIResult;
 		}
 		
-		// TODO geoserver 계정 처리
-		HttpHeaders headers = createHttpHeaders("admin", "geoserver");
-		headers.add("Content-Type", "application/json");
-		HttpEntity requestEntity =  new HttpEntity(layerInfo, headers);
+		// set haeder
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		String user = "mkKxoOOBBWrvZK6yCF8l8w==";
+		String password = "GjKX1+xXvjlIl65JNgVFzg==";
+		String encodedUserPassword = encodeUserPassword(user, password);
+	    headers.add("Authorization", "Basic " + encodedUserPassword);
+		HttpEntity<String> requestEntity =  new HttpEntity<String>(layerInfo, headers);
 
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 			
-		    statusCode = response.getStatusCodeValue();		
+			aPIResult.setStatusCode(response.getStatusCodeValue());
+	    	aPIResult.setResult("success");  // TOOD 상수 전환 
 			
 		} catch (HttpClientErrorException e) {
-			System.out.println(e);
-			String code = e.getMessage().split(" ")[0];
-			statusCode = Integer.parseInt(code);
+			aPIResult.setStatusCode(e.getRawStatusCode());
+			aPIResult.setResult("fail");  // TOOD 상수 전환 
+			aPIResult.setMessage(e.getResponseBodyAsString());
 		}
 		
-		return null;
+		return aPIResult;
 	}
 
 	@Override
-	public ImageMosaic insertGeoserverImage(ImageMosaic imageMosaic) {
-		return null;
+	@Transactional
+	public PrivateAPIResult insertGeoserverImage(ImageMosaic imageMosaic) {
+		PrivateAPIResult aPIResult = new PrivateAPIResult();
+		
+		try {
+			geoserverMapper.insertGeoserverImage(imageMosaic);
+			
+			aPIResult.setStatusCode(200);
+	    	aPIResult.setResult("success");  // TOOD 상수 전환 
+	    	
+		} catch (Exception e) {
+			aPIResult.setStatusCode(500);
+			aPIResult.setResult("fail");  // TOOD 상수 전환 
+			aPIResult.setMessage(e.getMessage());
+		}
+		
+		return aPIResult;
 	}
 	
-	private HttpHeaders createHttpHeaders(String user, String password)
-	{
-	    String notEncoded = user + ":" + password;
-	    String encodedAuth = "Basic " + Base64.getEncoder().encodeToString(notEncoded.getBytes());
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.setContentType(MediaType.APPLICATION_JSON);
-	    headers.add("Authorization", encodedAuth);
-	    return headers;
+	private String encodeUserPassword(String user, String password) {
+		String plainUserPassword = Crypt.decrypt(user) + ":" + Crypt.decrypt(password);
+		return Base64.getEncoder().encodeToString(plainUserPassword.getBytes());
 	}
+	
+//	private HttpHeaders createHttpHeaders(String user, String password)
+//	{
+//	    String notEncoded = user + ":" + password;
+//	    String encodedAuth = "Basic " + Base64.getEncoder().encodeToString(notEncoded.getBytes());
+//	    HttpHeaders headers = new HttpHeaders();
+//	    headers.setContentType(MediaType.APPLICATION_JSON);
+//	    headers.add("Authorization", encodedAuth);
+//	    return headers;
+//	}
 
 }

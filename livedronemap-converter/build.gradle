@@ -30,7 +30,10 @@ compileJava {
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
+    maven { name = "OSGeo"; url = "http://download.osgeo.org/webdav/geotools/" }
+    maven { name = "boundlessgeo"; url = "http://repo.boundlessgeo.com/main/" }
 	mavenCentral()
+    
 }
 
 sourceSets {
@@ -61,10 +64,16 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter')	
 	compile('org.springframework.boot:spring-boot-starter-web')
 	
-	compile ('org.apache.commons:commons-io:1.3.2')
+	compile('org.apache.commons:commons-io:1.3.2')
 	
-	runtime('org.springframework.boot:spring-boot-devtools')	
-		
+	// GeoTools
+	compile('org.geotools:gt-main:19.2')
+	compile('org.geotools:gt-coverage:19.2')
+	compile('org.geotools:gt-geotiff:19.2')
+	compile('org.geotools:gt-epsg-hsql:19.2') 
+	
+	runtime('org.springframework.boot:spring-boot-devtools')
+
 	// gradle 빌드하면 gradle5에서 lombok 관련 deprecated 오류 발생 버그 대응	
 	annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 	compileOnly("org.projectlombok:lombok:$lombokVersion")

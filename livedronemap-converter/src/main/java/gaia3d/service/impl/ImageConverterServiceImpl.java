@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import gaia3d.config.GdalConfig;
-import gaia3d.persistence.ImageInfo;
+import gaia3d.domain.APIResult;
+import gaia3d.domain.ImageInfo;
 import gaia3d.service.ImageConverterService;
+import gaia3d.util.APIUtil;
 import gaia3d.util.ImageConvertUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,15 +21,29 @@ import lombok.extern.slf4j.Slf4j;
 public class ImageConverterServiceImpl implements ImageConverterService {
 	
 	@Autowired
+	private APIUtil aPIUtil;
+	@Autowired
 	private GdalConfig gdalConfig;
 	
 	@Override
-	public void createConvertedImage(ImageInfo imageInfo) {
+	public APIResult createConvertedImage(ImageInfo imageInfo) {
 		log.info("Start converting : {}", imageInfo.getImagePath());
+		APIResult aPIResult = new APIResult();
 		
-		Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
-		Thread thread = new Thread(imageConvertUtil);
-		thread.start();
+		try {
+			Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+			Thread thread = new Thread(imageConvertUtil);
+			thread.start();
+			
+			aPIResult.setStatusCode(200);
+			
+		} catch (Exception e) {
+			aPIResult.setStatusCode(500);
+			aPIResult.setMessage(e.getMessage());
+		}
+		
+		return aPIResult;
+		
 	}
 	
 }

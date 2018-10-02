@@ -1,6 +1,7 @@
 package gaia3d.service;
 
-import gaia3d.persistence.ImageInfo;
+import gaia3d.domain.APIResult;
+import gaia3d.domain.ImageInfo;
 
 /**
  * 이미지 변환 인터페이스 
@@ -9,6 +10,6 @@ import gaia3d.persistence.ImageInfo;
  */
 public interface ImageConverterService {
 	
-	public void createConvertedImage(ImageInfo imageInfo);
+	public APIResult createConvertedImage(ImageInfo imageInfo);
 	
 }

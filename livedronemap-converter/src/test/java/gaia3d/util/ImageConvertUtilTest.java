@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import gaia3d.config.GdalConfig;
-import gaia3d.persistence.ImageInfo;
+import gaia3d.domain.ImageInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -23,7 +23,9 @@ import gaia3d.persistence.ImageInfo;
 public class ImageConvertUtilTest {
 	
 	@Autowired
-	GdalConfig gdalConfig;
+	private APIUtil aPIUtil;
+	@Autowired
+	private GdalConfig gdalConfig;
 	
 	@Test
 	@Ignore
@@ -36,7 +38,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.convertProjection(srcImg);
 	}
 	
@@ -51,7 +53,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.createInnerTile(srcImg);
 	}
 	
@@ -66,12 +68,12 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.createOverview(srcImg);
 	}
 	
 	@Test
-	public void test003() throws InterruptedException {
+	public void testConvertImage() throws InterruptedException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
 		
@@ -80,7 +82,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1);
 		imageInfo.setImagePath(srcImg);
 		
-		Runnable imageConvertUtil = new ImageConvertUtil(gdalConfig, imageInfo);
+		Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 		
