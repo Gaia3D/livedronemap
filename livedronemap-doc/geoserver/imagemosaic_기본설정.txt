@@ -1,8 +1,11 @@
+!!! 중요 !!!
+GeoServer 서버 실행 할 때 꼭 "-Duser.timezone=GMT" 옵션 추가 해야함 
 
 - imagemosaic 저장소가 DB를 사용할 수 있도록 설정 
 
-1. datastore.properties 생성
-	.접속정보 암호화 필요 
+1. GeoServer에 연결할 폴더 지정, 폴더명은 GeoServer 작업공간과 일치하도록
+	폴더 안에 datastore.properties 생성
+	. TODO 접속정보 암호화 필요 
 	. ex)
 SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory
 host=localhost
@@ -17,18 +20,21 @@ validate\ connections=true
 Connection\ timeout=10
 preparedStatements=true 
 
-2. GeoServer에서 Imagemosaic 저장소 생성 
-	. 저장소를 만들면 자동으로 폴더명 테이블 생성 
+2. GeoServer에서 Imagemosaic 저장소 생성. 저장소명은 작업공간명과 동일하게 생성  
+	. 저장소를 만들면 자동으로 폴더명 테이블 생성
 	. 오류날 경우 1) DB 연결 및 권한 확인, 2) 파일 쓰기 권한 확인 
 	
 3. 생성된 테이블에 시간 칼럼, 프로젝트 아이디 칼럼 추가 
 	. ALTER TABLE schema.tablename ADD COLUMN image_dt TIMESTAMP WITHOUT TIME ZONE;
 	. ALTER TABLE schema.tablename ADD COLUMN project_id BIGINT;
-	
-4. GeoServer 설정 리로드 
+
+4. 이미지 폴더에 가서 폴더명.properties 파일에 내용 추가 
+	. TimeAttribute=image_dt 적절한 위치에 넣으면 됨)
+
+5. GeoServer 설정 리로드 
 	. 로그인 -> 서버 상태 -> 환경구성 및 카탈로그 -> 다시 불러오기 
 
-5. Layer 설정 화면에서 차원탭에 시간이 활성화 가능한지 확인 
+6. Layer 설정 화면에서 차원탭에 시간이 활성화 가능한지 확인 
 	. 안되면 설정 다시 확인 
 	
 
