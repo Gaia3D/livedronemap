@@ -79,7 +79,7 @@ public class ImageConvertUtil implements Runnable {
 			// Geoserver 영상 등록 호출 
 			ImageMosaic imageMosaic = new ImageMosaic();
 			String imageName = FilenameUtils.getName(resultImagePath);
-			Long projectId = imageInfo.getProjectId();
+			Integer projectId = imageInfo.getProjectId();
 			String location = String.format("%d/%s", projectId, imageName);
 			imageMosaic.setLocation(location);
 			String theGeom = getImageBoundaryAsWKT(resultImagePath);

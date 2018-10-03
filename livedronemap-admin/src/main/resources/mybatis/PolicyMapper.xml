@@ -69,7 +69,8 @@
 	<update id="updatePolicyRestAPI" parameterType="policy">
 		/* updatePolicyRestAPI */
 		UPDATE policy
-		SET rest_api_encryption_yn = #{rest_api_encryption_yn},
+		SET rest_api_converter_url = #{rest_api_converter_url},
+			rest_api_encryption_yn = #{rest_api_encryption_yn},
 			rest_api_token_expired_time = #{rest_api_token_expired_time}
 		WHERE policy_id = #{policy_id}
 	</update>

@@ -7,9 +7,12 @@ import lombok.Setter;
 @Setter
 public class ImageInfo {
 		
-	private Long projectId;
+	private Integer projectId;
 	
 	private Long imageId;
+	
+	// 0 개별 정사 영상, 1 후처리
+	private String dataType;
 	
 	// 절대 경로
 	private String imagePath;

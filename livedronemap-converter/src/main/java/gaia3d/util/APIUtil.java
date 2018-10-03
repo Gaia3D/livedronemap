@@ -67,7 +67,7 @@ public class APIUtil {
 	/**
 	 * GeoServer 레이어 확인 
 	 */
-	public ResponseEntity<APIResult> checkGeoServerInfo(Long projectId) {
+	public ResponseEntity<APIResult> checkGeoServerInfo(Integer projectId) {
 		String url = aPIServerConfig.getRootUrl() + String.format("/geoserver/layers/%d", projectId);
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.getForEntity(url, APIResult.class);

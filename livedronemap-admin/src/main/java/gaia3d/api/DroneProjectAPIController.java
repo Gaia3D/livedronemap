@@ -54,7 +54,7 @@ public class DroneProjectAPIController implements APIController {
 			if(tokenLog == null) {
 				aPIResult.setStatusCode(HttpStatus.OK.value());
 				aPIResult.setValidationCode("token.expires.invalid");
-				aPIResult.setMessage("token The validity period has expired.");
+				aPIResult.setMessage("Your token validity period has expired.");
 				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			}
 			clientId = tokenLog.getClient_id();

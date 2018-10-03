@@ -42,6 +42,7 @@ create table policy(
 	geoserver_user							varchar(256),
 	geoserver_password						varchar(256),
 	
+	rest_api_converter_url					varchar(256),
 	rest_api_encryption_yn					char(1)				default 'Y',
 	rest_api_token_max_age					int					default 120,
 	
@@ -148,7 +149,8 @@ comment on column policy.geoserver_data_workspace is 'geoserver 영상 데이터 작업
 comment on column policy.geoserver_data_format is 'geoserver 영상 데이터 요청 포맷';
 comment on column policy.geoserver_user is 'geoserver 사용자 계정';
 comment on column policy.geoserver_password is 'geoserver 비밀번호';
-	
+
+comment on column policy.rest_api_converter_url is 'rest api converter url(포트까지만)';
 comment on column policy.rest_api_encryption_yn is 'rest api 암호화 유무. Y : 사용(기본값), N : 사용안함';
 comment on column policy.rest_api_token_max_age is 'rest api 토큰 유효 시간, 기본 120분';
 

@@ -31,17 +31,17 @@ public class OrthoDetectedObject {
 	// bounding box 공간 정보
 	private String bounding_box_geometry;
 	// 최대
-	private String major_axis;
+	private Integer major_axis;
 	// 최소
-	private String minor_axis;
+	private Integer minor_axis;
 	// 방향
-	private String orientation;
+	private Integer orientation;
 	// bounding box 면적
-	private String bounding_box_area;
+	private Integer bounding_box_area;
 	// 길이
-	private String length;
+	private Integer length;
 	// 속도
-	private String speed;
+	private Integer speed;
 	// 등록일
 	private String insert_date;
 }

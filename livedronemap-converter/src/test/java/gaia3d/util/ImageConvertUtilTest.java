@@ -35,7 +35,7 @@ public class ImageConvertUtilTest {
 //		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1L);
+		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
@@ -51,7 +51,7 @@ public class ImageConvertUtilTest {
 //		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp.tif";
 				
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1L);
+		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
@@ -67,7 +67,7 @@ public class ImageConvertUtilTest {
 //		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp_tiled.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1L);
+		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
@@ -81,7 +81,7 @@ public class ImageConvertUtilTest {
 		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1L);
+		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
@@ -97,7 +97,7 @@ public class ImageConvertUtilTest {
 //		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_2.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
-		imageInfo.setProjectId(1L);
+		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		

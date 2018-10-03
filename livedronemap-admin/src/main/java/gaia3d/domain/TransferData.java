@@ -19,6 +19,8 @@ public class TransferData {
 	private Long transfer_data_id;
 	// drone project 고유번호
 	private Integer drone_project_id;
+	// 사용자 아이디
+	private String user_id;
 	// 데이터 타입. 0 : 개별 정사 영상, 1 : 후처리 영상
 	private String data_type;
 	// 파일 이름

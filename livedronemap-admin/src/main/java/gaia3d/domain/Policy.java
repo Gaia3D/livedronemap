@@ -122,7 +122,8 @@ public class Policy {
 	private String geoserver_user;
 	// geoserver 비밀번호 
 	private String geoserver_password;
-	
+	// rest api converter url(포트까지만)
+	private String rest_api_converter_url;
 	// rest api 암호화 유무. Y : 사용(기본값), N : 사용안함
 	private String rest_api_encryption_yn;
 	// rest api 토큰 유효 기간. 기본 120(분)

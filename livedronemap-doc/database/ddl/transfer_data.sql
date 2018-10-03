@@ -9,6 +9,7 @@ drop table if exists postprocessing_image cascade;
 create table transfer_data(
 	transfer_data_id				bigint,
 	drone_project_id				int						not null,
+	user_id							varchar(32),
 	data_type						char(1),
 	file_name						varchar(256),
 	detected_objects_count			int						default 0,
@@ -27,6 +28,7 @@ create table transfer_data(
 comment on table transfer_data is '전송 데이터';
 comment on column transfer_data.transfer_data_id is 'transfer data 고유번호';
 comment on column transfer_data.drone_project_id is 'drone project 고유번호';
+comment on column transfer_data.user_id is '사용자 아이디';
 comment on column transfer_data.data_type is '데이터 타입. 0 : 개별 정사 영상, 1 : 후처리 영상';
 comment on column transfer_data.file_name is '파일 이름';
 comment on column transfer_data.detected_objects_count is '객체 탐지 개수';
@@ -45,7 +47,6 @@ comment on column transfer_data.insert_date is '등록일';
 create table ortho_image(
 	ortho_image_id								bigint,
 	transfer_data_id							bigint								not null,
-	user_id										varchar(32),
 	file_name									varchar(100)						not null,
 	file_real_name								varchar(100)						not null,
 	file_path									varchar(256)						not null,
@@ -59,7 +60,6 @@ create table ortho_image(
 comment on table ortho_image is '개별 정사 영상';
 comment on column ortho_image.ortho_image_id is '고유번호';
 comment on column ortho_image.transfer_data_id is '전송 데이터 고유번호';
-comment on column ortho_image.user_id is '사용자 아이디';
 comment on column ortho_image.file_name is '파일 이름';
 comment on column ortho_image.file_real_name is '파일 실제 이름';
 comment on column ortho_image.file_path is '파일 경로';
@@ -73,7 +73,6 @@ comment on column ortho_image.insert_date is '등록일';
 create table postprocessing_image(
 	postprocessing_image_id						bigint,
 	transfer_data_id							bigint								not null,
-	user_id										varchar(32),
 	file_type									char(1)								default '0',
 	file_name									varchar(100)						not null,
 	file_real_name								varchar(100)						not null,
@@ -88,8 +87,7 @@ create table postprocessing_image(
 comment on table postprocessing_image is '후처리 영상';
 comment on column postprocessing_image.postprocessing_image_id is '고유번호';
 comment on column postprocessing_image.transfer_data_id is '전송 데이터 고유번호';
-comment on column postprocessing_image.user_id is '사용자 아이디';
-comment on column postprocessing_image.file_type is '파일 확장자';
+comment on column postprocessing_image.file_type is '파일 유형';
 comment on column postprocessing_image.file_name is '파일 이름';
 comment on column postprocessing_image.file_real_name is '파일 실제 이름';
 comment on column postprocessing_image.file_path is '파일 경로';
@@ -103,7 +101,6 @@ comment on column postprocessing_image.insert_date is '등록일';
 create table ortho_detected_object(
 	ortho_detected_object_id					bigint,
 	ortho_image_id								bigint								not null,
-	user_id										varchar(32),
 	object_type									varchar(100),
 	geometry		 							GEOGRAPHY(POINT, 4326),
 	detected_date								timestamp with time zone,
@@ -121,7 +118,6 @@ create table ortho_detected_object(
 comment on table ortho_detected_object is '객체 탐지';
 comment on column ortho_detected_object.ortho_detected_object_id is '고유번호';
 comment on column ortho_detected_object.ortho_image_id is '개별 정사 영상 고유번호';
-comment on column ortho_detected_object.user_id is '사용자 아이디';
 comment on column ortho_detected_object.object_type is '객체 타입';
 comment on column ortho_detected_object.geometry is 'geometry';
 comment on column ortho_detected_object.detected_date is '발견일';

@@ -83,7 +83,7 @@ public class TransferDataAPIControllerTest {
 	 * @throws Exception
 	 */
 	@Ignore
-	public void transferData() throws Exception {
+	public void mockMvcTransferData() throws Exception {
 		TransferDataResource transferDataResource = getTransferDataResource();
 		String jsonContent = mapper.writeValueAsString(transferDataResource);
         log.info("{}", jsonContent);
@@ -107,8 +107,8 @@ public class TransferDataAPIControllerTest {
 		//log.info("{}", mvcResult.getResponse().getContentAsString());
 	}
 	
-	@Test
-	public void restTempateTransferData() throws Exception {
+	@Ignore
+	public void restTempateTransferData1() throws Exception {
 		MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
 		bodyMap.add("file", getFileResource());
 		HttpHeaders headers = new HttpHeaders();
@@ -120,6 +120,25 @@ public class TransferDataAPIControllerTest {
 		ResponseEntity<APIResult> response = restTemplate.exchange("http://localhost/transfer-data", HttpMethod.POST, requestEntity, APIResult.class);
 		System.out.println("response status: " + response.getStatusCode());
 		System.out.println("response body: " + response.getBody());
+	}
+	
+	@Test
+	public void restTempateTransferData() throws Exception {
+		MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+		headers.add("live_drone_map", getCustomHeader());
+		
+		bodyMap.add("file_meta", getTransferDataResource());
+		bodyMap.add("file", getFileResource());
+		
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "http://localhost/transfer-data";
+		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyMap, headers);
+		APIResult aPIResult = restTemplate.postForObject(url, requestEntity, APIResult.class);
+		
+		log.info("statusCode = {}, validationCode = {}, message = {}", aPIResult.getStatusCode(), aPIResult.getValidationCode(), aPIResult.getMessage());
 	}
 	
 	private Resource getFileResource() throws Exception {
@@ -142,14 +161,14 @@ public class TransferDataAPIControllerTest {
 			orthoDetectedObject.setNumber(i);
 			orthoDetectedObject.setGeometry("POINT (128.382757714281 34.7651373676212)");
 			orthoDetectedObject.setObject_type("0");
-			orthoDetectedObject.setDetected_date("2018-09-29 20:38:00");
+			orthoDetectedObject.setDetected_date("20180929203800");
 			orthoDetectedObject.setBounding_box_geometry("POLYGON ((128.382734145868 34.7651857207077,128.382789761448 34.7651808845703,128.382783958083 34.7650672353414,128.38272544082 34.7650730387062,128.382734145868 34.7651857207077))");
-			orthoDetectedObject.setMajor_axis("30");
-			orthoDetectedObject.setMinor_axis("50");
-			orthoDetectedObject.setOrientation("260");
-			orthoDetectedObject.setBounding_box_area("150");
-			orthoDetectedObject.setLength("30");
-			orthoDetectedObject.setSpeed("12");
+			orthoDetectedObject.setMajor_axis(30);
+			orthoDetectedObject.setMinor_axis(50);
+			orthoDetectedObject.setOrientation(260);
+			orthoDetectedObject.setBounding_box_area(150);
+			orthoDetectedObject.setLength(30);
+			orthoDetectedObject.setSpeed(12);
 			
 			detected_objects.add(orthoDetectedObject);
 		}
@@ -160,7 +179,7 @@ public class TransferDataAPIControllerTest {
 		transferDataResource.setFile_name("test.jpg");
 		transferDataResource.setDetected_objects(detected_objects);
 		transferDataResource.setDrone(drone);
-		transferDataResource.setShooting_date("2018-09-29 20:38:00");
+		transferDataResource.setShooting_date("20180929203800");
 		
 		String jsonStr = mapper.writeValueAsString(transferDataResource);
         log.info("{}", jsonStr);

@@ -38,12 +38,12 @@ public class JsonTest {
 			orthoDetectedObject.setObject_type("0");
 			orthoDetectedObject.setDetected_date("2018-09-29 20:38:00");
 			orthoDetectedObject.setBounding_box_geometry("POLYGON ((128.382734145868 34.7651857207077,128.382789761448 34.7651808845703,128.382783958083 34.7650672353414,128.38272544082 34.7650730387062,128.382734145868 34.7651857207077))");
-			orthoDetectedObject.setMajor_axis("30");
-			orthoDetectedObject.setMinor_axis("50");
-			orthoDetectedObject.setOrientation("260");
-			orthoDetectedObject.setBounding_box_area("150");
-			orthoDetectedObject.setLength("30");
-			orthoDetectedObject.setSpeed("12");
+			orthoDetectedObject.setMajor_axis(30);
+			orthoDetectedObject.setMinor_axis(50);
+			orthoDetectedObject.setOrientation(260);
+			orthoDetectedObject.setBounding_box_area(150);
+			orthoDetectedObject.setLength(30);
+			orthoDetectedObject.setSpeed(12);
 			
 			detected_objects.add(orthoDetectedObject);
 		}

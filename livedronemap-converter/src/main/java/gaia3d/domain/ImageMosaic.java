@@ -21,6 +21,6 @@ public class ImageMosaic {
 	private String image_dt;
 	
 	// 프로젝트 ID 
-	private Long project_id;
+	private Integer project_id;
 	
 }

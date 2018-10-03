@@ -5,6 +5,7 @@ import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gaia3d.domain.UserSession;
 
@@ -28,6 +32,7 @@ import gaia3d.domain.TokenLog;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.service.APILogService;
 import gaia3d.service.TokenLogService;
+import gaia3d.service.TransferDataService;
 import gaia3d.util.FileUtil;
 import gaia3d.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +48,8 @@ public class TransferDataAPIController implements APIController {
 	private APILogService aPILogService;
 	@Autowired
 	private TokenLogService tokenLogService;
+	@Autowired
+	private TransferDataService transferDataService;
 	
 
 	/**
@@ -54,8 +61,7 @@ public class TransferDataAPIController implements APIController {
 	@PostMapping("/transfer-data")
 	public ResponseEntity<APIResult> insertTransferData(MultipartHttpServletRequest request, 
 														@RequestParam("file") MultipartFile multipartFile, 
-														@RequestHeader("live_drone_map") String customHeader,
-														TransferDataResource transferDataResource) {
+														@RequestHeader("live_drone_map") String customHeader) {
 		log.info("@@@@@@@@@@ transfer data insert api call");
 		
 		APIResult aPIResult = null;
@@ -64,6 +70,7 @@ public class TransferDataAPIController implements APIController {
 		TokenLog tokenLog = new TokenLog();
 		Integer clientId = null;
 		String clientName = null;
+		FileInfo fileInfo = null;
 		try {
 			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, customHeader);
 			aPIResult = validate(log, APIValidationType.TOKEN, aPIHeader);
@@ -75,22 +82,23 @@ public class TransferDataAPIController implements APIController {
 			if(tokenLog == null) {
 				aPIResult.setStatusCode(HttpStatus.OK.value());
 				aPIResult.setValidationCode("token.expires.invalid");
-				aPIResult.setMessage("token The validity period has expired.");
+				aPIResult.setMessage("Your token validity period has expired.");
 				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			}
 			clientId = tokenLog.getClient_id();
 			clientName = tokenLog.getClient_name();
 			
-			log.info("transferDataResource = {}", transferDataResource);
-			log.info("@@@@@ filename = {}", multipartFile.getName());
+			String fileMeta = request.getParameter("file_meta");
+			ObjectMapper objectMapper = new ObjectMapper();
+			TransferDataResource transferDataResource = objectMapper.readValue(fileMeta, TransferDataResource.class);
+			log.info("@@@@@ transferDataResource = {}", transferDataResource);
 			
 			String uploadRootDir = propertiesConfig.getOrthoImageDir();
 			if(TransferDataResource.POSTPROCESSING_IMAGE.equals(transferDataResource.getData_type())) {
 				uploadRootDir = propertiesConfig.getPostprocessingImageDir();
 			}
-			
-			//UserSession userSession = (UserSession)request.getSession().getAttribute(UserSession.KEY);
-			FileInfo fileInfo = FileUtil.userUpload(null, FileUtil.SUBDIRECTORY_YEAR_MONTH, multipartFile, CacheManager.getPolicy(), uploadRootDir);
+			fileInfo = FileUtil.upload(FileUtil.SUBDIRECTORY_YEAR_MONTH, multipartFile, CacheManager.getPolicy(), uploadRootDir);
+			log.info("@@@@@ filename = {}", multipartFile.getOriginalFilename());
 			if(fileInfo.getError_code() != null && !"".equals(fileInfo.getError_code())) {
 				log.info("@@@@@@@@@@@@@@@@@@@@ error_code = {}", fileInfo.getError_code());
 				aPIResult.setStatusCode(HttpStatus.OK.value());
@@ -98,13 +106,16 @@ public class TransferDataAPIController implements APIController {
 				aPIResult.setMessage("file validation error.");
 				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
 			}
-				
+			
+			//UserSession userSession = (UserSession)request.getSession().getAttribute(UserSession.KEY);
 			//fileInfo.setUser_id(userSession.getUser_id());
-			//fileInfo = fileService.insertDataAttributeFile(data_id, fileInfo);
+			
+			transferDataService.insertTransferData(fileInfo, transferDataResource);
 			
 			httpStatus = HttpStatus.OK;
 			aPIResult.setStatusCode(httpStatus.value());
 		} catch(Exception e) {
+			FileUtil.deleteFile(fileInfo.getFile_path() + fileInfo.getFile_real_name());
 			e.printStackTrace();
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			aPIResult.setStatusCode(httpStatus.value());

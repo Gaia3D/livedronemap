@@ -1,9 +1,7 @@
 package gaia3d.util;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -13,9 +11,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import gaia3d.domain.FileInfo;
-
 import gaia3d.domain.Policy;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,12 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FileUtil {
 
-	/*
-	 * TODO 대용량 엑셀 처리 관련 참조
-	 * http://poi.apache.org/spreadsheet/how-to.html#sxssf
-	 * 
-	 */
-	
 	// 디렉토리 생성 방법 
 	public static final int SUBDIRECTORY_YEAR = 1;
 	public static final int SUBDIRECTORY_YEAR_MONTH = 2;
@@ -44,12 +34,13 @@ public class FileUtil {
 	
 	/**
 	 * transfer data 
+	 * @param subDirectoryType
 	 * @param multipartFile
-	 * @param jobType
+	 * @param policy
 	 * @param directory
 	 * @return
 	 */
-	public static FileInfo userUpload(String userId, int subDirectoryType, MultipartFile multipartFile, Policy policy, String directory) {
+	public static FileInfo upload(int subDirectoryType, MultipartFile multipartFile, Policy policy, String directory) {
 		// 파일 기본 validation 체크
 		FileInfo fileInfo = fileValidation(multipartFile, policy);
 		if(fileInfo.getError_code() != null && !"".equals(fileInfo.getError_code())) {
@@ -57,7 +48,7 @@ public class FileUtil {
 		}
 		
 		// 파일을 upload 디렉토리로 복사
-		fileInfo = fileCopy(userId, subDirectoryType, multipartFile, fileInfo, directory);
+		fileInfo = fileCopy(subDirectoryType, multipartFile, fileInfo, directory);
 		
 		return fileInfo;
 	}
@@ -128,10 +119,6 @@ public class FileUtil {
 		return fileInfo;
 	}
 	
-	private static FileInfo fileCopy(MultipartFile multipartFile, FileInfo fileInfo, String directory) {
-		return fileCopy(null, 1, multipartFile, fileInfo, directory);
-	}
-	
 	/**
 	 * 파일 복사
 	 * @param multipartFile
@@ -139,7 +126,7 @@ public class FileUtil {
 	 * @param targetDirectory
 	 * @return
 	 */
-	private static FileInfo fileCopy(String userId, int subDirectoryType, MultipartFile multipartFile, FileInfo fileInfo, String targetDirectory) {
+	private static FileInfo fileCopy(int subDirectoryType, MultipartFile multipartFile, FileInfo fileInfo, String targetDirectory) {
 		
 		// 최상위 /upload/user/ 생성
 		File rootDirectory = new File(targetDirectory);
@@ -176,7 +163,7 @@ public class FileUtil {
 			sourceDirectory = targetDirectory + year + File.separator + month + File.separator + day + File.separator;
 		}
 		
-		String saveFileName = userId + "_" + today + "_" + System.nanoTime() + "." + fileInfo.getFile_ext();
+		String saveFileName = today + "_" + System.nanoTime() + "." + fileInfo.getFile_ext();
 		long size = 0L;
 		try (	InputStream inputStream = multipartFile.getInputStream();
 				OutputStream outputStream = new FileOutputStream(sourceDirectory + saveFileName)) {
@@ -197,5 +184,12 @@ public class FileUtil {
 		}
 
 		return fileInfo;
+	}
+	
+	public static void deleteFile(String fileName) {
+		File file = new File(fileName);
+		if(file.exists()) {
+			file.delete();
+		}
 	}
 }
