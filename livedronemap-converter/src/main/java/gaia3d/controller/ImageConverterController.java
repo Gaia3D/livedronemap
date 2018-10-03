@@ -19,7 +19,7 @@ import gaia3d.util.ImageConvertUtil;
  * @author jskim
  *
  */
-@RequestMapping("/convert/")
+@RequestMapping("/converter/")
 @RestController
 public class ImageConverterController {
 	
