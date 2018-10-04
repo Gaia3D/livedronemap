@@ -1,6 +1,6 @@
 {
     "coverage": {
-        "name": "{workspaceName}_{projectId}",
+        "name": "{workspaceName}_{projectId}_{dataType}",
         "nativeName": "{workspaceName}",
         "nativeCRS": "EPSG:4326",
         "srs": "EPSG:4326",
@@ -189,7 +189,7 @@
                 {
                     "string": [
                         "Filter",
-                        "project_id={projectId}"
+                        "project_id={projectId} AND data_type='{dataType}'"
                     ]
                 },
                 {

@@ -21,7 +21,7 @@ insert into policy(	policy_id, rest_api_encryption_yn, rest_api_converter_url
 					geoserver_user, geoserver_password,
 					rest_api_converter_url) 
 			values( 1, 'N',
-					'http://localhost:8080/geoserver', 'dronemap', 'image/png',
+					'http://localhost:8080/geoserver', 'livedronemap', 'image/png',
 					'mkKxoOOBBWrvZK6yCF8l8w==', 'GjKX1+xXvjlIl65JNgVFzg==',
 					'http://localhost:9090/');
 

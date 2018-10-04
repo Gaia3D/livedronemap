@@ -23,4 +23,7 @@ public class ImageMosaic {
 	// 프로젝트 ID 
 	private Long project_id;
 	
+	// 영상 종류 구분, 0 개별 정사 영상, 1 후처리
+	private String dataType;
+	
 }

@@ -3,19 +3,22 @@
 
 <mapper namespace="gaia3d.persistence.GeoserverMapper">
 
+	<!-- geoserver에 image 정보 등록 -->
 	<insert id="insertGeoserverImage" parameterType="imageMosaic">
-		<!-- insertGeoserverImage -->
-		INSERT INTO geoserver.dronemap (
+		/* insertGeoserverImage */
+		INSERT INTO geoserver.livedronemap (
 			location,
 			the_geom,
 			image_dt,
-			project_id
+			project_id,
+			data_type
 		)
 		VALUES (
 			#{location},
 			ST_GeomFromText(#{the_geom}, 4326),
 			#{image_dt}::TIMESTAMP,
-			#{project_id}
+			#{project_id},
+			#{data_type}
 		)
 	</insert>
 </mapper>

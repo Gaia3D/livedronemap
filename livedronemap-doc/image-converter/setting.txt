@@ -10,8 +10,11 @@
 		- 공식 홈페이지에서 설치 파일 다운받아서 설치
 		- https://www.postgresql.org/
 		- http://www.postgis.org/
-	3.2. 사용할 DB 생성 
+	3.2. 사용할 DB 생성
+		- PostGIS 확장
+			CREATE EXTENSION postgis; 
 		- 'geoserver' 스키마 생성  
+			CREATE SCEHMA geoserver;
 
 2. GeoServer
 	2.1. 설치
@@ -19,20 +22,21 @@
 		- tomcat 권장
 		
 	2.2. TOMCAT 옵션 추가  
-		- tomcat_home/bin/setenv.sh(bat) 생성
+		- tomcat_home/bin/setenv.sh(bat) 파일 생성
 		- CATALINA_OPTS 변수에 -Duser.timezone=GMT 추가
-		- ex) CATALINA_OPTS="$CATALINA_OPTS -Duser.timezone=GMT"
+		- ex) windows : SET CATALINA_OPTS="%CATALINA_OPTS% -Duser.timezone=GMT"
+				linux/MacOS : EXPORT CATALINA_OPTS="$CATALINA_OPTS -Duser.timezone=GMT"
 		- 필요할 경우 JAVA_HOME 설정
 		
 	2.3. 작업공간, 저장소, 테스트 레이어 생성
 		2.3.1. 작업공간 생성 
 			- GeoServer Web 페이지에 접속 ( localhost:8080/geoserver ), 로그인, 왼쪽 메뉴에서 작업공간 선택
 			- 작업공간을 생성
-				name: dronemap
-				namespace: dronemap.gaia3d.com
+				name: livedronemap
+				namespace: livedronemap.gaia3d.com
 				
 		2.3.2. 저장소 생성
-			- 저장소 생성 전에 GeoServer에서 서비스할 영상을 저장할 폴더 생성. ex) D:\\geoserver_image\\dronemap
+			- 저장소 생성 전에 GeoServer에서 서비스할 영상을 저장할 폴더 생성. ex) D:\\geoserver_image\\livedronemap
 			- 생성한 폴더 안에 datastore.properties 파일 생성
 				SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory
 				host=localhost
@@ -50,14 +54,15 @@
 			- 폴더에 샘플 데이터(이미지) 1개 복사 
 			- GeoServer Web 페이지에 접속 (localhost:8080/geoserver), 로그인, 왼쪽 메뉴에서 저장소 선택
 			- ImageMosaic 저장소 생성
-				name: dronemap
-				연결파라미터 URL: D:\\geoserver_image\\dronemap 선택 
-			- 저장소가 정상적으로 생성되면, 이미지 폴더에 dronemap.properties 파일이 생성되고, 
-			DB에 geoserver.dronemap 테이블이 생성됨 		
-			- DB에 접속하여 geoserver.dronemap 테이블에 시간 칼럼과 프로젝트 ID 칼럼 추가 
-				ALTER TABLE schema.tablename ADD COLUMN image_dt TIMESTAMP WITHOUT TIME ZONE;
-				ALTER TABLE schema.tablename ADD COLUMN project_id BIGINT;
-			- dronemap.properties 파일에 시간 칼럼 정보 추가
+				name: livedronemap
+				연결파라미터 URL: D:\\geoserver_image\\livedronemap 선택 
+			- 저장소가 정상적으로 생성되면, 이미지 폴더에 livedronemap.properties 파일이 생성되고, 
+			DB에 geoserver.livedronemap 테이블이 생성됨 		
+			- DB에 접속하여 geoserver.livedronemap 테이블에 시간 칼럼과 프로젝트 ID 칼럼 추가 
+				ALTER TABLE geoserver.livedronemap ADD COLUMN image_dt TIMESTAMP WITHOUT TIME ZONE;
+				ALTER TABLE geoserver.livedronemap ADD COLUMN project_id BIGINT;
+				ALTER TABLE geoserver.livedronemap ADD COLUMN data_type character varying(1);
+			- livedronemap.properties 파일에 시간 칼럼 정보 추가
 				TimeAttribute=image_dt
 			- GeoServer Web에서 왼쪽 메뉴의 서버 상태 -> 환경구성 및 카탈로그 -> 다시 불러오기 실행 
 			
@@ -85,7 +90,7 @@
 			api.root-url=http://localhost:9999
 		- gdal.properties에 gdal경로, 처리 영상 저장 폴더 설정 
 			gdal.cmd-path=C:\\Program Files\\QGIS 2.18\\bin
-			gdal.result-path=C:\\geoserver_image\\dronemap
+			gdal.result-path=D:\\geoserver_image\\livedronemap
 		
 5. test
 	- admin, converter 모두 실행되어 있어야함
