@@ -3,7 +3,7 @@
 
 <mapper namespace="gaia3d.persistence.PostProcessingImageMapper">
 
-	<!-- transfer data 등록 -->
+	<!-- 후처리 영상 등록 -->
 	<insert id="insertPostProcessingImage" parameterType="postProcessingImage" >
 		/* insertPostProcessingImage */
 		<selectKey keyProperty="postprocessing_image_id" resultType="long" order="BEFORE">
@@ -15,5 +15,14 @@
 			#{postprocessing_image_id}, #{transfer_data_id}, #{file_type}, #{file_name}, #{file_real_name}, #{file_path}, #{file_size}, #{file_ext}
 		)
 	</insert>
+	
+	<!-- 후처리 영상 정보 수정 -->
+	<update id="updatePostProcessingImage" parameterType="postProcessingImage">
+		/* updatePostProcessingImage */
+		UPDATE postprocessing_image
+		SET status = #{status},
+			update_date = now()
+		WHERE postprocessing_image_id = #{postprocessing_image_id}
+	</update>
 	
 </mapper>

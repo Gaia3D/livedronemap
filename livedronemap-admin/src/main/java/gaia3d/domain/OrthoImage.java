@@ -19,4 +19,6 @@ public class OrthoImage extends FileInfo {
 	private Long transfer_data_id;
 	// 상태. 0 : 전송 완료
 	private String status;
+	// 수정일
+	private String update_date;
 }

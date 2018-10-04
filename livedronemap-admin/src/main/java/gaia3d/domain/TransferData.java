@@ -43,6 +43,8 @@ public class TransferData {
 	private BigDecimal drone_yaw;
 	// 촬영일
 	private String shooting_date;
+	// 수정일
+	private String update_date;
 	// 등록일
 	private String insert_date;
 }

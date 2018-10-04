@@ -23,4 +23,14 @@ public class PostProcessingImageServiceImpl implements PostProcessingImageServic
 	public int insertPostProcessingImage(PostProcessingImage postProcessingImage) {
 		return postProcessingImageMapper.insertPostProcessingImage(postProcessingImage);
 	}
+	
+	/**
+	 * 후처리 영상 수정
+	 * @param postProcessingImage
+	 * @return
+	 */
+	@Transactional
+	public int updatePostProcessingImage(PostProcessingImage postProcessingImage) {
+		return postProcessingImageMapper.updatePostProcessingImage(postProcessingImage);
+	}
 }

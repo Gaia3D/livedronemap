@@ -17,4 +17,9 @@ public interface PostProcessingImageMapper {
 	 */
 	int insertPostProcessingImage(PostProcessingImage postProcessingImage);
 	
+	/**
+	 * @param postProcessingImage
+	 * @return
+	 */
+	int updatePostProcessingImage(PostProcessingImage postProcessingImage);
 }

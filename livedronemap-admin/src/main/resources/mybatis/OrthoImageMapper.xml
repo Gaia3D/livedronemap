@@ -16,4 +16,13 @@
 		)
 	</insert>
 	
+	<!-- 개별 정사 영상 수정 -->
+	<update id="updateOrthoImage" parameterType="orthoImage">
+		/* updateOrthoImage */
+		UPDATE ortho_image
+		SET status = #{status},
+			update_date = now()
+		WHERE ortho_image_id = #{ortho_image_id}
+	</update>
+	
 </mapper>

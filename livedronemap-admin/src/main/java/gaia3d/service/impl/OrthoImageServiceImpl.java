@@ -23,4 +23,14 @@ public class OrthoImageServiceImpl implements OrthoImageService {
 	public int insertOrthoImage(OrthoImage orthoImage) {
 		return orthoImageMapper.insertOrthoImage(orthoImage);
 	}
+	
+	/**
+	 * 개별 정사 영상 수정
+	 * @param orthoImage
+	 * @return
+	 */
+	@Transactional
+	public int updateOrthoImage(OrthoImage orthoImage) {
+		return orthoImageMapper.updateOrthoImage(orthoImage);
+	}
 }

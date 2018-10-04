@@ -21,6 +21,7 @@ create table transfer_data(
 	drone_pitch						numeric(13,10),
 	drone_yaw						numeric(13,10),
 	shooting_date					timestamp with time zone,
+	update_date						timestamp with time zone,
 	insert_date						timestamp with time zone default now(),
 	constraint transfer_data_id_pk	primary key (transfer_data_id)
 );
@@ -40,6 +41,7 @@ comment on column transfer_data.drone_roll is '드론 roll';
 comment on column transfer_data.drone_pitch is '드론 pitch';
 comment on column transfer_data.drone_yaw is '드론 흔들림';
 comment on column transfer_data.shooting_date is '촬영일';
+comment on column transfer_data.update_date is '수정일';
 comment on column transfer_data.insert_date is '등록일';
 
 
@@ -53,6 +55,7 @@ create table ortho_image(
 	file_size									varchar(12)							not null,
 	file_ext									varchar(10)							not null,
 	status										char(1)								default '0',
+	update_date									timestamp with time zone,
 	insert_date									timestamp with time zone			default now(),
 	constraint ortho_image_pk primary key (ortho_image_id)	
 );
@@ -66,6 +69,7 @@ comment on column ortho_image.file_path is '파일 경로';
 comment on column ortho_image.file_size is '파일 사이즈';
 comment on column ortho_image.file_ext is '파일 확장자';
 comment on column ortho_image.status is '상태. 0 : 전송 완료, 1 : 이미지 후처리 완료';
+comment on column ortho_image.update_date is '수정일';
 comment on column ortho_image.insert_date is '등록일';
 
 
@@ -80,6 +84,7 @@ create table postprocessing_image(
 	file_size									varchar(12)							not null,
 	file_ext									varchar(10)							not null,
 	status										char(1)								default '0',
+	update_date									timestamp with time zone,
 	insert_date									timestamp with time zone			default now(),
 	constraint postprocessing_image_pk primary key (postprocessing_image_id)	
 );
@@ -94,6 +99,7 @@ comment on column postprocessing_image.file_path is '파일 경로';
 comment on column postprocessing_image.file_size is '파일 사이즈';
 comment on column postprocessing_image.file_ext is '파일 확장자';
 comment on column postprocessing_image.status is '상태. 0 : 전송 완료';
+comment on column postprocessing_image.update_date is '수정일';
 comment on column postprocessing_image.insert_date is '등록일';
 
 

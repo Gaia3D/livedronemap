@@ -17,4 +17,10 @@ public interface OrthoImageMapper {
 	 */
 	int insertOrthoImage(OrthoImage orthoImage);
 	
+	/**
+	 * @param orthoImage
+	 * @return
+	 */
+	int updateOrthoImage(OrthoImage orthoImage);
+	
 }
