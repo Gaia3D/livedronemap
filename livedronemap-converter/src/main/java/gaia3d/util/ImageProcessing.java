@@ -87,7 +87,7 @@ public class ImageProcessing implements Runnable {
 				throw new NullPointerException("Occur a error to get wkt.");
 			}
 			imageMosaic.setThe_geom(theGeom);
-			imageMosaic.setImage_datetime(imageInfo.getImageDatetime());
+			imageMosaic.setImage_date(imageInfo.getImageDate());
 			imageMosaic.setProject_id(projectId);
 			imageMosaic.setData_type(imageInfo.getDataType());
 			

@@ -14,7 +14,8 @@
 		- PostGIS 확장
 			CREATE EXTENSION postgis; 
 		- 'geoserver' 스키마 생성  
-			CREATE SCEHMA geoserver;
+			(livedronemap 사용자와 geoserver 사용자를 따로 분리해야 함)
+			CREATE SCEHMA geoserver AUTHORIZATION postgres;
 
 2. GeoServer
 	2.1. 설치
@@ -24,7 +25,7 @@
 	2.2. TOMCAT 옵션 추가  
 		- tomcat_home/bin/setenv.sh(bat) 파일 생성
 		- CATALINA_OPTS 변수에 -Duser.timezone=GMT 추가
-		- ex) windows : SET CATALINA_OPTS="%CATALINA_OPTS% -Duser.timezone=GMT"
+		- ex) 	windows : SET "CATALINA_OPTS=%CATALINA_OPTS% -Duser.timezone=GMT"
 				linux/MacOS : EXPORT CATALINA_OPTS="$CATALINA_OPTS -Duser.timezone=GMT"
 		- 필요할 경우 JAVA_HOME 설정
 		
@@ -36,13 +37,15 @@
 				namespace: livedronemap.gaia3d.com
 				
 		2.3.2. 저장소 생성
-			- 저장소 생성 전에 GeoServer에서 서비스할 영상을 저장할 폴더 생성. ex) D:\\geoserver_image\\livedronemap
-			- 생성한 폴더 안에 datastore.properties 파일 생성
+			- 저장소 생성 전에 GeoServer에서 서비스할 영상을 저장할 폴더 생성. 
+				ex) C:\geoserver_image\livedronemap
+			- 생성한 폴더 안에 datastore.properties 파일 생성, 접속 정보는 사용할 정보에 맞게 수정. 스키마는 'geoserver' 로 설정
+				파일 저장시 반드시 notepad++ 과 같은 에디터에서 UTF-8(BOM 없음)으로 변환 후 저장할 것. UTF-8의 경우 BOM 오류 발생.
 				SPI=org.geotools.data.postgis.PostgisNGDataStoreFactory
 				host=localhost
 				port=5432
-				database=postgres
-				schema=public
+				database=livedronemap
+				schema=geoserver
 				user=postgres
 				passwd=postgres
 				Loose\ bbox=true
@@ -50,26 +53,28 @@
 				validate\ connections=true
 				Connection\ timeout=10
 				preparedStatements=true
-			- 접속정보는 실제와 맞게 수정하고, schema는 'geoserver'로 설정 
-			- 폴더에 샘플 데이터(이미지) 1개 복사 
-			- GeoServer Web 페이지에 접속 (localhost:8080/geoserver), 로그인, 왼쪽 메뉴에서 저장소 선택
-			- ImageMosaic 저장소 생성
-				name: livedronemap
-				연결파라미터 URL: D:\\geoserver_image\\livedronemap 선택 
+			- 폴더에 샘플 데이터(이미지) 1개 복사. tif 
+			- GeoServer Web 페이지에 접속 (localhost:8080/geoserver), 로그인, 
+				왼쪽 메뉴에서 저장소 > 새로운 저장소 생성하기 클릭
+			- 래스터 데이저 저장소 > ImageMosaic 저장소 클릭
+				작업 공간 : livedronemap
+				데이터 저장소 이름: livedronemap
+				연결파라미터 URL: C:\geoserver_image\livedronemap 선택
 			- 저장소가 정상적으로 생성되면, 이미지 폴더에 livedronemap.properties 파일이 생성되고, 
-			DB에 geoserver.livedronemap 테이블이 생성됨 		
+				DB에 geoserver.livedronemap 테이블이 생성됨 		
 			- DB에 접속하여 geoserver.livedronemap 테이블에 시간 칼럼과 프로젝트 ID 칼럼 추가 
-				ALTER TABLE geoserver.livedronemap ADD COLUMN image_datetime TIMESTAMP WITHOUT TIME ZONE;
+				(with time zone으로 할때 오류가 발생하는 경우가 있다고 함)
+				ALTER TABLE geoserver.livedronemap ADD COLUMN image_date TIMESTAMP WITHOUT TIME ZONE;
 				ALTER TABLE geoserver.livedronemap ADD COLUMN project_id BIGINT;
-				ALTER TABLE geoserver.livedronemap ADD COLUMN data_type character varying(1);
+				ALTER TABLE geoserver.livedronemap ADD COLUMN data_type char(1);
 			- livedronemap.properties 파일에 시간 칼럼 정보 추가
-				TimeAttribute=image_datetime
+				TimeAttribute=image_date
 			- GeoServer Web에서 왼쪽 메뉴의 서버 상태 -> 환경구성 및 카탈로그 -> 다시 불러오기 실행 
 			
 		2.3.3. 레이어 생성
 			- GeoServer Web 페이지에 접속 (localhost:8080/geoserver), 로그인, 왼쪽 메뉴에서 레이어 선택
 			- '새로운 레이어 추가하기'를 선택하고, 추가할 레이어의 발행하기 클릭 
-			- '차원' 탭에서 시간을 활성화 할 수 있는지 확인. 활성화는 클릭하고, 표현은 '목록', 기본값은 '가장큰 도메인 값 사용'으로 설정 후 확인
+			- '차원' 탭에서 시간을 활성화 할 수 있는지 확인. 활성화는 클릭하고, 표현은 '목록', 기본값은 '가장큰 도메인 값 사용'으로 설정 후 저장
 			- 시간을 활성화 할 수 없을 경우, 설정이 잘못되었거나 환경설정을 다시 불러오지 않아서 그럴 가능성이 있음
 			- 레이어 미리보기에서 데이터 확인 
 		

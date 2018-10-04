@@ -104,22 +104,30 @@ public class TransferDataServiceImpl implements TransferDataService {
 			imageId = postProcessingImage.getPostprocessing_image_id();
 		}
 		
-		callImageProcessing(transferDataResource.getDrone_project_id(), transferDataResource.getData_type(), imageId, fileInfo.getFile_path() + fileInfo.getFile_real_name());
+		callImageProcessing(transferDataResource.getDrone_project_id(), 
+							transferDataResource.getData_type(), 
+							imageId, 
+							fileInfo.getFile_path() + fileInfo.getFile_real_name(),
+							transferDataResource.getShooting_date());
 		
 		return result;
 	}
 	
-	private void callImageProcessing(Integer projectId, String dataType, Long imageId, String fileNameFullPath) {
+	private void callImageProcessing(Integer projectId, String dataType, Long imageId, String fileNameFullPath, String imageDate) {
 		MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
 		bodyMap.add("projectId", projectId);
 		bodyMap.add("dataType", dataType);
 		bodyMap.add("imageId", imageId);
+		bodyMap.add("imageId", imageId);
 		bodyMap.add("imagePath", fileNameFullPath);
+		bodyMap.add("imageDate", imageDate);
+		
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, headers);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = CacheManager.getPolicy().getRest_api_converter_url() + APIURL.CONVERTER.getUrl();
+		log.info("url = {}", url);
 		ResponseEntity<APIResult> aPIResult = restTemplate.postForEntity(url, request, APIResult.class);
 		log.info("callImageProcessing status code = {}", aPIResult.getStatusCodeValue());
 		log.info("callImageProcessing aPIResult body = {}", aPIResult.getBody());

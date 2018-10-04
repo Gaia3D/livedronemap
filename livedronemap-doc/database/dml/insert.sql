@@ -16,7 +16,7 @@ insert into user_info(
 );
 
 -- 운영 정책
-insert into policy(	policy_id, rest_api_encryption_yn, rest_api_converter_url
+insert into policy(	policy_id, rest_api_encryption_yn,
 					geoserver_data_url, geoserver_data_workspace, geoserver_data_format, 
 					geoserver_user, geoserver_password,
 					rest_api_converter_url) 

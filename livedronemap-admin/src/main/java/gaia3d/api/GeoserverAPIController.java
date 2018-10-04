@@ -43,6 +43,7 @@ public class GeoserverAPIController {
 	public ResponseEntity<GeoserverAPIResult> getGeoserverOrthoImageLayer(HttpServletRequest request, @PathVariable("projectId") Long projectId) {
 		// TODO 인증 
 		
+		log.info("@@@@@@@@@@@ projectId = {}", projectId);
 		GeoserverAPIResult geoserverAPIResult = new GeoserverAPIResult();
 		HttpStatus httpStatus = null; 
 		try {
@@ -193,7 +194,7 @@ public class GeoserverAPIController {
 		HttpStatus httpStatus = null;
 		try {
 			if (imageMosaic.getLocation() == null || imageMosaic.getThe_geom() == null 
-					|| imageMosaic.getImage_datetime() == null || imageMosaic.getProject_id() == null) {
+					|| imageMosaic.getImage_date() == null || imageMosaic.getProject_id() == null) {
 				httpStatus = HttpStatus.BAD_REQUEST;
 				geoserverAPIResult.setStatusCode(httpStatus.value());
 				geoserverAPIResult.setMessage("Required field is null.");

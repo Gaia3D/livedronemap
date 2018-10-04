@@ -34,13 +34,13 @@ public class ImageConverterController {
 	 * @return
 	 */
 	@PostMapping("images")
-	public ResponseEntity<APIResult> createConvertedImage(@RequestBody ImageInfo imageInfo) {
+	public ResponseEntity<APIResult> createConvertedImage(ImageInfo imageInfo) {
 		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null; 
 		
 		try {
 			if (imageInfo.getProjectId() == null || imageInfo.getImageId() == null 
-					|| imageInfo.getImagePath() == null || imageInfo.getImageDatetime() == null
+					|| imageInfo.getImagePath() == null || imageInfo.getImageDate() == null
 					|| imageInfo.getDataType() == null) {
 				httpStatus = HttpStatus.BAD_REQUEST;
 				aPIResult.setStatusCode(httpStatus.value());

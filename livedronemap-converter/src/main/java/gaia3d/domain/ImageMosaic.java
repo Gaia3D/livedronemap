@@ -18,7 +18,7 @@ public class ImageMosaic {
 	private String the_geom;
 	
 	// 영상 촬영일시 
-	private String image_datetime;
+	private String image_date;
 	
 	// 프로젝트 ID 
 	private Integer project_id;

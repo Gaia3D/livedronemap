@@ -10,12 +10,14 @@ import gaia3d.domain.APIResult;
 import gaia3d.domain.APIURL;
 import gaia3d.domain.ImageDataType;
 import gaia3d.domain.ImageMosaic;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * RestAPI 호출 클래스 
  * @author jskim
  *
  */
+@Slf4j
 @Component
 public class APIUtil {
 	
@@ -35,6 +37,7 @@ public class APIUtil {
 	 */
 	public ResponseEntity<APIResult> insertImageInfoForGeoServer(ImageMosaic imageMosaic) {
 		String url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_IMAGES.getUrl();
+		log.info("url = {}", url);
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(url, imageMosaic, APIResult.class);
 	}
@@ -65,6 +68,7 @@ public class APIUtil {
 		} else {
 			url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS_POSTPROCESSING_IMAGES.getUrl();
 		}
+		log.info("url = {}", url);
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(url, imageMosaic, APIResult.class);
 	}
@@ -81,6 +85,7 @@ public class APIUtil {
 			url = aPIServerConfig.getRootUrl() 
 					+ String.format("%s/%d", APIURL.GEOSERVER_LAYERS_POSTPROCESSING_IMAGES.getUrl(), imageMosaic.getProject_id());
 		}
+		log.info("url = {}", url);
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.getForEntity(url, APIResult.class);
 	}

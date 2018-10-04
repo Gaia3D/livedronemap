@@ -26,12 +26,14 @@ import gaia3d.exception.GeoserverException;
 import gaia3d.persistence.GeoserverMapper;
 import gaia3d.security.Crypt;
 import gaia3d.service.GeoserverService;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * GeoServer 서비스 
  * @author jskim
  *
  */
+@Slf4j
 @Service
 public class GeoserverServiceImpl implements GeoserverService {
 	
@@ -64,12 +66,14 @@ public class GeoserverServiceImpl implements GeoserverService {
 		
 		try {
 			RestTemplate restTemplate = new RestTemplate();
+			log.info("######## url = {}", url);
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 			
 			if (response.getStatusCode() != HttpStatus.OK) {
 				throw new GeoserverException(response.getBody());
 			}
 		} catch (HttpClientErrorException e) {
+			e.printStackTrace();
 			throw new GeoserverException(e.getResponseBodyAsString());
 		}
 
