@@ -18,12 +18,12 @@ public class ImageMosaic {
 	private String the_geom;
 	
 	// 영상 촬영일시 
-	private String image_dt;
+	private String image_datetime;
 	
 	// 프로젝트 ID 
 	private Long project_id;
 	
 	// 영상 종류 구분, 0 개별 정사 영상, 1 후처리
-	private String dataType;
+	private String data_type;
 	
 }

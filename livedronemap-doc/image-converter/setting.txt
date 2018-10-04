@@ -59,11 +59,11 @@
 			- 저장소가 정상적으로 생성되면, 이미지 폴더에 livedronemap.properties 파일이 생성되고, 
 			DB에 geoserver.livedronemap 테이블이 생성됨 		
 			- DB에 접속하여 geoserver.livedronemap 테이블에 시간 칼럼과 프로젝트 ID 칼럼 추가 
-				ALTER TABLE geoserver.livedronemap ADD COLUMN image_dt TIMESTAMP WITHOUT TIME ZONE;
+				ALTER TABLE geoserver.livedronemap ADD COLUMN image_datetime TIMESTAMP WITHOUT TIME ZONE;
 				ALTER TABLE geoserver.livedronemap ADD COLUMN project_id BIGINT;
 				ALTER TABLE geoserver.livedronemap ADD COLUMN data_type character varying(1);
 			- livedronemap.properties 파일에 시간 칼럼 정보 추가
-				TimeAttribute=image_dt
+				TimeAttribute=image_datetime
 			- GeoServer Web에서 왼쪽 메뉴의 서버 상태 -> 환경구성 및 카탈로그 -> 다시 불러오기 실행 
 			
 		2.3.3. 레이어 생성

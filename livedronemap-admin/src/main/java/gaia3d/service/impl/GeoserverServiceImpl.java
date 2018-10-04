@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import gaia3d.domain.CacheManager;
+import gaia3d.domain.ImageDataType;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.Policy;
 import gaia3d.exception.GeoserverException;
@@ -42,12 +43,12 @@ public class GeoserverServiceImpl implements GeoserverService {
 	 * @param projectId
 	 * @return
 	 */
-	public Long getGeoserverLayer(Long projectId) {
+	public Long getGeoserverLayer(Long projectId, ImageDataType imageDataType) {
 		Policy policy = CacheManager.getPolicy();
 		String geoserverDataUrl = policy.getGeoserver_data_url();
 		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
 		
-		String layerName = String.format("%s_%d", geoserverDataWorkspace, projectId);
+		String layerName = String.format("%s_%d_%s", geoserverDataWorkspace, projectId, imageDataType.getDataType());
 		// TODO 이건 고민 좀 .. 
 		String url = String.format("%s/rest/workspaces/%s/coveragestores/%s/coverages/%s", 
 				geoserverDataUrl, geoserverDataWorkspace, geoserverDataWorkspace, layerName);
@@ -80,7 +81,7 @@ public class GeoserverServiceImpl implements GeoserverService {
 	 * @param projectId
 	 * @return
 	 */
-	public Long insertGeoserverLayer(Long projectId) {
+	public Long insertGeoserverLayer(Long projectId, ImageDataType imageDataType) {
 		Policy policy = CacheManager.getPolicy();
 		String geoserverDataUrl = policy.getGeoserver_data_url();
 		String geoserverDataWorkspace = policy.getGeoserver_data_workspace();
@@ -93,8 +94,9 @@ public class GeoserverServiceImpl implements GeoserverService {
 		try {
 			// TODO 경로 처리
 			layerInfo = new String(Files.readAllBytes(Paths.get("src/main/resources/geoserver/layer.json")), StandardCharsets.UTF_8);
-			layerInfo = layerInfo.replace("{projectId}", String.valueOf(projectId));
 			layerInfo = layerInfo.replace("{workspaceName}", geoserverDataWorkspace);
+			layerInfo = layerInfo.replace("{projectId}", String.valueOf(projectId));
+			layerInfo = layerInfo.replace("{dataType}", imageDataType.getDataType());
 
 			// set haeder
 			HttpHeaders headers = new HttpHeaders();

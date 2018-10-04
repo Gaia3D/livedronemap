@@ -87,14 +87,15 @@ public class ImageProcessing implements Runnable {
 				throw new NullPointerException("Occur a error to get wkt.");
 			}
 			imageMosaic.setThe_geom(theGeom);
-			imageMosaic.setImage_dt(imageInfo.getImageDt());
+			imageMosaic.setImage_datetime(imageInfo.getImageDatetime());
 			imageMosaic.setProject_id(projectId);
+			imageMosaic.setData_type(imageInfo.getDataType());
 			
 			ResponseEntity<APIResult> insertResult = aPIUtil.insertImageInfoForGeoServer(imageMosaic);
 			log.info("@@@ {}", insertResult.getStatusCode());
 			
 			try {
-				ResponseEntity<APIResult> checkResult = aPIUtil.checkGeoServerInfo(projectId);
+				ResponseEntity<APIResult> checkResult = aPIUtil.checkGeoServerInfo(imageMosaic);
 				log.info("@@@ {}", checkResult.getStatusCode());
 			} catch (HttpClientErrorException e) {
 				ResponseEntity<APIResult> createResult = aPIUtil.createLayer(imageMosaic);
@@ -122,23 +123,23 @@ public class ImageProcessing implements Runnable {
 		String targetImage = getTargetPath(sourceImage, "warp", "tif");
 		checkFileExists(targetImage);
 		
-		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "gdalwarp");
-		List<String> cmdList = new ArrayList<>();
-		cmdList.add(cmdPath.toString());
+		Path commandPath = Paths.get(gdalConfig.getCmdPath(), "gdalwarp");
+		List<String> commandList = new ArrayList<>();
+		commandList.add(commandPath.toString());
 		
-		List<String> cmdOption = Arrays.asList(gdalConfig.getWarpOptions().split(","));
-		if (cmdOption.isEmpty()) {
-			cmdList.addAll(cmdOption);
+		List<String> commandOption = Arrays.asList(gdalConfig.getWarpOptions().split(","));
+		if (commandOption.isEmpty()) {
+			commandList.addAll(commandOption);
 		}
 		
-		cmdList.add("-s_srs");
-		cmdList.add(gdalConfig.getWarpSourceSrs());
-		cmdList.add("-t_srs");
-		cmdList.add(gdalConfig.getServiceSrs());
-		cmdList.add(sourceImage);
-		cmdList.add(targetImage);
+		commandList.add("-s_srs");
+		commandList.add(gdalConfig.getWarpSourceSrs());
+		commandList.add("-t_srs");
+		commandList.add(gdalConfig.getServiceSrs());
+		commandList.add(sourceImage);
+		commandList.add(targetImage);
 		
-		ProcessRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(commandList);
 		
 		return targetImage;
 		
@@ -156,20 +157,20 @@ public class ImageProcessing implements Runnable {
 		String targetImage = getTargetPath(sourceImage, "nb", "tif");
 		checkFileExists(targetImage);
 		
-		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "nearblack");
-		List<String> cmdList = new ArrayList<>();
-		cmdList.add(cmdPath.toString());
+		Path commandPath = Paths.get(gdalConfig.getCmdPath(), "nearblack");
+		List<String> commandList = new ArrayList<>();
+		commandList.add(commandPath.toString());
 		
-		List<String> cmdOption = Arrays.asList(gdalConfig.getNearblackOptions().split(","));
-		if (cmdOption.isEmpty()) {
-			cmdList.addAll(cmdOption);
+		List<String> commandOption = Arrays.asList(gdalConfig.getNearblackOptions().split(","));
+		if (commandOption.isEmpty()) {
+			commandList.addAll(commandOption);
 		}
 		
-		cmdList.add("-o");
-		cmdList.add(targetImage);
-		cmdList.add(sourceImage);
+		commandList.add("-o");
+		commandList.add(targetImage);
+		commandList.add(sourceImage);
 		
-		ProcessRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(commandList);
 		
 		return targetImage;
 	}
@@ -189,18 +190,18 @@ public class ImageProcessing implements Runnable {
 		String targetImage = getTargetPath(sourceImage, "tiled", "tif");
 		checkFileExists(targetImage);
 		
-		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "gdal_translate");
-		List<String> cmdList = new ArrayList<>();
-		cmdList.add(cmdPath.toString());
+		Path commandPath = Paths.get(gdalConfig.getCmdPath(), "gdal_translate");
+		List<String> commandList = new ArrayList<>();
+		commandList.add(commandPath.toString());
 		
-		List<String> cmdOption = Arrays.asList(gdalConfig.getTranslateOptions().split(","));
-		if (cmdOption.isEmpty()) {
-			cmdList.addAll(cmdOption);
+		List<String> commandOption = Arrays.asList(gdalConfig.getTranslateOptions().split(","));
+		if (commandOption.isEmpty()) {
+			commandList.addAll(commandOption);
 		}
-		cmdList.add(sourceImage);
-		cmdList.add(targetImage);
+		commandList.add(sourceImage);
+		commandList.add(targetImage);
 		
-		ProcessRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(commandList);
 		
 		return targetImage;
 		
@@ -217,24 +218,24 @@ public class ImageProcessing implements Runnable {
 	public String createOverview(String sourceImage) throws InterruptedException, IOException {
 		log.info("Start gdaladdo .. {}", sourceImage);
 		
-		Path cmdPath = Paths.get(gdalConfig.getCmdPath(), "gdaladdo");
-		List<String> cmdList = new ArrayList<>();
-		cmdList.add(cmdPath.toString());
+		Path commandPath = Paths.get(gdalConfig.getCmdPath(), "gdaladdo");
+		List<String> commandList = new ArrayList<>();
+		commandList.add(commandPath.toString());
 		
-		List<String> cmdOption = Arrays.asList(gdalConfig.getAddoOptions().split(","));
-		if (cmdOption.isEmpty()) {
-			cmdList.addAll(cmdOption);
+		List<String> commandOption = Arrays.asList(gdalConfig.getAddoOptions().split(","));
+		if (commandOption.isEmpty()) {
+			commandList.addAll(commandOption);
 		}
-		cmdList.add(sourceImage);
+		commandList.add(sourceImage);
 		
 		int initLevel = 2;
 		int overviewLevel = gdalConfig.getAddoLevel();
 		for (int i = 1; i <= overviewLevel; i++) {
-			cmdList.add(String.valueOf(initLevel));
+			commandList.add(String.valueOf(initLevel));
 			initLevel *= 2;
 		}
 		
-		ProcessRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(commandList);
 		
 		return sourceImage;
 		

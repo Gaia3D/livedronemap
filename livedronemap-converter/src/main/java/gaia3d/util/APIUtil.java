@@ -8,6 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import gaia3d.config.APIServerConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.APIURL;
+import gaia3d.domain.ImageDataType;
 import gaia3d.domain.ImageMosaic;
 
 /**
@@ -33,8 +34,7 @@ public class APIUtil {
 	 * GeoServer를 위한 이미지 정보 입력
 	 */
 	public ResponseEntity<APIResult> insertImageInfoForGeoServer(ImageMosaic imageMosaic) {
-		// TODO config 연결 
-		String url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS.getUrl();
+		String url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_IMAGES.getUrl();
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(url, imageMosaic, APIResult.class);
 	}
@@ -59,8 +59,12 @@ public class APIUtil {
 	 * GeoServer 레이어 생성
 	 */
 	public ResponseEntity<APIResult> createLayer(ImageMosaic imageMosaic) {
-		// TODO config 연결 
-		String url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS.getUrl();
+		String url = null;
+		if (imageMosaic.getData_type().equals(ImageDataType.ORTHO_IMAGE.getDataType())) {
+			url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS_ORTHO_IMAGES.getUrl();
+		} else {
+			url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS_POSTPROCESSING_IMAGES.getUrl();
+		}
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(url, imageMosaic, APIResult.class);
 	}
@@ -68,9 +72,15 @@ public class APIUtil {
 	/**
 	 * GeoServer 레이어 확인 
 	 */
-	public ResponseEntity<APIResult> checkGeoServerInfo(Integer projectId) {
-		String url = aPIServerConfig.getRootUrl() 
-				+ String.format("%s/%d", APIURL.GEOSERVER_LAYERS.getUrl(), projectId);
+	public ResponseEntity<APIResult> checkGeoServerInfo(ImageMosaic imageMosaic) {
+		String url = null;
+		if (imageMosaic.getData_type().equals(ImageDataType.ORTHO_IMAGE.getDataType())) {
+			url = aPIServerConfig.getRootUrl() 
+					+ String.format("%s/%d", APIURL.GEOSERVER_LAYERS_ORTHO_IMAGES.getUrl(), imageMosaic.getProject_id());
+		} else {
+			url = aPIServerConfig.getRootUrl() 
+					+ String.format("%s/%d", APIURL.GEOSERVER_LAYERS_POSTPROCESSING_IMAGES.getUrl(), imageMosaic.getProject_id());
+		}
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.getForEntity(url, APIResult.class);
 	}

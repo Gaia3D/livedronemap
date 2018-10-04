@@ -9,14 +9,14 @@
 		INSERT INTO geoserver.livedronemap (
 			location,
 			the_geom,
-			image_dt,
+			image_datetime,
 			project_id,
 			data_type
 		)
 		VALUES (
 			#{location},
 			ST_GeomFromText(#{the_geom}, 4326),
-			#{image_dt}::TIMESTAMP,
+			#{image_datetime}::TIMESTAMP,
 			#{project_id},
 			#{data_type}
 		)

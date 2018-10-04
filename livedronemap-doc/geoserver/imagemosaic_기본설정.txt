@@ -25,11 +25,11 @@ preparedStatements=true
 	. 오류날 경우 1) DB 연결 및 권한 확인, 2) 파일 쓰기 권한 확인 
 	
 3. 생성된 테이블에 시간 칼럼, 프로젝트 아이디 칼럼 추가 
-	. ALTER TABLE schema.tablename ADD COLUMN image_dt TIMESTAMP WITHOUT TIME ZONE;
+	. ALTER TABLE schema.tablename ADD COLUMN image_datetime TIMESTAMP WITHOUT TIME ZONE;
 	. ALTER TABLE schema.tablename ADD COLUMN project_id BIGINT;
 
 4. 이미지 폴더에 가서 폴더명.properties 파일에 내용 추가 
-	. TimeAttribute=image_dt 적절한 위치에 넣으면 됨)
+	. TimeAttribute=image_datetime 적절한 위치에 넣으면 됨)
 
 5. GeoServer 설정 리로드 
 	. 로그인 -> 서버 상태 -> 환경구성 및 카탈로그 -> 다시 불러오기 

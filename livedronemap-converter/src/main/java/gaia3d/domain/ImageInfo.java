@@ -18,6 +18,6 @@ public class ImageInfo {
 	private String imagePath;
 	
 	// 2018-10-01 09:00:00.000 
-	private String imageDt;
+	private String imageDatetime;
 	
 }

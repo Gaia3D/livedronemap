@@ -39,7 +39,9 @@ public class ImageConverterController {
 		HttpStatus httpStatus = null; 
 		
 		try {
-			if (imageInfo.getProjectId() == null || imageInfo.getImageId() == null || imageInfo.getImagePath() == null) {
+			if (imageInfo.getProjectId() == null || imageInfo.getImageId() == null 
+					|| imageInfo.getImagePath() == null || imageInfo.getImageDatetime() == null
+					|| imageInfo.getDataType() == null) {
 				httpStatus = HttpStatus.BAD_REQUEST;
 				aPIResult.setStatusCode(httpStatus.value());
 				aPIResult.setValidationCode("Required field is null.");
