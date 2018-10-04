@@ -7,6 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 import gaia3d.config.APIServerConfig;
 import gaia3d.domain.APIResult;
+import gaia3d.domain.APIURL;
 import gaia3d.domain.ImageMosaic;
 
 /**
@@ -33,7 +34,7 @@ public class APIUtil {
 	 */
 	public ResponseEntity<APIResult> insertImageInfoForGeoServer(ImageMosaic imageMosaic) {
 		// TODO config 연결 
-		String url = aPIServerConfig.getRootUrl() +"/geoserver/images";
+		String url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS.getUrl();
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(url, imageMosaic, APIResult.class);
 	}
@@ -59,7 +60,7 @@ public class APIUtil {
 	 */
 	public ResponseEntity<APIResult> createLayer(ImageMosaic imageMosaic) {
 		// TODO config 연결 
-		String url = aPIServerConfig.getRootUrl() + "/geoserver/layers";
+		String url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS.getUrl();
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.postForEntity(url, imageMosaic, APIResult.class);
 	}
@@ -68,7 +69,8 @@ public class APIUtil {
 	 * GeoServer 레이어 확인 
 	 */
 	public ResponseEntity<APIResult> checkGeoServerInfo(Integer projectId) {
-		String url = aPIServerConfig.getRootUrl() + String.format("/geoserver/layers/%d", projectId);
+		String url = aPIServerConfig.getRootUrl() 
+				+ String.format("%s/%d", APIURL.GEOSERVER_LAYERS.getUrl(), projectId);
 		RestTemplate restTemplate = new RestTemplate();
 		return restTemplate.getForEntity(url, APIResult.class);
 	}

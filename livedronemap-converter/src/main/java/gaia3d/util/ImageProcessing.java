@@ -126,9 +126,9 @@ public class ImageProcessing implements Runnable {
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
 		
-		List<String> cmdOpt = Arrays.asList(gdalConfig.getWarpOptions().split(","));
-		if (cmdOpt.size() > 0) {
-			cmdList.addAll(cmdOpt);
+		List<String> cmdOption = Arrays.asList(gdalConfig.getWarpOptions().split(","));
+		if (cmdOption.isEmpty()) {
+			cmdList.addAll(cmdOption);
 		}
 		
 		cmdList.add("-s_srs");
@@ -160,9 +160,9 @@ public class ImageProcessing implements Runnable {
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
 		
-		List<String> cmdOpt = Arrays.asList(gdalConfig.getNearblackOptions().split(","));
-		if (cmdOpt != null) {
-			cmdList.addAll(cmdOpt);
+		List<String> cmdOption = Arrays.asList(gdalConfig.getNearblackOptions().split(","));
+		if (cmdOption.isEmpty()) {
+			cmdList.addAll(cmdOption);
 		}
 		
 		cmdList.add("-o");
@@ -193,9 +193,9 @@ public class ImageProcessing implements Runnable {
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
 		
-		List<String> cmdOpt = Arrays.asList(gdalConfig.getTranslateOptions().split(","));
-		if (cmdOpt != null) {
-			cmdList.addAll(cmdOpt);
+		List<String> cmdOption = Arrays.asList(gdalConfig.getTranslateOptions().split(","));
+		if (cmdOption.isEmpty()) {
+			cmdList.addAll(cmdOption);
 		}
 		cmdList.add(sourceImage);
 		cmdList.add(targetImage);
@@ -221,9 +221,9 @@ public class ImageProcessing implements Runnable {
 		List<String> cmdList = new ArrayList<>();
 		cmdList.add(cmdPath.toString());
 		
-		List<String> cmdOpt = Arrays.asList(gdalConfig.getAddoOptions().split(","));
-		if (cmdOpt != null) {
-			cmdList.addAll(cmdOpt);
+		List<String> cmdOption = Arrays.asList(gdalConfig.getAddoOptions().split(","));
+		if (cmdOption.isEmpty()) {
+			cmdList.addAll(cmdOption);
 		}
 		cmdList.add(sourceImage);
 		
