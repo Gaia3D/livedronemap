@@ -1,7 +1,9 @@
 package gaia3d.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.lang.ProcessBuilder.Redirect;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -24,16 +26,31 @@ public class ProcessRunner {
 	 * @throws InterruptedException
 	 * @throws IOException
 	 */
-	public void execProcess(List<String> command) throws InterruptedException, IOException  {
-		log.debug("Exec command : {}", String.join(" ", command));
-		ProcessBuilder builder = new ProcessBuilder();
-//		builder.redirectErrorStream(true);
-		builder.redirectOutput(Redirect.INHERIT); 
-		builder.redirectError(Redirect.INHERIT);
-		builder.command(command);
+	public static void execProcess(List<String> command) throws IOException {
+		log.info("@@@@@@@ command = {}", command);
+		log.info("--------------- start ----------------");
 		
-	    Process process = builder.start();
-		process.waitFor();
+		ProcessBuilder processBuilder = new ProcessBuilder(command);
+		processBuilder.redirectErrorStream(true);
+        
+        Process process = processBuilder.start();
+        
+        try(InputStream inputStream = process.getInputStream();
+        	InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+    		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);) {
+        	
+        	String readLine = null;
+			while((readLine = bufferedReader.readLine()) != null) {
+				log.info(readLine);
+			}
+			
+			process.waitFor();
+			log.info("--------------- end ----------------");
+        	
+        } catch (Exception e) {
+        	e.printStackTrace();
+		}
+		
 	}
 	
 }

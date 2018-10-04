@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
  * TODO JAVA GDAL 라이브러리로 대체 또는 GeoTools 사용 
  */
 @Slf4j
-public class ImageConvertUtil implements Runnable {
+public class ImageProcessing implements Runnable {
 	
 	private final static String PROCESS_USE_FLAG = "true";
 	
@@ -46,7 +46,7 @@ public class ImageConvertUtil implements Runnable {
 	
 	private ImageInfo imageInfo;
 	
-	public ImageConvertUtil(APIUtil aPIUtil, GdalConfig gdalConfig, ImageInfo imageInfo) {
+	public ImageProcessing(APIUtil aPIUtil, GdalConfig gdalConfig, ImageInfo imageInfo) {
 		this.aPIUtil = aPIUtil;
 		this.gdalConfig = gdalConfig;
 		this.imageInfo = imageInfo;
@@ -138,8 +138,7 @@ public class ImageConvertUtil implements Runnable {
 		cmdList.add(sourceImage);
 		cmdList.add(targetImage);
 		
-		ProcessRunner processRunner = new ProcessRunner();
-		processRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(cmdList);
 		
 		return targetImage;
 		
@@ -170,8 +169,7 @@ public class ImageConvertUtil implements Runnable {
 		cmdList.add(targetImage);
 		cmdList.add(sourceImage);
 		
-		ProcessRunner processRunner = new ProcessRunner();
-		processRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(cmdList);
 		
 		return targetImage;
 	}
@@ -202,8 +200,7 @@ public class ImageConvertUtil implements Runnable {
 		cmdList.add(sourceImage);
 		cmdList.add(targetImage);
 		
-		ProcessRunner processRunner = new ProcessRunner();
-		processRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(cmdList);
 		
 		return targetImage;
 		
@@ -237,8 +234,7 @@ public class ImageConvertUtil implements Runnable {
 			initLevel *= 2;
 		}
 		
-		ProcessRunner processRunner = new ProcessRunner();
-		processRunner.execProcess(cmdList);
+		ProcessRunner.execProcess(cmdList);
 		
 		return sourceImage;
 		

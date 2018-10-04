@@ -12,7 +12,7 @@ import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageInfo;
 import gaia3d.util.APIUtil;
-import gaia3d.util.ImageConvertUtil;
+import gaia3d.util.ImageProcessing;
 
 /**
  * 영상 컨버터 
@@ -47,7 +47,7 @@ public class ImageConverterController {
 				return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 			} 
 			
-			Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+			Runnable imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
 			Thread thread = new Thread(imageConvertUtil);
 			thread.start();
 			

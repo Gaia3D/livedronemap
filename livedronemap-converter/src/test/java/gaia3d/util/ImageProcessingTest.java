@@ -19,8 +19,7 @@ import gaia3d.domain.ImageInfo;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-//@TestPropertySource("classpath:gdal.properties")
-public class ImageConvertUtilTest {
+public class ImageProcessingTest {
 	
 	@Autowired
 	private APIUtil aPIUtil;
@@ -28,7 +27,6 @@ public class ImageConvertUtilTest {
 	private GdalConfig gdalConfig;
 	
 	@Test
-	@Ignore
 	public void test000ConvertProjection() throws InterruptedException, IOException {
 		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
@@ -39,14 +37,13 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.convertProjection(srcImg);
 	}
 	
 	@Test
-	@Ignore
 	public void test001CreateInnerTile() throws InterruptedException, IOException {
-		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp.tif");
+		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
 //		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp.tif";
 				
@@ -55,14 +52,13 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.createInnerTile(srcImg);
 	}
 	
 	@Test
-	@Ignore
 	public void test002CreateOverview() throws InterruptedException, IOException {
-		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064_warp_tiled.tif");
+		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
 		String srcImg = targetPath.toAbsolutePath().toString();
 //		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp_tiled.tif";
 		
@@ -71,21 +67,21 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.createOverview(srcImg);
 	}
 	
 	@Test
-	@Ignore
 	public void test003RemoveBackground() throws InterruptedException, IOException {
-		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1.tif";
+		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		String srcImg = targetPath.toAbsolutePath().toString();
 		
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageConvertUtil imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
 		imageConvertUtil.removeBackgroud(srcImg);
 	}
 	
@@ -101,7 +97,7 @@ public class ImageConvertUtilTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		Runnable imageConvertUtil = new ImageConvertUtil(aPIUtil, gdalConfig, imageInfo);
+		Runnable imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 		
