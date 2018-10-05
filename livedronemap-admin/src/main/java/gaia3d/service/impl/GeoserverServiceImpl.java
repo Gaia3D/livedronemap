@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,7 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import gaia3d.config.RestTemplateResponseErrorHandler;
 import gaia3d.domain.CacheManager;
+import gaia3d.domain.CustomRestTemplateCustomizer;
 import gaia3d.domain.ImageDataType;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.Policy;
@@ -36,6 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class GeoserverServiceImpl implements GeoserverService {
+	
+	@Autowired
+	private RestTemplateBuilder restTemplateBuilder;
+	@Autowired
+	private RestTemplateResponseErrorHandler restTemplateResponseErrorHandler;
 	
 	@Autowired
 	private GeoserverMapper geoserverMapper;
@@ -65,10 +73,8 @@ public class GeoserverServiceImpl implements GeoserverService {
 		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 		
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			log.info("######## url = {}", url);
+			RestTemplate restTemplate = restTemplateBuilder.errorHandler(restTemplateResponseErrorHandler).build();
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-			
 			if (response.getStatusCode() != HttpStatus.OK) {
 				throw new GeoserverException(response.getBody());
 			}

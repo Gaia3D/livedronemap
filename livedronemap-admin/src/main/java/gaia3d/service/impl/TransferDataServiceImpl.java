@@ -1,13 +1,12 @@
 package gaia3d.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import gaia3d.config.PropertiesConfig;
@@ -38,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TransferDataServiceImpl implements TransferDataService {
 
+	@Autowired
+	private RestTemplateBuilder restTemplateBuilder;
 	@Autowired
 	private PropertiesConfig propertiesConfig;
 	
@@ -125,6 +126,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<ImageInfo> request = new HttpEntity<>(imageInfo, headers);
 		
+		//restTemplateBuilder.
 		RestTemplate restTemplate = new RestTemplate();
 		String url = CacheManager.getPolicy().getRest_api_converter_url() + APIURL.CONVERTER.getUrl();
 		log.info("url = {}", url);

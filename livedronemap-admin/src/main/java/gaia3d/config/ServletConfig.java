@@ -1,9 +1,12 @@
 package gaia3d.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -16,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import gaia3d.domain.CustomRestTemplateCustomizer;
 import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -82,4 +86,16 @@ public class ServletConfig implements WebMvcConfigurer {
 		ReloadableResourceBundleMessageSource m = messageSource();
 		return new MessageSourceAccessor(m);
 	}
+	
+	@Bean
+    @Qualifier("customRestTemplateCustomizer")
+    public CustomRestTemplateCustomizer customRestTemplateCustomizer() {
+        return new CustomRestTemplateCustomizer();
+    }
+
+    @Bean
+    @DependsOn(value = {"customRestTemplateCustomizer"})
+    public RestTemplateBuilder restTemplateBuilder() {
+        return new RestTemplateBuilder(customRestTemplateCustomizer());
+    }
 }

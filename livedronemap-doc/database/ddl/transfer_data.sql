@@ -33,7 +33,7 @@ comment on column transfer_data.user_id is '사용자 아이디';
 comment on column transfer_data.data_type is '데이터 타입. 0 : 개별 정사 영상, 1 : 후처리 영상';
 comment on column transfer_data.file_name is '파일 이름';
 comment on column transfer_data.detected_objects_count is '객체 탐지 개수';
-comment on column transfer_data.status is '상태. 0 : 전송 완료, 1 : 후처리 완료';
+comment on column transfer_data.status is '상태. 0 : 전송 완료, 1 : 후처리 완료, 2 : 후처리 실패';
 comment on column transfer_data.drone_latitude is '드론 위도';
 comment on column transfer_data.drone_longitude is '드론 경도';
 comment on column transfer_data.drone_altitude is '드론 높이';
@@ -68,7 +68,7 @@ comment on column ortho_image.file_real_name is '파일 실제 이름';
 comment on column ortho_image.file_path is '파일 경로';
 comment on column ortho_image.file_size is '파일 사이즈';
 comment on column ortho_image.file_ext is '파일 확장자';
-comment on column ortho_image.status is '상태. 0 : 전송 완료, 1 : 이미지 후처리 완료';
+comment on column ortho_image.status is '상태. 0 : 전송 완료, 1 : 이미지 후처리 완료, 2 : 이미지 후처리 실패';
 comment on column ortho_image.update_date is '수정일';
 comment on column ortho_image.insert_date is '등록일';
 
@@ -98,7 +98,7 @@ comment on column postprocessing_image.file_real_name is '파일 실제 이름';
 comment on column postprocessing_image.file_path is '파일 경로';
 comment on column postprocessing_image.file_size is '파일 사이즈';
 comment on column postprocessing_image.file_ext is '파일 확장자';
-comment on column postprocessing_image.status is '상태. 0 : 전송 완료';
+comment on column postprocessing_image.status is '상태. 0 : 전송 완료, 1 : 이미지 후처리 완료, 2 : 이미지 후처리 실패';
 comment on column postprocessing_image.update_date is '수정일';
 comment on column postprocessing_image.insert_date is '등록일';
 

@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import gaia3d.config.RestTemplateResponseErrorHandler;
 import gaia3d.domain.APIResult;
-import gaia3d.security.AES128Cipher;
+import gaia3d.domain.CustomRestTemplateCustomizer;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,7 +42,7 @@ public class AuthenticationAPIControllerTest {
 		log.info("result = {}", result);
 	}
 	
-	@Ignore
+	@Test
 	public void createTokenWithHeader() throws Exception {
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
 		parameters.add("test", "1234");
@@ -50,11 +52,13 @@ public class AuthenticationAPIControllerTest {
 		
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(parameters, headers);
 		
-		RestTemplate restTemplate = new RestTemplate();
+		RestTemplateBuilder builder = new RestTemplateBuilder(new CustomRestTemplateCustomizer());
+		RestTemplate restTemplate = builder.errorHandler(new RestTemplateResponseErrorHandler()).build();
 		String url = "http://localhost/authentication/tokens";
 		ResponseEntity<APIResult> aPIResult = restTemplate.postForEntity(url, request, APIResult.class);
-		log.info("createTokenWithHeader status code = {}", aPIResult.getStatusCodeValue());
-		log.info("createTokenWithHeader aPIResult body = {}", aPIResult.getBody());
+		//ResponseEntity<APIResult> responseEntity = restTemplate.exchange(url, HttpMethod.POST, request, APIResult.class);
+        log.info("----------------------- createTokenWithHeader status code = {}", aPIResult.getStatusCodeValue());
+		log.info("----------------------- createTokenWithHeader aPIResult body = {}", aPIResult.getBody());
 	}
 	
 	/**
@@ -85,6 +89,7 @@ public class AuthenticationAPIControllerTest {
 				.append("timestamp=")
 				.append(System.nanoTime());
 		
-		return AES128Cipher.encode(buffer.toString());
+		return buffer.toString();
+		//return AES128Cipher.encode(buffer.toString());
 	}
 }
