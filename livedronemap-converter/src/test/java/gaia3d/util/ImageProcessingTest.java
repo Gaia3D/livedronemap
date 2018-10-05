@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import gaia3d.config.GdalConfig;
 import gaia3d.domain.ImageInfo;
 import gaia3d.service.GeoserverService;
+import gaia3d.service.LogService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,56 +26,55 @@ public class ImageProcessingTest {
 	@Autowired
 	private GeoserverService geoserverService;
 	@Autowired
+	private LogService logService;
+	@Autowired
 	private GdalConfig gdalConfig;
 	
 	@Test
 	public void test000ConvertProjection() throws InterruptedException, IOException {
-		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		Path targetPath = Paths.get("src", "test", "resources", "img", "sample.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
-//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
 		imageConvertUtil.convertProjection(srcImg);
 	}
 	
 	@Test
 	public void test001CreateInnerTile() throws InterruptedException, IOException {
-		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		Path targetPath = Paths.get("src", "test", "resources", "img", "sample.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
-//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp.tif";
 				
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
 		imageConvertUtil.createInnerTile(srcImg);
 	}
 	
 	@Test
 	public void test002CreateOverview() throws InterruptedException, IOException {
-		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		Path targetPath = Paths.get("src", "test", "resources", "img", "sample.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
-//		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_1_nb_warp_tiled.tif";
 		
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(1);
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
 		imageConvertUtil.createOverview(srcImg);
 	}
 	
 	@Test
 	public void test003RemoveBackground() throws InterruptedException, IOException {
-		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		Path targetPath = Paths.get("src", "test", "resources", "img", "sample.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
 		
 		ImageInfo imageInfo = new ImageInfo();
@@ -82,14 +82,14 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
 		imageConvertUtil.removeBackgroud(srcImg);
 	}
 	
 	@Test
 	@Ignore
 	public void testConvertImage() throws InterruptedException {
-		Path targetPath = Paths.get("src", "test", "resources", "img", "DJI_0064.png");
+		Path targetPath = Paths.get("src", "test", "resources", "img", "sample.tif");
 		String srcImg = targetPath.toAbsolutePath().toString();
 //		String srcImg = "/Users/jskim/macDATA/data/ldm/marine_surveillance_2.tif";
 		
@@ -98,7 +98,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		Runnable imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
+		Runnable imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 		
