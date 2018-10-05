@@ -27,6 +27,7 @@ import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageInfo;
 import gaia3d.domain.ImageMosaic;
+import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -40,14 +41,12 @@ public class ImageProcessing implements Runnable {
 	
 	private final static String PROCESS_USE_FLAG = "true";
 	
-	private APIUtil aPIUtil;
-	
+	private GeoserverService geoserverService;
 	private GdalConfig gdalConfig;
-	
 	private ImageInfo imageInfo;
 	
-	public ImageProcessing(APIUtil aPIUtil, GdalConfig gdalConfig, ImageInfo imageInfo) {
-		this.aPIUtil = aPIUtil;
+	public ImageProcessing(GeoserverService geoserverService, GdalConfig gdalConfig, ImageInfo imageInfo) {
+		this.geoserverService = geoserverService;
 		this.gdalConfig = gdalConfig;
 		this.imageInfo = imageInfo;
 	}
@@ -91,14 +90,14 @@ public class ImageProcessing implements Runnable {
 			imageMosaic.setProject_id(projectId);
 			imageMosaic.setData_type(imageInfo.getDataType());
 			
-			ResponseEntity<APIResult> insertResult = aPIUtil.insertImageInfoForGeoServer(imageMosaic);
+			ResponseEntity<APIResult> insertResult = geoserverService.insertImageInfoForGeoServer(imageMosaic);
 			log.info("@@@ {}", insertResult.getStatusCode());
 			
 			try {
-				ResponseEntity<APIResult> checkResult = aPIUtil.checkGeoServerInfo(imageMosaic);
+				ResponseEntity<APIResult> checkResult = geoserverService.checkGeoServerLayer(imageMosaic);
 				log.info("@@@ {}", checkResult.getStatusCode());
 			} catch (HttpClientErrorException e) {
-				ResponseEntity<APIResult> createResult = aPIUtil.createLayer(imageMosaic);
+				ResponseEntity<APIResult> createResult = geoserverService.createGeoserverLayer(imageMosaic);
 				log.info("@@@ {}", createResult.getStatusCode());
 			}
 

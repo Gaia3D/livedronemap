@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import gaia3d.config.GdalConfig;
 import gaia3d.domain.ImageInfo;
+import gaia3d.service.GeoserverService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,7 +23,7 @@ import gaia3d.domain.ImageInfo;
 public class ImageProcessingTest {
 	
 	@Autowired
-	private APIUtil aPIUtil;
+	private GeoserverService geoserverService;
 	@Autowired
 	private GdalConfig gdalConfig;
 	
@@ -37,7 +38,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
 		imageConvertUtil.convertProjection(srcImg);
 	}
 	
@@ -52,7 +53,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
 		imageConvertUtil.createInnerTile(srcImg);
 	}
 	
@@ -67,7 +68,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
 		imageConvertUtil.createOverview(srcImg);
 	}
 	
@@ -81,7 +82,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
 		imageConvertUtil.removeBackgroud(srcImg);
 	}
 	
@@ -97,7 +98,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		Runnable imageConvertUtil = new ImageProcessing(aPIUtil, gdalConfig, imageInfo);
+		Runnable imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 		
