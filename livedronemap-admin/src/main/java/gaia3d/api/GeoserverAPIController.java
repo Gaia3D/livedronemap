@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException;
 
 import gaia3d.domain.GeoserverAPIResult;
-import gaia3d.domain.ImageDataType;
 import gaia3d.domain.ImageMosaic;
+import gaia3d.domain.TransferDataType;
 import gaia3d.exception.GeoserverException;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +47,7 @@ public class GeoserverAPIController {
 		GeoserverAPIResult geoserverAPIResult = new GeoserverAPIResult();
 		HttpStatus httpStatus = null; 
 		try {
-			geoserverService.getGeoserverLayer(projectId, ImageDataType.ORTHO_IMAGE);
+			geoserverService.getGeoserverLayer(projectId, TransferDataType.ORTHO_IMAGE);
 			
 			httpStatus = HttpStatus.OK;
 			geoserverAPIResult.setStatusCode(httpStatus.value());
@@ -86,7 +86,7 @@ public class GeoserverAPIController {
 				geoserverAPIResult.setMessage("Required field is null.");
 				return new ResponseEntity<GeoserverAPIResult>(geoserverAPIResult, httpStatus);
 			} 
-			geoserverService.insertGeoserverLayer(projectId, ImageDataType.ORTHO_IMAGE);
+			geoserverService.insertGeoserverLayer(projectId, TransferDataType.ORTHO_IMAGE);
 			
 			httpStatus = HttpStatus.OK;
 			geoserverAPIResult.setStatusCode(httpStatus.value());
@@ -120,7 +120,7 @@ public class GeoserverAPIController {
 		GeoserverAPIResult geoserverAPIResult = new GeoserverAPIResult();
 		HttpStatus httpStatus = null; 
 		try {
-			geoserverService.getGeoserverLayer(projectId, ImageDataType.POSTPROCESSING_IMAGE);
+			geoserverService.getGeoserverLayer(projectId, TransferDataType.POSTPROCESSING_IMAGE);
 			
 			httpStatus = HttpStatus.OK;
 			geoserverAPIResult.setStatusCode(httpStatus.value());
@@ -159,7 +159,7 @@ public class GeoserverAPIController {
 				geoserverAPIResult.setMessage("Required field is null.");
 				return new ResponseEntity<GeoserverAPIResult>(geoserverAPIResult, httpStatus);
 			} 
-			geoserverService.insertGeoserverLayer(projectId, ImageDataType.POSTPROCESSING_IMAGE);
+			geoserverService.insertGeoserverLayer(projectId, TransferDataType.POSTPROCESSING_IMAGE);
 			
 			httpStatus = HttpStatus.OK;
 			geoserverAPIResult.setStatusCode(httpStatus.value());

@@ -2,7 +2,7 @@ package gaia3d.domain;
 
 public enum TransferDataType {
 
-	ORTHO_IMAGE("0"), POSTPROCESSION_IMAGE("1");
+	ORTHO_IMAGE("0"), POSTPROCESSING_IMAGE("1");
 	
 	private String dataType;
 	

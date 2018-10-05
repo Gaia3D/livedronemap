@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import gaia3d.config.APIServerConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.APIURL;
-import gaia3d.domain.ImageDataType;
+import gaia3d.domain.TransferDataType;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class GeoserverServiceImpl implements GeoserverService {
 	 */
 	public ResponseEntity<APIResult> createGeoserverLayer(ImageMosaic imageMosaic) {
 		String url = null;
-		if (imageMosaic.getData_type().equals(ImageDataType.ORTHO_IMAGE.getDataType())) {
+		if (imageMosaic.getData_type().equals(TransferDataType.ORTHO_IMAGE.getDataType())) {
 			url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS_ORTHO_IMAGES.getUrl();
 		} else {
 			url = aPIServerConfig.getRootUrl() + APIURL.GEOSERVER_LAYERS_POSTPROCESSING_IMAGES.getUrl();
@@ -56,7 +56,7 @@ public class GeoserverServiceImpl implements GeoserverService {
 	 */
 	public ResponseEntity<APIResult> checkGeoServerLayer(ImageMosaic imageMosaic) {
 		String url = null;
-		if (imageMosaic.getData_type().equals(ImageDataType.ORTHO_IMAGE.getDataType())) {
+		if (imageMosaic.getData_type().equals(TransferDataType.ORTHO_IMAGE.getDataType())) {
 			url = aPIServerConfig.getRootUrl() 
 					+ String.format("%s/%d", APIURL.GEOSERVER_LAYERS_ORTHO_IMAGES.getUrl(), imageMosaic.getProject_id());
 		} else {

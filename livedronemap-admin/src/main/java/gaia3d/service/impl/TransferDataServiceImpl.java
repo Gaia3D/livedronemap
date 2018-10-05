@@ -91,7 +91,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 			}
 			
 			imageId = orthoImage.getOrtho_image_id();
-		} else if(TransferDataType.POSTPROCESSION_IMAGE.getDataType().equals(transferData.getData_type())) {
+		} else if(TransferDataType.POSTPROCESSING_IMAGE.getDataType().equals(transferData.getData_type())) {
 			PostProcessingImage postProcessingImage = new PostProcessingImage();
 			postProcessingImage.setTransfer_data_id(transferData.getTransfer_data_id());
 			// TODO 이 컬럼은 없는게 맞는거 같음
