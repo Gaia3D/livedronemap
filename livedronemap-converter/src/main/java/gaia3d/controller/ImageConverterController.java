@@ -12,6 +12,7 @@ import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageInfo;
 import gaia3d.service.GeoserverService;
+import gaia3d.service.LogService;
 import gaia3d.util.ImageProcessing;
 
 /**
@@ -25,6 +26,8 @@ public class ImageConverterController {
 	
 	@Autowired
 	private GeoserverService geoserverService;
+	@Autowired
+	private LogService logService;
 	@Autowired
 	private GdalConfig gdalConfig;
 	
@@ -49,7 +52,7 @@ public class ImageConverterController {
 				return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 			} 
 			
-			Runnable imageConvertUtil = new ImageProcessing(geoserverService, gdalConfig, imageInfo);
+			Runnable imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
 			Thread thread = new Thread(imageConvertUtil);
 			thread.start();
 			

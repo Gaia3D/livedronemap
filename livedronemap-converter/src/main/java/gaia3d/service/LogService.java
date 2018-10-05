@@ -1,8 +1,7 @@
 package gaia3d.service;
 
-import org.springframework.http.ResponseEntity;
-
-import gaia3d.domain.APIResult;
+import gaia3d.domain.ImageInfo;
+import gaia3d.domain.ProcessingResult;
 
 /**
  * 결과 처리 API 호출 
@@ -13,8 +12,10 @@ public interface LogService {
 	
 	/**
 	 * 영상 처리 결과 전송 
+	 * @param imageInfo
+	 * @param processingResult
 	 * @return
 	 */
-	public ResponseEntity<APIResult> updateImageProcessingStatus();
+	public void updateImageProcessingStatus(ImageInfo imageInfo, ProcessingResult processingResult);
 	
 }

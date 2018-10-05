@@ -52,7 +52,7 @@ public class PostProcessingImageAPIController implements APIController {
 																@RequestParam(value="status", required = true) String status) {
 		log.info("@@@@@@@@@@ updatePostProcessingImage api call");
 		
-		APIResult aPIResult = null;
+		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		TokenLog tokenLog = new TokenLog();
 		Integer clientId = null;

@@ -48,7 +48,7 @@ public class OrthoImageAPIController implements APIController {
 	public ResponseEntity<APIResult> updateOrthoImage(HttpServletRequest request, @PathVariable Long ortho_image_id, @RequestParam(value="status", required = true) String status) {
 		log.info("@@@@@@@@@@ updateOrthoImage api call");
 		
-		APIResult aPIResult = null;
+		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		TokenLog tokenLog = new TokenLog();
 		Integer clientId = null;

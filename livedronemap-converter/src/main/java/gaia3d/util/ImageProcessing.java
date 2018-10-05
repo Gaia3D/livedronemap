@@ -28,7 +28,9 @@ import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageInfo;
 import gaia3d.domain.ImageMosaic;
+import gaia3d.domain.ProcessingResult;
 import gaia3d.service.GeoserverService;
+import gaia3d.service.LogService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -43,11 +45,13 @@ public class ImageProcessing implements Runnable {
 	private final static String PROCESS_USE_FLAG = "true";
 	
 	private GeoserverService geoserverService;
+	private LogService logService;
 	private GdalConfig gdalConfig;
 	private ImageInfo imageInfo;
 	
-	public ImageProcessing(GeoserverService geoserverService, GdalConfig gdalConfig, ImageInfo imageInfo) {
+	public ImageProcessing(GeoserverService geoserverService, LogService logService, GdalConfig gdalConfig, ImageInfo imageInfo) {
 		this.geoserverService = geoserverService;
+		this.logService = logService;
 		this.gdalConfig = gdalConfig;
 		this.imageInfo = imageInfo;
 	}
@@ -101,10 +105,12 @@ public class ImageProcessing implements Runnable {
 				ResponseEntity<APIResult> createResult = geoserverService.createGeoserverLayer(imageMosaic);
 				log.info("@@@ {}", createResult.getStatusCode());
 			}
+			
+			logService.updateImageProcessingStatus(imageInfo, ProcessingResult.PROCESSING_SUCCESS);
 
 		} catch (Exception e) {
-			// TODO 결과 저장하는 API 호출 
 			e.printStackTrace();
+			logService.updateImageProcessingStatus(imageInfo, ProcessingResult.PROCESSING_FAIL);
 		}
 		
 	}
