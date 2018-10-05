@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -277,7 +278,8 @@ public class ImageProcessing implements Runnable {
 		Path geoserverImageFilePath = geoserverDirectoryPath.resolve(String.format("%s.tif", sourceName));
 		checkFileExists(geoserverImageFilePath.toString());
 	
-		Files.move(resultFilePath, geoserverImageFilePath);
+		// Windows에서 StandardCopyOption.REPLACE_EXISTING 옵션을 주변 있어도 오류가 안나고, 변경 됨 
+		Files.move(resultFilePath, geoserverImageFilePath, StandardCopyOption.REPLACE_EXISTING);
 
 		return geoserverImageFilePath.toString();
 	}
