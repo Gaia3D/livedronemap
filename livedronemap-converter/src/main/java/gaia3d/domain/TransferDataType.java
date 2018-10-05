@@ -1,11 +1,11 @@
 package gaia3d.domain;
 
-public enum ImageDataType {
+public enum TransferDataType {
 	ORTHO_IMAGE("0"), POSTPROCESSING_IMAGE("1");
 	
 	private String dataType;
 	
-	ImageDataType(String dataType) {
+	TransferDataType(String dataType) {
 		this.dataType = dataType;
 	}
 	
