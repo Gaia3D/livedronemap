@@ -34,7 +34,7 @@ public class ImageConverterController {
 	 * @return
 	 */
 	@PostMapping("images")
-	public ResponseEntity<APIResult> createConvertedImage(ImageInfo imageInfo) {
+	public ResponseEntity<APIResult> createConvertedImage(@RequestBody ImageInfo imageInfo) {
 		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null; 
 		

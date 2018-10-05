@@ -15,6 +15,7 @@ import gaia3d.domain.APIResult;
 import gaia3d.domain.APIURL;
 import gaia3d.domain.CacheManager;
 import gaia3d.domain.FileInfo;
+import gaia3d.domain.ImageInfo;
 import gaia3d.domain.OrthoDetectedObject;
 import gaia3d.domain.OrthoImage;
 import gaia3d.domain.PostProcessingImage;
@@ -114,16 +115,15 @@ public class TransferDataServiceImpl implements TransferDataService {
 	}
 	
 	private void callImageProcessing(Integer projectId, String dataType, Long imageId, String fileNameFullPath, String imageDate) {
-		MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
-		bodyMap.add("projectId", projectId);
-		bodyMap.add("dataType", dataType);
-		bodyMap.add("imageId", imageId);
-		bodyMap.add("imageId", imageId);
-		bodyMap.add("imagePath", fileNameFullPath);
-		bodyMap.add("imageDate", imageDate);
+		ImageInfo imageInfo = new ImageInfo();
+		imageInfo.setProjectId(projectId);
+		imageInfo.setDataType(dataType);
+		imageInfo.setImageId(imageId);
+		imageInfo.setImagePath(fileNameFullPath);
+		imageInfo.setImageDate(imageDate);
 		
 		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<MultiValueMap<String, Object>> request = new HttpEntity<>(bodyMap, headers);
+		HttpEntity<ImageInfo> request = new HttpEntity<>(imageInfo, headers);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = CacheManager.getPolicy().getRest_api_converter_url() + APIURL.CONVERTER.getUrl();
