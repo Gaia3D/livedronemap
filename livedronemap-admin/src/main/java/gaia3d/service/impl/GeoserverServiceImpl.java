@@ -21,8 +21,6 @@ import org.springframework.web.client.RestTemplate;
 
 import gaia3d.config.RestTemplateResponseErrorHandler;
 import gaia3d.domain.CacheManager;
-import gaia3d.domain.CustomRestTemplateCustomizer;
-import gaia3d.domain.ImageDataType;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.Policy;
 import gaia3d.domain.TransferDataType;
