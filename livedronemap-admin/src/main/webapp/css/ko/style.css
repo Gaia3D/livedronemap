@@ -79,45 +79,22 @@ margin: 30px auto;
 
 /* ///// HEADER ///// */
 /* 프로젝트 상태모니터링 */
-ul.processing > li:first-child {
-border-left: 1px solid #4d4d59;
-}
 ul.processing > li {
 display: inline-block;
 margin: 0 -2px;
-padding: 5px 15px 5px 65px;
 text-align: left;
 cursor: pointer;
-border-right: 1px solid #4d4d59;
-background: url(../../images/ico.png) no-repeat -740px -190px;
 }
 ul.processing > li:hover {
 background-color: #2c2c38;
 }
 ul.processing > li span {
 color: #fff;
-}
-ul.processing > li span.title {
 display: block;
-max-width: 160px;
-font-size: 12px;
-color: #a6a6b7;
+font-size: 14px;
 overflow:hidden;
 text-overflow:ellipsis;
 white-space:nowrap;
-}
-span.state {
-display: inline-block;
-width: 16px;
-height: 16px;
-margin: 3px 5px 0 0;
-border-radius: 8px;	
-}
-span.good {
-background-color: #00cc33;
-}
-span.error {
-background-color: tomato;
 }
 /* ///// NAV ///// */
 h1 {

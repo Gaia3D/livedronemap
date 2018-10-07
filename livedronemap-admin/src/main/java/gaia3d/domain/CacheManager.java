@@ -42,8 +42,8 @@ public class CacheManager {
 	private Map<Long, List<UserGroupMenu>> userGroupMenuMap = null;
 	// 운영 정책
 	private Policy policy = null;
-	// 고가용성(HA)
-	private Map<String, String> haMap = null;
+	// Health Check
+	private Map<String, String> healthCheckMap = null;
 	// StandBy Server 상태( ON, OFF, BUSY )
 	private String standByServerStatus = null;
 	
@@ -215,12 +215,12 @@ public class CacheManager {
 		cacheManager.commonCodeMap = commonCodeMap;
 	}
 	
-	public static Map<String, String> getHaMap() {
-		return cacheManager.haMap;
+	public static Map<String, String> getHealthCheckMap() {
+		return cacheManager.healthCheckMap;
 	}
 
-	public static void setHaMap(Map<String, String> haMap) {
-		cacheManager.haMap = haMap;
+	public static void setHealthCheck(Map<String, String> healthCheckMap) {
+		cacheManager.healthCheckMap = healthCheckMap;
 	}
 	
 	/**
