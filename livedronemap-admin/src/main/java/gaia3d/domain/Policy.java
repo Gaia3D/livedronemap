@@ -97,13 +97,13 @@ public class Policy {
 	// geoserver wms 버전. 기본 1.1.1
 	private String geoserver_wms_version;
 	// geoserver 배경지도 url
-	private String geoserver_backgroud_url;
+	private String geoserver_background_url;
 	// geoserver 배경지도 작업공간 
-	private String geoserver_backgroud_workspace;
+	private String geoserver_background_workspace;
 	// geoserver 배경지도 레이어 
-	private String geoserver_backgroud_layer;
+	private String geoserver_background_layer;
 	// geoserver 배경지도 요청 포맷 
-	private String geoserver_backgroud_format;
+	private String geoserver_background_format;
 	// geoserver 지형 url
 	private String geoserver_terrain_url;
 	// geoserver 지형 작업공간 

@@ -63,7 +63,7 @@ public class ImageProcessing implements Runnable {
 		try {
 			// TODO 단계별로 진행 여부 필요, properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
 			if (gdalConfig.getNearblackUse().equals(PROCESS_USE_FLAG)) {
-				sourceImage = removeBackgroud(sourceImage);
+				sourceImage = removeBackground(sourceImage);
 			}
 			if (gdalConfig.getWarpUse().equals(PROCESS_USE_FLAG)) {
 				sourceImage = convertProjection(sourceImage);
@@ -156,7 +156,7 @@ public class ImageProcessing implements Runnable {
 	 * @throws IOException 
 	 * @throws InterruptedException 
 	 */
-	public String removeBackgroud(String sourceImage) throws InterruptedException, IOException {
+	public String removeBackground(String sourceImage) throws InterruptedException, IOException {
 		log.info("Start nearblack .. {}", sourceImage);
 		
 		// TODO 확장자는 동적으로 처리 

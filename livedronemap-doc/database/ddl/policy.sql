@@ -28,10 +28,10 @@ create table policy(
 	
 	geoserver_enable						varchar(5)			default 'true',
 	geoserver_wms_version					varchar(5)			default '1.1.1',
-	geoserver_backgroud_url					varchar(256),
-	geoserver_backgroud_workspace			varchar(60),
-	geoserver_backgroud_layer				varchar(60),
-	geoserver_backgroud_format				varchar(30),
+	geoserver_background_url					varchar(256),
+	geoserver_background_workspace			varchar(60),
+	geoserver_background_layer				varchar(60),
+	geoserver_background_format				varchar(30),
 	geoserver_terrain_url					varchar(256),
 	geoserver_terrain_workspace				varchar(60),
 	geoserver_terrain_layer					varchar(60),
@@ -136,10 +136,10 @@ comment on column policy.password_exception_char is '패스워드로 사용할수 없는 특
 
 comment on column policy.geoserver_enable is 'geoserver 사용유무';
 comment on column policy.geoserver_wms_version is 'geoserver wms 버전';
-comment on column policy.geoserver_backgroud_url is 'geoserver 배경지도 url';
-comment on column policy.geoserver_backgroud_workspace is 'geoserver 배경지도 작업공간';
-comment on column policy.geoserver_backgroud_layer is 'geoserver 배경지도 레이어';
-comment on column policy.geoserver_backgroud_format is 'geoserver 배경지도 요청 포맷';
+comment on column policy.geoserver_background_url is 'geoserver 배경지도 url';
+comment on column policy.geoserver_background_workspace is 'geoserver 배경지도 작업공간';
+comment on column policy.geoserver_background_layer is 'geoserver 배경지도 레이어';
+comment on column policy.geoserver_background_format is 'geoserver 배경지도 요청 포맷';
 comment on column policy.geoserver_terrain_url is 'geoserver 지형 url';
 comment on column policy.geoserver_terrain_workspace is 'geoserver 지형 작업공간';
 comment on column policy.geoserver_terrain_layer is 'geoserver 지형 레이어';
