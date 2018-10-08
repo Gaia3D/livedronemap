@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 
 import gaia3d.domain.CacheManager;
 import gaia3d.domain.HealthCheck;
+import gaia3d.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,11 +36,11 @@ public class HealthCheckConfiguration implements SchedulingConfigurer {
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
 		log.info("@@@@@@@@@@@@@ HealthCheckConfiguration configureTasks execute.");
+		Map<String, String> healthCheckMap = CacheManager.getHealthCheckMap();
+		
 		taskRegistrar.setScheduler(scheduler());
 		taskRegistrar.addFixedDelayTask(() -> {
 			try {
-				Map<String, String> healthCheckMap = CacheManager.getHealthCheckMap();
-				
 				HttpHeaders headers = new HttpHeaders();
 				HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 				String url = CacheManager.getPolicy().getRest_api_converter_url() + "/health-check";
@@ -54,11 +55,15 @@ public class HealthCheckConfiguration implements SchedulingConfigurer {
 				} else {
 					healthCheckMap.put(HealthCheck.CONVERTER_STATUS, HealthCheck.DOWN);
 				}
+				healthCheckMap.put(HealthCheck.LAST_CHECK_TIME, DateUtil.getToday());
 				CacheManager.setHealthCheck(healthCheckMap);
 			} catch(Exception e) {
-				e.printStackTrace();
+				healthCheckMap.put(HealthCheck.LAST_CHECK_TIME, DateUtil.getToday());
+				healthCheckMap.put(HealthCheck.CONVERTER_STATUS, HealthCheck.DOWN);
+				log.info("@@@@@@@@@@@@@ exception message = {}", e.getMessage());
+				//e.printStackTrace();
 			}
-		}, 60000);
+		}, 300000);
 	}
 	
 	@Bean

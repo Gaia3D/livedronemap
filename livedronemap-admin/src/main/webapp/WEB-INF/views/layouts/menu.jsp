@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div id="nav">
-	<h1>LDM</h1>
+	<h1>홈</h1>
 	<ul>
 		<li class="project" title="프로젝트"><span>프로젝트</span></li>
 		<li class="monitoring" title="모니터링"><span>모니터링</span></li>

@@ -216,6 +216,9 @@ public class CacheManager {
 	}
 	
 	public static Map<String, String> getHealthCheckMap() {
+		if(cacheManager.healthCheckMap == null || cacheManager.healthCheckMap.isEmpty()) {
+			cacheManager.healthCheckMap = new HashMap<String, String>();
+		}
 		return cacheManager.healthCheckMap;
 	}
 

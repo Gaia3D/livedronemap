@@ -10,12 +10,14 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -42,6 +44,12 @@ public class ServletConfig implements WebMvcConfigurer {
         configurer.enable();
     }
     
+	@Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/index.jsp");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+    }
+	
     @Bean
 	public InternalResourceViewResolver viewResolver() {
 		log.info(" @@@ ServletConfig viewResolver @@@");
@@ -53,26 +61,7 @@ public class ServletConfig implements WebMvcConfigurer {
 		return viewResolver;
 	}
     
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-    	registry
-    		.addResourceHandler("swagger-ui.html")
-    		.addResourceLocations("classpath:/META-INF/resources/");
-     
-    	registry
-    		.addResourceHandler("/webjars/**")
-    		.addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
-    
     @Bean
-    public Docket api() {
-    	return new Docket(DocumentationType.SWAGGER_2)
-        		.select()
-                .apis(RequestHandlerSelectors.basePackage("gaia3d.api"))
-                .build();
-    }
-    
-	@Bean
 	public ReloadableResourceBundleMessageSource messageSource(){
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:/messages/messages");
@@ -97,5 +86,30 @@ public class ServletConfig implements WebMvcConfigurer {
     @DependsOn(value = {"customRestTemplateCustomizer"})
     public RestTemplateBuilder restTemplateBuilder() {
         return new RestTemplateBuilder(customRestTemplateCustomizer());
+    }
+    
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    	
+    	registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+		registry.addResourceHandler("/externlib/**").addResourceLocations("/externlib/");
+		registry.addResourceHandler("/images/**").addResourceLocations("/images/");
+		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+    	
+    	registry
+    		.addResourceHandler("swagger-ui.html")
+    		.addResourceLocations("classpath:/META-INF/resources/");
+     
+    	registry
+    		.addResourceHandler("/webjars/**")
+    		.addResourceLocations("classpath:/META-INF/resources/webjars/");
+    }
+    
+    @Bean
+    public Docket api() {
+    	return new Docket(DocumentationType.SWAGGER_2)
+        		.select()
+                .apis(RequestHandlerSelectors.basePackage("gaia3d.api"))
+                .build();
     }
 }

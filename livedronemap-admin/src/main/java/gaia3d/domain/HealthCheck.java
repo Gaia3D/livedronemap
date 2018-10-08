@@ -22,6 +22,8 @@ public class HealthCheck {
 	public static final String DOWN = "DOWN";
 	public static final String UNKNOWN = "UNKNOWN";
 	
+	public static final String LAST_CHECK_TIME = "LAST_CHECK_TIME";
+	
 	private String servide_id;
 	private String service_name;
 }

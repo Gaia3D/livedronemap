@@ -39,9 +39,9 @@
 	
 	<logger name="com.zaxxer.hikari.pool.HikariPool" level="info" additivity="false" />
 	
-	<!-- <logger name="springfox.documentation.spring.web" level="info" additivity="false" />
+	<logger name="springfox.documentation.spring.web" level="info" additivity="false" />
 	<logger name="springfox.documentation.swagger" level="info" additivity="false" />
-	<logger name="springfox.documentation.schema" level="info" additivity="false" /> -->
+	<logger name="springfox.documentation.schema" level="info" additivity="false" />
 	
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
