@@ -83,7 +83,7 @@ public class ImageProcessingTest {
 		imageInfo.setImagePath(srcImg);
 		
 		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
-		imageConvertUtil.removeBackgroud(srcImg);
+		imageConvertUtil.removeBackground(srcImg);
 	}
 	
 	@Test
