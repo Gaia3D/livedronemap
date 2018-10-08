@@ -1,17 +1,33 @@
 
+.subContents > ul > li {
+	font-size: 15px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+}
+
+.contents.full > div > h2 {
+	margin-bottom: 20px;
+}
+
+.center-buttons {
+	text-align: center;
+}
+
+
 /* Input Table
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .input-table {
-	border: 1px solid #d9d9d9; }
+	border: 1px solid #d9d9d9; 
+	margin-bottom: 20px;	
+}
 
 .input-table th label {	
-	font-size: 1.3rem;
+	font-size: 15px;
 	color: #888;
 	padding: 0;
 	width: auto; }
 	
 .input-table th {
-	font-size: 1.3rem;
 	color: #888;
 	border: 1px solid #d9d9d9;
 	background-color: #f5f5f5;
@@ -34,7 +50,6 @@
 	padding-right: 5px; }
 
 .input-table td {
-	font-size: 1.3rem;
 	border: 1px solid #d9d9d9;
 	height: 37px;
 	line-height: 37px;
@@ -137,7 +152,7 @@
 	
 .input-table tr:hover td {
 	background-color: #fff; }
-	
+
 /* Simple button */
 .button,
 button,

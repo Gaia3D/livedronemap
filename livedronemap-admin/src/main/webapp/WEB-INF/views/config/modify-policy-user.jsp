@@ -7,7 +7,7 @@
 		<col class="col-input" />
 		<tr>
 			<th class="col-label l" scope="row">
-				<form:label path="user_id_min_length">아이디 최소 길이</form:label>
+				<form:label path="user_id_min_length"><spring:message code='config,user.min.length'/></form:label>
 				<span class="icon-glyph glyph-emark-dot color-warning"></span>
 			</th>
 			<td class="col-input">
@@ -18,7 +18,7 @@
 		</tr>
 		<tr>
 			<th class="col-label l" scope="row">
-				<form:label path="user_fail_login_count">로그인 최대 실패 횟수</form:label>
+				<form:label path="user_fail_login_count"><spring:message code='config.user.login.fail'/></form:label>
 				<span class="icon-glyph glyph-emark-dot color-warning"></span>
 			</th>
 			<td class="col-input">
@@ -29,47 +29,72 @@
 		
 		<tr>
 			<th class="col-label l" scope="row">
-				<form:label path="user_fail_lock_release">계정 잠금 해제 기간</form:label>
+				<form:label path="user_fail_lock_release"><spring:message code='config.user.unlock.period'/></form:label>
 				<span class="icon-glyph glyph-emark-dot color-warning"></span>
 			</th>
 			<td class="col-input">
 				<form:input path="user_fail_lock_release" maxlength="5" cssClass="s" readonly="true" />
-				<span class="table-desc">분 단위</span>
+				<span class="table-desc"><spring:message code='unit.minute'/></span>
 				<form:errors path="user_fail_lock_release" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
 			<th class="col-label l" scope="row">
-				<form:label path="user_last_login_lock">휴면 계정 전환 기간</form:label>
+				<form:label path="user_last_login_lock"><spring:message code='config.user.sleep.period'/></form:label>
 				<span class="icon-glyph glyph-emark-dot color-warning"></span>
 			</th>
 			<td class="col-input">
 				<form:input path="user_last_login_lock" maxlength="3" cssClass="s" />
-				<span class="table-desc">일 단위</span>
+				<span class="table-desc"><spring:message code='unit.day'/></span>
 				<form:errors path="user_last_login_lock" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
 			<th class="col-label l" scope="row">
-				<span>중북 로그인 허용 여부</span>
+				<form:label path="user_duplication_login_yn"><spring:message code='config.user.login.duplication'/></form:label>
 				<span class="icon-glyph glyph-emark-dot color-warning"></span>
 			</th>
 			
-			
+			<spring:message code='use' var='use'/>
+			<spring:message code='no.use' var='noUse'/>
 			<td class="col-input radio-set">
-				<form:radiobutton path="user_duplication_login_yn" value="Y" label="사용"/>
-				<form:radiobutton path="user_duplication_login_yn" value="N" label="미사용" />
+				<form:radiobutton path="user_duplication_login_yn" value="Y" label="${use}"/>
+				<form:radiobutton path="user_duplication_login_yn" value="N" label="${noUse}" />
 			</td>
 		</tr>
 		<tr>
 			<th class="col-label l" scope="row">
-				<form:label path="user_delete_type">정보 삭제 방법</form:label>
+				<form:label path="user_update_check"><spring:message code='config.user.check.update'/></form:label>
+				<span class="icon-glyph glyph-emark-dot color-warning"></span>
+			</th>
+			
+			<spring:message code='check' var='check'/>
+			<spring:message code='no.check' var='noCheck'/>
+			<td class="col-input radio-set">
+				<form:radiobutton path="user_update_check" value="0" label="${check}"/>
+				<form:radiobutton path="user_update_check" value="1" label="${noCheck}" />
+			</td>
+		</tr>
+		<tr>
+			<th class="col-label l" scope="row">
+				<form:label path="user_delete_check"><spring:message code='config.user.check.delete'/></form:label>
+				<span class="icon-glyph glyph-emark-dot color-warning"></span>
+			</th>
+			
+			<td class="col-input radio-set">
+				<form:radiobutton path="user_delete_check" value="0" label="${check}"/>
+				<form:radiobutton path="user_delete_check" value="1" label="${noCheck}" />
+			</td>
+		</tr>
+		<tr>
+			<th class="col-label l" scope="row">
+				<form:label path="user_delete_type"><spring:message code='config.user.method.delete'/></form:label>
 				<span class="icon-glyph glyph-emark-dot color-warning"></span>
 			</th>
 			<td class="col-input">	
 				<select id="user_delete_type" name="user_delete_type" class="select">
-	  				<option value="0">논리적 삭제</option>
-	  				<option value="1">물리적 삭제</option>
+	  				<option value="0"><spring:message code='config.user.method.delete.logical'/></option>
+	  				<option value="1"><spring:message code='config.user.method.delete.physical'/></option>
 				</select>
 			</td>
 		</tr>
@@ -81,4 +106,7 @@
 	</div>
 	</form:form>
 </div>
+			
+
+
 							
