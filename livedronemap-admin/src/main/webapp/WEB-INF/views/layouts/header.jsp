@@ -17,14 +17,14 @@
 %>
 
 <div id="header" style="">
-	<ul class="processing" style="width: 100%;">
+	<ul class="processing">
 		<li style="float: left; padding-left: 10px;">
 			<img src="../../../images/drone.png" width="50" height="" />
 		</li>
 		<li style="float:left; padding-left:20px; padding-top: 15px;">
 			<span class="title">Live Drone Map</span>
 		</li>
-		<li style="padding-left:420px; padding-top: 15px; padding-right: 10px;">
+		<li style="padding-left:250px; padding-top: 15px; padding-right: 10px;">
 			<span class="title">최종 시간 : <%=lastCheckTime %></span>
 		</li>
 		<li style="padding-left:20px; padding-top: 15px; padding-right: 10px;">
