@@ -35,9 +35,6 @@ public class DroneProject {
 	/****** validator ********/
 	private String method_mode;
 	
-	// 아이디 중복 확인 hidden 값
-	private String duplication_value;
-
 	// 고유번호
 	private Integer drone_project_id;
 	// drone 고유번호

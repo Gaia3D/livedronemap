@@ -32,7 +32,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "gaia3d.config, gaia3d.api, gaia3d.controller, gaia3d.interceptor, gaia3d.validator" }, 
+@ComponentScan(basePackages = { "gaia3d.config, gaia3d.api, gaia3d.controller, gaia3d.interceptor, gaia3d.validator, gaia3d.schedule" }, 
 includeFilters = {
 		@Filter(type = FilterType.ANNOTATION, value = Component.class),
 		@Filter(type = FilterType.ANNOTATION, value = Controller.class),

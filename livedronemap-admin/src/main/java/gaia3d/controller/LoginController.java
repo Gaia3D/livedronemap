@@ -309,7 +309,7 @@ public class LoginController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value = "logout.do")
+	@GetMapping(value = "logout")
 	public String logout(HttpServletRequest request, Model model) {
 		
 		HttpSession session = request.getSession();

@@ -72,9 +72,9 @@
 	UserSession userSession = (UserSession)request.getSession().getAttribute(UserSession.KEY);
 	if(userSession != null && userSession.getUser_id() != null && !"".equals(userSession.getUser_id())) {
 %>		
-			<a href="/login/logout.do"><span class="title">로그 아웃</span></a>
+			<a href="/login/logout"><span class="title">로그 아웃</span></a>
 <% } else { %>
-			<a href="/login/login.do"><span class="title">로그인</span></a>
+			<a href="/login/login"><span class="title">로그인</span></a>
 <% } %>
 		</li>
 	</ul>
