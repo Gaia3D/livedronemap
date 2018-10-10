@@ -10,9 +10,9 @@
     		SELECT NEXTVAL('ortho_image_seq')
   		</selectKey>
 		INSERT INTO ortho_image (
-			ortho_image_id, transfer_data_id, file_name, file_real_name, file_path, file_size, file_ext
+			ortho_image_id, drone_project_id, transfer_data_id, file_name, file_real_name, file_path, file_size, file_ext
 		) VALUES (
-			#{ortho_image_id}, #{transfer_data_id}, #{file_name}, #{file_real_name}, #{file_path}, #{file_size}, #{file_ext}
+			#{ortho_image_id}, #{ drone_project_id}, #{transfer_data_id}, #{file_name}, #{file_real_name}, #{file_path}, #{file_size}, #{file_ext}
 		)
 	</insert>
 	

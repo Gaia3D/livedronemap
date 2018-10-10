@@ -35,6 +35,14 @@ public class DroneProject {
 	/****** validator ********/
 	private String method_mode;
 	
+	/****** DB 데이터 화면 표시용 ********/
+	// 개별 정사 영상 개수
+	private Integer ortho_image_count;
+	// 후처리 영상 개수
+	private Integer postprocessing_image_count;
+	// 객체 탐지 개수
+	private Integer detected_object_count;
+	
 	// 고유번호
 	private Integer drone_project_id;
 	// drone 고유번호
@@ -73,6 +81,13 @@ public class DroneProject {
 	// 등록일
 	private String insert_date;
 
+	public String getViewShootingDate() {
+		if(this.shooting_date == null || "".equals( shooting_date)) {
+			return "";
+		}
+		return shooting_date.substring(0, 19);
+	}
+	
 	public String getViewInsertDate() {
 		if(this.insert_date == null || "".equals( insert_date)) {
 			return "";

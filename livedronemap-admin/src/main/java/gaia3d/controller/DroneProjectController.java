@@ -34,7 +34,7 @@ public class DroneProjectController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value = "list-drone-project")
+	@RequestMapping(value = "list-drone-project")
 	public String listData(HttpServletRequest request, DroneProject droneProject, @RequestParam(defaultValue="1") String pageNo, Model model) {
 		
 		log.info("@@ droneProject = {}", droneProject);

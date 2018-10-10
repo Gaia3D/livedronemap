@@ -48,6 +48,7 @@ comment on column transfer_data.insert_date is '등록일';
 -- 개별 정사 영상
 create table ortho_image(
 	ortho_image_id								bigint,
+	drone_project_id							int									not null,
 	transfer_data_id							bigint								not null,
 	file_name									varchar(100)						not null,
 	file_real_name								varchar(100)						not null,
@@ -62,6 +63,7 @@ create table ortho_image(
 
 comment on table ortho_image is '개별 정사 영상';
 comment on column ortho_image.ortho_image_id is '고유번호';
+comment on column ortho_image.drone_project_id is 'drone project 고유번호';
 comment on column ortho_image.transfer_data_id is '전송 데이터 고유번호';
 comment on column ortho_image.file_name is '파일 이름';
 comment on column ortho_image.file_real_name is '파일 실제 이름';
@@ -76,6 +78,7 @@ comment on column ortho_image.insert_date is '등록일';
 -- 후처리 영상
 create table postprocessing_image(
 	postprocessing_image_id						bigint,
+	drone_project_id							int									not null,
 	transfer_data_id							bigint								not null,
 	file_type									char(1)								default '0',
 	file_name									varchar(100)						not null,
@@ -91,6 +94,7 @@ create table postprocessing_image(
 
 comment on table postprocessing_image is '후처리 영상';
 comment on column postprocessing_image.postprocessing_image_id is '고유번호';
+comment on column postprocessing_image.drone_project_id is 'drone project 고유번호';
 comment on column postprocessing_image.transfer_data_id is '전송 데이터 고유번호';
 comment on column postprocessing_image.file_type is '파일 유형';
 comment on column postprocessing_image.file_name is '파일 이름';
@@ -106,6 +110,7 @@ comment on column postprocessing_image.insert_date is '등록일';
 -- 객체 탐지
 create table ortho_detected_object(
 	ortho_detected_object_id					bigint,
+	drone_project_id							int									not null,
 	ortho_image_id								bigint								not null,
 	object_type									varchar(100),
 	geometry		 							GEOGRAPHY(POINT, 4326),
@@ -123,6 +128,7 @@ create table ortho_detected_object(
 
 comment on table ortho_detected_object is '객체 탐지';
 comment on column ortho_detected_object.ortho_detected_object_id is '고유번호';
+comment on column ortho_detected_object.drone_project_id is 'drone project 고유번호';
 comment on column ortho_detected_object.ortho_image_id is '개별 정사 영상 고유번호';
 comment on column ortho_detected_object.object_type is '객체 타입';
 comment on column ortho_detected_object.geometry is 'geometry';

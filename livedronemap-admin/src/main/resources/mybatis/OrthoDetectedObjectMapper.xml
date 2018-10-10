@@ -10,10 +10,10 @@
     		SELECT NEXTVAL('ortho_detected_object_seq')
   		</selectKey>
 		INSERT INTO ortho_detected_object (
-			ortho_detected_object_id, ortho_image_id, object_type, geometry, detected_date,
+			ortho_detected_object_id, drone_project_id, ortho_image_id, object_type, geometry, detected_date,
 			bounding_box_geometry, major_axis, minor_axis, orientation, bounding_box_area, length, speed
 		) VALUES (
-			#{ortho_detected_object_id}, #{ortho_image_id}, #{object_type}, ST_GeographyFromText(#{geometry}), TO_TIMESTAMP(#{detected_date}, 'YYYYMMDDHH24MISSUS'),
+			#{ortho_detected_object_id}, #{drone_project_id}, #{ortho_image_id}, #{object_type}, ST_GeographyFromText(#{geometry}), TO_TIMESTAMP(#{detected_date}, 'YYYYMMDDHH24MISSUS'),
 			ST_Multi(ST_GeomFromText(#{bounding_box_geometry}, 4326)), #{major_axis}, #{minor_axis}, #{orientation}, #{bounding_box_area}, #{length}, #{speed}
 		)
 	</insert>

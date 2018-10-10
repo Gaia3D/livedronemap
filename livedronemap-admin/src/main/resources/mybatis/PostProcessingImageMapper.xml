@@ -10,9 +10,9 @@
     		SELECT NEXTVAL('postprocessing_image_seq')
   		</selectKey>
 		INSERT INTO postprocessing_image (
-			postprocessing_image_id, transfer_data_id, file_type, file_name, file_real_name, file_path, file_size, file_ext
+			postprocessing_image_id, drone_project_id, transfer_data_id, file_type, file_name, file_real_name, file_path, file_size, file_ext
 		) VALUES (
-			#{postprocessing_image_id}, #{transfer_data_id}, #{file_type}, #{file_name}, #{file_real_name}, #{file_path}, #{file_size}, #{file_ext}
+			#{postprocessing_image_id}, #{drone_project_id}, #{transfer_data_id}, #{file_type}, #{file_name}, #{file_real_name}, #{file_path}, #{file_size}, #{file_ext}
 		)
 	</insert>
 	

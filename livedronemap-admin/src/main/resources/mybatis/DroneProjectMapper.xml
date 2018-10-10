@@ -34,8 +34,10 @@
 	<!-- 프로젝트 목록 -->
 	<select id="getListDroneProject" parameterType="droneProject" resultType="droneProject">
 		/* getListDroneProject */
-		SELECT X.*, 
-			(SELECT drone_name FROM drone WHERE drone_id = X.drone_id) AS drone_name
+		SELECT X.*,
+			(SELECT drone_name FROM drone WHERE drone_id = X.drone_id) AS drone_name,
+			(SELECT COUNT(ortho_image_id) FROM ortho_image WHERE drone_project_id = X.drone_project_id) AS ortho_image_count,
+			(SELECT COUNT(postprocessing_image_id) FROM postprocessing_image WHERE drone_project_id = X.drone_project_id) AS postprocessing_image_count
 		FROM (
 			SELECT A.*
 			FROM drone_project A
@@ -87,7 +89,7 @@
 			#{drone_project_id}, #{drone_id}, #{drone_project_name}, #{shooting_area},
 			#{shooting_latitude1}, #{shooting_longitude1}, #{shooting_latitude2}, #{shooting_longitude2}, 
 			#{shooting_latitude3}, #{shooting_longitude3}, #{shooting_latitude4}, #{shooting_longitude4},
-			#{location}, #{shooting_date}, #{description} 
+			ST_GeographyFromText(#{location}), TO_TIMESTAMP(#{shooting_date}, 'YYYYMMDDHH24MISSUS'), #{description} 
 		)
 	</insert>
 </mapper>

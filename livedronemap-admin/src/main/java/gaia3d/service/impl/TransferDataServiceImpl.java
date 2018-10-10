@@ -77,6 +77,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 		Long imageId = null;
 		if(TransferDataType.ORTHO_IMAGE.getDataType().equals(transferData.getData_type())) {
 			OrthoImage orthoImage = new OrthoImage();
+			orthoImage.setDrone_project_id(transferDataResource.getDrone_project_id());
 			orthoImage.setTransfer_data_id(transferData.getTransfer_data_id());
 			orthoImage.setFile_name(fileInfo.getFile_name());
 			orthoImage.setFile_real_name(fileInfo.getFile_real_name());
@@ -86,6 +87,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 			orthoImageService.insertOrthoImage(orthoImage);
 			
 			for(OrthoDetectedObject orthoDetectedObject : transferDataResource.getDetected_objects()) {
+				orthoDetectedObject.setDrone_project_id(transferDataResource.getDrone_project_id());
 				orthoDetectedObject.setOrtho_image_id(orthoImage.getOrtho_image_id());
 				orthoDetectedObjectService.insertOrthoDetectedObject(orthoDetectedObject);
 			}
@@ -93,6 +95,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 			imageId = orthoImage.getOrtho_image_id();
 		} else if(TransferDataType.POSTPROCESSING_IMAGE.getDataType().equals(transferData.getData_type())) {
 			PostProcessingImage postProcessingImage = new PostProcessingImage();
+			postProcessingImage.setDrone_project_id(transferDataResource.getDrone_project_id());
 			postProcessingImage.setTransfer_data_id(transferData.getTransfer_data_id());
 			// TODO 이 컬럼은 없는게 맞는거 같음
 			postProcessingImage.setFile_type(null);
