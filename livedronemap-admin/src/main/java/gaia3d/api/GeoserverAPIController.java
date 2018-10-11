@@ -17,6 +17,7 @@ import gaia3d.domain.GeoserverAPIResult;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.TransferDataType;
 import gaia3d.exception.GeoserverException;
+import gaia3d.exception.NotFoundException;
 import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -53,7 +54,7 @@ public class GeoserverAPIController {
 			geoserverAPIResult.setStatusCode(httpStatus.value());
 		} catch (Exception e) {
 			e.printStackTrace();
-			if (e instanceof GeoserverException) {
+			if (e instanceof GeoserverException || e instanceof NotFoundException) {
 				httpStatus = HttpStatus.NOT_FOUND;
 			} else {
 				httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;

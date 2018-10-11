@@ -7,7 +7,9 @@ import java.nio.file.Paths;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -46,6 +48,9 @@ public class GeoserverServiceImpl implements GeoserverService {
 	
 	@Autowired
 	private GeoserverMapper geoserverMapper;
+	
+	@Value("classpath:geoserver/layer.json")
+    private Resource layerInfoResource;
 	
 	/**
 	 * GeoServer 레이어 확인 
@@ -102,7 +107,9 @@ public class GeoserverServiceImpl implements GeoserverService {
 		String layerInfo = null;
 		try {
 			// TODO 경로 처리
-			layerInfo = new String(Files.readAllBytes(Paths.get("src/main/resources/geoserver/layer.json")), StandardCharsets.UTF_8);
+			// layerInfo = new String(Files.readAllBytes(Paths.get(layerInfoResource.getURI()), StandardCharsets.UTF_8));
+			// layerInfo = new String(Files.readAllBytes(Paths.get("src/main/resources/geoserver/layer.json")), StandardCharsets.UTF_8);
+			layerInfo = new String(Files.readAllBytes(Paths.get(layerInfoResource.getURI())), StandardCharsets.UTF_8);
 			layerInfo = layerInfo.replace("{workspaceName}", geoserverDataWorkspace);
 			layerInfo = layerInfo.replace("{projectId}", String.valueOf(projectId));
 			layerInfo = layerInfo.replace("{dataType}", transferDataType.getDataType());
