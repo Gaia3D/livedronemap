@@ -26,7 +26,7 @@
 		- tomcat_home/bin/setenv.sh(bat) 파일 생성
 		- CATALINA_OPTS 변수에 -Duser.timezone=GMT 추가
 		- ex) 	windows : SET "CATALINA_OPTS=%CATALINA_OPTS% -Duser.timezone=GMT"
-				linux/MacOS : EXPORT CATALINA_OPTS="$CATALINA_OPTS -Duser.timezone=GMT"
+				linux/MacOS : export CATALINA_OPTS="$CATALINA_OPTS -Duser.timezone=GMT"
 		- 필요할 경우 JAVA_HOME 설정
 		
 	2.3. 작업공간, 저장소, 테스트 레이어 생성
