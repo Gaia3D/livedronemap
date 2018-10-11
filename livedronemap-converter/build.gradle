@@ -19,6 +19,10 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+bootJar {
+    launchScript()
+}
+
 group = 'gaia3d'
 version = '0.0.1-SNAPSHOT'
 
