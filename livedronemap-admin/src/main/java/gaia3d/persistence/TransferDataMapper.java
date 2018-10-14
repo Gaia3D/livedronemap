@@ -18,4 +18,10 @@ public interface TransferDataMapper {
 	 */
 	int insertTransferData(TransferData transferData);
 	
+	/**
+	 * transfer data update
+	 * @param transferData
+	 * @return
+	 */
+	int updateTransferData(TransferData transferData);
 }

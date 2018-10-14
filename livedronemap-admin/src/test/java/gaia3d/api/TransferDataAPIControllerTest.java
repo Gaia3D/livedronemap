@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -126,7 +127,9 @@ public class TransferDataAPIControllerTest {
 	}
 	
 	private Resource getFileResource() throws Exception {
-		String filePath = "D://marine_surveillance_1.tif";
+		Random random = new Random();
+		int number = random.nextInt(6);
+		String filePath = "C:\\livedronemap\\data\\marine_surveillance_" + number + ".tif";
 		return new FileSystemResource(filePath);
 	}
 	
@@ -158,7 +161,7 @@ public class TransferDataAPIControllerTest {
 		}
 		
 		TransferDataResource transferDataResource = new TransferDataResource();
-		transferDataResource.setDrone_project_id(1);
+		transferDataResource.setDrone_project_id(7);
 		transferDataResource.setData_type("0");
 		transferDataResource.setFile_name("test.jpg");
 		transferDataResource.setDetected_objects(detected_objects);

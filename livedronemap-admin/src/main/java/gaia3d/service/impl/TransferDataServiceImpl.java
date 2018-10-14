@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import gaia3d.config.PropertiesConfig;
+import gaia3d.config.RestTemplateResponseErrorHandler;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.APIURL;
 import gaia3d.domain.CacheManager;
@@ -20,7 +24,9 @@ import gaia3d.domain.OrthoImage;
 import gaia3d.domain.PostProcessingImage;
 import gaia3d.domain.TransferData;
 import gaia3d.domain.TransferDataResource;
+import gaia3d.domain.TransferDataStatus;
 import gaia3d.domain.TransferDataType;
+import gaia3d.exception.GeoserverException;
 import gaia3d.persistence.TransferDataMapper;
 import gaia3d.service.OrthoDetectedObjectService;
 import gaia3d.service.OrthoImageService;
@@ -40,7 +46,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 	@Autowired
 	private RestTemplateBuilder restTemplateBuilder;
 	@Autowired
-	private PropertiesConfig propertiesConfig;
+	private RestTemplateResponseErrorHandler restTemplateResponseErrorHandler;
 	
 	@Autowired
 	private PostProcessingImageService postProcessingImageService;
@@ -75,8 +81,10 @@ public class TransferDataServiceImpl implements TransferDataService {
 		int result = transferDataMapper.insertTransferData(transferData);
 		
 		Long imageId = null;
+		OrthoImage orthoImage = null;
+		PostProcessingImage postProcessingImage = null;
 		if(TransferDataType.ORTHO_IMAGE.getDataType().equals(transferData.getData_type())) {
-			OrthoImage orthoImage = new OrthoImage();
+			orthoImage = new OrthoImage();
 			orthoImage.setDrone_project_id(transferDataResource.getDrone_project_id());
 			orthoImage.setTransfer_data_id(transferData.getTransfer_data_id());
 			orthoImage.setFile_name(fileInfo.getFile_name());
@@ -94,7 +102,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 			
 			imageId = orthoImage.getOrtho_image_id();
 		} else if(TransferDataType.POSTPROCESSING_IMAGE.getDataType().equals(transferData.getData_type())) {
-			PostProcessingImage postProcessingImage = new PostProcessingImage();
+			postProcessingImage = new PostProcessingImage();
 			postProcessingImage.setDrone_project_id(transferDataResource.getDrone_project_id());
 			postProcessingImage.setTransfer_data_id(transferData.getTransfer_data_id());
 			// TODO 이 컬럼은 없는게 맞는거 같음
@@ -109,16 +117,39 @@ public class TransferDataServiceImpl implements TransferDataService {
 			imageId = postProcessingImage.getPostprocessing_image_id();
 		}
 		
-		callImageProcessing(transferDataResource.getDrone_project_id(), 
-							transferDataResource.getData_type(), 
-							imageId, 
-							fileInfo.getFile_path() + fileInfo.getFile_real_name(),
-							transferDataResource.getShooting_date());
+		String status = null;
+		try {
+			HttpStatus httpStatus = callImageProcessing(transferDataResource.getDrone_project_id(), 
+										transferDataResource.getData_type(), 
+										imageId, 
+										fileInfo.getFile_path() + fileInfo.getFile_real_name(),
+										transferDataResource.getShooting_date());
+			
+			if(HttpStatus.OK.equals(httpStatus)) {
+				transferData.setStatus(TransferDataStatus.CONVERTER_COMPLETE.getStatus());
+				status = TransferDataStatus.CONVERTER_COMPLETE.getStatus();
+			} else {
+				transferData.setStatus(TransferDataStatus.CONVERTER_FAIL.getStatus());
+				status = TransferDataStatus.CONVERTER_FAIL.getStatus();
+			}
+		} catch (HttpClientErrorException e) {
+			transferData.setStatus(TransferDataStatus.CONVERTER_ERROR.getStatus());
+			status = TransferDataStatus.CONVERTER_ERROR.getStatus();
+		}
+		
+		transferDataMapper.updateTransferData(transferData);
+		if(TransferDataType.ORTHO_IMAGE.getDataType().equals(transferData.getData_type())) {
+			orthoImage.setStatus(status);
+			orthoImageService.updateOrthoImage(orthoImage);
+		} else {
+			postProcessingImage.setStatus(status);
+			postProcessingImageService.updatePostProcessingImage(postProcessingImage);
+		}
 		
 		return result;
 	}
 	
-	private void callImageProcessing(Integer projectId, String dataType, Long imageId, String fileNameFullPath, String imageDate) {
+	private HttpStatus callImageProcessing(Integer projectId, String dataType, Long imageId, String fileNameFullPath, String imageDate) {
 		ImageInfo imageInfo = new ImageInfo();
 		imageInfo.setProjectId(projectId);
 		imageInfo.setDataType(dataType);
@@ -127,14 +158,16 @@ public class TransferDataServiceImpl implements TransferDataService {
 		imageInfo.setImageDate(imageDate);
 		
 		HttpHeaders headers = new HttpHeaders();
-		HttpEntity<ImageInfo> request = new HttpEntity<>(imageInfo, headers);
-		
-		//restTemplateBuilder.
-		RestTemplate restTemplate = new RestTemplate();
+		HttpEntity<ImageInfo> entity = new HttpEntity<>(imageInfo, headers);
+			
 		String url = CacheManager.getPolicy().getRest_api_converter_url() + APIURL.CONVERTER.getUrl();
-		log.info("url = {}", url);
-		ResponseEntity<APIResult> aPIResult = restTemplate.postForEntity(url, request, APIResult.class);
-		log.info("callImageProcessing status code = {}", aPIResult.getStatusCodeValue());
-		log.info("callImageProcessing aPIResult body = {}", aPIResult.getBody());
+		RestTemplate restTemplate = restTemplateBuilder.errorHandler(restTemplateResponseErrorHandler)
+									.setConnectTimeout(5000)
+									.setReadTimeout(5000)
+									.build();
+		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+		log.info("callImageProcessing status code = {}", response.getStatusCodeValue());
+		log.info("callImageProcessing body = {}", response.getBody());
+		return response.getStatusCode();
 	}
 }

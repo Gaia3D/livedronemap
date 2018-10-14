@@ -20,4 +20,13 @@
 		)
 	</insert>
 	
+	<!-- transfer data 수정 -->
+	<update id="updateTransferData" parameterType="transferData">
+		/* updateTransferData */
+		UPDATE transfer_data
+		SET status = #{status},
+			update_date = now()
+		WHERE transfer_data_id = #{transfer_data_id}
+	</update>
+	
 </mapper>

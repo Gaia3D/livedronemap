@@ -70,7 +70,7 @@ comment on column ortho_image.file_real_name is '파일 실제 이름';
 comment on column ortho_image.file_path is '파일 경로';
 comment on column ortho_image.file_size is '파일 사이즈';
 comment on column ortho_image.file_ext is '파일 확장자';
-comment on column ortho_image.status is '상태. 0 : 전송 완료, 1 : 이미지 후처리 완료, 2 : 이미지 후처리 실패';
+comment on column ortho_image.status is '상태. 0 : 전송 완료, 1 : 이미지 후처리 완료, 2 : 이미지 후처리 실패, 3 : 이미지 후처리 에러(호출실패)';
 comment on column ortho_image.update_date is '수정일';
 comment on column ortho_image.insert_date is '등록일';
 
