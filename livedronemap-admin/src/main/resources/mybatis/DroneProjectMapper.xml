@@ -98,7 +98,7 @@
 		/* updateDroneProject */
 		UPDATE drone_project
 		SET status = #{status},
-			update_date = #{update_date}
+			update_date = NOW()
 		WHERE drone_project_id = #{drone_project_id}
 	</update>
 </mapper>

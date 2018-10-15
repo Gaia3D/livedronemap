@@ -14,11 +14,13 @@ import org.springframework.web.client.RestTemplate;
 import gaia3d.config.RestTemplateResponseErrorHandler;
 import gaia3d.domain.APIURL;
 import gaia3d.domain.CacheManager;
+import gaia3d.domain.DroneProject;
 import gaia3d.domain.FileInfo;
 import gaia3d.domain.ImageInfo;
 import gaia3d.domain.OrthoDetectedObject;
 import gaia3d.domain.OrthoImage;
 import gaia3d.domain.PostProcessingImage;
+import gaia3d.domain.ProjectStatus;
 import gaia3d.domain.TransferData;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.domain.TransferDataStatus;
@@ -79,6 +81,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 		transferData.setShooting_date(transferDataResource.getShooting_date());
 		int result = transferDataMapper.insertTransferData(transferData);
 		
+		String projectStatus = null;
 		Long imageId = null;
 		OrthoImage orthoImage = null;
 		PostProcessingImage postProcessingImage = null;
@@ -99,6 +102,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 				orthoDetectedObjectService.insertOrthoDetectedObject(orthoDetectedObject);
 			}
 			
+			projectStatus = ProjectStatus.ORTHO_IMAGE.getStatus();
 			imageId = orthoImage.getOrtho_image_id();
 		} else if(TransferDataType.POSTPROCESSING_IMAGE.getDataType().equals(transferData.getData_type())) {
 			postProcessingImage = new PostProcessingImage();
@@ -113,6 +117,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 			postProcessingImage.setFile_ext(fileInfo.getFile_ext());
 			postProcessingImageService.insertPostProcessingImage(postProcessingImage);
 			
+			projectStatus = ProjectStatus.POSTPROCESSING_IMAGE.getStatus();
 			imageId = postProcessingImage.getPostprocessing_image_id();
 		}
 		
@@ -134,15 +139,20 @@ public class TransferDataServiceImpl implements TransferDataService {
 		} catch (Exception e) {
 			transferData.setStatus(TransferDataStatus.CONVERTER_ERROR.getStatus());
 			status = TransferDataStatus.CONVERTER_ERROR.getStatus();
-		}
-		
-		transferDataMapper.updateTransferData(transferData);
-		if(TransferDataType.ORTHO_IMAGE.getDataType().equals(transferData.getData_type())) {
-			orthoImage.setStatus(status);
-			orthoImageService.updateOrthoImage(orthoImage);
-		} else {
-			postProcessingImage.setStatus(status);
-			postProcessingImageService.updatePostProcessingImage(postProcessingImage);
+		} finally {
+			DroneProject droneProject = new DroneProject();
+			droneProject.setDrone_project_id(transferDataResource.getDrone_project_id());
+			droneProject.setStatus(projectStatus);
+			droneProjectService.updateDroneProject(droneProject);
+			
+			transferDataMapper.updateTransferData(transferData);
+			if(TransferDataType.ORTHO_IMAGE.getDataType().equals(transferData.getData_type())) {
+				orthoImage.setStatus(status);
+				orthoImageService.updateOrthoImage(orthoImage);
+			} else {
+				postProcessingImage.setStatus(status);
+				postProcessingImageService.updatePostProcessingImage(postProcessingImage);
+			}
 		}
 		
 		return result;

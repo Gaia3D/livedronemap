@@ -72,7 +72,7 @@
 							<option value="0"><spring:message code='search.same'/></option>
 							<option value="1"><spring:message code='search.include'/></option>
 						</select>
-						<form:input path="search_value" type="search" size="13" cssClass="m" style="height: 30px;" />
+						<form:input path="search_value" type="search" size="12" cssClass="m" style="height: 30px;" />
 					</div>
 					<div class="input-set" style="padding-top: 2px;">
 						<label for="start_date"><spring:message code='search.date'/></label>&nbsp;&nbsp;&nbsp;
