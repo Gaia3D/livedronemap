@@ -23,4 +23,14 @@ public class ClientServiceImpl implements ClientService {
 	public Client getClientByAPIKey(String api_key) {
 		return clientMapper.getClientByAPIKey(api_key);
 	}
+	
+	/**
+	 * client 등록
+	 * @param client
+	 * @return
+	 */
+	@Transactional
+	public int insertClient(Client client) {
+		return clientMapper.insertClient(client);
+	}
 }

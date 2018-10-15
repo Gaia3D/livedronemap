@@ -10,4 +10,11 @@ public interface ClientService {
 	 * @return
 	 */
 	Client getClientByAPIKey(String api_key);
+	
+	/**
+	 * client 등록
+	 * @param client
+	 * @return
+	 */
+	int insertClient(Client client);
 }

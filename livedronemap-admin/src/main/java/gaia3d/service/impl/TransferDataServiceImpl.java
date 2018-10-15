@@ -132,7 +132,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 				transferData.setStatus(TransferDataStatus.CONVERTER_FAIL.getStatus());
 				status = TransferDataStatus.CONVERTER_FAIL.getStatus();
 			}
-		} catch (HttpClientErrorException e) {
+		} catch (Exception e) {
 			transferData.setStatus(TransferDataStatus.CONVERTER_ERROR.getStatus());
 			status = TransferDataStatus.CONVERTER_ERROR.getStatus();
 		}

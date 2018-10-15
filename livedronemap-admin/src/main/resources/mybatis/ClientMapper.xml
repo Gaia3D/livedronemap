@@ -8,4 +8,17 @@
 		/* getClientByAPIKey */
 		SELECT * FROM client WHERE api_Key = #{api_Key}
 	</select>
+	
+	<!-- client 등록 -->
+	<insert id="insertClient" parameterType="client" >
+		/* insertClient */
+		<selectKey keyProperty="client_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('client_seq')
+  		</selectKey>
+		INSERT INTO client (
+			client_id, client_group_id, client_name, client_ip, use_yn, api_key, description
+		) VALUES (
+			#{client_id}, #{client_group_id}, #{client_name}, #{client_ip}, #{use_yn}, #{api_key}, #{description}
+		)
+	</insert>
 </mapper>

@@ -1,7 +1,5 @@
 package gaia3d.api;
 
-import java.util.UUID;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -45,7 +43,6 @@ public class AuthenticationAPIControllerTest {
 	@Test
 	public void createTokenWithHeader() throws Exception {
 		MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-		parameters.add("test", "1234");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("live_drone_map", getCustomHeader());
@@ -69,10 +66,10 @@ public class AuthenticationAPIControllerTest {
 	private String getCustomHeader() throws Exception {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("user_id=")
-				.append("test")
+				.append("admin")
 				.append("&")
 				.append("api_key=")
-				.append(UUID.randomUUID().toString())
+				.append("test")
 				.append("&")
 				.append("token=")
 				.append("")

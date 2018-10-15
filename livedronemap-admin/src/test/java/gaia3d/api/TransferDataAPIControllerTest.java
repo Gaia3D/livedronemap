@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -128,7 +127,7 @@ public class TransferDataAPIControllerTest {
 	
 	private Resource getFileResource() throws Exception {
 		Random random = new Random();
-		int number = random.nextInt(6);
+		int number = random.nextInt(5) + 1;
 		String filePath = "C:\\livedronemap\\data\\marine_surveillance_" + number + ".tif";
 		return new FileSystemResource(filePath);
 	}
@@ -161,12 +160,12 @@ public class TransferDataAPIControllerTest {
 		}
 		
 		TransferDataResource transferDataResource = new TransferDataResource();
-		transferDataResource.setDrone_project_id(7);
+		transferDataResource.setDrone_project_id(1);
 		transferDataResource.setData_type("0");
 		transferDataResource.setFile_name("test.jpg");
 		transferDataResource.setDetected_objects(detected_objects);
 		transferDataResource.setDrone(drone);
-		transferDataResource.setShooting_date("20180929203800");
+		transferDataResource.setShooting_date("20181016203800");
 		
 		String jsonStr = mapper.writeValueAsString(transferDataResource);
         log.info("{}", jsonStr);
@@ -182,10 +181,10 @@ public class TransferDataAPIControllerTest {
 	private String getCustomHeader() throws Exception {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("user_id=")
-				.append("test")
+				.append("admin")
 				.append("&")
 				.append("api_key=")
-				.append(UUID.randomUUID().toString())
+				.append("test")
 				.append("&")
 				.append("token=")
 				.append("22327341")

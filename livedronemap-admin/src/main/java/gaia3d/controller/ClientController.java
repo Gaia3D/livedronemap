@@ -1,29 +1,49 @@
 package gaia3d.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import gaia3d.domain.Client;
+import gaia3d.service.ClientService;
+import gaia3d.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequestMapping("/client/")
 @Controller
 public class ClientController {
+	
+	@Autowired
+	private ClientService clientService;
 
-	/**
-	 * Project 목록
-	 * @param model
-	 * @return
-	 */
-	@GetMapping(value = "list-client")
-	public String clientList(HttpServletRequest request, Model model) {
+	@PostMapping("/clients")
+	@ResponseBody
+	public Map<String, Object> insertClient(HttpServletRequest request, Client client) {
+		log.info("@@@@@@@@@@ client = {}", client);
 		
-		log.info("@@@@@@@@@@ list-client");
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+			// TODO client group 도 체크 해야 함
+			if(client == null || StringUtil.isEmpty(client.getClient_name())) {
+				result = "client.name.require";
+				map.put("result", result);
+				return map;
+			}
+			
+			clientService.insertClient(client);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
 		
-		return "/client/list-client";
+		map.put("result", result);
+		return map;
 	}
 }

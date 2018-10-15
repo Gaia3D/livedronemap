@@ -1,5 +1,6 @@
 drop table if exists client_group cascade;
 drop table if exists client cascade;
+drop table if exists client_group_role cascade;
 
 -- 서버 그룹
 create table client_group(
