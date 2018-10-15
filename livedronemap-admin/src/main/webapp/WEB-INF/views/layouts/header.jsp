@@ -16,65 +16,56 @@
 	}
 %>
 
-<div id="header" style="">
-	<ul class="processing">
-		<li style="float: left; padding-left: 10px;">
-			<img src="../../../images/drone.png" width="50" height="" />
+<div id="header">
+	<h1><span>Live Drone Map</span></h1>
+	<ul class="condition">
+		<li class="time">
+			최종시간 : <span><%=lastCheckTime %></span>
 		</li>
-		<li style="float:left; padding-left:20px; padding-top: 15px;">
-			<span class="title">Live Drone Map</span>
-		</li>
-		<li style="padding-left:250px; padding-top: 15px; padding-right: 10px;">
-			<span class="title">최종 시간 : <%=lastCheckTime %></span>
-		</li>
-		<li style="padding-left:20px; padding-top: 15px; padding-right: 10px;">
-			<span class="title">Drone</span>
-		</li>
-		<li style="padding-top: 15px;">
-<% if(HealthCheck.ALIVE.equals(droneStatus)) {%>
-			<img src="../../../images/ko/icon/health_alive.png"/>
-<% } else if(HealthCheck.DOWN.equals(droneStatus)) {%>
-			<img src="../../../images/ko/icon/health_down.png"/>
+		<li>
+			Drone
+<% if(HealthCheck.ALIVE.equals(droneStatus)) { %>
+			<span class="alive">정상</span>
+<% } else if(HealthCheck.DOWN.equals(droneStatus)) { %>
+			<span class="down">다운</span>
 <% } else { %>
-			<img src="../../../images/ko/icon/health_unknown.png"/>
+			<span class="unknown">알수없음</span>
+<% } %>
+	
+		</li>
+		<li>
+			AI
+<% if(HealthCheck.ALIVE.equals(aIStatus)) { %>
+			<span class="alive">정상</span>
+<% } else if(HealthCheck.DOWN.equals(aIStatus)) { %>
+			<span class="down">다운</span>
+<% } else { %>
+			<span class="unknown">알수없음</span>
 <% } %>
 		</li>
-		<li style="padding-left:20px; padding-top: 15px; padding-right: 10px;">
-			<span class="title">AI</span>
-		</li>
-		<li style="padding-top: 15px;">
-<% if(HealthCheck.ALIVE.equals(aIStatus)) {%>
-			<img src="../../../images/ko/icon/health_alive.png"/>
-<% } else if(HealthCheck.DOWN.equals(aIStatus)) {%>
-			<img src="../../../images/ko/icon/health_down.png"/>
-<% } else { %>
-			<img src="../../../images/ko/icon/health_unknown.png"/>
-<% } %>
-		</li>
-		<li style="padding-left:20px; padding-top: 15px; padding-right: 10px;">
-			<span class="title">Converter</span>
-		</li>
-		<li style="padding-top: 15px;">
+		<li>
+			Converter
 <% if(HealthCheck.ALIVE.equals(converterStatus)) {%>
-			<img src="../../../images/ko/icon/health_alive.png"/>
+			<span class="alive">정상</span>
 <% } else if(HealthCheck.DOWN.equals(converterStatus)) {%>
-			<img src="../../../images/ko/icon/health_down.png"/>
+			<span class="down">다운</span>
 <% } else { %>
-			<img src="../../../images/ko/icon/health_unknown.png"/>
+			<span class="unknown">알수없음</span>
 <% } %>
 		</li>
-		
-		<li style="padding-left:200px; padding-top: 15px;">
-			<span class="title">도움말&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+	</ul>
+	<ul class="gnb">
+		<li>
+			도움말
 		</li>
-		<li style="padding-top: 15px;">
+		<li>
 <%
 	UserSession userSession = (UserSession)request.getSession().getAttribute(UserSession.KEY);
 	if(userSession != null && userSession.getUser_id() != null && !"".equals(userSession.getUser_id())) {
 %>		
-			<a href="/login/logout"><span class="title">로그 아웃</span></a>
+			<a href="/login/logout" style="color: #fff;">로그 아웃</a>
 <% } else { %>
-			<a href="/login/login"><span class="title">로그인</span></a>
+			<a href="/login/login" style="color: #fff;">로그인</a>
 <% } %>
 		</li>
 	</ul>

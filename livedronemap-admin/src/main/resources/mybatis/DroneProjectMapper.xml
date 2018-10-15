@@ -92,4 +92,13 @@
 			ST_GeographyFromText(#{location}), TO_TIMESTAMP(#{shooting_date}, 'YYYYMMDDHH24MISSUS'), #{description} 
 		)
 	</insert>
+	
+	<!-- drone project 수정 -->
+	<update id="updateDroneProject" parameterType="droneProject">
+		/* updateDroneProject */
+		UPDATE drone_project
+		SET status = #{status},
+			update_date = #{update_date}
+		WHERE drone_project_id = #{drone_project_id}
+	</update>
 </mapper>

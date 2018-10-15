@@ -14,31 +14,38 @@
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/externlib/cesium_orgin/Cesium.js"></script>
-	<style>
+	<!-- <style>
 		html, body, #cesiumContainer {
 			height:100%; margin: 0; padding: 0; overflow: hidden;
 		}
 		.button {
-    width:80px;
-    background-color: #686872;
-    border: none;
-    color:#fff;
-    padding: 5px 0;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 15px;
-    margin: 0px;
-    cursor: pointer;
-	border-radius:5px;
-}
+		    width:80px;
+		    background-color: #686872;
+		    border: none;
+		    color:#fff;
+		    padding: 5px 0;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 15px;
+		    margin: 0px;
+		    cursor: pointer;
+			border-radius:5px;
+		}
+	</style> -->
+	<style>
+		.mapWrap {
+			min-width: 1420px;
+			padding-left: 391px;
+			height:100%;
+		}
 	</style>
 </head>
 
 <body>
 <%@ include file="/WEB-INF/views/layouts/header.jsp" %>
 
-<div id="wrap">
+<div id="wrap" style="height:94.7%; width: 100%;">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
 	
 	<!-- S: 1depth / 프로젝트 목록 -->
@@ -97,10 +104,10 @@
 				</div>
 			</form:form>
 			<div class="count" style="margin-top: 20px; margin-bottom: 5px;">
-				<spring:message code='all.d'/> <em><fmt:formatNumber value="${pagination.totalCount}" type="number"/></em><spring:message code='search.what.count'/>
+				<spring:message code='all.d'/> <em><fmt:formatNumber value="${pagination.totalCount}" type="number"/></em> <spring:message code='search.what.count'/>
 				<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/> <spring:message code='search.page'/>
 			</div>
-			<div class="projectList" style="overflow-y: scroll; height:500px;">
+			<div class="projectList" style="max-height: 500px;">
 <c:if test="${empty droneProjectList }">				
 				<ul class="projectInfo">
 					<li class="title" style="height: 60px; padding-top: 30px;">드론 프로젝트가 존재하지 않습니다.</li>
@@ -169,7 +176,7 @@
 	</div>
 	<!-- E: 1depth / 프로젝트 목록 -->
 	
-	<div id="cesiumContainer" >
+	<div id="cesiumContainer" class="mapWrap">
 	</div>
 	<!-- E: MAPWRAP -->
 </div>
@@ -212,8 +219,10 @@
 	$( "#menuCloseButton" ).on( "click", function() {
 		if($("#leftMenuArea").css("display") == "none") {
 			$("#leftMenuArea").show();
+			$(".mapWrap").css({"padding-left" : "391px"});
 		} else {
 			$("#leftMenuArea").hide();
+			$(".mapWrap").css({"padding-left" : "51px"});
 		}
 	});
 </script>

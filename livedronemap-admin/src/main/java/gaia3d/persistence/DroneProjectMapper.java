@@ -29,4 +29,11 @@ public interface DroneProjectMapper {
 	 * @return
 	 */
 	int insertDroneProject(DroneProject droneProject);
+	
+	/**
+	 * drone project 수정
+	 * @param droneProject
+	 * @return
+	 */
+	int updateDroneProject(DroneProject droneProject);
 }

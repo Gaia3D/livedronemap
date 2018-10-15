@@ -9,12 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import gaia3d.config.PropertiesConfig;
 import gaia3d.config.RestTemplateResponseErrorHandler;
-import gaia3d.domain.APIResult;
 import gaia3d.domain.APIURL;
 import gaia3d.domain.CacheManager;
 import gaia3d.domain.FileInfo;
@@ -26,8 +23,8 @@ import gaia3d.domain.TransferData;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.domain.TransferDataStatus;
 import gaia3d.domain.TransferDataType;
-import gaia3d.exception.GeoserverException;
 import gaia3d.persistence.TransferDataMapper;
+import gaia3d.service.DroneProjectService;
 import gaia3d.service.OrthoDetectedObjectService;
 import gaia3d.service.OrthoImageService;
 import gaia3d.service.PostProcessingImageService;
@@ -48,6 +45,8 @@ public class TransferDataServiceImpl implements TransferDataService {
 	@Autowired
 	private RestTemplateResponseErrorHandler restTemplateResponseErrorHandler;
 	
+	@Autowired
+	private DroneProjectService droneProjectService;
 	@Autowired
 	private PostProcessingImageService postProcessingImageService;
 	@Autowired

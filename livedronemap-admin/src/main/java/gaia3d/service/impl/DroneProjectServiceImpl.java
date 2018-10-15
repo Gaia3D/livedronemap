@@ -45,4 +45,14 @@ public class DroneProjectServiceImpl implements DroneProjectService {
 	public int insertDroneProject(DroneProject droneProject) {
 		return droneProjectMapper.insertDroneProject(droneProject);
 	}
+	
+	/**
+	 * drone project 수정
+	 * @param droneProject
+	 * @return
+	 */
+	@Transactional
+	public int updateDroneProject(DroneProject droneProject) {
+		return droneProjectMapper.updateDroneProject(droneProject);
+	}
 }
