@@ -17,7 +17,7 @@ public class ImageInfo {
 	// 절대 경로
 	private String imagePath;
 	
-	// 2018-10-01 09:00:00.000 
+	// 20181001090000 
 	private String imageDate;
 	
 }

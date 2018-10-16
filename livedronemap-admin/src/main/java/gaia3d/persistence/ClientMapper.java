@@ -17,4 +17,12 @@ public interface ClientMapper {
 	 * @return
 	 */
 	Client getClientByAPIKey(String api_key);
+	
+	/**
+	 * client 정보를 취득
+	 * @param client_id
+	 * @return
+	 */
+	Client getClientByClientId(int client_id);
+	
 }

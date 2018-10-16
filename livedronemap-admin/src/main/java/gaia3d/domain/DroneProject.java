@@ -49,6 +49,8 @@ public class DroneProject {
 	private Integer drone_id;
 	// drone project명
 	private String drone_project_name;
+	// 프로젝트 구분
+	private String drone_project_type;
 	// 촬영 지역
 	private String shooting_area;
 	// 촬영 시작 지점의 위도1

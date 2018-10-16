@@ -24,6 +24,7 @@
 		<typeAlias type="gaia3d.domain.TransferData" alias="transferData"/>
 		<typeAlias type="gaia3d.domain.TokenLog" alias="tokenLog"/>
 		<typeAlias type="gaia3d.domain.ImageMosaic" alias="imageMosaic"/>
+		<typeAlias type="gaia3d.domain.SimulationLog" alias="simulationLog"/>
 	</typeAliases>
 	
 </configuration>

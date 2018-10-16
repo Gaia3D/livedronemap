@@ -23,4 +23,16 @@ public class ClientServiceImpl implements ClientService {
 	public Client getClientByAPIKey(String api_key) {
 		return clientMapper.getClientByAPIKey(api_key);
 	}
+
+	/**
+	 *  ID를 이용하여 client 정보 취득
+	 *  @param client_id
+	 *  @return
+	 */
+	@Override
+	public Client getClientByClientId(int client_id) {
+		return clientMapper.getClientByClientId(client_id);
+	}
+	
+	
 }

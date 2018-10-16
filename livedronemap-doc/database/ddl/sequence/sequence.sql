@@ -11,6 +11,7 @@ drop sequence if exists ortho_detected_object_seq;
 drop sequence if exists ortho_image_seq;
 drop sequence if exists transfer_data_seq;
 drop sequence if exists token_log_seq;
+drop sequence if exists simulation_log_seq;
 
 
 create sequence access_log_seq increment 1 minvalue 1 maxvalue 999999999999 start 1 cache 1;
@@ -26,4 +27,5 @@ create sequence ortho_detected_object_seq increment 1 minvalue 1 maxvalue 999999
 create sequence ortho_image_seq increment 1 minvalue 1 maxvalue 999999999999 start 1 cache 1;
 create sequence transfer_data_seq increment 1 minvalue 1 maxvalue 999999999999 start 1 cache 1;
 create sequence token_log_seq increment 1 minvalue 1 maxvalue 999999999 start 1 cache 1;
+create sequence simulation_log_seq increment 1 minvalue 1 maxvalue 999999999 start 1 cache 1;
 

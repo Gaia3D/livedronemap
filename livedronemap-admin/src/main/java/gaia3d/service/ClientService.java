@@ -10,4 +10,12 @@ public interface ClientService {
 	 * @return
 	 */
 	Client getClientByAPIKey(String api_key);
+	
+	/**
+	 *  ID를 이용하여 client 정보 취득
+	 *  @param client_id
+	 *  @return
+	 */
+	Client getClientByClientId(int client_id);
+
 }

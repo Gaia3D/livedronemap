@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.SimulationLogMapper">
+
+	<!-- 시뮬레이션 등록 -->
+	<insert id="insertSimulationLog" parameterType="simulationLog" >
+		/* insertDroneProject */
+		<selectKey keyProperty="simulation_log_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('simulation_log_seq')
+  		</selectKey>
+		INSERT INTO simulation_log (
+			simulation_log_id, simulation_type, client_id, client_name
+		) VALUES (
+			#{simulation_log_id}, #{simulation_type}, #{client_id}, #{client_name}
+		)
+	</insert>
+</mapper>
