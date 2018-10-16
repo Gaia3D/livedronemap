@@ -64,6 +64,11 @@ public class PolicyController {
 //			policy.setBackoffice_user_db_password("****" + policy.getBackoffice_user_db_password().substring(4));
 		}
 		
+		policy.setGeoserver_user(Crypt.decrypt(policy.getGeoserver_user()));
+		if (policy.getGeoserver_password() != null) {
+			policy.setGeoserver_password("**************");
+		}
+		
 		policy.setServer_ip(CacheManager.getServerIp());
 		
 		model.addAttribute("policy", policy);

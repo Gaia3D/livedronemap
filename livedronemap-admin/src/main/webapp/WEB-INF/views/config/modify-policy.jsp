@@ -43,9 +43,9 @@
 					<li><a href="#project_tab"><spring:message code='config.project.title'/></a></li>
 					<li><a href="#notice_tab"><spring:message code='config.notice.title'/></a></li>
 					<li><a href="#security_tab"><spring:message code='config.security.title'/></a></li>
-					<li><a href="#userupload_tab"><spring:message code='config.uplaod.title'/></a></li>
+					<li><a href="#upload_tab"><spring:message code='config.uplaod.title'/></a></li>
 					<li><a href="#site_tab"><spring:message code='config.site.title'/></a></li>
-					<li><a href="#solution_tab"><spring:message code='config.product.title'/></a></li>
+					<li><a href="#solution_tab"><spring:message code='config.solution.title'/></a></li>
 				</ul>
 				
 				<%@ include file="/WEB-INF/views/config/modify-policy-user.jsp" %>
@@ -55,6 +55,9 @@
 				<%@ include file="/WEB-INF/views/config/modify-policy-project.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-notice.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-security.jsp" %>
+				<%@ include file="/WEB-INF/views/config/modify-policy-upload.jsp" %>
+				<%@ include file="/WEB-INF/views/config/modify-policy-site.jsp" %>
+				<%@ include file="/WEB-INF/views/config/modify-policy-solution.jsp" %>
 			</div>
 	</div>
 </div>
