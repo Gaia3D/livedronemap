@@ -17,4 +17,12 @@ public interface ClientService {
 	 * @return
 	 */
 	int insertClient(Client client);
+
+	/**
+	 *  ID를 이용하여 client 정보 취득
+	 *  @param client_id
+	 *  @return
+	 */
+	Client getClientByClientId(int client_id);
+
 }

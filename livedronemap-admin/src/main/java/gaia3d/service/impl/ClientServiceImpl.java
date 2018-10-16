@@ -33,4 +33,15 @@ public class ClientServiceImpl implements ClientService {
 	public int insertClient(Client client) {
 		return clientMapper.insertClient(client);
 	}
+
+	/**
+	 *  ID를 이용하여 client 정보 취득
+	 *  @param client_id
+	 *  @return
+	 */
+	@Override
+	public Client getClientByClientId(int client_id) {
+		return clientMapper.getClientByClientId(client_id);
+	}
+	
 }

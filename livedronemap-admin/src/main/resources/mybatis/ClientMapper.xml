@@ -21,4 +21,10 @@
 			#{client_id}, #{client_group_id}, #{client_name}, #{client_ip}, #{use_yn}, #{api_key}, #{description}
 		)
 	</insert>
+
+	<!-- client 정보를 취득 -->
+	<select id="getClientByClientId" parameterType="integer" resultType="client">
+		/* getClientByClientId */
+		SELECT * FROM client WHERE client_id = #{client_id}
+	</select>
 </mapper>

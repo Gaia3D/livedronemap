@@ -1,42 +1,55 @@
 {
-	"drone_project_id" : 1,
-	"data_type" : "0",
-	"file_name" : "test.jpg",
-	"detected_objects" : [
-		{
-			"number": 1,
-			"geometry": "POINT (128.382757714281 34.7651373676212)",
-			"object_type": "Ship",
-			"detected_time": 1514764805,
-			"bounding_box_geometry": "POLYGON ((128.382734145868 34.7651857207077,128.382789761448 34.7651808845703,128.382783958083 34.7650672353414,128.38272544082 34.7650730387062,128.382734145868 34.7651857207077))",
-			"major_axis": 30,
-			"minor_axis": 50,
-			"orientation": 260,
-			"bounding_box_area": 150,
-			"length": 30,
-			"speed": 12
-		},
-		{
-			"number": 2,
-			"geometry": "POINT (128.382757714281 34.7651373676212)",
-			"object_type": "Ship",
-			"detected_time": 1514764805,
-			"bounding_box_geometry": "POLYGON ((128.382734145868 34.7651857207077,128.382789761448 34.7651808845703,128.382783958083 34.7650672353414,128.38272544082 34.7650730387062,128.382734145868 34.7651857207077))",
-			"major_axis": 30,
-			"minor_axis": 50,
-			"orientation": 260,
-			"bounding_box_area": 150,
-			"length": 30,
-			"speed": 12
-		}
-	],
-	"drone" : {
-		"latitude": 37.22516,
-	    "longitude": 128.2151,
-	    "altitude": 100,
-	    "roll": 2.123,
-	    "pitch": 0.23,
-	    "yaw": 1.2323
-	},
-	"shooting_date" : ""
+    "drone_project_id": 1,
+    "data_type": "0",
+    "file_name": "simulation_sample_img.tif",
+    "detected_objects": [
+        {
+            "number": 0,
+            "ortho_detected_object_id": null,
+            "drone_project_id": null,
+            "ortho_image_id": null,
+            "user_id": null,
+            "object_type": "0",
+            "geometry": "POINT (128.382757714281 34.7651373676212)",
+            "detected_date": "20180929203800",
+            "bounding_box_geometry": "POLYGON ((128.382734145868 34.7651857207077,128.382789761448 34.7651808845703,128.382783958083 34.7650672353414,128.38272544082 34.7650730387062,128.382734145868 34.7651857207077))",
+            "major_axis": 30,
+            "minor_axis": 50,
+            "orientation": 260,
+            "bounding_box_area": 150,
+            "length": 30,
+            "speed": 12,
+            "insert_date": null
+        },
+        {
+            "number": 1,
+            "ortho_detected_object_id": null,
+            "drone_project_id": null,
+            "ortho_image_id": null,
+            "user_id": null,
+            "object_type": "0",
+            "geometry": "POINT (128.382757714281 34.7651373676212)",
+            "detected_date": "20180929203800",
+            "bounding_box_geometry": "POLYGON ((128.382734145868 34.7651857207077,128.382789761448 34.7651808845703,128.382783958083 34.7650672353414,128.38272544082 34.7650730387062,128.382734145868 34.7651857207077))",
+            "major_axis": 30,
+            "minor_axis": 50,
+            "orientation": 260,
+            "bounding_box_area": 150,
+            "length": 30,
+            "speed": 12,
+            "insert_date": null
+        }
+    ],
+    "drone": {
+        "drone_id": null,
+        "drone_name": null,
+        "latitude": 37.22516,
+        "longitude": 128.2151,
+        "altitude": 100,
+        "roll": 2.123,
+        "pitch": 0.23,
+        "yaw": 1.2323,
+        "insert_date": null
+    },
+    "shooting_date": "20180929203800"
 }
