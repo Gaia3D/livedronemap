@@ -22,14 +22,19 @@
 <body>
 <%@ include file="/WEB-INF/views/layouts/header.jsp" %>
 
-<div id="wrapCon" style="height: 850px;"><!-- 브라우저에 맞게 높이조절, Header없을때 높이조절 -->
+<div id="contentsWrap">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
-	<%@ include file="/WEB-INF/views/layouts/config_sub_menu.jsp" %>
 	
-	<div id="contentsWrap">
-		<div class="contents full">
-			<h2><spring:message code='config.policy'/></h2>
-			<div class="tabs">
+	<div class="snb">
+		<h2 class="log"><span>환경설정</span></h2>
+		<ul>
+			<li class="on" title="운영정책">운영정책</li>
+		</ul>
+	</div>
+	<div class="contents limited">
+		<h3><spring:message code='config.policy'/></h3>
+		
+		<div class="tabs">
 				<ul>
 					<li><a href="#user_tab"><spring:message code='config.user.title'/></a></li>
 					<li><a href="#password_tab"><spring:message code='config.password.title'/></a></li>
@@ -51,13 +56,8 @@
 				<%@ include file="/WEB-INF/views/config/modify-policy-notice.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-security.jsp" %>
 			</div>
-		</div>
-		<!-- CONTENTS -->
 	</div>
-	<!-- E: CONTENTSWRAP -->
-	
 </div>
-<!-- E: warp -->
 
 <script type="text/javascript">
 	$(document).ready(function() {
