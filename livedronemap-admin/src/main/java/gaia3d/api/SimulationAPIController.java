@@ -28,11 +28,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import gaia3d.domain.APIResult;
 import gaia3d.domain.Client;
+import gaia3d.domain.DroneProject;
 import gaia3d.domain.SimulationLevel;
 import gaia3d.domain.SimulationLog;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.service.APILogService;
 import gaia3d.service.ClientService;
+import gaia3d.service.DroneProjectService;
 import gaia3d.service.SimulationLogService;
 import gaia3d.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -44,10 +46,14 @@ public class SimulationAPIController implements APIController {
 	@Autowired
 	private APILogService aPILogService;
 	@Autowired
-	ClientService clientService;
+	private ClientService clientService;
 	@Autowired
-	SimulationLogService simulationLogService;
+	private DroneProjectService droneProjectService;
+	@Autowired
+	private SimulationLogService simulationLogService;
 	
+	@Value("classpath:simulation/drone-project.json")
+    private Resource simulationDroneProject;
 	@Value("classpath:simulation/simulation_sample_img.tif")
     private Resource simulationSampleFile;
 	@Value("classpath:simulation/transfer-data.json")
@@ -57,18 +63,19 @@ public class SimulationAPIController implements APIController {
 	 * 프로세스 테스트 시뮬레이션
 	 * @return
 	 */
-	@PostMapping("simulations/{client_id:[0-9]+}/{level:[a-z]+}")
-	public ResponseEntity<APIResult> simulateProcess(HttpServletRequest request, @PathVariable("client_id") Integer clientId, @PathVariable("level") String level) {
+	@PostMapping("simulations/{client_id:[0-9]+}/{step:[a-z]+}")
+	public ResponseEntity<APIResult> simulateProcess(HttpServletRequest request, @PathVariable("client_id") Integer clientId, @PathVariable("step") String step) {
 		log.info("@@@@@ Start simulation.");
 		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		String clientName = null;
 		
 		try {
-			SimulationLevel simulationLevel = SimulationLevel.valueOf(level.toUpperCase());
+			SimulationLevel simulationLevel = SimulationLevel.valueOf(step.toUpperCase());
 			String levelCode = simulationLevel.getCode();
 			
-			// get client info
+			// get client
+			// name, ip, port 정보 확인
 			Client client = clientService.getClientByClientId(clientId);
 			if (client == null) {
 				log.info("@@@@@ Client not exist.");
@@ -92,16 +99,18 @@ public class SimulationAPIController implements APIController {
 			} else if(simulationLevel == SimulationLevel.CLIENT) {
 				// TODO 시립대
 			} else if(simulationLevel == SimulationLevel.INNER) {
-				// project 생성
-				aPIResult = createSimulationProject(simulationId);
+				// project 생성, 직접 insert 
+				DroneProject droneProject = getSimulationDroneProject();
+				droneProject.setDrone_project_name("Simulation Project " + simulationId);
+				droneProjectService.insertDroneProject(droneProject);
+				
 				// 파일 전송
-				aPIResult = restTempateTransferData(aPIResult.getDroneProjectId());
+				aPIResult = restTempateTransferData(droneProject.getDrone_project_id());
 			} else {
 				
 			}
 			
-			httpStatus = HttpStatus.OK;
-			aPIResult.setStatusCode(httpStatus.value());
+			httpStatus = HttpStatus.valueOf(aPIResult.getStatusCode());
 		} catch (Exception e) {
 			e.printStackTrace();
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -114,25 +123,19 @@ public class SimulationAPIController implements APIController {
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
-	@PostMapping("simulations/{simulation_id}")
-	public ResponseEntity<APIResult> updateSimulationLog(@PathVariable("simulation_id") String simulationId) {
+	@PostMapping("simulations")
+	public ResponseEntity<APIResult> updateSimulationLog(SimulationLog simulationLog) {
+		// TODO 인증
 		APIResult aPIResult = null;
 		HttpStatus httpStatus = null;
+		// TODO 시뮬레이션 업데이트 
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
-	private APIResult createSimulationProject(int simulationId) throws Exception {
-		MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
-		
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("live_drone_map", getCustomHeader());
-		
-		createDroneProject(bodyMap, simulationId);
-		
-		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://localhost:9999/drone-projects";
-		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyMap, headers);
-		return restTemplate.postForObject(url, requestEntity, APIResult.class);
+	private DroneProject getSimulationDroneProject() throws Exception {
+		String droneProjectStr = new String(Files.readAllBytes(Paths.get(simulationDroneProject.getURI())), StandardCharsets.UTF_8);
+		ObjectMapper objectMapper = new ObjectMapper();
+		return objectMapper.readValue(droneProjectStr, DroneProject.class);
 	}
 	
 	private APIResult restTempateTransferData(int droneProjectId) throws Exception {
@@ -140,61 +143,14 @@ public class SimulationAPIController implements APIController {
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-		headers.add("live_drone_map", getCustomHeader());
 		
 		bodyMap.add("file_meta", getFileMetaResource(droneProjectId));
 		bodyMap.add("file", getFileResource());
 		
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://localhost:9999/transfer-data";
+		String url = "http://localhost:9999/transfer-data/simulation";
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyMap, headers);
 		return restTemplate.postForObject(url, requestEntity, APIResult.class);
-	}
-	
-	private String getCustomHeader() throws Exception {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("user_id=")
-				.append("test")
-				.append("&")
-				.append("api_key=")
-				.append(UUID.randomUUID().toString())
-				.append("&")
-				.append("token=")
-				.append("22327341")
-				.append("&")
-				.append("role=")
-				.append("ADMIN")
-				.append("&")
-				.append("algorithm=")
-				.append("sha")
-				.append("&")
-				.append("type=")
-				.append("jwt, mac")
-				.append("&")
-				.append("timestamp=")
-				.append(System.nanoTime());
-		
-		return buffer.toString();
-		//return AES128Cipher.encode(buffer.toString());
-	}
-	
-	private MultiValueMap<String, Object> createDroneProject(MultiValueMap<String, Object> bodyMap, int SimulationId) {
-		bodyMap.add("drone_id", 1);
-		bodyMap.add("drone_project_name", "LDM Simulation " + SimulationId);
-		bodyMap.add("drone_project_type", "1");
-		bodyMap.add("shooting_area", "동해 앞바다");
-		bodyMap.add("shooting_latitude1", 37.1);
-		bodyMap.add("shooting_longitude1", 132.23);
-		bodyMap.add("shooting_latitude2", 37.2);
-		bodyMap.add("shooting_longitude2", 132.24);
-		bodyMap.add("shooting_latitude3", 37.3);
-		bodyMap.add("shooting_longitude3", 132.25);
-		bodyMap.add("shooting_latitude4", 37.4);
-		bodyMap.add("shooting_longitude4", 132.26);
-		bodyMap.add("location", "POINT (128.382757714281 34.7651373676212)");
-		bodyMap.add("shooting_date", "20180929203800");
-		bodyMap.add("description", "Simulation test");
-		return bodyMap;
 	}
 	
 	private Resource getFileResource() throws Exception {
