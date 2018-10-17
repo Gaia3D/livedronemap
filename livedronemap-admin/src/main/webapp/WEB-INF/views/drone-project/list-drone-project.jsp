@@ -8,31 +8,13 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 	<title>프로젝트 목록 | LiveDroneMap</title>
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/css/${lang}/style.css">
 	<link rel="stylesheet" href="/css/fontawesome-free-5.2.0-web/css/all.min.css">
 	<link rel="stylesheet" href="/externlib/cesium_orgin/Widgets/widgets.css?cache_version=${cache_version}" /> 
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/externlib/cesium_orgin/Cesium.js"></script>
-	<!-- <style>
-		html, body, #cesiumContainer {
-			height:100%; margin: 0; padding: 0; overflow: hidden;
-		}
-		.button {
-		    width:80px;
-		    background-color: #686872;
-		    border: none;
-		    color:#fff;
-		    padding: 5px 0;
-		    text-align: center;
-		    text-decoration: none;
-		    display: inline-block;
-		    font-size: 15px;
-		    margin: 0px;
-		    cursor: pointer;
-			border-radius:5px;
-		}
-	</style> -->
 	<style>
 		.mapWrap {
 			min-width: 1420px;
@@ -99,7 +81,7 @@
 						</select>
 					</div>
 					<div class="input-set" style="padding-top:5px; text-align: center;">
-						<input type="submit" value="<spring:message code='search'/>" class="button" />
+						<input type="submit" value="<spring:message code='search'/>" class="button" style="width: 50px; height: 25px;" />
 					</div>
 				</div>
 			</form:form>
@@ -117,10 +99,7 @@
 	<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">				
 				<ul class="projectInfo">
 					<li class="title">
-						<!-- <span style="font-size:15px; color: Mediumslateblue;">
-							<i class="fas fa-bezier-curve"></i>
-						</span> -->
-						${droneProject.drone_project_name}
+						 <a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
 					</li>
 					<li>
 						<label class="location" title="촬영지역"></label>
@@ -143,7 +122,7 @@
 						</span>
 		</c:if>
 		<c:if test="${droneProject.status eq '2'}">
-						<span style="display: inline-block; width: 100px; color: blue; font-weight: bold;">
+						<span style="display: inline-block; width: 100px; color: #19cc3c; font-weight: bold;">
 						개별 정사영상
 						</span>
 		</c:if>
@@ -176,7 +155,7 @@
 	</div>
 	<!-- E: 1depth / 프로젝트 목록 -->
 	
-	<div id="cesiumContainer" class="mapWrap">
+	<div id="droneMapContainer" class="mapWrap">
 	</div>
 	<!-- E: MAPWRAP -->
 </div>
@@ -185,20 +164,95 @@
 	<script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
 	<script type="text/javascript" src="/js/${lang}/common.js"></script>
 	<script type="text/javascript">
+/* 	function mapWrapResize() {
+		var mapWrap = document.getElementById('mapWrap');
+		var Wrap =  document.getElementById('wrap');
+		mapWrap.style.width = window.innerWidth - 391 + 'px'; // 전체 윈도우 - nav - subWrap
+		Wrap.style.height = window.innerHeight - 50 + 'px'; // 전체 인도우 - header
+    }
+	mapWrapResize();
+	// 브라우저 크기가 변할 시 동적으로 사이즈를 조절해야 하는경우
+	window.addEventListener('resize', mapWrapResize); */
+
   	var imageryProvider = new Cesium.ArcGisMapServerImageryProvider({
 		url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
 		enablePickFeatures: false
 	});
 
   	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(115.0, -20.0, 140.0, 90.0);
-	var viewer = new Cesium.Viewer('cesiumContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
+	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
     //var viewer = new Cesium.Viewer('cesiumContainer');
-    
     cameraFlyTo(127.827348, 36.590489, 2000000, 3);
-	
+
+    drawDroneProject();
+    
     $(document).ready(function() {
 		initJqueryCalendar();
     });
+    
+    function drawDroneProject() {
+		var droneProjectList = new Array();
+    	<c:if test="${!empty droneProjectList }">
+    		<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">
+    			<c:if test="${droneProject.status ne '4' and droneProject.status ne '5'}">
+					var droneProject = new Object();
+					droneProject.drone_project_name = "${droneProject.drone_project_name}";
+					droneProject.shooting_latitude1 = "${droneProject.shooting_latitude1}";
+					droneProject.shooting_longitude1 = "${droneProject.shooting_longitude1}";
+					droneProject.shooting_latitude2 = "${droneProject.shooting_latitude2}";
+					droneProject.shooting_longitude2 = "${droneProject.shooting_longitude2}";
+					droneProject.shooting_latitude3 = "${droneProject.shooting_latitude3}";
+					droneProject.shooting_longitude3 = "${droneProject.shooting_longitude3}";
+					droneProject.shooting_latitude4 = "${droneProject.shooting_latitude4}";
+					droneProject.shooting_longitude4 = "${droneProject.shooting_longitude4}";
+					droneProjectList.push(droneProject);
+					
+					viewer.entities.add({
+						name : "${droneProject.drone_project_name}",
+						polyline : {
+						positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude1}, ${droneProject.shooting_latitude1},
+																		${droneProject.shooting_longitude2}, ${droneProject.shooting_latitude2}]),
+							width : 5,
+							material : Cesium.Color.RED,
+							clampToGround : true
+						}
+					});
+					viewer.entities.add({
+						name : "${droneProject.drone_project_name}",
+						polyline : {
+						positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude1}, ${droneProject.shooting_latitude1},
+																		${droneProject.shooting_longitude3}, ${droneProject.shooting_latitude3}]),
+							width : 5,
+							material : Cesium.Color.RED,
+							clampToGround : true
+						}
+					});
+					viewer.entities.add({
+						name : "${droneProject.drone_project_name}",
+						polyline : {
+						positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude2}, ${droneProject.shooting_latitude2},
+																		${droneProject.shooting_longitude4}, ${droneProject.shooting_latitude4}]),
+							width : 5,
+							material : Cesium.Color.RED,
+							clampToGround : true
+						}
+					});
+					viewer.entities.add({
+						name : "${droneProject.drone_project_name}",
+						polyline : {
+						positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude3}, ${droneProject.shooting_latitude3},
+																		${droneProject.shooting_longitude4}, ${droneProject.shooting_latitude4}]),
+							width : 5,
+							material : Cesium.Color.RED,
+							clampToGround : true
+						}
+					});
+				</c:if>
+    		</c:forEach>
+		</c:if>
+    }
+    
+    viewer.zoomTo(viewer.entities);
     
     function cameraFlyTo(longitude, latitude, altitude, duration) {
 		viewer.camera.flyTo({

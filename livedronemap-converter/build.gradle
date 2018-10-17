@@ -3,7 +3,7 @@ final String DEFAULT_PROFILE = 'local'
 
 buildscript {
 	ext {
-		springBootVersion = '2.0.4.RELEASE'
+		springBootVersion = '2.0.6.RELEASE'
 		lombokVersion = '1.18.2'
 	}
 	repositories {

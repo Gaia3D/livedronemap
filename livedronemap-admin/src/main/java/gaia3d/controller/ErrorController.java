@@ -1,5 +1,7 @@
 package gaia3d.controller;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
@@ -22,6 +24,21 @@ public class ErrorController {
 		
 		log.info("@@@@@@@@@@ error");
 		
+		printHead(request);
+		
 		return "/error/error";
 	}
+	
+	private void printHead(HttpServletRequest request) {
+    	Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+        	String headerName = headerNames.nextElement();
+        	log.info("headerName = {}", headerName);
+        	Enumeration<String> headers = request.getHeaders(headerName);
+        	while (headers.hasMoreElements()) {
+        		String headerValue = headers.nextElement();
+        		log.info(" ---> headerValue = {}", headerValue);
+        	}
+        }
+    }
 }

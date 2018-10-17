@@ -9,14 +9,15 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import gaia3d.domain.DroneProject;
 import gaia3d.domain.PageType;
 import gaia3d.domain.Pagination;
+import gaia3d.domain.TransferData;
 import gaia3d.service.DroneProjectService;
+import gaia3d.service.TransferDataService;
 import gaia3d.util.DateUtil;
 import gaia3d.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +29,8 @@ public class DroneProjectController {
 	
 	@Autowired
 	private DroneProjectService droneProjectService;
+	@Autowired
+	private TransferDataService transferDataService;
 
 	/**
 	 * Project 목록
@@ -35,7 +38,7 @@ public class DroneProjectController {
 	 * @return
 	 */
 	@RequestMapping(value = "list-drone-project")
-	public String listData(HttpServletRequest request, DroneProject droneProject, @RequestParam(defaultValue="1") String pageNo, Model model) {
+	public String listDroneProject(HttpServletRequest request, DroneProject droneProject, @RequestParam(defaultValue="1") String pageNo, Model model) {
 		
 		log.info("@@ droneProject = {}", droneProject);
 		if(StringUtil.isNotEmpty(droneProject.getStart_date())) {
@@ -71,14 +74,23 @@ public class DroneProjectController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value = "list-image")
-	public String imageList(HttpServletRequest request, Model model) {
-		//List<DroneProject> projectList = projectService.getListProject(new Project());
+	@RequestMapping(value = "detail-drone-project")
+	public String detailDroneProject(HttpServletRequest request, @RequestParam(value="drone_project_id", required = true) Integer drone_project_id, Model model) {
 		
-//		model.addAttribute("projectListSize", projectList.size());
-//		model.addAttribute("projectList", projectList);
+		log.info("@@ drone_project_id = {}", drone_project_id);
 		
-		return "/drone-project/list-image";
+		DroneProject droneProject = droneProjectService.getDroneProject(drone_project_id);
+		List<TransferData> transferDataList = transferDataService.getListTransferData(drone_project_id);
+		
+		log.info("############### day = {}", transferDataList.get(0).getLayer_shooting_date());
+		
+		model.addAttribute("drone_project_id", drone_project_id);
+		model.addAttribute("droneProject", droneProject);
+		model.addAttribute("viewTransferData", transferDataList.get(0));
+		model.addAttribute("transferDataList", transferDataList);
+		model.addAttribute("transferDataListSize", transferDataList.size());
+		model.addAttribute("searchParameters", getSearchParameters(PageType.DETAIL, request, null));
+		return "/drone-project/detail-drone-project";
 	}
 	
 	/**
@@ -118,10 +130,8 @@ public class DroneProjectController {
 		buffer.append("order_word=" + StringUtil.getDefaultValue(isListPage ? droneProject.getOrder_word() : request.getParameter("order_word")));
 		buffer.append("&");
 		buffer.append("order_value=" + StringUtil.getDefaultValue(isListPage ? droneProject.getOrder_value() : request.getParameter("order_value")));
-		if(!isListPage) {
-			buffer.append("&");
-			buffer.append("list_count=" + droneProject.getList_counter());
-		}
+		buffer.append("&");
+		buffer.append("list_count=" + (isListPage ? droneProject.getList_counter() : StringUtil.getDefaultValue(request.getParameter("list_count"))));
 		return buffer.toString();
 	}
 }

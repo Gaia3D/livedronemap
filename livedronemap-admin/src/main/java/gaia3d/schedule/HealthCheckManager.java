@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 
 import gaia3d.config.RestTemplateResponseErrorHandler;
 import gaia3d.domain.CacheManager;
-import gaia3d.domain.DroneProject;
 import gaia3d.domain.HealthCheck;
 import gaia3d.service.DroneProjectService;
 import gaia3d.util.DateUtil;
@@ -37,8 +36,8 @@ public class HealthCheckManager {
 	 * health check
 	 * @throws Exception
 	 */
-	@Scheduled(fixedDelay = 300 * 1000)
-	public void healCheck() throws Exception {
+	@Scheduled(fixedDelay = 3000 * 1000)
+	public void healthCheck() throws Exception {
 		log.info("@@@@@@@@@@@@@ HealthCheckManager healCheck execute.");
 		Map<String, String> healthCheckMap = CacheManager.getHealthCheckMap();
 		try {
@@ -61,8 +60,8 @@ public class HealthCheckManager {
 		} catch(Exception e) {
 			healthCheckMap.put(HealthCheck.LAST_CHECK_TIME, DateUtil.getToday());
 			healthCheckMap.put(HealthCheck.CONVERTER_STATUS, HealthCheck.DOWN);
+			CacheManager.setHealthCheck(healthCheckMap);
 			log.info("@@@@@@@@@@@@@ exception message = {}", e.getMessage());
-			//e.printStackTrace();
 		}
 	}
 	

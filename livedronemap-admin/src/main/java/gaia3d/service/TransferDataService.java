@@ -1,6 +1,9 @@
 package gaia3d.service;
 
+import java.util.List;
+
 import gaia3d.domain.FileInfo;
+import gaia3d.domain.TransferData;
 import gaia3d.domain.TransferDataResource;
 
 /**
@@ -9,6 +12,13 @@ import gaia3d.domain.TransferDataResource;
  *
  */
 public interface TransferDataService {
+	
+	/**
+	 * all list transfer data by drone_project_id
+	 * @param drone_project_id
+	 * @return
+	 */
+	List<TransferData> getListTransferData(Integer drone_project_id);
 
 	/**
 	 * transfer data insert

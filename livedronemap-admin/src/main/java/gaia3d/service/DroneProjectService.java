@@ -19,6 +19,13 @@ public interface DroneProjectService {
 	 * @return
 	 */
 	List<DroneProject> getListDroneProject(DroneProject droneProject);
+
+	/**
+	 * 프로젝트 정보 조회
+	 * @param drone_project_id
+	 * @return
+	 */
+	DroneProject getDroneProject(Integer drone_project_id);
 	
 	/**
 	 * drone project 등록

@@ -10,7 +10,8 @@ import java.util.Date;
  */
 public class FormatUtil {
 	
-	public static final String VIEW_YEAR_MONTH_DAY_TIME = "yyyy-MM-dd HH:mm:ss";
+	public static final String VIEW_YEAR_MONTH_DAY_TIMESTAMP = "yyyy-MM-dd HH:mm:ss";
+	public static final String VIEW_YEAR_MONTH_DAY_TIME = "yyyy-MM-dd HH:mm";
 	public static final String YEAR_MONTH_DAY = "yyyyMMdd";
 	public static final String YEAR_MONTH_DAY_TIME14 = "yyyyMMddHHmmss";
 	public static final String YEAR_MONTH_DAY_TIME12 = "yyyyMMddHHmm";
@@ -22,7 +23,7 @@ public class FormatUtil {
 	 * @return
 	 */
 	public static String getDayFormat(Date date) {
-		return getDayFormat(date, VIEW_YEAR_MONTH_DAY_TIME);
+		return getDayFormat(date, VIEW_YEAR_MONTH_DAY_TIMESTAMP);
 	}
 
 	/**
