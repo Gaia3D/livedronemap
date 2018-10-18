@@ -1,42 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <div class="snb">
-	<h2 class="log"><span><spring:message code='monitoring'/></span></h2>
+	<h2 class="log"><span><spring:message code='simulation'/></span></h2>
 	<ul>
-		<li id="simulationMenu" class="" title="<spring:message code='monitoring.simulation'/>" onclick="goPage('/monitoring/list-simulation');">
-		<spring:message code='monitoring.simulation'/>
+		<li id="simulationLogMenu" class="" title="<spring:message code='simulation'/>" onclick="goPage('/simulation/list-simulation');">
+		<spring:message code='simulation'/>
 			<div style="margin-top:15px;">
 				<table>
 					<tr style="height:25px;">
 						<td style="width:150px;"><span>- 전체</span></td>
-						<td><button type="button" class="btnText">테스트</button></td>
+						<td><button type="button" class="btnText" onclick="">테스트</button></td>
 					</tr>
-					<tr style="height:25px;">
-						<td style="width:150px;"><span>- 클라이언트 1</span></td>
-						<td><button type="button" class="btnText">테스트</button></td>
-					</tr>
-					<tr style="height:25px;">
-						<td style="width:150px;"><span>- 가이아 쓰리디</span></td>
-						<td><button type="button" class="btnText">테스트</button></td>
-					</tr>
-				</table>
-			</div>
-		</li>
-		<li id="healthCheckMenu" class="" title="<spring:message code='monitoring.health.check'/>" onclick="goPage('/monitoring/list-health-check');">
-		<spring:message code='monitoring.health.check'/>
-			<div style="margin-top:15px;">
-				<table>
-					<tr style="height:25px;">
-						<td style="width:150px;"><span>- 드론 1</span></td>
-						<td><button type="button" class="btnText">점검</button></td>
-					</tr>
-					<tr style="height:25px;">
-						<td style="width:150px;"><span>- 클라이언트 1</span></td>
-						<td><button type="button" class="btnText">점검</button></td>
-					</tr>
-					<tr style="height:25px;">
-						<td style="width:150px;"><span>- 가이아 쓰리디</span></td>
-						<td><button type="button" class="btnText">점검</button></td>
-					</tr>
+					
+					<c:forEach var="client" items="${clientList}" varStatus="status">
+						<tr style="height:25px;">
+							<td style="width:150px;"><span>- ${client.client_name}</span></td>
+							<c:if test="${client.client_group_id eq '2'}">
+								<td><button type="button" class="btnText" onclick="simulateProcess(${client.client_id},'inner')">테스트</button></td>
+							</c:if>
+							<c:if test="${client.client_group_id eq '1'}">
+								<td><button type="button" class="btnText" onclick="simulateProcess(${client.client_id},'client')">테스트</button></td>
+							</c:if>
+						</tr>
+					</c:forEach>
 				</table>
 			</div>
 		</li>

@@ -65,7 +65,7 @@ public class SimulationAPIController implements APIController {
 	 */
 	@PostMapping("simulations/{client_id:[0-9]+}/{step:[a-z]+}")
 	public ResponseEntity<APIResult> simulateProcess(HttpServletRequest request, @PathVariable("client_id") Integer clientId, @PathVariable("step") String step) {
-		log.info("@@@@@ Start simulation.");
+		log.info("@@@@@ Start {} simulation.", step);
 		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		String clientName = null;
@@ -110,7 +110,8 @@ public class SimulationAPIController implements APIController {
 				
 			}
 			
-			httpStatus = HttpStatus.valueOf(aPIResult.getStatusCode());
+			httpStatus = HttpStatus.OK;
+			aPIResult.setStatusCode(httpStatus.value());
 		} catch (Exception e) {
 			e.printStackTrace();
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -128,6 +129,7 @@ public class SimulationAPIController implements APIController {
 		// TODO 인증
 		APIResult aPIResult = null;
 		HttpStatus httpStatus = null;
+
 		// TODO 시뮬레이션 업데이트 
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}

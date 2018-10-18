@@ -1,5 +1,7 @@
 package gaia3d.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,9 +41,19 @@ public class ClientServiceImpl implements ClientService {
 	 *  @param client_id
 	 *  @return
 	 */
-	@Override
+	@Transactional(readOnly=true)
 	public Client getClientByClientId(int client_id) {
 		return clientMapper.getClientByClientId(client_id);
+	}
+	
+	/**
+	 *  client 리스트 조회 
+	 *  @param client_id
+	 *  @return
+	 */
+	@Transactional(readOnly=true)
+	public List<Client> getClientList() {
+		return clientMapper.getClientList();
 	}
 	
 }

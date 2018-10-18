@@ -15,4 +15,76 @@
 			#{simulation_log_id}, #{simulation_type}, #{client_id}, #{client_name}
 		)
 	</insert>
+	
+	<!-- 시뮬레이션 로그 리스트 조회 -->
+	<select id="getSimulationLogList" parameterType="simulationLog" resultType="simulationLog">
+		/* getSimulationLogList */
+		SELECT * FROM simulation_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND client_name = #{search_value}
+			</if>
+			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND client_name LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_type != null and search_type != ''">
+			AND simulation_type = #{search_type}
+			</if>
+			<if test="search_status != null and search_status != ''">
+			AND status = #{search_status}
+			</if>
+			<if test="search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+			ORDER BY ${order_word} ${order_value}
+			</when>
+			<otherwise>
+			ORDER BY start_date DESC, simulation_log_id DESC
+			</otherwise>
+		</choose>
+		OFFSET #{offset} LIMIT #{limit}
+	</select>
+	
+	<!-- 시뮬레이션 로그 카운드 -->
+	<select id="getSimulationLogTotalCount" parameterType="simulationLog" resultType="long">
+		/* getSimulationLogTotalCount */
+		SELECT COUNT(simulation_log_id)
+		FROM simulation_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND client_name = #{search_value}
+			</if>
+			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND client_name LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_type != null and search_type != ''">
+			AND simulation_type = #{search_type}
+			</if>
+			<if test="search_status != null and search_status != ''">
+			AND status = #{search_status}
+			</if>
+			<if test="search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
+	
+	
 </mapper>

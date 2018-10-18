@@ -83,10 +83,10 @@
 						<form:label path="user_delete_type"><spring:message code='config.user.method.delete'/></form:label>
 					</th>
 					<td>	
-						<select id="user_delete_type" name="user_delete_type" class="select">
-			  				<option value="0"><spring:message code='config.user.method.delete.logical'/></option>
-			  				<option value="1"><spring:message code='config.user.method.delete.physical'/></option>
-						</select>
+						<form:select path="user_delete_type" name="user_delete_type" class="select">
+			  				<form:option value="0"><spring:message code='config.user.method.delete.logical'/></form:option>
+			  				<form:option value="1"><spring:message code='config.user.method.delete.physical'/></form:option>
+						</form:select>
 					</td>
 				</tr>
 			</tbody>

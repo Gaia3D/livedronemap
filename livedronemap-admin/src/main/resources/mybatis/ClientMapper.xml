@@ -27,4 +27,10 @@
 		/* getClientByClientId */
 		SELECT * FROM client WHERE client_id = #{client_id}
 	</select>
+	
+	<!-- client 리스트 조회 -->
+	<select id="getClientList" resultType="client">
+		/* getClientList */
+		SELECT * FROM client WHERE use_yn = 'Y';
+	</select>
 </mapper>
