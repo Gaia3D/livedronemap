@@ -1,5 +1,7 @@
 package gaia3d.service.impl;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,16 @@ public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private ClientMapper clientMapper;
+
+	/**
+	 *  ID를 이용하여 client 정보 취득
+	 *  @param client_id
+	 *  @return
+	 */
+	@Transactional(readOnly=true)
+	public Client getClient(int client_id) {
+		return clientMapper.getClient(client_id);
+	}	
 	
 	/**
 	 * api key를 이용하여 client 정보를 취득
@@ -34,14 +46,14 @@ public class ClientServiceImpl implements ClientService {
 		return clientMapper.insertClient(client);
 	}
 
+	
 	/**
-	 *  ID를 이용하여 client 정보 취득
-	 *  @param client_id
-	 *  @return
+	 * API key 발행
+	 * @return
 	 */
-	@Override
-	public Client getClientByClientId(int client_id) {
-		return clientMapper.getClientByClientId(client_id);
+	private String generateApikey() {
+		return UUID.randomUUID().toString();
+		//return Long.toString(System.nanoTime()).substring(4, 12);
 	}
 	
 }

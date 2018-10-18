@@ -13,6 +13,13 @@ public interface ClientMapper {
 
 	/**
 	 * client 정보를 취득
+	 * @param client_id
+	 * @return
+	 */
+	Client getClient(int client_id);
+	
+	/**
+	 * client 정보를 취득
 	 * @param api_key
 	 * @return
 	 */
@@ -25,10 +32,4 @@ public interface ClientMapper {
 	 */
 	int insertClient(Client client);
 	
-	/**
-	 * client 정보를 취득
-	 * @param client_id
-	 * @return
-	 */
-	Client getClientByClientId(int client_id);
 }

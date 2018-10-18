@@ -76,7 +76,7 @@ public class SimulationAPIController implements APIController {
 			
 			// get client
 			// name, ip, port 정보 확인
-			Client client = clientService.getClientByClientId(clientId);
+			Client client = clientService.getClient(clientId);
 			if (client == null) {
 				log.info("@@@@@ Client not exist.");
 				httpStatus = HttpStatus.NOT_FOUND;
