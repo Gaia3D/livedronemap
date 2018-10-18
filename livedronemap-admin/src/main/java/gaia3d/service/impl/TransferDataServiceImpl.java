@@ -1,5 +1,7 @@
 package gaia3d.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -59,6 +61,16 @@ public class TransferDataServiceImpl implements TransferDataService {
 	private TransferDataMapper transferDataMapper;
 	
 	/**
+	 * all list transfer data by drone_project_id
+	 * @param drone_project_id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public List<TransferData> getListTransferData(Integer drone_project_id) {
+		return transferDataMapper.getListTransferData(drone_project_id);
+	}
+	
+	/**
 	 * transfer data insert
 	 * @param fileInfo
 	 * @param transferDataResource
@@ -85,6 +97,9 @@ public class TransferDataServiceImpl implements TransferDataService {
 		Long imageId = null;
 		OrthoImage orthoImage = null;
 		PostProcessingImage postProcessingImage = null;
+		int ortho_image_count = 0;
+		int postprocessing_image_count = 0;
+		int detected_objects_count = 0;
 		if(TransferDataType.ORTHO_IMAGE.getDataType().equals(transferData.getData_type())) {
 			orthoImage = new OrthoImage();
 			orthoImage.setDrone_project_id(transferDataResource.getDrone_project_id());
@@ -95,11 +110,13 @@ public class TransferDataServiceImpl implements TransferDataService {
 			orthoImage.setFile_size(fileInfo.getFile_size());
 			orthoImage.setFile_ext(fileInfo.getFile_ext());
 			orthoImageService.insertOrthoImage(orthoImage);
+			ortho_image_count++;
 			
 			for(OrthoDetectedObject orthoDetectedObject : transferDataResource.getDetected_objects()) {
 				orthoDetectedObject.setDrone_project_id(transferDataResource.getDrone_project_id());
 				orthoDetectedObject.setOrtho_image_id(orthoImage.getOrtho_image_id());
 				orthoDetectedObjectService.insertOrthoDetectedObject(orthoDetectedObject);
+				detected_objects_count++;
 			}
 			
 			projectStatus = ProjectStatus.ORTHO_IMAGE.getStatus();
@@ -116,6 +133,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 			postProcessingImage.setFile_size(fileInfo.getFile_size());
 			postProcessingImage.setFile_ext(fileInfo.getFile_ext());
 			postProcessingImageService.insertPostProcessingImage(postProcessingImage);
+			postprocessing_image_count++;
 			
 			projectStatus = ProjectStatus.POSTPROCESSING_IMAGE.getStatus();
 			imageId = postProcessingImage.getPostprocessing_image_id();
@@ -143,6 +161,11 @@ public class TransferDataServiceImpl implements TransferDataService {
 			DroneProject droneProject = new DroneProject();
 			droneProject.setDrone_project_id(transferDataResource.getDrone_project_id());
 			droneProject.setStatus(projectStatus);
+			droneProject.setOrtho_image_count(ortho_image_count);
+			droneProject.setPostprocessing_image_count(postprocessing_image_count);
+			droneProject.setDetected_objects_count(detected_objects_count);
+			
+			log.info("***************************** ortho = {}, postprocessing = {}, detected_objects={}", ortho_image_count, postprocessing_image_count, detected_objects_count);
 			droneProjectService.updateDroneProject(droneProject);
 			
 			transferDataMapper.updateTransferData(transferData);

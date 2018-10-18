@@ -35,6 +35,16 @@ public class DroneProjectServiceImpl implements DroneProjectService {
 	public List<DroneProject> getListDroneProject(DroneProject droneProject) {
 		return droneProjectMapper.getListDroneProject(droneProject);
 	}
+	
+	/**
+	 * 프로젝트 정보 조회
+	 * @param drone_project_id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public DroneProject getDroneProject(Integer drone_project_id) {
+		return droneProjectMapper.getDroneProject(drone_project_id);
+	}
 
 	/**
 	 * drone project 등록

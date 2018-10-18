@@ -14,6 +14,9 @@ import lombok.ToString;
 @Setter
 @ToString
 public class TransferData {
+	
+	/*********** 화면 layer 표시용 *************/
+	private String layer_shooting_date;
 
 	// transfer data 고유번호
 	private Long transfer_data_id;
@@ -47,4 +50,27 @@ public class TransferData {
 	private String update_date;
 	// 등록일
 	private String insert_date;
+	
+	public String getViewShootingDate() {
+		if(this.shooting_date == null || "".equals( shooting_date)) {
+			return "";
+		}
+		return shooting_date.substring(0, 19);
+	}
+	
+	public String getViewLayerShootingDate() {
+		if(this.layer_shooting_date == null || "".equals( layer_shooting_date)) {
+			return "";
+		}
+		return this.layer_shooting_date.substring(0,4) + "-" + this.layer_shooting_date.substring(4,6) + "-" + this.layer_shooting_date.substring(6,8) + "T" 
+				+ this.layer_shooting_date.substring(8,10) + ":" + this.layer_shooting_date.substring(10,12) + ":" + this.layer_shooting_date.substring(12,14) 
+				+ "." + this.layer_shooting_date.substring(14, 17) + "Z";
+	}
+	
+	public String getViewInsertDate() {
+		if(this.insert_date == null || "".equals( insert_date)) {
+			return "";
+		}
+		return insert_date.substring(0, 19);
+	}
 }

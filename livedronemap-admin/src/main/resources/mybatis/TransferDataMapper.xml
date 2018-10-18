@@ -3,6 +3,15 @@
 
 <mapper namespace="gaia3d.persistence.TransferDataMapper">
 
+	<!-- all list transfer data by drone_project_id  -->
+	<select id="getListTransferData" parameterType="int" resultType="transferData">
+		/* getListTransferData */
+		SELECT *, TO_CHAR(shooting_date, 'YYYYMMDDHH24MISSUS') AS layer_shooting_date
+		FROM transfer_data
+		WHERE drone_project_id = #{drone_project_id}
+		ORDER BY shooting_date DESC, transfer_data_id DESC
+	</select>
+
 	<!-- transfer data 등록 -->
 	<insert id="insertTransferData" parameterType="transferData" >
 		/* insertTransferData */

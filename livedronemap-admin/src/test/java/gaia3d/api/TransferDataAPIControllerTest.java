@@ -39,6 +39,8 @@ import gaia3d.domain.APIResult;
 import gaia3d.domain.Drone;
 import gaia3d.domain.OrthoDetectedObject;
 import gaia3d.domain.TransferDataResource;
+import gaia3d.util.DateUtil;
+import gaia3d.util.FormatUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -114,8 +116,9 @@ public class TransferDataAPIControllerTest {
 		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 		headers.add("live_drone_map", getCustomHeader());
 		
-		bodyMap.add("file_meta", getTransferDataResource());
-		bodyMap.add("file", getFileResource());
+		Resource resource = getFileResource();
+		bodyMap.add("file_meta", getTransferDataResource(resource.getFilename()));
+		bodyMap.add("file", resource);
 		
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://localhost/transfer-data";
@@ -133,6 +136,9 @@ public class TransferDataAPIControllerTest {
 	}
 	
 	private TransferDataResource getTransferDataResource() throws Exception {
+		return getTransferDataResource("test.jpg");
+	}
+	private TransferDataResource getTransferDataResource(String fileName) throws Exception {
 		Drone drone = new Drone();
 		drone.setLatitude(new BigDecimal("37.22516"));
 		drone.setLongitude(new BigDecimal("128.2151"));
@@ -162,10 +168,10 @@ public class TransferDataAPIControllerTest {
 		TransferDataResource transferDataResource = new TransferDataResource();
 		transferDataResource.setDrone_project_id(1);
 		transferDataResource.setData_type("0");
-		transferDataResource.setFile_name("test.jpg");
+		transferDataResource.setFile_name(fileName);
 		transferDataResource.setDetected_objects(detected_objects);
 		transferDataResource.setDrone(drone);
-		transferDataResource.setShooting_date("20181016203800");
+		transferDataResource.setShooting_date(DateUtil.getToday(FormatUtil.YEAR_MONTH_DAY_TIME14));
 		
 		String jsonStr = mapper.writeValueAsString(transferDataResource);
         log.info("{}", jsonStr);

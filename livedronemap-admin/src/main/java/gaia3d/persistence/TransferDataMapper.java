@@ -1,5 +1,7 @@
 package gaia3d.persistence;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import gaia3d.domain.TransferData;
@@ -11,6 +13,13 @@ import gaia3d.domain.TransferData;
 @Repository
 public interface TransferDataMapper {
 
+	/**
+	 * all list transfer data by drone_project_id
+	 * @param drone_project_id
+	 * @return
+	 */
+	List<TransferData> getListTransferData(Integer drone_project_id);
+	
 	/**
 	 * transfer data insert
 	 * @param transferData
