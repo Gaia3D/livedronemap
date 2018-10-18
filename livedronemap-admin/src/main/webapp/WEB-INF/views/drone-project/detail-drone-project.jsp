@@ -82,7 +82,7 @@
 				<label class="js">개별 정사 영상</label>
 				<span>${droneProject.ortho_image_count}</span>장
 				<ul class="detect">
-					<li class="ship">${droneProject.detected_objects_count}</li>
+					<li class="ship">${droneProject.ortho_detected_object_count}</li>
 				</ul>
 			</li>
 			<li class="half" title="후처리영상">
@@ -107,7 +107,7 @@
 						<tr>
 							<th scope="col" class="col-number"><spring:message code='number'/></th>
 							<th scope="col" class="col-toggle">상태</th>
-							<th scope="col" class="col-name" style="width: 70%;">[구분] 파일명 (탐지)</th>
+							<th scope="col" class="col-name" style="width: 68%;">[구분] 파일명 (탐지)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -145,8 +145,12 @@
 		<c:if test="${transferData.data_type eq '1'}">					
 								[ P ]
 		</c:if>
-								<a href="#" class="view-group-detail" onclick="detail('${transferData.transfer_data_id }'); return false;">${transferData.file_name }</a>
-								(${transferData.detected_objects_count })
+								<a href="#" class="view-group-detail" 
+									onclick="refreshDroneImage('${transferData.drone_project_id}', 
+																'${transferData.transfer_data_id}', 
+																'${transferData.data_type}', 
+																'${transferData.viewLayerShootingDate}'); return false;">${transferData.file_name }</a>
+								(${transferData.ortho_detected_object_count })
 							</td>
 						</tr>
 	</c:forEach>
@@ -165,89 +169,66 @@
 </div>
 <!-- E: wrap -->
 	
-	<script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
-	<script type="text/javascript" src="/js/${lang}/common.js"></script>
-	<script type="text/javascript">
-/* 	function mapWrapResize() {
-		var mapWrap = document.getElementById('mapWrap');
-		var Wrap =  document.getElementById('wrap');
-		mapWrap.style.width = window.innerWidth - 391 + 'px'; // 전체 윈도우 - nav - subWrap
-		Wrap.style.height = window.innerHeight - 50 + 'px'; // 전체 인도우 - header
-    }
-	mapWrapResize();
-	// 브라우저 크기가 변할 시 동적으로 사이즈를 조절해야 하는경우
-	window.addEventListener('resize', mapWrapResize); */
-
-	var DRONE_PROVIDER = null; 
+<script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript" src="/js/${lang}/common.js"></script>
+<script type="text/javascript" src="/js/live-drone-map.js"></script>
+<script type="text/javascript">
+	//TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	
-  	var imageryProvider = new Cesium.ArcGisMapServerImageryProvider({
-		url : 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer',
-		enablePickFeatures: false
+	// 드론 촬영 이미지를 그리는 geoserver layer
+	var DRONE_IMAGE_PROVIDER = null;
+	// 객체 탐지를 그리는 geoserver layer
+	var DETECTED_OBJECTS_PROVIDER = null; 
+	
+  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
+  	$(document).ready(function() {
+  		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 500, 3);
+		drawDroneProject();
+		drawDetailDroneImage("${viewTransferData.viewLayerShootingDate}", "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
+		drawDetectedObjects("transfer_data_id=${viewTransferData.transfer_data_id}", "livedronemap:view_ortho_detected_object");
 	});
+  	
+	// 2.5초 후에 드론 비행 경로를 그림
+   	var droneMovingPathTimer = setTimeout(function() {
+		drawDroneMovingPath();
+   	}, 2500);
 
-  	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(115.0, -20.0, 140.0, 90.0);
-	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
-    //var viewer = new Cesium.Viewer('cesiumContainer');
-    //cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 12000, 3);
-
-    drawDroneProject();
-    
-   	$(document).ready(function() {
-	});
-    
+	// 클릭 프로젝트
    	function drawDroneProject() {
-		viewer.entities.add({
-			name : "${droneProject.drone_project_name}",
-			polyline : {
-			positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude1}, ${droneProject.shooting_latitude1},
-															${droneProject.shooting_longitude2}, ${droneProject.shooting_latitude2}]),
-				width : 5,
-				material : Cesium.Color.RED,
-				clampToGround : true
-			}
-		});
-		viewer.entities.add({
-			name : "${droneProject.drone_project_name}",
-			polyline : {
-			positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude1}, ${droneProject.shooting_latitude1},
-															${droneProject.shooting_longitude3}, ${droneProject.shooting_latitude3}]),
-				width : 5,
-				material : Cesium.Color.RED,
-				clampToGround : true
-			}
-		});
-		viewer.entities.add({
-			name : "${droneProject.drone_project_name}",
-			polyline : {
-			positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude2}, ${droneProject.shooting_latitude2},
-															${droneProject.shooting_longitude4}, ${droneProject.shooting_latitude4}]),
-				width : 5,
-				material : Cesium.Color.RED,
-				clampToGround : true
-			}
-		});
-		viewer.entities.add({
-			name : "${droneProject.drone_project_name}",
-			polyline : {
-			positions : Cesium.Cartesian3.fromDegreesArray([${droneProject.shooting_longitude3}, ${droneProject.shooting_latitude3},
-															${droneProject.shooting_longitude4}, ${droneProject.shooting_latitude4}]),
-				width : 5,
-				material : Cesium.Color.RED,
-				clampToGround : true
-			}
-		});
+   		drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+				"${droneProject.shooting_longitude1}", "${droneProject.shooting_latitude1}",
+				"${droneProject.shooting_longitude2}", "${droneProject.shooting_latitude2}");
+		drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+		"${droneProject.shooting_longitude1}", "${droneProject.shooting_latitude1}",
+		"${droneProject.shooting_longitude3}", "${droneProject.shooting_latitude3}");
+		drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+		"${droneProject.shooting_longitude2}", "${droneProject.shooting_latitude2}",
+		"${droneProject.shooting_longitude4}", "${droneProject.shooting_latitude4}");
+		drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+		"${droneProject.shooting_longitude3}", "${droneProject.shooting_latitude3}",
+		"${droneProject.shooting_longitude4}", "${droneProject.shooting_latitude4}");
     }
+   	function drawDroneProjectLine(projectName, startLongitude, startLatitude, endLongitude, endLatitude) {
+		viewer.entities.add({
+			name : projectName,
+			polyline : {
+			positions : Cesium.Cartesian3.fromDegreesArray([parseFloat(startLongitude), parseFloat(startLatitude),
+															parseFloat(endLongitude), parseFloat(endLatitude)]),
+				width : 5,
+				material : Cesium.Color.RED,
+				clampToGround : true
+			}
+		});
+	}
    	
-   	drawDetailDroneImage();
-   	function drawDetailDroneImage() {
-	   	if(DRONE_PROVIDER !== null && DRONE_PROVIDER !== undefined) {
-	    	viewer.imageryLayers.remove(DRONE_PROVIDER, true);
+   	// 드론 이미지를 geoserver layer를 이용해서 그림
+   	function drawDetailDroneImage(shootingDate, layerName) {
+	   	if(DRONE_IMAGE_PROVIDER !== null && DRONE_IMAGE_PROVIDER !== undefined) {
+	    	viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER, true);
 	    }
 	   	
-	   	shooting_date = "${viewTransferData.viewLayerShootingDate}"; // 2018-10-10 까지 써도 상관은 없음 
-	   	var layerName = 'livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}';
-		var provider = new Cesium.WebMapServiceImageryProvider({
-			url : 'http://localhost:8080/geoserver/wms',
+	   	var provider = new Cesium.WebMapServiceImageryProvider({
+			url : '${policy.geoserver_data_url}/wms',
 			//url : '${geoserverUrl}${geoserverServiceWms}',
 			layers : layerName,
 			parameters : {
@@ -259,7 +240,7 @@
 				//format : 'image/png',
 				format : 'image/png',
 				//time : 'P2Y/PRESENT',
-				time : shooting_date,
+				time : shootingDate,
 		    	//rand:rand,
 				maxZoom : 25,
 				maxNativeZoom : 23,
@@ -270,37 +251,123 @@
 			enablePickFeatures: false
 		});
 	    
-		DRONE_PROVIDER = viewer.imageryLayers.addImageryProvider(provider);
+		DRONE_IMAGE_PROVIDER = viewer.imageryLayers.addImageryProvider(provider);
    	}
-    
-    viewer.zoomTo(viewer.entities);
-    cameraFlyTo(128.38328, 34.76434, 500, 3);
    	
-    function cameraFlyTo(longitude, latitude, altitude, duration) {
-		viewer.camera.flyTo({
-			destination: Cesium.Cartesian3.fromDegrees(parseFloat(longitude),
-				parseFloat(latitude),
-				parseFloat(altitude)),
-			duration: parseInt(duration)
+   	// 객체 탐지를 geoserver layer를 이용해서 그림
+	function drawDetectedObjects(queryString, layerName) {
+   		// cache 막으려고 5초에 한번씩
+   		var now = new Date();
+		var rand = ( now - now % 5000) / 5000;
+   		
+   		if(DETECTED_OBJECTS_PROVIDER !== null && DETECTED_OBJECTS_PROVIDER !== undefined) {
+	    	viewer.imageryLayers.remove(DETECTED_OBJECTS_PROVIDER, true);
+	    }
+	   	
+	    var provider = new Cesium.WebMapServiceImageryProvider({
+			url : '${policy.geoserver_data_url}/wms',
+			layers : layerName,
+			parameters : {
+				service : 'WMS'
+				,version : '1.1.1'
+				,request : 'GetMap'
+				,transparent : 'true'
+				//,tiled : 'true'
+				,format : 'image/png'
+				//,time : 'P2Y/PRESENT'
+		    	,rand:rand
+				//,maxZoom : 25
+				//,maxNativeZoom : 23
+				,CQL_FILTER: queryString
+				//bjcd LIKE '47820253%' AND name='청도읍'
+			}
+			//,proxy: new Cesium.DefaultProxy('/proxy/')
+			,enablePickFeatures: false
 		});
-	}
-    
-    $( "#projectMenu" ).on( "click", function() {
-    	if($("#leftMenuArea").css("display") == "none") {
-    		$("#leftMenuArea").show();
-    	} else {
-    		$("#leftMenuArea").hide();
-    	}
-    });
-	$( "#menuCloseButton" ).on( "click", function() {
-		if($("#leftMenuArea").css("display") == "none") {
-			$("#leftMenuArea").show();
-			$(".mapWrap").css({"padding-left" : "391px"});
-		} else {
-			$("#leftMenuArea").hide();
-			$(".mapWrap").css({"padding-left" : "51px"});
+	    
+		DETECTED_OBJECTS_PROVIDER = viewer.imageryLayers.addImageryProvider(provider);
+   	}
+
+	// 드론 이동 경로 표시    
+    function drawDroneMovingPath() {
+   		var transferDataList = new Array();
+<c:if test="${!empty transferDataList }">
+	<c:forEach var="transferData" items="${transferDataList}" varStatus="status">
+		var transferData = new Array(3);
+		transferData[0] = "${transferData.drone_longitude}";
+		transferData[1] = "${transferData.drone_latitude}";
+		transferData[2] = "${transferData.drone_altitude}";
+		transferDataList.push(transferData);
+		
+		for (var i = 0; i < transferDataList.length - 1; i++) {
+			var lineStart = transferDataList[i];
+			var lineEnd = transferDataList[i + 1];
+			
+			viewer.entities.add({
+			    name : '드론 비행 경로',
+			    polyline : {
+			        positions : Cesium.Cartesian3.fromDegreesArrayHeights([	parseFloat(lineStart[0]), parseFloat(lineStart[1]), parseFloat(lineStart[2]),
+																			parseFloat(lineEnd[0]), parseFloat(lineEnd[1]), parseFloat(lineEnd[2])]),
+			        width : 5,
+			        material : new Cesium.PolylineDashMaterialProperty({
+			            color : Cesium.Color.ORANGE,
+			            dashLength: 8.0
+			        })
+			    }
+			});
 		}
-	});
+		
+		// 드론 이미지
+		var lastDroneLocation = transferDataList[0];
+		viewer.entities.add({
+	        position : Cesium.Cartesian3.fromDegrees(parseFloat(lastDroneLocation[0]), parseFloat(lastDroneLocation[1]), parseFloat(lastDroneLocation[2])),
+	        billboard : {
+	            image : '/images/drone.png',
+	            width : 25, // default: undefined
+	            height : 25 // default: undefined
+	            /* image : '../images/Cesium_Logo_overlay.png', // default: undefined
+	            show : true, // default
+	            pixelOffset : new Cesium.Cartesian2(0, -50), // default: (0, 0)
+	            eyeOffset : new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
+	            horizontalOrigin : Cesium.HorizontalOrigin.CENTER, // default
+	            verticalOrigin : Cesium.VerticalOrigin.BOTTOM, // default: CENTER
+	            scale : 2.0, // default: 1.0
+	            color : Cesium.Color.LIME, // default: WHITE
+	            rotation : Cesium.Math.PI_OVER_FOUR, // default: 0.0
+	            alignedAxis : Cesium.Cartesian3.ZERO, // default
+	            width : 100, // default: undefined
+	            height : 25 // default: undefined */
+	        }
+	    });
+	</c:forEach>
+</c:if>
+    }
+	
+   	viewer.zoomTo(viewer.entities);
+   	
+   	// 파일 클릭시 drome image, 객체 탐지 geoserver layer를 다시 그림
+   	function refreshDroneImage(droneProjectId, transferDataId, dataType, shootingDate) {
+		// TODO 이동할 위치 정보가 없음. image point를 받아야 함
+   		//cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 500, 3);
+   		drawDetailDroneImage(shootingDate, "livedronemap:livedronemap_" + droneProjectId + "_" + dataType);
+   		drawDetectedObjects("transfer_data_id=" + transferDataId, "livedronemap:view_ortho_detected_object");
+   	}
+   			
+   	 // 현재 클릭 포인트 위치 좌표.
+   	viewer.canvas.addEventListener('click', function(e){
+   	    var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
+   	    var ellipsoid = viewer.scene.globe.ellipsoid;
+   	    var cartesian = viewer.camera.pickEllipsoid(mousePosition, ellipsoid);
+   	    if (cartesian) {
+   	        var cartographic = ellipsoid.cartesianToCartographic(cartesian);
+   	        var longitudeString = Cesium.Math.toDegrees(cartographic.longitude);
+   	        var latitudeString = Cesium.Math.toDegrees(cartographic.latitude);
+   	        console.log(longitudeString + ', ' + latitudeString);
+   	    } else {
+   	        console.log('Globe was not picked');
+   	    }
+   		
+   	}, false);
 </script>
 </body>
 </html>

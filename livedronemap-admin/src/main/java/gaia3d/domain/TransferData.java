@@ -2,6 +2,7 @@ package gaia3d.domain;
 
 import java.math.BigDecimal;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,7 +30,7 @@ public class TransferData {
 	// 파일 이름
 	private String file_name;
 	// 객체 탐지 개수
-	private Integer detected_objects_count;
+	private Integer ortho_detected_object_count;
 	// 상태. 0 : 전송 완료, 1 : 후처리 완료
 	private String status;
 	// 드론 위도

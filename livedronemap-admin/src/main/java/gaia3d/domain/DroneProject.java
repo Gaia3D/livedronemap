@@ -38,12 +38,8 @@ public class DroneProject {
 	
 	/****** DB 데이터 화면 표시용 ********/
 	// location 의 latitude
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private BigDecimal location_latitude;
 	// location 의 longitude
-	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private BigDecimal location_longitude;
 	
 	// 개별 정사 영상 개수
@@ -51,7 +47,7 @@ public class DroneProject {
 	// 후처리 영상 개수
 	private Integer postprocessing_image_count;
 	// 객체 탐지 개수
-	private Integer detected_objects_count;
+	private Integer ortho_detected_object_count;
 	
 	// 고유번호
 	private Integer drone_project_id;
@@ -79,7 +75,9 @@ public class DroneProject {
 	private BigDecimal shooting_latitude4;
 	// 촬영 시작 지점의 경도4
 	private BigDecimal shooting_longitude4;
+	
 	// Multi Polygon
+	@Setter(AccessLevel.NONE)
 	private String location;
 	// 촬영 일시
 	private String shooting_date;
@@ -93,34 +91,15 @@ public class DroneProject {
 	// 등록일
 	private String insert_date;
 	
-	public BigDecimal getLocation_latitude() {
-		if(this.location == null || "".equals(this.location)) {
-			return BigDecimal.valueOf(0l);
+	public void setLocation(String location) {
+		this.location = location;
+		if(this.location != null && !"".equals(this.location)) {
+			String[] temp = this.location.substring(this.location.indexOf("(") + 1, this.location.indexOf(")")).split(" ");
+			this.location_longitude = new BigDecimal(temp[0]);
+			this.location_latitude = new BigDecimal(temp[1]);
 		}
-		
-		String[] temp = this.location.substring(this.location.indexOf("(") + 1, this.location.indexOf(")")).split(" ");
-		this.location_latitude = new BigDecimal(temp[1]);
-		return this.location_latitude;
 	}
-
-	public void setLocation_latitude(BigDecimal location_latitude) {
-		this.location_latitude = location_latitude;
-	}
-
-	public BigDecimal getLocation_longitude() {
-		if(this.location == null || "".equals(this.location)) {
-			return BigDecimal.valueOf(0l);
-		}
-		
-		String[] temp = this.location.substring(this.location.indexOf("(") + 1, this.location.indexOf(")")).split(" ");
-		this.location_longitude = new BigDecimal(temp[0]);
-		return location_longitude;
-	}
-
-	public void setLocation_longitude(BigDecimal location_longitude) {
-		this.location_longitude = location_longitude;
-	}
-
+	
 	public String getViewShootingDate() {
 		if(this.shooting_date == null || "".equals( shooting_date)) {
 			return "";
