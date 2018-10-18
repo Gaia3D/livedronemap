@@ -1,5 +1,7 @@
 package gaia3d.persistence;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import gaia3d.domain.Client;
@@ -32,4 +34,10 @@ public interface ClientMapper {
 	 */
 	int insertClient(Client client);
 	
+	/**
+	 * client 리스트 조회
+	 * @param client_id
+	 * @return
+	 */
+	List<Client> getClientList();
 }

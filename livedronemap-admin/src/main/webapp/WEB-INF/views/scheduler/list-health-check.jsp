@@ -25,8 +25,6 @@
 <div id="contentsWrap">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
 	
-	<%@ include file="/WEB-INF/views/monitoring/monitoring-menu.jsp" %>
-	
 	<div class="contents limited">
 		<h3><spring:message code='monitoring.simulation'/></h3>
 		

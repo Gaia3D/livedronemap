@@ -1,5 +1,7 @@
 package gaia3d.service;
 
+import java.util.List;
+
 import gaia3d.domain.Client;
 
 public interface ClientService {
@@ -25,6 +27,9 @@ public interface ClientService {
 	 */
 	int insertClient(Client client);
 
-
-
+	/**
+	 *  client 리스트 조회 
+	 *  @return
+	 */
+	 List<Client> getClientList();
 }

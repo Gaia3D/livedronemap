@@ -1,6 +1,7 @@
 package gaia3d.service.impl;
 
 import java.util.UUID;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,15 @@ public class ClientServiceImpl implements ClientService {
 	private String generateApikey() {
 		return UUID.randomUUID().toString();
 		//return Long.toString(System.nanoTime()).substring(4, 12);
+	}
+	
+	/**
+	 *  client 리스트 조회 
+	 *  @return
+	 */
+	@Transactional(readOnly=true)
+	public List<Client> getClientList() {
+		return clientMapper.getClientList();
 	}
 	
 }
