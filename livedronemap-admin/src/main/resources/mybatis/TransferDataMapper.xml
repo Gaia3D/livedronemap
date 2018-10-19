@@ -19,11 +19,11 @@
     		SELECT NEXTVAL('transfer_data_seq')
   		</selectKey>
 		INSERT INTO transfer_data (
-			transfer_data_id, drone_project_id, data_type, file_name, detected_objects_count,
+			transfer_data_id, drone_project_id, data_type, file_name, ortho_detected_object_count,
 			drone_latitude, drone_longitude, drone_altitude, drone_roll, drone_pitch, drone_yaw, 
 			shooting_date
 		) VALUES (
-			#{transfer_data_id}, #{drone_project_id}, #{data_type}, #{file_name}, #{detected_objects_count},
+			#{transfer_data_id}, #{drone_project_id}, #{data_type}, #{file_name}, #{ortho_detected_object_count},
 			#{drone_latitude}, #{drone_longitude}, #{drone_altitude}, #{drone_roll}, #{drone_pitch}, #{drone_yaw}, 
 			TO_TIMESTAMP(#{shooting_date}, 'YYYYMMDDHH24MISSUS')
 		)

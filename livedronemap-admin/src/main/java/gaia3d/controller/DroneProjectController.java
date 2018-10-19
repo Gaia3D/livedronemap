@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import gaia3d.domain.CacheManager;
 import gaia3d.domain.DroneProject;
 import gaia3d.domain.PageType;
 import gaia3d.domain.Pagination;
@@ -80,10 +81,10 @@ public class DroneProjectController {
 		log.info("@@ drone_project_id = {}", drone_project_id);
 		
 		DroneProject droneProject = droneProjectService.getDroneProject(drone_project_id);
+		log.info("############### droneProject = {}", droneProject);
 		List<TransferData> transferDataList = transferDataService.getListTransferData(drone_project_id);
 		
-		log.info("############### day = {}", transferDataList.get(0).getLayer_shooting_date());
-		
+		model.addAttribute("policy", CacheManager.getPolicy());
 		model.addAttribute("drone_project_id", drone_project_id);
 		model.addAttribute("droneProject", droneProject);
 		model.addAttribute("viewTransferData", transferDataList.get(0));

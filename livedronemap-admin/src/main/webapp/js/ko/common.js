@@ -1,9 +1,3 @@
-// url 페이지로 이동
-function goPage(url) {
-	location.href = url;
-	return;
-}
-
 // 삭제 처리 경고
 function deleteWarning() {
 	if(confirm("삭제 하시겠습니까?")) {

@@ -12,7 +12,7 @@ create table transfer_data(
 	user_id							varchar(32),
 	data_type						char(1),
 	file_name						varchar(256),
-	detected_objects_count			int						default 0,
+	ortho_detected_object_count		int						default 0,
 	status							char(1)					default '0',
 	drone_latitude					numeric(13,10),
 	drone_longitude					numeric(13,10),
@@ -32,7 +32,7 @@ comment on column transfer_data.drone_project_id is 'drone project 고유번호';
 comment on column transfer_data.user_id is '사용자 아이디';
 comment on column transfer_data.data_type is '데이터 타입. 0 : 개별 정사 영상, 1 : 후처리 영상';
 comment on column transfer_data.file_name is '파일 이름';
-comment on column transfer_data.detected_objects_count is '객체 탐지 개수';
+comment on column transfer_data.ortho_detected_object_count is '객체 탐지 개수';
 comment on column transfer_data.status is '상태. 0 : 전송 완료, 1 : 후처리 완료, 2 : 후처리 실패';
 comment on column transfer_data.drone_latitude is '드론 위도';
 comment on column transfer_data.drone_longitude is '드론 경도';
@@ -111,6 +111,7 @@ comment on column postprocessing_image.insert_date is '등록일';
 create table ortho_detected_object(
 	ortho_detected_object_id					bigint,
 	drone_project_id							int									not null,
+	transfer_data_id							bigint								not null,
 	ortho_image_id								bigint								not null,
 	object_type									varchar(100),
 	geometry		 							GEOGRAPHY(POINT, 4326),
@@ -129,6 +130,7 @@ create table ortho_detected_object(
 comment on table ortho_detected_object is '객체 탐지';
 comment on column ortho_detected_object.ortho_detected_object_id is '고유번호';
 comment on column ortho_detected_object.drone_project_id is 'drone project 고유번호';
+comment on column ortho_detected_object.transfer_data_id is '데이터 전송 고유번호(중복, layer)';
 comment on column ortho_detected_object.ortho_image_id is '개별 정사 영상 고유번호';
 comment on column ortho_detected_object.object_type is '객체 타입';
 comment on column ortho_detected_object.geometry is 'geometry';

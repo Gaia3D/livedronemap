@@ -83,7 +83,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 		transferData.setDrone_project_id(transferDataResource.getDrone_project_id());
 		transferData.setData_type(transferDataResource.getData_type());
 		transferData.setFile_name(transferDataResource.getFile_name());
-		transferData.setDetected_objects_count(transferDataResource.getDetected_objects().size());
+		transferData.setOrtho_detected_object_count(transferDataResource.getDetected_objects().size());
 		transferData.setDrone_latitude(transferDataResource.getDrone().getLatitude());
 		transferData.setDrone_longitude(transferDataResource.getDrone().getLongitude());
 		transferData.setDrone_altitude(transferDataResource.getDrone().getAltitude());
@@ -99,7 +99,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 		PostProcessingImage postProcessingImage = null;
 		int ortho_image_count = 0;
 		int postprocessing_image_count = 0;
-		int detected_objects_count = 0;
+		int ortho_detected_object_count = 0;
 		if(TransferDataType.ORTHO_IMAGE.getDataType().equals(transferData.getData_type())) {
 			orthoImage = new OrthoImage();
 			orthoImage.setDrone_project_id(transferDataResource.getDrone_project_id());
@@ -116,7 +116,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 				orthoDetectedObject.setDrone_project_id(transferDataResource.getDrone_project_id());
 				orthoDetectedObject.setOrtho_image_id(orthoImage.getOrtho_image_id());
 				orthoDetectedObjectService.insertOrthoDetectedObject(orthoDetectedObject);
-				detected_objects_count++;
+				ortho_detected_object_count++;
 			}
 			
 			projectStatus = ProjectStatus.ORTHO_IMAGE.getStatus();
@@ -163,9 +163,9 @@ public class TransferDataServiceImpl implements TransferDataService {
 			droneProject.setStatus(projectStatus);
 			droneProject.setOrtho_image_count(ortho_image_count);
 			droneProject.setPostprocessing_image_count(postprocessing_image_count);
-			droneProject.setDetected_objects_count(detected_objects_count);
+			droneProject.setOrtho_detected_object_count(ortho_detected_object_count);
 			
-			log.info("***************************** ortho = {}, postprocessing = {}, detected_objects={}", ortho_image_count, postprocessing_image_count, detected_objects_count);
+			log.info("*************** ortho = {}, postprocessing = {}, ortho_detected_object_count={}", ortho_image_count, postprocessing_image_count, ortho_detected_object_count);
 			droneProjectService.updateDroneProject(droneProject);
 			
 			transferDataMapper.updateTransferData(transferData);

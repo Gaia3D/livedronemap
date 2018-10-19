@@ -11,3 +11,7 @@ FROM (
 	
 ) AS subquery
 WHERE drone_project.drone_project_id = 1;
+
+// geography data type
+update drone_project
+set location = 'POINT(128.38965794847263 34.77336445704367)';

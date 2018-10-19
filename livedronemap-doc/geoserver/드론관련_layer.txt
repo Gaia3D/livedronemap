@@ -1,0 +1,9 @@
+저장소를 하나 추가
+ - 객체 탐지 layer를 위한 general 이라 했음
+ vector, PostGIS, public
+
+ 레이어 생성
+ - view를 만들어서 layer 생성
+ - view sql
+   select transfer_data_id, bounding_box_geometry from ortho_detected_object
+   이름을 view_ortho_detected_object
