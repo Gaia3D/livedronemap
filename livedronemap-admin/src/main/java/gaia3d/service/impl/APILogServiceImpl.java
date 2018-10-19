@@ -1,5 +1,7 @@
 package gaia3d.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,4 +25,24 @@ public class APILogServiceImpl implements APILogService {
 	public int insertAPILog(APILog aPILog) {
 		return aPILogMapper.insertAPILog(aPILog);
 	}
+	
+	/**
+	 * api log 조회 
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public List<APILog> getListAPILog(APILog aPILog) {
+		return aPILogMapper.getListAPILog(aPILog);
+	}
+
+	/**
+	 * api log 개수 조회 
+	 * @param aPILog
+	 * @return
+	 */
+	public Long getAPILogCount(APILog aPILog) {
+		return aPILogMapper.getAPILogCount(aPILog);
+	}
+	
+	
 }

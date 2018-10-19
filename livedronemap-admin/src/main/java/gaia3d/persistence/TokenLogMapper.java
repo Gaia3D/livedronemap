@@ -1,5 +1,7 @@
 package gaia3d.persistence;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import gaia3d.domain.TokenLog;
@@ -17,6 +19,13 @@ public interface TokenLogMapper {
 	 * @return
 	 */
 	TokenLog getTokenLog(TokenLog tokenLog);
+	
+	/**
+	 * 토큰 로그 리스트 조회 
+	 * @param tokenLog
+	 * @return
+	 */
+	List<TokenLog> getListTokenLog(TokenLog tokenLog);
 	
 	/**
 	 * token validation
@@ -38,4 +47,11 @@ public interface TokenLogMapper {
 	 * @return
 	 */
 	TokenLog updateTokenExpires(TokenLog tokenLog);
+
+	/**
+	 * token 로그 개수 조회
+	 * @param tokenLog
+	 * @return
+	 */
+	Long getTokenLogCount(TokenLog tokenLog);
 }

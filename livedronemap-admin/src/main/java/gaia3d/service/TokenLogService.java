@@ -1,5 +1,7 @@
 package gaia3d.service;
 
+import java.util.List;
+
 import gaia3d.domain.TokenLog;
 
 public interface TokenLogService {
@@ -10,6 +12,13 @@ public interface TokenLogService {
 	 * @return
 	 */
 	TokenLog getToken(TokenLog tokenLog);
+	
+	/**
+	 * 토큰 로그 리스트 조회 
+	 * @param tokenLog
+	 * @return
+	 */
+	List<TokenLog> getListTokenLog(TokenLog tokenLog);
 	
 	/**
 	 * token validation
@@ -31,4 +40,11 @@ public interface TokenLogService {
 	 * @return
 	 */
 	TokenLog updateTokenExpires(TokenLog tokenLog);
+
+	/**
+	 * token 로그 개수 조회
+	 * @param tokenLog
+	 * @return
+	 */
+	Long getTokenLogCount(TokenLog tokenLog);
 }

@@ -1,5 +1,7 @@
 package gaia3d.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,16 @@ public class TokenLogServiceImpl implements TokenLogService {
 		tokenLog.setToken(generateToken());
 		tokenLogMapper.insertTokenLog(tokenLog);
 		return tokenLog;
+	}
+
+	/**
+	 * 토큰 로그 리스트 조회 
+	 * @param tokenLog
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public List<TokenLog> getListTokenLog(TokenLog tokenLog) {
+		return tokenLogMapper.getListTokenLog(tokenLog);
 	}
 	
 	/**
@@ -64,4 +76,15 @@ public class TokenLogServiceImpl implements TokenLogService {
 	public TokenLog updateTokenExpires(TokenLog tokenLog) {
 		return tokenLogMapper.updateTokenExpires(tokenLog);
 	}
+
+	/**
+	 * token 로그 개수 조회
+	 * @param tokenLog
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public Long getTokenLogCount(TokenLog tokenLog) {
+		return tokenLogMapper.getTokenLogCount(tokenLog);
+	}
+
 }
