@@ -2,15 +2,20 @@ package gaia3d.controller;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import gaia3d.domain.CacheManager;
 import gaia3d.domain.DroneProject;
@@ -64,6 +69,7 @@ public class DroneProjectController {
 			droneProjectList = droneProjectService.getListDroneProject(droneProject);
 		}
 		
+		model.addAttribute("policy", CacheManager.getPolicy());
 		model.addAttribute(pagination);
 		model.addAttribute("droneProject", droneProject);
 		model.addAttribute("droneProjectList", droneProjectList);
@@ -83,15 +89,55 @@ public class DroneProjectController {
 		DroneProject droneProject = droneProjectService.getDroneProject(drone_project_id);
 		log.info("############### droneProject = {}", droneProject);
 		List<TransferData> transferDataList = transferDataService.getListTransferData(drone_project_id);
+		TransferData viewTransferData = new TransferData();
+		if(!transferDataList.isEmpty()) viewTransferData = transferDataList.get(0);
 		
 		model.addAttribute("policy", CacheManager.getPolicy());
 		model.addAttribute("drone_project_id", drone_project_id);
 		model.addAttribute("droneProject", droneProject);
-		model.addAttribute("viewTransferData", transferDataList.get(0));
+		model.addAttribute("viewTransferData", viewTransferData);
 		model.addAttribute("transferDataList", transferDataList);
 		model.addAttribute("transferDataListSize", transferDataList.size());
 		model.addAttribute("searchParameters", getSearchParameters(PageType.DETAIL, request, null));
 		return "/drone-project/detail-drone-project";
+	}
+	
+	/**
+	 * TODO 외부 api, 내부 api, 일반적인 url 3 종류로 url을 구분하자.
+	 * @param request
+	 * @param drone
+	 * @return
+	 */
+	@GetMapping("{drone_project_id}/transfer-datas")
+	@ResponseBody
+	public Map<String, Object> listTransferData(HttpServletRequest request, @PathVariable Integer drone_project_id) {
+		log.info("@@@@@@@@@@ drone_project_id = {}", drone_project_id);
+		
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+			if(drone_project_id == null || drone_project_id.intValue() <= 0) {
+				result = "drone.project.id.require";
+				map.put("result", result);
+				return map;
+			}
+			
+			List<TransferData> transferDataList = transferDataService.getListTransferData(drone_project_id);
+			TransferData viewTransferData = new TransferData();
+			if(!transferDataList.isEmpty()) viewTransferData = transferDataList.get(0);
+			
+			map.put("shooting_date", viewTransferData.getViewLayerShootingDate());
+			map.put("viewTransferData", viewTransferData);
+			map.put("transferDataList", transferDataList);
+			map.put("transferDataListSize", transferDataList.size());
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
 	}
 	
 	/**

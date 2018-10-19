@@ -102,12 +102,20 @@
 						 <a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
 					</li>
 					<li>
-						<label class="location" title="촬영지역"></label>
-						<span style="display: inline-block; width: 100px;">${droneProject.shooting_area }</span>
 						<label class="js" title="개별정사영상"></label>
-						<span style="display: inline-block; width: 45px;">${droneProject.ortho_image_count }장</span>
+						<span style="display: inline-block; width: 70px;">${droneProject.ortho_image_count }장</span>
+						<label class="ship" title="객체 탐지" style="background-color: red;"></label>
+						<span style="display: inline-block; width: 70px;">${droneProject.ortho_detected_object_count}장</span>
 						<label class="hc" title="후처리영상"></label>
 						<span>${droneProject.postprocessing_image_count }장</span>
+					</li>
+					<li>
+						<label class="location" title="촬영지역"></label>
+						<span style="display: inline-block; width: 180px;">${droneProject.shooting_area }</span>
+						<input type="button" id="droneImage_${droneProject.drone_project_id }" name="viewDroneImageButton" 
+							onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }'); return false;" 
+							style="width: 90px; height: 25px;" value="이미지 비표시" />
+						<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
 					</li>
 					<li>
 						<label class="step">진행단계</label>
@@ -168,7 +176,21 @@
 	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
-    
+    // 드론 촬영 이미지를 그리는 geoserver layer
+	var DRONE_IMAGE_PROVIDER_ARRAY = new Array();
+	// 객체 탐지를 그리는 geoserver layer
+	var DETECTED_OBJECTS_PROVIDER_ARRAY = new Array();
+	// 드론 경로를 그리는 layer
+	var DRONE_PATH_ARRAY = new Array();
+	// 드론 이미지를 표시
+	var BILLBOARD_ARRAY = new Array();
+	for(var i=0; i<10; i++) {
+		DRONE_IMAGE_PROVIDER_ARRAY.push(null);
+		DETECTED_OBJECTS_PROVIDER_ARRAY.push(null);
+		DRONE_PATH_ARRAY.push(null);
+		BILLBOARD_ARRAY.push(null);
+	}
+	
 	$(document).ready(function() {
 		cameraFlyTo(127.827348, 36.590489, 2000000, 3);
 		drawDroneProject();
@@ -212,6 +234,169 @@
 		});
 	}
     
+	//<input type="button" id="viewDroneImageButton" name="viewDroneImageButton" onclick="changeDroneImageLayer('${droneProject.drone_project_id }'); return false;" 
+	//	style="width: 90px; height: 25px;" value="이미지 표시" />
+	//<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
+	function changeDroneImageLayer(index, droneProjectId) {
+		if($("#layter_" + droneProjectId).val() === "0") {
+			// 표시 버튼 클릭
+			$("#layter_" + droneProjectId).val("1");
+			$("#droneImage_" + droneProjectId).val("이미지 표시");
+			drawDetailDroneImage(index, true, droneProjectId);
+		} else {
+			// 비표시 버튼 클릭
+			$("#layter_" + droneProjectId).val("0");
+			$("#droneImage_" + droneProjectId).val("이미지 비표시");
+			drawDetailDroneImage(index, false, droneProjectId);
+		}
+	}
+	
+	// 드론 이미지를 geoserver layer를 이용해서 그림
+   	function drawDetailDroneImage(index, drawFlag, droneProjectId) {
+   		//shootingDate, layerName
+   		if(!drawFlag) {
+   			// layer 삭제
+   			viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER_ARRAY[index], true);
+   			viewer.imageryLayers.remove(DETECTED_OBJECTS_PROVIDER_ARRAY[index], true);
+			viewer.entities.remove(DRONE_PATH_ARRAY[index]);
+			viewer.entities.remove(BILLBOARD_ARRAY[index]);
+   			return;
+   		} 
+		
+   		$.ajax({
+			url: "/drone-project/" + droneProjectId + "/transfer-datas",
+			type: "GET",
+			data: null,
+			dataType: "json",
+			success: function(msg){
+				if(msg.result == "success") {
+					drawDroneLayer(index, droneProjectId, msg);
+					drawDetectedObjects(index, droneProjectId, msg);
+					drawDroneMovingPath(index, droneProjectId, msg);
+				} else {
+					alert(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request, status, error){
+				//alert(JS_MESSAGE["ajax.error.message"]);
+				alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+			}
+		});
+   	}
+	
+	// 드론 이미지 geoserver layer로 표시
+	function drawDroneLayer(index, droneProjectId, msg) {
+		var layerName = "livedronemap:livedronemap_" + droneProjectId + "_" + msg.viewTransferData.data_type;
+		var shootingDate = msg.shooting_date;
+   		
+	   	var provider = new Cesium.WebMapServiceImageryProvider({
+			url : '${policy.geoserver_data_url}/wms',
+			//url : '${geoserverUrl}${geoserverServiceWms}',
+			layers : layerName,
+			parameters : {
+				service : 'WMS',
+				version : '1.1.1',
+				request : 'GetMap',
+				transparent : 'true',
+				tiled : 'true',
+				//format : 'image/png',
+				format : 'image/png',
+				//time : 'P2Y/PRESENT',
+				time : shootingDate,
+		    	//rand:rand,
+				maxZoom : 25,
+				maxNativeZoom : 23,
+				//CQL_FILTER: queryString
+				//bjcd LIKE '47820253%' AND name='청도읍'
+			},
+			//,proxy: new Cesium.DefaultProxy('/proxy/')
+			enablePickFeatures: false
+		});
+	    
+	   	DRONE_IMAGE_PROVIDER_ARRAY[index] = viewer.imageryLayers.addImageryProvider(provider); 	
+	}
+	
+	// 객체 탐지를 geoserver layer를 이용해서 그림
+	function drawDetectedObjects(index, droneProjectId, msg) {
+		var queryString = "transfer_data_id=" + msg.viewTransferData.transfer_data_id;
+		var layerName = "livedronemap:view_ortho_detected_object";
+		
+		// cache 막으려고 5초에 한번씩
+   		var now = new Date();
+		var rand = ( now - now % 5000) / 5000;
+   		
+   		var provider = new Cesium.WebMapServiceImageryProvider({
+			url : '${policy.geoserver_data_url}/wms',
+			layers : layerName,
+			parameters : {
+				service : 'WMS'
+				,version : '1.1.1'
+				,request : 'GetMap'
+				,transparent : 'true'
+				//,tiled : 'true'
+				,format : 'image/png'
+				//,time : 'P2Y/PRESENT'
+		    	,rand:rand
+				//,maxZoom : 25
+				//,maxNativeZoom : 23
+				,CQL_FILTER: queryString
+				//bjcd LIKE '47820253%' AND name='청도읍'
+			}
+			//,proxy: new Cesium.DefaultProxy('/proxy/')
+			,enablePickFeatures: false
+		});
+	    
+   		DETECTED_OBJECTS_PROVIDER_ARRAY[index] = viewer.imageryLayers.addImageryProvider(provider);
+   	}
+	
+	// 드론 이동 경로 표시    
+    function drawDroneMovingPath(index, droneProjectId, msg) {
+		var serverTransferDataList = msg.transferDataList;
+		var transferDataList = new Array();
+		if (serverTransferDataList != null && serverTransferDataList.length > 0) {
+			for(i=0; i<serverTransferDataList.length; i++ ) {
+				var transferData = serverTransferDataList[i];
+				transferDataList.push(transferData.drone_longitude);
+				transferDataList.push(transferData.drone_latitude);
+				transferDataList.push(transferData.drone_altitude);
+			}
+		}
+		
+		DRONE_PATH_ARRAY[index] = viewer.entities.add({
+		    name : '드론 비행 경로',
+		    polyline : {
+		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
+		        width : 5,
+		        material : new Cesium.PolylineDashMaterialProperty({
+		            color : Cesium.Color.ORANGE,
+		            dashLength: 8.0
+		        })
+		    }
+		});
+		
+		// 드론 이미지
+		BILLBOARD_ARRAY[index] = viewer.entities.add({
+	        position : Cesium.Cartesian3.fromDegrees(parseFloat(transferDataList[0]), parseFloat(transferDataList[1]), parseFloat(transferDataList[2])),
+	        billboard : {
+	            image : '/images/drone.png',
+	            width : 25, // default: undefined
+	            height : 25 // default: undefined
+	            /* image : '../images/Cesium_Logo_overlay.png', // default: undefined
+	            show : true, // default
+	            pixelOffset : new Cesium.Cartesian2(0, -50), // default: (0, 0)
+	            eyeOffset : new Cesium.Cartesian3(0.0, 0.0, 0.0), // default
+	            horizontalOrigin : Cesium.HorizontalOrigin.CENTER, // default
+	            verticalOrigin : Cesium.VerticalOrigin.BOTTOM, // default: CENTER
+	            scale : 2.0, // default: 1.0
+	            color : Cesium.Color.LIME, // default: WHITE
+	            rotation : Cesium.Math.PI_OVER_FOUR, // default: 0.0
+	            alignedAxis : Cesium.Cartesian3.ZERO, // default
+	            width : 100, // default: undefined
+	            height : 25 // default: undefined */
+	        }
+	    });
+    }
+	
     viewer.zoomTo(viewer.entities);
 </script>
 </body>
