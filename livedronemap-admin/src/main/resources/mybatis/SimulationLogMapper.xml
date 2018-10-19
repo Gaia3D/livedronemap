@@ -33,12 +33,12 @@
 			<if test="search_status != null and search_status != ''">
 			AND status = #{search_status}
 			</if>
-			<if test="search_start_date != null and search_start_date != ''">
+			<if test="search_date != null and search_date != '' and  search_start_date != null and search_start_date != ''">
 			<![CDATA[
 			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
-			<if test="search_end_date != null and search_end_date != ''">
+			<if test="search_date != null and search_date != '' and  search_end_date != null and search_end_date != ''">
 			<![CDATA[
 			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
@@ -73,12 +73,12 @@
 			<if test="search_status != null and search_status != ''">
 			AND status = #{search_status}
 			</if>
-			<if test="search_start_date != null and search_start_date != ''">
+			<if test="search_date != null and search_date != '' and  search_start_date != null and search_start_date != ''">
 			<![CDATA[
 			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
-			<if test="search_end_date != null and search_end_date != ''">
+			<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
 			<![CDATA[
 			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
