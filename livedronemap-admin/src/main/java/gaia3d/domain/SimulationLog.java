@@ -28,10 +28,6 @@ public class SimulationLog {
 	private String order_value;
 	private Long list_counter = 10l;
 	
-	/****** DB 데이터 화면 표시용 ********/
-	// 개별 정사 영상 개수
-	private Long simulation_log_count;
-		
 	// 시뮬레이션 ID
 	private Integer simulation_log_id;
 	// 시뮬레이션 종류, 0: 전체, 1: 클라이언트(시립대), 2: 가이아쓰리디
@@ -48,5 +44,20 @@ public class SimulationLog {
 	private String start_date;
 	// 시뮬레이션 완료일
 	private String complete_date;
+	
+	
+	public String getViewStart_date() {
+		if(this.start_date == null || "".equals(start_date)) {
+			return "";
+		}
+		return start_date.substring(0, 19);
+	}
+	
+	public String getViewComplete_date() {
+		if(this.complete_date == null || "".equals( complete_date)) {
+			return "";
+		}
+		return complete_date.substring(0, 19);
+	}
 	
 }
