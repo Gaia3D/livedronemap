@@ -11,6 +11,7 @@
 	<typeAliases>
 		<typeAlias type="gaia3d.domain.APILog" alias="aPILog"/>
 		<typeAlias type="gaia3d.domain.Client" alias="client"/>
+		<typeAlias type="gaia3d.domain.ClientGroup" alias="clientGroup"/>		
 		<typeAlias type="gaia3d.domain.Drone" alias="drone"/>
 		<typeAlias type="gaia3d.domain.DroneProject" alias="droneProject"/>
 		<typeAlias type="gaia3d.domain.OrthoDetectedObject" alias="orthoDetectedObject"/>

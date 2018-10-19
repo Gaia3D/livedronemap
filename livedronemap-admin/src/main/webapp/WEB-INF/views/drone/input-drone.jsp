@@ -8,6 +8,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
 	<title>드론 등록 | LiveDroneMap</title>
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" href="/css/${lang}/style.css">
 	<link rel="stylesheet" href="/css/fontawesome-free-5.2.0-web/css/all.min.css">
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
@@ -22,8 +23,8 @@
 		<div class="snb">
 		<h2 class="schedule"><span>드론</span></h2>
 		<ul>
-			<li class="on" title="드론 등록">드론등록</li>
-			<li class="" title="드론 목록">드론목록</li>
+			<li class="on" title="드론 등록">드론 등록</li>
+			<li class="" title="드론 목록">드론 목록</li>
 		</ul>
 	</div>
 
@@ -51,10 +52,6 @@
 		<!-- END BOARD NEW -->
 	</div>
 	<!-- E: CONTENTS -->
-	<div class="footer">
-		<span>LiveDroneMap&#64; Gaia3d Corp.</span>
-		<span>All Rights Reserved</span>
-	</div>
 </div>
 <!-- E: wrap -->
 		

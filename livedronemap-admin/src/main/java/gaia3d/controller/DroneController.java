@@ -64,7 +64,7 @@ public class DroneController {
 	 * @return
 	 */
 	@GetMapping(value = "/drone/input-drone")
-	public String inputData(Model model) {
+	public String inputDrone(Model model) {
 		Drone drone = new Drone();	
 		model.addAttribute(drone);
 		return "/drone/input-drone";
