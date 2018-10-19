@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
 	<script type="text/javascript" src="/js/mago3d.js"></script>
 	<script type="text/javascript" src="/js/${lang}/common.js"></script>
+	<script type="text/javascript" src="/js/live-drone-map.js"></script>
     <script type="text/javascript" src="/externlib/cesium/Cesium.js"></script>
 </head>
 

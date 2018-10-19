@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
 	<script type="text/javascript" src="/js/mago3d.js"></script>
+	<script type="text/javascript" src="/js/live-drone-map.js"></script>
 	<script type="text/javascript" src="/js/${lang}/common.js"></script>
     <script type="text/javascript" src="/externlib/cesium/Cesium.js"></script>
 </head>
@@ -72,10 +73,11 @@
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
 					<form:select path="order_word" name="order_word" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
-	                	<form:option value="simulation_type"> <spring:message code='simulation.type'/> </form:option>
-	                	<form:option value="status"> <spring:message code='simulation.status'/> </form:option>
-	                	<form:option value="start_date"> <spring:message code='search.start.date'/> </form:option>
-	                	<form:option value="complete_date"> <spring:message code='search.complete.date'/> </form:option>
+						<form:option value="client_id"><spring:message code='client.name'/></form:option>
+	                	<form:option value="simulation_type"><spring:message code='simulation.type'/></form:option>
+	                	<form:option value="status"><spring:message code='simulation.status'/></form:option>
+	                	<form:option value="start_date"><spring:message code='search.start.date'/></form:option>
+	                	<form:option value="complete_date"><spring:message code='search.complete.date'/></form:option>
 					</form:select>
 					<form:select path="order_value" name="order_value" class="select">
 	                	<form:option value="ASC"> <spring:message code='search.ascending'/> </form:option>
@@ -136,8 +138,8 @@
 							<c:if test="${simulationLog.status eq '2'}">
 								<td class="alignCenter"><spring:message code='status.progressing'/></td>
 							</c:if>
-							<td class="alignCenter">${simulationLog.start_date}</td>
-							<td class="alignCenter">${simulationLog.complete_date}</td>
+							<td class="alignCenter">${simulationLog.viewStart_date}</td>
+							<td class="alignCenter">${simulationLog.viewComplete_date}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

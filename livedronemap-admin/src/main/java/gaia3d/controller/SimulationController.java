@@ -115,13 +115,4 @@ public class SimulationController {
 		return buffer.toString();
 	}
 	
-//	// TODO 분리 
-//	@GetMapping(value = "list-health-check")
-//	public String listHealthCheck(Model model) {
-//		
-//		List<Client> clientList = clientService.getClientList();
-//		model.addAttribute("clientList", clientList);
-//		
-//		return "/monitoring/list-health-check";
-//	}
 }

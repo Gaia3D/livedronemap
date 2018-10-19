@@ -25,8 +25,10 @@
 <div id="contentsWrap">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
 	
+	<%@ include file="/WEB-INF/views/simulation/simulation-menu.jsp" %>
+	
 	<div class="contents limited">
-		<h3><spring:message code='monitoring.simulation'/></h3>
+		<h3><spring:message code='simulation'/></h3>
 		
 		<ul class="searchForm">
 			<li>
@@ -219,7 +221,7 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#monitoringMenu").addClass("on");
+		$("#schedulerMenu").addClass("on");
 		$("#healthCheckMenu").addClass("on");
 	});
 </script>

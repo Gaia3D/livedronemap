@@ -9,6 +9,46 @@
 		SELECT * FROM token_log WHERE token_log_id = #{token_log_id}
 	</select>
 	
+	<!-- 토큰 로그 리스트 조회 -->
+	<select id="getListTokenLog" parameterType="tokenLog" resultType="tokenLog">
+		/* getListTokenLog */
+		SELECT X.*, client_name
+		FROM ( 
+			SELECT * FROM token_log 
+			<trim prefix="WHERE" prefixOverrides="AND">
+				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+				AND ${search_word} = #{search_value}
+				</if>
+				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+				AND ${search_word} LIKE '%' || #{search_value} || '%'
+				</if>
+				<if test="search_status != null and search_status != ''">
+				AND token_status = #{search_status}
+				</if>
+				<if test="search_date != null and search_date != '' and search_start_date != null and search_start_date != ''">
+				<![CDATA[
+				AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+				]]>
+				</if>
+				<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
+				<![CDATA[
+				AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+				]]>
+				</if>
+			</trim>
+			<choose>
+				<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+					ORDER BY ${order_word} ${order_value}
+				</when>
+				<otherwise>
+					ORDER BY insert_date DESC, token_log_id DESC
+				</otherwise>
+			</choose>
+			OFFSET #{offset} LIMIT #{limit}
+		) X, client Y
+		WHERE X.client_id = Y.client_id
+	</select>
+	
 	<!-- token validation -->
 	<select id="getValidToken" parameterType="tokenLog" resultType="tokenLog">
 		/* getValidToken */
@@ -42,4 +82,31 @@
 		SET expires = NOW() + INTERVAL '${rest_api_token_max_age} MINUTES'
 		WHERE token_log_id = #{token_log_id}
 	</update>
+	
+	<!-- token 로그 개수 조회 -->
+	<select id="getTokenLogCount" parameterType="tokenLog" resultType="long" >
+		/* getTokenLogCount */
+		SELECT COUNT(token_log_id) FROM token_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_status != null and search_status != ''">
+			AND token_status = #{search_status}
+			</if>
+			<if test="search_date != null and search_date != '' and search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
 </mapper>

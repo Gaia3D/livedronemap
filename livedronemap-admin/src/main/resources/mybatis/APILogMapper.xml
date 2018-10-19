@@ -15,4 +15,71 @@
 			#{api_log_id}, #{client_id}, #{client_name}, #{request_ip}, #{user_id}, #{url}, #{status_code}, #{message}
 		)
 	</insert>
+	
+	<!-- api log 조회 -->
+	<select id="getListAPILog" parameterType="aPILog" resultType="aPILog">
+		/* getListAPILog */
+		SELECT * FROM api_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_status != null and search_status != ''">
+			<![CDATA[
+			AND status_code >= #{search_status}::int AND status_code < #{search_status}::int+100
+			]]>
+			</if>
+			<if test="search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+			ORDER BY ${order_word} ${order_value}
+			</when>
+			<otherwise>
+			ORDER BY insert_date DESC, api_log_id DESC
+			</otherwise>
+		</choose>
+		OFFSET #{offset} LIMIT #{limit}
+	</select>
+	
+	<!-- api log 개수 조회  -->
+	<select id="getAPILogCount" parameterType="aPILog" resultType="long">
+		/* getAPILogCount */
+		SELECT COUNT(api_log_id) FROM api_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_status != null and search_status != ''">
+			<![CDATA[
+			AND status_code >= #{search_status}::int AND status_code < #{search_status}::int+100
+			]]>
+			</if>
+			<if test="search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
 </mapper>
