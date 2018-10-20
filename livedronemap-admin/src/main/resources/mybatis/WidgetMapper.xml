@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.WidgetMapper">
+
+	<!-- 위젯 목록 -->
+	<select id="getListWidget" parameterType="widget" resultType="widget">
+		SELECT * 
+		FROM widget 
+		ORDER BY view_order
+		<if test="limit != null and limit > 0">
+		LIMIT ${limit}
+		</if>
+	</select>
+	
+	<!-- 위젯 등록 -->
+	<insert id="insertWidget" parameterType="widget">
+		/* insertWidget */
+		<selectKey keyProperty="widget_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('widget_seq')
+  		</selectKey>
+		INSERT INTO widget(
+			widget_id, name, view_order, user_id
+		) VALUES (
+			#{widget_id}, #{name}, #{view_order}, #{user_id}
+		)
+	</insert>
+	
+	<!-- 위젯 수정 -->	
+	<update id="updateWidget" parameterType="widget">
+		/* updateWidget */
+		UPDATE widget
+		SET 
+			<if test="name != null and name != ''">
+			name = #{name},
+			</if>
+			view_order = #{view_order},
+			user_id = #{user_id}
+		WHERE widget_id = #{widget_id}
+	</update>
+
+</mapper>

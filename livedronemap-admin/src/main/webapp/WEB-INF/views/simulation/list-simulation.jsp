@@ -7,7 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
-	<title><spring:message code='simulation'/> | LiveDroneMap</title>
+	<title>시뮬레이션 | LiveDroneMap</title>
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" href="/css/${lang}/style.css">
     <link rel="stylesheet" href="/externlib/cesium/Widgets/widgets.css?cache_version=${cache_version}" /> 
@@ -29,7 +29,7 @@
 	<%@ include file="/WEB-INF/views/simulation/simulation-menu.jsp" %>
 	
 	<div class="contents limited">
-		<h3><spring:message code='simulation'/></h3>
+		<h3>시뮬레이션</h3>
 		<form:form id="simulationSearchForm" modelAttribute="simulationLog" method="post" action="/simulation/list-simulation" onsubmit="return searchCheck();">
 			<ul class="searchForm">
 				<li>

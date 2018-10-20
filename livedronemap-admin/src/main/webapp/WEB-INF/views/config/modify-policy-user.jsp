@@ -6,7 +6,7 @@
 			<tbody>
 				<tr>
 					<th scope="row">
-						<form:label path="user_id_min_length"><spring:message code='config,user.min.length'/></form:label>
+						<form:label path="user_id_min_length"><spring:message code='config.user.min.length'/></form:label>
 					</th>
 					<td>
 						<form:input path="user_id_min_length" maxlength="2" cssClass="s" />

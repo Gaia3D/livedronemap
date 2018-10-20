@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div class="snb">
-	<h2 class="log"><span><spring:message code='log'/></span></h2>
+	<h2 class="log"><span>로그</span></h2>
 	<ul>
-		<li id="aPILogMenu" title="<spring:message code='log.api'/>" onclick="goPage('/log/list-api-log');">
-			<span><spring:message code='log.api'/></span>
+		<li id="aPILogMenu" title="API 로그" onclick="goPage('/log/list-api-log');">
+			<span>API 로그</span>
 		</li>
-		<li id="tokenLogMenu" title="<spring:message code='log.token'/>" onclick="goPage('/log/list-token-log');">
-			<span><spring:message code='log.token'/></span>
+		<li id="tokenLogMenu" title="토큰 로그" onclick="goPage('/log/list-token-log');">
+			<span>토큰 로그</span>
 		</li>
 	</ul>
 </div>

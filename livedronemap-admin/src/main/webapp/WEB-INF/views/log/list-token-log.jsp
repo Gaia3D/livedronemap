@@ -7,7 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
-	<title><spring:message code='log.token'/> | LiveDroneMap</title>
+	<title>토큰 로그 | LiveDroneMap</title>
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" href="/css/${lang}/style.css">
     <link rel="stylesheet" href="/externlib/cesium/Widgets/widgets.css?cache_version=${cache_version}" /> 
@@ -29,7 +29,7 @@
 	<%@ include file="/WEB-INF/views/log/log-menu.jsp" %>
 	
 	<div class="contents limited"><!-- 컨텐츠영역을 100%로 사용하려면 limited를 삭제하세요 -->
-		<h3><spring:message code='log.token'/></h3>
+		<h3>토큰 로그</h3>
 		
 		<form:form id="tokenLogSearchForm" modelAttribute="tokenLog" method="post" action="/log/list-token-log" onsubmit="return searchCheck();">
 			<ul class="searchForm">

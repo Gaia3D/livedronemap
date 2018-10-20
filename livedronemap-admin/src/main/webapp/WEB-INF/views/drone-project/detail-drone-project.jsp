@@ -172,6 +172,7 @@
 <script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript" src="/js/${lang}/common.js"></script>
 <script type="text/javascript" src="/js/live-drone-map.js"></script>
+<script type="text/javascript" src="/js/geospatial.js"></script>
 <script type="text/javascript">
 	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	// TODO 데이터가 없을때 layer 예외 처리도 해야 함

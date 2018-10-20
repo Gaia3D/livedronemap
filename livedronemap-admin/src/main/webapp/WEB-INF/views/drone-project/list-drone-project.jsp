@@ -172,9 +172,9 @@
 <script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript" src="/js/${lang}/common.js"></script>
 <script type="text/javascript" src="/js/live-drone-map.js"></script>
+<script type="text/javascript" src="/js/geospatial.js"></script>
 <script type="text/javascript">
 	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
-	
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
     // 드론 촬영 이미지를 그리는 geoserver layer
 	var DRONE_IMAGE_PROVIDER_ARRAY = new Array();

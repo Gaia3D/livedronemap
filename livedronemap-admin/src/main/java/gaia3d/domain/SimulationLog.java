@@ -40,8 +40,6 @@ public class SimulationLog {
 	private String status;
 	// 상세 메세지
 	private String message;
-	// 등록일
-	private String insert_date;
 	// 시뮬레이션 시작일
 	private String start_date;
 	// 시뮬레이션 완료일
@@ -62,4 +60,6 @@ public class SimulationLog {
 		return complete_date.substring(0, 19);
 	}
 	
+	// 등록일
+	private String insert_date;
 }
