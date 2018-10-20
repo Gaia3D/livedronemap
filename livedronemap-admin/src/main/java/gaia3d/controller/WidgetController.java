@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import gaia3d.domain.DroneProject;
 import gaia3d.domain.PGStatActivity;
 import gaia3d.domain.UserInfo;
 import gaia3d.domain.UserSession;
 import gaia3d.domain.Widget;
 import gaia3d.helper.SessionUserHelper;
 import gaia3d.service.AccessLogService;
+import gaia3d.service.DroneProjectService;
 import gaia3d.service.MonitoringService;
 import gaia3d.service.UserService;
 import gaia3d.service.WidgetService;
@@ -48,6 +50,8 @@ public class WidgetController {
 	@Autowired
 	private HikariDataSource dataSource;
 	@Autowired
+	private DroneProjectService droneProjectService;
+	@Autowired
 	private AccessLogService logService;
 	@Autowired
 	private MonitoringService monitoringService;
@@ -62,7 +66,7 @@ public class WidgetController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value = "modify-widget.do")
+	@GetMapping(value = "modify-widget")
 	public String modifyWidget(HttpServletRequest request, Model model) {
 		
 		Widget widget = new Widget();
@@ -174,43 +178,34 @@ public class WidgetController {
 //		map.put("result", result);
 //		return map;
 //	}
-//	
-//	/**
-//	 * 프로젝트별 데이터 건수
-//	 * @param request
-//	 * @return
-//	 */
-//	@RequestMapping(value = "ajax-project-data-widget.do")
-//	@ResponseBody
-//	public Map<String, Object> ajaxProjectDataWidget(HttpServletRequest request) {
-//		
-//		Map<String, Object> map = new HashMap<>();
-//		String result = "success";
-//		try {
-//			Project defaultProject = new Project();
-//			defaultProject.setUse_yn(Project.IN_USE);
-//			List<Project> projectList = projectService.getListProject(defaultProject);
-//			List<String> projectNameList = new ArrayList<>();
-//			List<Long> dataTotalCountList = new ArrayList<>();
-//			for(Project project : projectList) {
-//				projectNameList.add(project.getProject_name());
-//				DataInfo dataInfo = new DataInfo();
-//				dataInfo.setProject_id(project.getProject_id());
-//				Long dataTotalCount = dataService.getDataTotalCount(dataInfo);
-//				dataTotalCountList.add(dataTotalCount);
-//			}
-//			
-//			map.put("projectNameList", projectNameList);
-//			map.put("dataTotalCountList", dataTotalCountList);
-//		} catch(Exception e) {
-//			e.printStackTrace();
-//			result = "db.exception";
-//		}
-//		
-//		map.put("result", result);
-//		return map;
-//	}
-//	
+	
+	/**
+	 * 프로젝트별 데이터 건수
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "drone-project-widget")
+	@ResponseBody
+	public Map<String, Object> ajaxProjectDataWidget(HttpServletRequest request) {
+		
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+			DroneProject droneProject = new DroneProject();
+			droneProject.setOffset(0l);
+			droneProject.setLimit(6l);
+			List<DroneProject> droneProjectList = droneProjectService.getListDroneProject(droneProject);
+			
+			map.put("droneProjectList", droneProjectList);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
 //	/**
 //	 * 데이터 상태별 통계 정보
 //	 * @param request
