@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <div class="snb">
-	<h2 class="log"><span><spring:message code='simulation'/></span></h2>
+	<h2 class="log"><span>시뮬레이션</span></h2>
 	<ul>
-		<li id="simulationLogMenu" class="" title="<spring:message code='simulation'/>" onclick="goPage('/simulation/list-simulation');">
-		<spring:message code='simulation'/>
+		<li id="simulationLogMenu" class="" title="시뮬레이션" onclick="goPage('/simulation/list-simulation');">
+		시뮬레이션
 			<div style="margin-top:15px;">
 				<table>
 					<tr style="height:25px;">

@@ -140,7 +140,7 @@
 							</td>
 							<td class="col-number">
 		<c:if test="${transferData.data_type eq '0'}">					
-								[ T ]
+								[ O ]
 		</c:if>
 		<c:if test="${transferData.data_type eq '1'}">					
 								[ P ]
@@ -172,8 +172,10 @@
 <script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
 <script type="text/javascript" src="/js/${lang}/common.js"></script>
 <script type="text/javascript" src="/js/live-drone-map.js"></script>
+<script type="text/javascript" src="/js/geospatial.js"></script>
 <script type="text/javascript">
-	//TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
+	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
+	// TODO 데이터가 없을때 layer 예외 처리도 해야 함
 	
 	// 드론 촬영 이미지를 그리는 geoserver layer
 	var DRONE_IMAGE_PROVIDER = null;
@@ -293,34 +295,26 @@
    		var transferDataList = new Array();
 <c:if test="${!empty transferDataList }">
 	<c:forEach var="transferData" items="${transferDataList}" varStatus="status">
-		var transferData = new Array(3);
-		transferData[0] = "${transferData.drone_longitude}";
-		transferData[1] = "${transferData.drone_latitude}";
-		transferData[2] = "${transferData.drone_altitude}";
-		transferDataList.push(transferData);
-		
-		for (var i = 0; i < transferDataList.length - 1; i++) {
-			var lineStart = transferDataList[i];
-			var lineEnd = transferDataList[i + 1];
-			
-			viewer.entities.add({
-			    name : '드론 비행 경로',
-			    polyline : {
-			        positions : Cesium.Cartesian3.fromDegreesArrayHeights([	parseFloat(lineStart[0]), parseFloat(lineStart[1]), parseFloat(lineStart[2]),
-																			parseFloat(lineEnd[0]), parseFloat(lineEnd[1]), parseFloat(lineEnd[2])]),
-			        width : 5,
-			        material : new Cesium.PolylineDashMaterialProperty({
-			            color : Cesium.Color.ORANGE,
-			            dashLength: 8.0
-			        })
-			    }
-			});
-		}
+		transferDataList.push("${transferData.drone_longitude}");
+		transferDataList.push("${transferData.drone_latitude}");
+		transferDataList.push("${transferData.drone_altitude}");
+	</c:forEach>
+</c:if>
+		viewer.entities.add({
+		    name : '드론 비행 경로',
+		    polyline : {
+		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
+		        width : 5,
+		        material : new Cesium.PolylineDashMaterialProperty({
+		            color : Cesium.Color.ORANGE,
+		            dashLength: 8.0
+		        })
+		    }
+		});
 		
 		// 드론 이미지
-		var lastDroneLocation = transferDataList[0];
 		viewer.entities.add({
-	        position : Cesium.Cartesian3.fromDegrees(parseFloat(lastDroneLocation[0]), parseFloat(lastDroneLocation[1]), parseFloat(lastDroneLocation[2])),
+	        position : Cesium.Cartesian3.fromDegrees(parseFloat(transferDataList[0]), parseFloat(transferDataList[1]), parseFloat(transferDataList[2])),
 	        billboard : {
 	            image : '/images/drone.png',
 	            width : 25, // default: undefined
@@ -339,8 +333,6 @@
 	            height : 25 // default: undefined */
 	        }
 	    });
-	</c:forEach>
-</c:if>
     }
 	
    	viewer.zoomTo(viewer.entities);

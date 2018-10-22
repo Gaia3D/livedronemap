@@ -11,6 +11,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import gaia3d.domain.APIResult;
+import gaia3d.util.DateUtil;
+import gaia3d.util.FormatUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -71,16 +73,16 @@ public class DroneProjectAPIControllerTest {
 		bodyMap.add("drone_id", 1);
 		bodyMap.add("drone_project_name", "서해 앞바다 불법 어선 탐지");
 		bodyMap.add("shooting_area", "서해 앞바다");
-		bodyMap.add("shooting_latitude1", 36.653252);
-		bodyMap.add("shooting_longitude1", 125.997061);
-		bodyMap.add("shooting_latitude2", 36.644963);
-		bodyMap.add("shooting_longitude2", 126.123437);
-		bodyMap.add("shooting_latitude3", 36.552572);
-		bodyMap.add("shooting_longitude3", 126.007192);
-		bodyMap.add("shooting_latitude4", 36.557361);
-		bodyMap.add("shooting_longitude4", 126.113856);
-		bodyMap.add("location", "POINT (126.042671 36.587415)");
-		bodyMap.add("shooting_date", "20181016203800");
+		bodyMap.add("shooting_latitude1", 34.77394717788859);
+		bodyMap.add("shooting_longitude1", 128.39215224363852);
+		bodyMap.add("shooting_latitude2", 34.774483872809924);
+		bodyMap.add("shooting_longitude2", 128.4083827226857);
+		bodyMap.add("shooting_latitude3", 34.760386132087326);
+		bodyMap.add("shooting_longitude3", 128.39187700657115);
+		bodyMap.add("shooting_latitude4", 34.76046846630801);
+		bodyMap.add("shooting_longitude4", 128.41026631001316);
+		bodyMap.add("location", "POINT (128.39966538624049 34.767293523109075)");
+		bodyMap.add("shooting_date", DateUtil.getToday(FormatUtil.YEAR_MONTH_DAY_TIME14));
 		bodyMap.add("description", "테스트 시끕하네... ");
 		return bodyMap;
 	}
@@ -98,7 +100,7 @@ public class DroneProjectAPIControllerTest {
 		bodyMap.add("shooting_latitude4", 36.347030);
 		bodyMap.add("shooting_longitude4", 126.317264);
 		bodyMap.add("location", "POINT (126.262715 36.370818)");
-		bodyMap.add("shooting_date", "20181015203800");
+		bodyMap.add("shooting_date", DateUtil.getToday(FormatUtil.YEAR_MONTH_DAY_TIME14));
 		bodyMap.add("description", "테스트 입니다.");
 		return bodyMap;
 	}

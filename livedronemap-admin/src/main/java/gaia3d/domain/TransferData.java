@@ -2,7 +2,6 @@ package gaia3d.domain;
 
 import java.math.BigDecimal;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

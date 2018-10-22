@@ -3,13 +3,8 @@ live drone map
 
 TODO
 
-postgresql 은 10 버전을 사용할 예정이지만....
-지금은 9.6 버전으로 간다.
-11월 ~ 12월 사이에 업데이트 예정
-
-
-
-1 REST 방식
-2 RestTemplate 사용
-3 template(thymeleaf) 사용
-4 또 뭐가 있을까?
+1. postgresql 11 적용
+2. tomcat 추가 계정으로 start
+3. template(thymeleaf)
+4. 내부 ajax 처리 controller return type 개선
+5. chart ... jqplot 에서 echarts (바이두가 개발한거 교체 검토)

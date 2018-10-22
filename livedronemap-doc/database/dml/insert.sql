@@ -25,6 +25,14 @@ insert into policy(	policy_id, rest_api_encryption_yn,
 					'mkKxoOOBBWrvZK6yCF8l8w==', 'GjKX1+xXvjlIl65JNgVFzg==',
 					'http://localhost:9090/');
 
-commit;
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'droneProjectWidget', 1, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'transferDataListWidget', 2, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'tokenLogListWidget', 3, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'simulationLogListWidget', 4, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'userWidget', 5, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'healthCheckLogListWidget', 6, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'accessLogWidget', 7, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'dbcpWidget', 8, 'admin' );
+insert into widget(	widget_id, name, view_order, user_id) values(NEXTVAL('widget_seq'), 'dbSessionWidget', 9, 'admin' );
 
 commit;
