@@ -7,7 +7,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Health Check | LiveDroneMap</title>
+	<title>상태 점검 | LiveDroneMap</title>
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" href="/css/${lang}/style.css">
     <link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
@@ -22,196 +22,96 @@
 <div id="contentsWrap">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
 	
-	<%@ include file="/WEB-INF/views/simulation/simulation-menu.jsp" %>
+	<%@ include file="/WEB-INF/views/scheduler/scheduler-menu.jsp" %>
 	
 	<div class="contents limited">
-		<h3><spring:message code='simulation'/></h3>
-		
-		<ul class="searchForm">
-			<li>
-				<label for="">프로젝트명</label>
-				<select name="" id="">
-					<option value="">전체</option>
-				</select>
-			</li>
-			<li>
-				<label for="">검색어</label>
-				<select name="" id="">
-					<option value="">전체</option>
-				</select>
-				<select name="" id="">
-					<option value="">전체</option>
-				</select>
-				<select name="" id="">
-					<option value="">전체</option>
-				</select>
-			</li>
-			<li>
-				<label for="">검색</label>
-				<input type="text">
-			</li>
-		</ul>
-		<div class="alignRight">
-			<button type="button" class="point">검색</button>
-		</div>
-		
+		<h3>상태 점검</h3>
+		<form:form id="HealthCheckLogSearchForm" modelAttribute="healthCheckLog" method="post" action="/scheduler/list-health-check" onsubmit="return searchCheck();">
+			<ul class="searchForm">
+				<li>
+					<form:label path="search_status"><spring:message code='simulation.status'/></form:label>
+					<form:select path="search_status" name="search_status" class="select">
+						<form:option value=""> <spring:message code='search.basic'/> </form:option>
+		  				<form:option value="ALIVE">ALIVE</form:option>
+		  				<form:option value="DOWN">DOWN</form:option>
+		  				<form:option value="UNKNOWN">UNKNOWN</form:option>
+					</form:select>
+				</li>
+				<li>
+					<form:label path="search_value"><spring:message code='client.name'/></form:label>
+					<form:select path="search_option" name="search_option" class="select">
+						<form:option value="0"><spring:message code='search.same'/></form:option>
+						<form:option value="1"><spring:message code='search.include'/></form:option>
+					</form:select>
+					<form:input path="search_value" maxlength="20" cssClass="s" />
+					<form:errors path="search_value" cssClass="error" />
+				</li>
+				<li>
+					<form:label path="search_start_date"><spring:message code='search.date'/></form:label>
+					<input type="text" class="s date" id="search_start_date" name="search_start_date" readonly="readonly" />
+					<span class="delimeter tilde">~</span>
+					<input type="text" class="s date" id="search_end_date" name="search_end_date" readonly="readonly" />
+				</li>
+				<li>
+					<form:label path="order_word"><spring:message code='search.order'/></form:label>
+					<form:select path="order_word" name="order_word" class="select">
+						<form:option value=""> <spring:message code='search.basic'/> </form:option>
+						<form:option value="client_id"><spring:message code='client.name'/></form:option>
+	                	<form:option value="status"><spring:message code='simulation.status'/></form:option>
+	                	<form:option value="insert_date"><spring:message code='search.insert.date'/></form:option>
+					</form:select>
+					<form:select path="order_value" name="order_value" class="select">
+	                	<form:option value="ASC"> <spring:message code='search.ascending'/> </form:option>
+						<form:option value="DESC"> <spring:message code='search.descending.order'/> </form:option>
+					</form:select>
+					<form:select path="list_counter" name="list_counter" class="select">
+                		<form:option value="10"> <spring:message code='search.ten.count'/> </form:option>
+	                	<form:option value="50"> <spring:message code='search.fifty.count'/> </form:option>
+						<form:option value="100"> <spring:message code='search.hundred.count'/> </form:option>
+					</form:select>
+				</li>
+			</ul>
+			<div class="alignRight">
+				<button type="submit" form="HealthCheckLogSearchForm" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
+			</div>
+		</form:form>
 		<!-- 목록정렬 -->
 		<div class="boardHeader">
 			<p>
 				<span>10</span>건 / 총200건
 			</p>
-			<div class="tableBtn">
-				<button type="button" title="일괄삭제">일괄삭제</button>
-				<button type="button" title="등록">등록</button>
-				<button type="button" title="엑셀로 자료받기">엑셀로 자료받기</button>
-			</div>
 		</div>
 		<div class="boardList">
 			<table>
 				<thead>
-					<th><input type="checkbox"></th>
-					<th>번호</th>
-					<th>프로젝트명</th>
-					<th>데이터명</th>
-					<th>제어속성</th>
-					<th>등록일</th>
-					<th>수정/삭제</th>
+					<tr>
+						<th><spring:message code='number'/></th>
+						<th><spring:message code='client.name'/></th>
+						<th>상태</th>
+						<th>응답 코드</th>
+						<th>메세지</th>
+						<th><spring:message code='search.insert.date'/></th>
+					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="alignCenter"><input type="checkbox"></td>
-						<td>123</td>
-						<td>3DS</td>
-						<td>imun_del</td>
-						<td>definite ptkurpose circuit breaker</td>
-						<td class="alignCenter">2018-10-10  17:11:59</td>
-						<td class="alignCenter">
-							<button type="button" title="수정" class="intd">수정</button>
-							<button type="button" title="삭제" class="intd">삭제</button>
-						</td>
-					</tr>
+					<c:forEach var="healthCheckLog" items="${healthCheckLogList}" varStatus="status">
+						<tr>
+							<td class="alignCenter">${pagination.rowNumber - status.index}</td>
+							<td class="alignCenter">${healthCheckLog.client_name}</td>
+							<td class="alignCenter">${healthCheckLog.status}</td>
+							<td class="alignCenter">${healthCheckLog.status_code}</td>
+							<td class="alignCenter">
+								<c:if test="${healthCheckLog.message ne '' and healthCheckLog.message ne null}">
+									<button type="button" title="보기" class="intd">보기</button>
+								</c:if>
+							</td>
+							<td class="alignCenter">${healthCheckLog.viewInsertDate}</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
-			<ul class="pagination">
-				<li class="ico first" title="맨앞으로">처음</li>
-				<li class="ico forward" title="앞으로">앞으로</li>
-				<li>1</li>
-				<li>2</li>
-				<li>3</li>
-				<li class="on">4</li>
-				<li>5</li>
-				<li>6</li>
-				<li class="ico back" title="뒤로">뒤로</li>
-				<li class="ico end" title="맨뒤로">마지막</li>
-			</ul>
+			
+			<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 		</div>
 	</div>
 </div>
