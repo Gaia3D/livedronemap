@@ -157,7 +157,7 @@
 </c:if>
 			</div>
 			
-			<%@ include file="/WEB-INF/views/common/sub-pagination.jsp" %>
+			<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 		</div>
 		<!-- E: 영상목록 -->
 	</div>
