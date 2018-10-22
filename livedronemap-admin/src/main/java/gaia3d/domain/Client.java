@@ -12,6 +12,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class Client {
+	
+	// 상태 : 사용중
+	public static final String IN_USE = "Y";
+	
+	private String apikey_duplication;
+	private String check_generate_apikey;	
 
 	// 고유번호
 	private Integer client_id;

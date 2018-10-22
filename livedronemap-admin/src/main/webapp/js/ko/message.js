@@ -20,4 +20,9 @@ JS_MESSAGE["drone.name.empty"] = "드론 명을 입력해 주세요.";
 
 // 클라이언트관리
 JS_MESSAGE["client.name.empty"] = "클라이언트 명을 입력해 주세요.";
+JS_MESSAGE["client.group.required"] = "클라이언트 그룹을 선택해 주세요.";
 JS_MESSAGE["client.ip.empty"] = "클라이언트의 IP 주소를 입력해 주세요.";
+JS_MESSAGE["client.ip.invalid"] = "클라이언트의 IP 주소가 맞지 않습니다. 다시 입력해 주세요.";
+JS_MESSAGE["client.apikey.generate"] = "API key가 발급되었습니다.";
+JS_MESSAGE["client.apikey.empty"] = "API key를 입력해 주세요.";
+

@@ -32,4 +32,10 @@ public interface ClientService {
 	 *  @return
 	 */
 	 List<Client> getClientList();
+	 
+	/**
+	 * API key 발행
+	 * @return
+	 */
+	 String generateApikey();
 }

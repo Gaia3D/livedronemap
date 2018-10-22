@@ -1,5 +1,6 @@
 package gaia3d.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 import gaia3d.domain.Client;
 import gaia3d.domain.ClientGroup;
@@ -46,14 +48,22 @@ public class ClientController {
 		Client client = new Client();
 		ClientGroup clientGroup = new ClientGroup();
 		clientGroup.setUse_yn(clientGroup.IN_USE);
-		
 		List<ClientGroup> clientGroupList = clientgroupService.getListClientGroup(clientGroup);
+		String apikey = clientService.generateApikey();
 		
 		model.addAttribute(client);
 		model.addAttribute(clientGroupList);
+		model.addAttribute("apikey",apikey);
 		return "/client/input-client";
-	}	
+	}
 	
+	
+	/**
+	 * client 추가
+	 * @param request
+	 * @param client
+	 * @return
+	 */
 	@PostMapping("/clients")
 	@ResponseBody
 	public Map<String, Object> insertClient(HttpServletRequest request, Client client) {
@@ -79,5 +89,26 @@ public class ClientController {
 		return map;
 	}
 	
+	@RequestMapping(value = "/client/ajax-generate-api-key")
+	@ResponseBody
+	public Map<String, Object> ajaxGenerateApiKey(HttpServletRequest request) {		
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		String Apikey = " ";
+		
+		try {
+			Apikey = clientService.generateApikey();
+//			log.info("@@@@@@@@@@ apikey = {}", Apikey);
+		
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "exception";
+		}
+		map.put("result", result);
+		map.put("apikey", Apikey);
+
+		return map;
+	}
+
 
 }

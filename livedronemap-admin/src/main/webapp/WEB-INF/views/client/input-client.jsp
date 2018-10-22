@@ -26,7 +26,7 @@
 			<li class="on" title="클라이언트 등록">클라이언트 등록</li>
 			<li class="" title="클라이언트 목록">클라이언트 목록</li>
 		</ul>
-	</div>
+		</div>
 
 	<div class="contents limited"><!-- 컨텐츠영역을 100%로 사용하려면 limited를 삭제하세요 -->
 		<h3>클라이언트 등록</h3>
@@ -34,7 +34,7 @@
 		<div class="boardNew">
 			<table class="input-table scope-row">
 				<tr>
-					<th style="width: 120px" scope="row">
+					<th style="width: 140px" scope="row">
 						<span class="required"><form:label path="client_name"><spring:message code='client.name'/></form:label></span>
 					</th>
 					<td>
@@ -44,10 +44,10 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<form:label path="client_group_id"><spring:message code='client.group'/></form:label>
+						<span class="required"><form:label path="client_group_id"><spring:message code='client.group'/></form:label></span>
 					</th>
 					<td >
-						<select id="client_group_id" name="client_group_id" class="select" >
+						<select id="client_group_id" name="client_group_id" class="select" style="width:150px" >
 <c:forEach var="clientGroup" items="${clientGroupList }">
 							<option value="${clientGroup.client_group_id }">${clientGroup.group_name }</option>
 </c:forEach>									
@@ -75,11 +75,13 @@
 				</tr>
 				<tr>
 					<th scope="row">
-						<form:label path="api_key"><spring:message code='client.apikey'/></form:label></span>
+						<span class="required"><form:label path="api_key"><spring:message code='client.apikey'/></form:label></span>
 					<td>
-						<form:hidden path="api_key" />
-				 		<form:input path="api_key" cssClass="l" readonly="true" />
+						<form:hidden path="apikey_duplication" />
+						<form:hidden path="check_generate_apikey" />
+				 		<form:input path="api_key" size= "40px" cssClass="m" readonly="true" />
 						<input type="button" id="generate" value="<spring:message code='client.generate'/>" />
+						
 					</td>
 				</tr>
 				
@@ -112,17 +114,43 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("input[name='use_yn'][value='N']").prop('checked', true);
-		$(".select").selectmenu();
+		$("#check_generate_apikey").val("0");
+		$("#apikey_duplication").val(" ");
 	});
 	
 	// apikey 발급
 	$( "#generate" ).on( "click", function() {
-		var dataKey = $("#data_key").val();
-		if (dataKey == "") {
-			alert(JS_MESSAGE["data.key.empty"]);
-			$("#data_id").focus();
-			return false;
-		}
+		var apikey = "";
+		$.ajax({
+			url: "/client/ajax-generate-api-key",
+			type: "POST",
+			data: apikey,
+			dataType: "json",
+			success: function(msg){
+				if(msg.result == "success") {
+					
+					if($("#check_generate_apikey").val() == "0") {
+						apikey = msg.apikey;
+						$("#apikey_duplication").val(apikey); 
+						$("#check_generate_apikey").val("1");
+						$("#api_key").val($("#apikey_duplication").val());
+						alert(JS_MESSAGE["client.apikey.generate"]);
+						return false;
+					}
+					else {
+						alert(JS_MESSAGE["client.apikey.generate"]);
+					}
+				} else {
+					alert(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request, status, error) {
+				//alert(JS_MESSAGE["ajax.error.message"]);
+				alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+    		}
+		});
+
+	});
 	
 	// client 정보 저장
 	var insertClientFlag = true;
@@ -143,6 +171,9 @@
 						$('form').each(function(){
 						    this.reset();
 						});
+						$("input[name='use_yn'][value='N']").prop('checked', true);
+						$("#check_generate_apikey").val("0");
+						$("#apikey_duplication").val(" ");
 					}
 					insertClientFlag = true;
 				},
@@ -163,12 +194,33 @@
 			$("#client_name").focus();
 			return false;
 		}
+		if ($("#client_group_id").val() == "") {
+			alert(JS_MESSAGE["client.group.required"]);
+			$("#client_group_id").focus();
+			return false;
+		}
+		
+		client_group_id
+		
 		if ($("#client_ip").val() == "") {
 			alert(JS_MESSAGE["client.ip.empty"]);
 			$("#client_ip").focus();
 			return false;
+		} else if (!isIP($("#client_ip").val())) {
+			alert(JS_MESSAGE["client.ip.invalid"]);
+			$("#client_ip").focus();
+			return false;
 		}
+				
+		if ($("#api_key").val() == "" || ($("#check_generate_apikey").val() == "0")) {
+			alert(JS_MESSAGE["client.apikey.empty"]);
+			$("#api_key").focus();
+			return false;
+		}
+	
 	}
+	
+	
 </script>
 </body>
 </html>

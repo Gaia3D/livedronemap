@@ -14,6 +14,5 @@
 		/* getListClientGroup */
 		SELECT * FROM client_group WHERE use_yn = #{use_yn}
 	</select>	
-	
 
 </mapper>

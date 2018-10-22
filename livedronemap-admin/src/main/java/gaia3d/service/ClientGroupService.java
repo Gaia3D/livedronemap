@@ -11,7 +11,7 @@ public interface ClientGroupService {
 	 *  @param client_group_id
 	 *  @return
 	 */
-	ClientGroup getClientGroup(int client_group_id);
+	ClientGroup getClientGroup(Integer client_group_id);
 	
 	/**
 	 * client group 목록

@@ -22,7 +22,7 @@ public class ClientGroupServiceImpl implements ClientGroupService {
 	 *  @return
 	 */
 	@Transactional(readOnly=true)
-	public ClientGroup getClientGroup(int client_group_id) {
+	public ClientGroup getClientGroup(Integer client_group_id) {
 		return clientGroupMapper.getClientGroup(client_group_id);
 	}
 	

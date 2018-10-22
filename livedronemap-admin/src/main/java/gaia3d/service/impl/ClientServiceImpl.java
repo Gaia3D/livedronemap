@@ -46,16 +46,6 @@ public class ClientServiceImpl implements ClientService {
 	public int insertClient(Client client) {
 		return clientMapper.insertClient(client);
 	}
-
-	
-	/**
-	 * API key 발행
-	 * @return
-	 */
-	private String generateApikey() {
-		return UUID.randomUUID().toString();
-		//return Long.toString(System.nanoTime()).substring(4, 12);
-	}
 	
 	/**
 	 *  client 리스트 조회 
@@ -65,5 +55,15 @@ public class ClientServiceImpl implements ClientService {
 	public List<Client> getClientList() {
 		return clientMapper.getClientList();
 	}
+
 	
+	/**
+	 * API key 발행
+	 * @return
+	 */
+	public String generateApikey() {
+		return UUID.randomUUID().toString();
+		//return Long.toString(System.nanoTime()).substring(4, 12);
+	}
+		
 }
