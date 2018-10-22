@@ -282,20 +282,20 @@
 						var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index]
 						var postDetectedObjectsProvider = DETECTED_OBJECTS_PROVIDER_ARRAY[index]
 						var postDronePath = DRONE_PATH_ARRAY[index]
-						viewer.entities.remove(BILLBOARD_ARRAY[index]);
+						var postBillboard = BILLBOARD_ARRAY[index]
 						
 						// 새로운 이미지 생성
 						drawDroneLayer(index, droneProjectId, msg);
 						drawDetectedObjects(index, droneProjectId,msg);
 						drawDroneMovingPath(index, droneProjectId, msg);
 						
-						
 						// 이전 이미지 삭제, 1초 딜레이/깜빡임 방지
-						setTimout(function() {
+						setTimeout(function() {
 							viewer.imageryLayers.remove(postDroneImageLayer, true);
 							viewer.imageryLayers.remove(postDetectedObjectsProvider, true);
 							viewer.entities.remove(postDronePath);
-						},1000)
+							viewer.entities.remove(postBillboard);
+						},1500)
 						
 					}, 3000)
 					
