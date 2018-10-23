@@ -32,9 +32,9 @@
 					<form:label path="search_status"><spring:message code='simulation.status'/></form:label>
 					<form:select path="search_status" name="search_status" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
-		  				<form:option value="ALIVE">ALIVE</form:option>
-		  				<form:option value="DOWN">DOWN</form:option>
-		  				<form:option value="UNKNOWN">UNKNOWN</form:option>
+		  				<form:option value="ALIVE">정상</form:option>
+		  				<form:option value="DOWN">다운</form:option>
+		  				<form:option value="UNKNOWN">알수없음</form:option>
 					</form:select>
 				</li>
 				<li>
@@ -78,7 +78,8 @@
 		<!-- 목록정렬 -->
 		<div class="boardHeader">
 			<p>
-				<span>10</span>건 / 총200건
+				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
+				<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/> <spring:message code='search.page'/>
 			</p>
 		</div>
 		<div class="boardList">
@@ -87,9 +88,9 @@
 					<tr>
 						<th><spring:message code='number'/></th>
 						<th><spring:message code='client.name'/></th>
-						<th>상태</th>
-						<th>응답 코드</th>
-						<th>메세지</th>
+						<th><spring:message code='search.status'/></th>
+						<th><spring:message code='http.code'/></th>
+						<th><spring:message code='message'/></th>
 						<th><spring:message code='search.insert.date'/></th>
 					</tr>
 				</thead>
@@ -98,11 +99,21 @@
 						<tr>
 							<td class="alignCenter">${pagination.rowNumber - status.index}</td>
 							<td class="alignCenter">${healthCheckLog.client_name}</td>
-							<td class="alignCenter">${healthCheckLog.status}</td>
+							<td class="alignCenter">
+								<c:if test="${healthCheckLog.status == 'ALIVE'}">
+									<span class="alive">정상</span>
+								</c:if>
+								<c:if test="${healthCheckLog.status == 'DOWN'}">
+									<span class="down">다운</span>
+								</c:if>
+								<c:if test="${healthCheckLog.status == 'UNKNOWN'}">
+									<span class="unknown">알수없음</span>
+								</c:if>
+							</td>
 							<td class="alignCenter">${healthCheckLog.status_code}</td>
 							<td class="alignCenter">
 								<c:if test="${healthCheckLog.message ne '' and healthCheckLog.message ne null}">
-									<button type="button" title="보기" class="intd">보기</button>
+									<button type="button" title="<spring:message code='open.message'/>" class="intd"><spring:message code='open.message'/></button>
 								</c:if>
 							</td>
 							<td class="alignCenter">${healthCheckLog.viewInsertDate}</td>
@@ -120,6 +131,9 @@
 	$(document).ready(function() {
 		$("#schedulerMenu").addClass("on");
 		$("#healthCheckMenu").addClass("on");
+		
+		initJqueryCalendar();
+		initCalendar(new Array("search_start_date", "search_end_date"), new Array("${simulationLog.search_start_date}", "${simulationLog.search_end_date}"));
 	});
 </script>
 

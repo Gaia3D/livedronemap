@@ -46,7 +46,7 @@
 					<form:input type="text" class="s date" path="search_value" name="search_value"/>
 				</li>
 				<li>
-					<form:label path="search_status">응답 코드</form:label>
+					<form:label path="search_status"><spring:message code='http.code'/></form:label>
 					<form:select path="search_status" name="search_status" class="select">
 						<form:option value=""><spring:message code='search.basic'/></form:option>
 	                	<form:option value="200">2xx</form:option>
@@ -100,8 +100,8 @@
 						<th><spring:message code='user.id'/></th>
 						<th><spring:message code='request.ip'/></th>
 						<th><spring:message code='request.url'/></th>
-						<th>응답 코드</th>
-						<th>메세지</th>
+						<th><spring:message code='http.code'/></th>
+						<th><spring:message code='message'/></th>
 						<th><spring:message code='search.insert.date'/></th>
 					</tr>
 				</thead>
@@ -116,7 +116,7 @@
 							<td class="alignCenter">${aPILog.status_code}</td>
 							<td class="alignCenter">
 								<c:if test="${aPILog.message ne '' and aPILog.message ne null}">
-									<button type="button" title="보기" class="intd">보기</button>
+									<button type="button" title="<spring:message code='open.message'/>" class="intd"><spring:message code='open.message'/></button>
 								</c:if>
 							</td>
 							<td class="alignCenter">${aPILog.viewInsert_date}</td>
