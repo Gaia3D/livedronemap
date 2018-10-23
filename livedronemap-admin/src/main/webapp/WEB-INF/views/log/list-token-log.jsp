@@ -112,6 +112,8 @@
 					</c:forEach>
 				</tbody>
 			</table>
+			
+			<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 		</div>
 	</div>
 	

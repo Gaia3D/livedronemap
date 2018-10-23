@@ -44,7 +44,8 @@ public class SimulationLog {
 	private String start_date;
 	// 시뮬레이션 완료일
 	private String complete_date;
-	
+	// 등록일
+	private String insert_date;
 	
 	public String getViewStart_date() {
 		if(this.start_date == null || "".equals(start_date)) {
@@ -59,7 +60,5 @@ public class SimulationLog {
 		}
 		return complete_date.substring(0, 19);
 	}
-	
-	// 등록일
-	private String insert_date;
+
 }

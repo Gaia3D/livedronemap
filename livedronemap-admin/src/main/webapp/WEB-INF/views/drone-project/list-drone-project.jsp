@@ -157,7 +157,7 @@
 </c:if>
 			</div>
 			
-			<%@ include file="/WEB-INF/views/common/sub-pagination.jsp" %>
+			<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 		</div>
 		<!-- E: 영상목록 -->
 	</div>
@@ -178,6 +178,7 @@
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
     // 드론 촬영 이미지를 그리는 geoserver layer
 	var DRONE_IMAGE_PROVIDER_ARRAY = new Array();
+    var DORNE_IMAGE_INTERVAL_ARRAY = new Array();
 	// 객체 탐지를 그리는 geoserver layer
 	var DETECTED_OBJECTS_PROVIDER_ARRAY = new Array();
 	// 드론 경로를 그리는 layer
@@ -247,6 +248,7 @@
 			// 비표시 버튼 클릭
 			$("#layter_" + droneProjectId).val("0");
 			$("#droneImage_" + droneProjectId).val("이미지 비표시");
+			clearInterval(DORNE_IMAGE_INTERVAL_ARRAY[index])
 			drawDetailDroneImage(index, false, droneProjectId);
 		}
 	}
@@ -271,8 +273,33 @@
 			success: function(msg){
 				if(msg.result == "success") {
 					drawDroneLayer(index, droneProjectId, msg);
-					drawDetectedObjects(index, droneProjectId, msg);
+					drawDetectedObjects(index, droneProjectId,msg);
 					drawDroneMovingPath(index, droneProjectId, msg);
+					
+					// TODO: 드론 이미지 갱신 정리
+					var droneImageInterval = setInterval(function() {
+						// 이전 이미지 저장
+						var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index]
+						var postDetectedObjectsProvider = DETECTED_OBJECTS_PROVIDER_ARRAY[index]
+						var postDronePath = DRONE_PATH_ARRAY[index]
+						var postBillboard = BILLBOARD_ARRAY[index]
+						
+						// 새로운 이미지 생성
+						drawDroneLayer(index, droneProjectId, msg);
+						drawDetectedObjects(index, droneProjectId,msg);
+						drawDroneMovingPath(index, droneProjectId, msg);
+						
+						// 이전 이미지 삭제, 1초 딜레이/깜빡임 방지
+						setTimeout(function() {
+							viewer.imageryLayers.remove(postDroneImageLayer, true);
+							viewer.imageryLayers.remove(postDetectedObjectsProvider, true);
+							viewer.entities.remove(postDronePath);
+							viewer.entities.remove(postBillboard);
+						},1500)
+						
+					}, 3000)
+					
+					DORNE_IMAGE_INTERVAL_ARRAY[index] = droneImageInterval
 				} else {
 					alert(JS_MESSAGE[msg.result]);
 				}
@@ -289,7 +316,13 @@
 		var layerName = "livedronemap:livedronemap_" + droneProjectId + "_" + msg.viewTransferData.data_type;
 		var shootingDate = msg.shooting_date;
    		
+		// cache 막으려고 5초에 한번씩
+   		var now = new Date();
+		var rand = ( now - now % 5000) / 5000;
+		
 	   	var provider = new Cesium.WebMapServiceImageryProvider({
+	   		// TODO: 캐시 적용 필요 
+			//url : '${policy.geoserver_data_url}/gwc/service/wms',
 			url : '${policy.geoserver_data_url}/wms',
 			//url : '${geoserverUrl}${geoserverServiceWms}',
 			layers : layerName,
@@ -301,11 +334,11 @@
 				tiled : 'true',
 				//format : 'image/png',
 				format : 'image/png',
-				//time : 'P2Y/PRESENT',
-				time : shootingDate,
-		    	//rand:rand,
-				maxZoom : 25,
-				maxNativeZoom : 23,
+				time : 'P10Y/PRESENT',
+				//time : "2018-10-15T20:38:00.000Z/" + shootingDate,
+		    	rand:rand,
+				//maxZoom : 25,
+				//maxNativeZoom : 23,
 				//CQL_FILTER: queryString
 				//bjcd LIKE '47820253%' AND name='청도읍'
 			},

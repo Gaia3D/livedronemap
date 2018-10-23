@@ -49,13 +49,13 @@
 			ORDER BY ${order_word} ${order_value}
 			</when>
 			<otherwise>
-			ORDER BY start_date DESC, simulation_log_id DESC
+			ORDER BY insert_date DESC, simulation_log_id DESC
 			</otherwise>
 		</choose>
 		OFFSET #{offset} LIMIT #{limit}
 	</select>
 	
-	<!-- 시뮬레이션 로그 카운드 -->
+	<!-- 시뮬레이션 로그 카운트 -->
 	<select id="getSimulationLogTotalCount" parameterType="simulationLog" resultType="long">
 		/* getSimulationLogTotalCount */
 		SELECT COUNT(simulation_log_id)

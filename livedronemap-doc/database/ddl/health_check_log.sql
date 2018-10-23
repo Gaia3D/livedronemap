@@ -5,16 +5,18 @@ create table health_check_log(
 	health_check_log_id					bigint,
 	client_id							int,
 	client_name							varchar(30),
+	status								varchar(10),
 	status_code							int,
-	message								varchar(256),
+	message								text,
 	insert_date							timestamp 			with time zone			default now(),
 	constraint health_check_log_pk 		primary key (health_check_log_id)	
 );
 
-comment on table health_check_log is 'API 호출 이력';
+comment on table health_check_log is '상태 점검 이력';
 comment on column health_check_log.health_check_log_id is '고유키';
 comment on column health_check_log.client_id is 'client 고유키';
 comment on column health_check_log.client_name is 'client명(중복)';
+comment on column health_check_log.status is '상태 점검 상태';
 comment on column health_check_log.status_code is 'http status code';
 comment on column health_check_log.message is '상세 메시지';
 comment on column health_check_log.insert_date is '등록일';
