@@ -10,9 +10,11 @@
 	<title>드론 등록 | LiveDroneMap</title>
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" /> 
 	<link rel="stylesheet" href="/css/${lang}/style.css">
-	<link rel="stylesheet" href="/css/fontawesome-free-5.2.0-web/css/all.min.css">
-	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
+    <link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/externlib/jquery-ui/jquery-ui.js"></script>
+	<script type="text/javascript" src="/js/${lang}/common.js"></script>
+	<script type="text/javascript" src="/js/live-drone-map.js"></script>
 </head>
 
 <body>
@@ -20,13 +22,8 @@
 
 <div id="contentsWrap" style="">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
-		<div class="snb">
-		<h2 class="schedule"><span>드론</span></h2>
-		<ul>
-			<li class="on" title="드론 등록">드론 등록</li>
-			<li class="" title="드론 목록">드론 목록</li>
-		</ul>
-	</div>
+	
+	<%@ include file="/WEB-INF/views/device/device-menu.jsp" %>
 
 	<div class="contents limited"><!-- 컨텐츠영역을 100%로 사용하려면 limited를 삭제하세요 -->
 		<h3>드론 등록</h3>
@@ -58,6 +55,12 @@
 <script type="text/javascript" src="/js/${lang}/common.js"></script>
 <script type="text/javascript" src="/js/${lang}/message.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+	$("#deviceMenu").addClass("on");
+	$("#droneMenu").addClass("on");
+
+});
+
 	
 	// drone 정보 저장
 	var insertDroneFlag = true;
