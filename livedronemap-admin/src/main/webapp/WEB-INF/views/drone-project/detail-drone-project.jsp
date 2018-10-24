@@ -37,8 +37,7 @@
 		<div class="subHeader">
 			<h2>${droneProject.drone_project_name}</h2>
 			<div class="ctrlBtn">
-				<a href="/drone-project/list-drone-project?${searchParameters}" style="padding-top:3px; font-size:16px; color: #fff;">목록</a>
-				<button type="button" title="닫기" class="close">닫기</button>
+				<a href="/drone-project/list-drone-project?${searchParameters}" style="padding-top:3px; font-size:13px; color: #fff;">목록 보기</a>
 			</div>
 		</div>
 		<!-- E: 프로젝트 제목, 목록가기, 닫기 -->

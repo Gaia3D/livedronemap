@@ -152,7 +152,7 @@ background: url(../../images/ico.png) no-repeat left -299px;
 .condition li span {
 display: inline-block;
 }
-.condition li span.ok {
+.condition li span.alive {
 padding: 3px 7px;
 border-radius: 5px;
 background-color: #5c7be8;
