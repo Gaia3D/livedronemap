@@ -88,7 +88,7 @@
 			shooting_lower_right_latitude, shooting_lower_right_longitude, 
 			shooting_lower_left_latitude, shooting_lower_left_longitude,
 			ST_AsText(location) AS location, shooting_date, status, description, 
-			ortho_image_count, postprocessing_image_count, ortho_detected_object_count
+			ortho_image_count, postprocessing_image_count, ortho_detected_object_count,
 			update_date, insert_date 
 		FROM drone_project
 		WHERE drone_project_id = #{drone_project_id}
