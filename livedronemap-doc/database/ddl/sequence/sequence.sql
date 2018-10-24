@@ -5,7 +5,7 @@ drop sequence if exists client_group_seq;
 drop sequence if exists client_group_role_seq;
 drop sequence if exists drone_seq;
 drop sequence if exists drone_project_seq;
-drop sequence if exists health_check_log_seq;
+drop sequence if exists health_check_seq;
 drop sequence if exists ortho_detected_object_seq;
 drop sequence if exists ortho_image_seq;
 drop sequence if exists postprocessing_image_seq;

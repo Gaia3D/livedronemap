@@ -9,6 +9,7 @@ encoding//database/ddl/health_check_log.sql=MS949
 encoding//database/ddl/menu.sql=MS949
 encoding//database/ddl/policy.sql=MS949
 encoding//database/ddl/role.sql=MS949
+encoding//database/ddl/schedule.sql=MS949
 encoding//database/ddl/transfer_data.sql=MS949
 encoding//database/ddl/user_info.sql=MS949
 encoding//database/ddl/widget.sql=MS949

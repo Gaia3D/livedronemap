@@ -184,7 +184,7 @@
 	
   	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
   	$(document).ready(function() {
-  		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 500, 3);
+  		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 5000, 3);
 		drawDroneProject();
 		drawDetailDroneImage("${viewTransferData.viewLayerShootingDate}", "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
 		drawDetectedObjects("transfer_data_id=${viewTransferData.transfer_data_id}", "livedronemap:view_ortho_detected_object");

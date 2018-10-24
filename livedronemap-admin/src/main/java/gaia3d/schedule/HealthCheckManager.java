@@ -60,7 +60,7 @@ public class HealthCheckManager {
 			ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 			log.info("@@@ status = {}, message = {}", response.getStatusCodeValue(), response.getBody());
 			httpStatus = response.getStatusCode();
-			if (httpStatus != HttpStatus.OK) {
+			if (httpStatus == HttpStatus.OK) {
 				healthCheckStatus = HealthCheck.ALIVE;
 			} else {
 				healthCheckStatus = HealthCheck.DOWN;
