@@ -44,52 +44,55 @@
 		
 		<!-- S: 프로젝트 정보 -->
 		<ul class="projectInfo">
-			<li>
-				<label class="step">진행단계</label>
-<c:if test="${droneProject.status eq '0'}">
+						<li class="half" title="촬영일자"><label class="date" >촬영일자</label>${droneProject.viewShootingDate}</li>
+						<li class="half">
+							<label class="step">진행단계</label>
+		<c:if test="${droneProject.status eq '0'}">
 						<span style="display: inline-block; width: 100px; color: gray; font-weight: bold;">
 						준비중
 						</span>
-</c:if>
-<c:if test="${droneProject.status eq '1'}">
+		</c:if>
+		<c:if test="${droneProject.status eq '1'}">
 						<span style="display: inline-block; width: 100px; color: gray; font-weight: bold;">
 						점검/테스트
 						</span>
-</c:if>
-<c:if test="${droneProject.status eq '2'}">
+		</c:if>
+		<c:if test="${droneProject.status eq '2'}">
 						<span style="display: inline-block; width: 100px; color: #19cc3c; font-weight: bold;">
 						개별 정사영상
 						</span>
-</c:if>
-<c:if test="${droneProject.status eq '3'}">
+		</c:if>
+		<c:if test="${droneProject.status eq '3'}">
 						<span style="display: inline-block; width: 100px; color: blue; font-weight: bold;">
 						후처리 영상
 						</span>
-</c:if>
-<c:if test="${droneProject.status eq '4'}">
+		</c:if>
+		<c:if test="${droneProject.status eq '4'}">
 						<span style="display: inline-block; width: 100px; color: gray; font-weight: bold;">
 						프로젝트 종료
 						</span>
-</c:if>
-<c:if test="${droneProject.status eq '5'}">				
+		</c:if>
+		<c:if test="${droneProject.status eq '5'}">				
 						<span style="display: inline-block; width: 100px; color: red; font-weight: bold;">
 						에러
 						</span>
-</c:if>			
-			</li>
-			<li class="half" title="개별 정상 영상">
-				<label class="js">개별 정사 영상</label>
-				<span>${droneProject.ortho_image_count}</span>장
-				<ul class="detect">
-					<li class="ship">${droneProject.ortho_detected_object_count}</li>
-				</ul>
-			</li>
-			<li class="half" title="후처리영상">
-				<label class="hc">후처리영상</label>
-				<span>${droneProject.postprocessing_image_count}</span>장</li>
-			<li class="half" title="촬영지역"><label class="location">촬영지역</label> ${droneProject.shooting_area}</li>
-			<li class="half" title="촬영일자"><label class="date" >촬영일자</label> ${droneProject.viewShootingDate}</li>
-		</ul>
+		</c:if>			
+						</li>
+						
+						<li title="촬영지역"><label class="location">촬영지역</label>${droneProject.shooting_area }</li>
+						<li class="half" title="실시간정사영상">
+							<label class="js">정사영상</label>
+							<span>${droneProject.ortho_image_count }</span>장
+							<ul class="detect">
+								<li class="ship">${droneProject.ortho_detected_object_count}</li>
+								<li class="oil">${droneProject.ortho_detected_object_count}</li>
+							</ul>
+						</li>
+						<li class="half" class="half" title="후처리영상">
+							<label class="hc">후처리영상</label>
+							<span>${droneProject.postprocessing_image_count }</span>장</li>
+						<li>
+					</ul>
 		<!-- E: 프로젝트 정보 -->
 				
 		<div class="subContents">
@@ -228,6 +231,9 @@
 	    	viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER, true);
 	    }
 	   	
+	   	var now = new Date();
+		var rand = ( now - now % 5000) / 5000;
+		
 	   	var provider = new Cesium.WebMapServiceImageryProvider({
 			url : '${policy.geoserver_data_url}/wms',
 			//url : '${geoserverUrl}${geoserverServiceWms}',
@@ -242,7 +248,7 @@
 				format : 'image/png',
 				//time : 'P2Y/PRESENT',
 				time : shootingDate,
-		    	//rand:rand,
+		    	rand:rand,
 				maxZoom : 25,
 				maxNativeZoom : 23,
 				//CQL_FILTER: queryString

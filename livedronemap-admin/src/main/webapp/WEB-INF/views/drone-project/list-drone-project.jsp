@@ -95,30 +95,19 @@
 					<li class="title" style="height: 60px; padding-top: 30px;">드론 프로젝트가 존재하지 않습니다.</li>
 				</ul>
 </c:if>
-<c:if test="${!empty droneProjectList }">
-	<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">				
-				<ul class="projectInfo">
-					<li class="title">
-						 <a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
-					</li>
-					<li>
-						<label class="js" title="개별정사영상"></label>
-						<span style="display: inline-block; width: 70px;">${droneProject.ortho_image_count }장</span>
-						<label class="ship" title="객체 탐지" style="background-color: red;"></label>
-						<span style="display: inline-block; width: 70px;">${droneProject.ortho_detected_object_count}장</span>
-						<label class="hc" title="후처리영상"></label>
-						<span>${droneProject.postprocessing_image_count }장</span>
-					</li>
-					<li>
-						<label class="location" title="촬영지역"></label>
-						<span style="display: inline-block; width: 180px;">${droneProject.shooting_area }</span>
-						<input type="button" id="droneImage_${droneProject.drone_project_id }" name="viewDroneImageButton" 
-							onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }'); return false;" 
-							style="width: 90px; height: 25px;" value="이미지 비표시" />
-						<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
-					</li>
-					<li>
-						<label class="step">진행단계</label>
+			<c:if test="${!empty droneProjectList }">
+				<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">			
+					<ul class="projectInfo">
+						<li class="title">
+							<a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
+							<input type="button" id="droneImage_${droneProject.drone_project_id }" name="viewDroneImageButton" 
+								onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }'); return false;" 
+								style="width: 90px; height: 25px; float: right;" value="이미지 비표시" />
+							<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
+						</li>
+						<li class="half" title="촬영일자"><label class="date" >촬영일자</label>${droneProject.viewShootingDate}</li>
+						<li class="half">
+							<label class="step">진행단계</label>
 		<c:if test="${droneProject.status eq '0'}">
 						<span style="display: inline-block; width: 100px; color: gray; font-weight: bold;">
 						준비중
@@ -149,10 +138,22 @@
 						에러
 						</span>
 		</c:if>			
-						<label class="date" title=""></label>
-						<span>${droneProject.viewShootingDate}</span>	
-					</li>
-				</ul>
+						</li>
+						
+						<li title="촬영지역"><label class="location">촬영지역</label>${droneProject.shooting_area }</li>
+						<li class="half" title="실시간정사영상">
+							<label class="js">정사영상</label>
+							<span>${droneProject.ortho_image_count }</span>장
+							<ul class="detect">
+								<li class="ship">${droneProject.ortho_detected_object_count}</li>
+								<li class="oil">${droneProject.ortho_detected_object_count}</li>
+							</ul>
+						</li>
+						<li class="half" class="half" title="후처리영상">
+							<label class="hc">후처리영상</label>
+							<span>${droneProject.postprocessing_image_count }</span>장</li>
+						<li>
+					</ul>
 	</c:forEach>
 </c:if>
 			</div>
@@ -205,7 +206,7 @@
     	<c:if test="${!empty droneProjectList }">
     		<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">
     			<c:if test="${droneProject.status ne '4' and droneProject.status ne '5'}">
-    				drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+    			drawDroneProjectLine(	"${droneProject.drone_project_name}", 
     					"${droneProject.shooting_upper_left_longitude}", "${droneProject.shooting_upper_left_latitude}",
     					"${droneProject.shooting_upper_right_longitude}", "${droneProject.shooting_upper_right_latitude}");
     				drawDroneProjectLine(	"${droneProject.drone_project_name}", 
