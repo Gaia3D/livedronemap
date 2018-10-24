@@ -265,51 +265,44 @@
    			return;
    		} 
 		
-   		$.ajax({
-			url: "/drone-project/" + droneProjectId + "/transfer-datas",
-			type: "GET",
-			data: null,
-			dataType: "json",
-			success: function(msg){
-				if(msg.result == "success") {
-					drawDroneLayer(index, droneProjectId, msg);
-					drawDetectedObjects(index, droneProjectId,msg);
-					drawDroneMovingPath(index, droneProjectId, msg);
-					
-					// TODO: 드론 이미지 갱신 정리
-					var droneImageInterval = setInterval(function() {
-						// 이전 이미지 저장
-						var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index]
+   		var droneImageInterval = setInterval(function() {
+   			$.ajax({
+   				url: "/drone-project/" + droneProjectId + "/transfer-datas",
+   				type: "GET",
+   				data: null,
+   				dataType: "json",
+   				success: function(msg){
+   					if(msg.result == "success") {
+   						var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index]
 						var postDetectedObjectsProvider = DETECTED_OBJECTS_PROVIDER_ARRAY[index]
 						var postDronePath = DRONE_PATH_ARRAY[index]
-						var postBillboard = BILLBOARD_ARRAY[index]
-						
-						// 새로운 이미지 생성
-						drawDroneLayer(index, droneProjectId, msg);
-						drawDetectedObjects(index, droneProjectId,msg);
-						drawDroneMovingPath(index, droneProjectId, msg);
-						
-						// 이전 이미지 삭제, 1초 딜레이/깜빡임 방지
-						setTimeout(function() {
+   						viewer.entities.remove(BILLBOARD_ARRAY[index]);
+   						
+   						// 새로운 이미지 생성
+   						drawDroneLayer(index, droneProjectId, msg);
+   						drawDetectedObjects(index, droneProjectId,msg);
+   						drawDroneMovingPath(index, droneProjectId, msg);
+   						
+   						setTimeout(function() {
 							viewer.imageryLayers.remove(postDroneImageLayer, true);
 							viewer.imageryLayers.remove(postDetectedObjectsProvider, true);
 							viewer.entities.remove(postDronePath);
-							viewer.entities.remove(postBillboard);
 						},1500)
-						
-					}, 3000)
-					
-					DORNE_IMAGE_INTERVAL_ARRAY[index] = droneImageInterval
-				} else {
-					alert(JS_MESSAGE[msg.result]);
-				}
-			},
-			error:function(request, status, error){
-				//alert(JS_MESSAGE["ajax.error.message"]);
-				alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
-			}
-		});
-   	}
+   						
+   					} else {
+   						alert(JS_MESSAGE[msg.result]);
+   					}
+   				},
+   				error:function(request, status, error){
+   					//alert(JS_MESSAGE["ajax.error.message"]);
+   					alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+   				}
+   			});
+   		}, 3000);
+   		
+   		DORNE_IMAGE_INTERVAL_ARRAY[index] = droneImageInterval
+
+	}
 	
 	// 드론 이미지 geoserver layer로 표시
 	function drawDroneLayer(index, droneProjectId, msg) {
