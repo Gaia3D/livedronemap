@@ -59,22 +59,22 @@ public class DroneProject {
 	private String drone_project_type;
 	// 촬영 지역
 	private String shooting_area;
-	// 촬영 시작 지점의 위도1
-	private BigDecimal shooting_latitude1;
-	// 촬영 시작 지점의 경도1
-	private BigDecimal shooting_longitude1;
-	// 촬영 시작 지점의 위도2
-	private BigDecimal shooting_latitude2;
-	// 촬영 시작 지점의 경도2
-	private BigDecimal shooting_longitude2;
-	// 촬영 시작 지점의 위도3
-	private BigDecimal shooting_latitude3;
-	// 촬영 시작 지점의 경도3
-	private BigDecimal shooting_longitude3;
-	// 촬영 시작 지점의 위도4
-	private BigDecimal shooting_latitude4;
-	// 촬영 시작 지점의 경도4
-	private BigDecimal shooting_longitude4;
+	// 촬영 시작 지점의 좌상단 위도
+	private BigDecimal shooting_upper_left_latitude;
+	// 촬영 시작 지점의 좌상단 경도
+	private BigDecimal shooting_upper_left_longitude;
+	// 촬영 시작 지점의 우상단 위도
+	private BigDecimal shooting_upper_right_latitude;
+	// 촬영 시작 지점의 우상단 경도
+	private BigDecimal shooting_upper_right_longitude;
+	// 촬영 시작 지점의 우하단 위도
+	private BigDecimal shooting_lower_right_latitude;
+	// 촬영 시작 지점의 우하단 경도
+	private BigDecimal shooting_lower_right_longitude;
+	// 촬영 시작 지점의 좌하단 위도
+	private BigDecimal shooting_lower_left_latitude;
+	// 촬영 시작 지점의 좌하단 경도
+	private BigDecimal shooting_lower_left_longitude;
 	
 	// Multi Polygon
 	@Setter(AccessLevel.NONE)

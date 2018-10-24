@@ -89,19 +89,19 @@ public class DroneProjectAPIControllerTest {
 	
 	private MultiValueMap<String, Object> createDroneProject1(MultiValueMap<String, Object> bodyMap) {
 		bodyMap.add("drone_id", 1);
-		bodyMap.add("drone_project_name", "적조 현상 탐지");
-		bodyMap.add("shooting_area", "남해 가까운 서해");
-		bodyMap.add("shooting_latitude1", 36.409035);
-		bodyMap.add("shooting_longitude1", 126.203551);
-		bodyMap.add("shooting_latitude2", 36.413363);
-		bodyMap.add("shooting_longitude2", 126.313451);
-		bodyMap.add("shooting_latitude3", 36.345028);
-		bodyMap.add("shooting_longitude3", 126.211229);
-		bodyMap.add("shooting_latitude4", 36.347030);
-		bodyMap.add("shooting_longitude4", 126.317264);
-		bodyMap.add("location", "POINT (126.262715 36.370818)");
+		bodyMap.add("drone_project_name", "실데이터 테스트 2");
+		bodyMap.add("shooting_area", "남해");
+		bodyMap.add("shooting_upper_left_latitude", 34.622224);
+		bodyMap.add("shooting_upper_left_longitude", 127.789765);
+		bodyMap.add("shooting_upper_right_latitude", 34.622224);
+		bodyMap.add("shooting_upper_right_longitude", 127.803385);
+		bodyMap.add("shooting_lower_left_latitude", 34.617687);
+		bodyMap.add("shooting_lower_left_longitude", 127.789765);
+		bodyMap.add("shooting_lower_right_latitude", 34.617687);
+		bodyMap.add("shooting_lower_right_longitude", 127.803385);
+		bodyMap.add("location", "POINT (127.796575 34.619955)");
 		bodyMap.add("shooting_date", DateUtil.getToday(FormatUtil.YEAR_MONTH_DAY_TIME14));
-		bodyMap.add("description", "테스트 입니다.");
+		bodyMap.add("description", "테스트 2 입니다.");
 		return bodyMap;
 	}
 }

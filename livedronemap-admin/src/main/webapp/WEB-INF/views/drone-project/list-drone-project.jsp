@@ -205,18 +205,18 @@
     	<c:if test="${!empty droneProjectList }">
     		<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">
     			<c:if test="${droneProject.status ne '4' and droneProject.status ne '5'}">
-					drawDroneProjectLine(	"${droneProject.drone_project_name}", 
-											"${droneProject.shooting_longitude1}", "${droneProject.shooting_latitude1}",
-											"${droneProject.shooting_longitude2}", "${droneProject.shooting_latitude2}");
-					drawDroneProjectLine(	"${droneProject.drone_project_name}", 
-							"${droneProject.shooting_longitude1}", "${droneProject.shooting_latitude1}",
-							"${droneProject.shooting_longitude3}", "${droneProject.shooting_latitude3}");
-					drawDroneProjectLine(	"${droneProject.drone_project_name}", 
-							"${droneProject.shooting_longitude2}", "${droneProject.shooting_latitude2}",
-							"${droneProject.shooting_longitude4}", "${droneProject.shooting_latitude4}");
-					drawDroneProjectLine(	"${droneProject.drone_project_name}", 
-							"${droneProject.shooting_longitude3}", "${droneProject.shooting_latitude3}",
-							"${droneProject.shooting_longitude4}", "${droneProject.shooting_latitude4}");
+    				drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+    					"${droneProject.shooting_upper_left_longitude}", "${droneProject.shooting_upper_left_latitude}",
+    					"${droneProject.shooting_upper_right_longitude}", "${droneProject.shooting_upper_right_latitude}");
+    				drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+    					"${droneProject.shooting_upper_right_longitude}", "${droneProject.shooting_upper_right_latitude}",
+    					"${droneProject.shooting_lower_right_longitude}", "${droneProject.shooting_lower_right_latitude}");
+    				drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+    					"${droneProject.shooting_lower_right_longitude}", "${droneProject.shooting_lower_right_latitude}",
+    					"${droneProject.shooting_lower_left_longitude}", "${droneProject.shooting_lower_left_latitude}");
+    				drawDroneProjectLine(	"${droneProject.drone_project_name}", 
+    					"${droneProject.shooting_lower_left_longitude}", "${droneProject.shooting_lower_left_latitude}",
+    					"${droneProject.shooting_upper_left_longitude}", "${droneProject.shooting_upper_left_latitude}");
 				</c:if>
     		</c:forEach>
 		</c:if>
