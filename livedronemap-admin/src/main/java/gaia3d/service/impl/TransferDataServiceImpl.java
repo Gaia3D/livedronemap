@@ -115,6 +115,7 @@ public class TransferDataServiceImpl implements TransferDataService {
 			for(OrthoDetectedObject orthoDetectedObject : transferDataResource.getDetected_objects()) {
 				orthoDetectedObject.setDrone_project_id(transferDataResource.getDrone_project_id());
 				orthoDetectedObject.setOrtho_image_id(orthoImage.getOrtho_image_id());
+				orthoDetectedObject.setTransfer_data_id(orthoImage.getTransfer_data_id());
 				orthoDetectedObjectService.insertOrthoDetectedObject(orthoDetectedObject);
 				ortho_detected_object_count++;
 			}
