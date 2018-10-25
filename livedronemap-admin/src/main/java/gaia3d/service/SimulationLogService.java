@@ -25,6 +25,20 @@ public interface SimulationLogService {
 	 * @return
 	 */
 	Long getSimulationLogTotalCount(SimulationLog simulationLog);
+
+	/**
+	 * 시뮬레이션 로그 상테 업데이트 
+	 * @param simulationLog
+	 * @return
+	 */
+	int updateSimulationLog(SimulationLog simulationLog);
+
+	/**
+	 * 시뮬레이션 로그 프로젝트 ID 업데이트 
+	 * @param simulationLog
+	 * @return
+	 */
+	int updateSimulationLogProjectId(SimulationLog simulationLog);
 	
 	
 }

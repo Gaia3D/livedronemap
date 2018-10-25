@@ -20,6 +20,8 @@ public class OrthoDetectedObject {
 	private Long ortho_detected_object_id;
 	// 프로젝트 고유번호
 	private Integer drone_project_id;
+	// 전송 데이터 고유 번호
+	private Long transfer_data_id;
 	// 개별 정사 영상 고유번호
 	private Long ortho_image_id;
 	// 사용자 아이디
