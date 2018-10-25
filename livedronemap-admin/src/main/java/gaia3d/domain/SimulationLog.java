@@ -36,6 +36,8 @@ public class SimulationLog {
 	private Integer client_id;
 	// client명(중복)
 	private String client_name;
+	// 드론 프로젝트 ID
+	private Integer drone_project_id;
 	// 시뮬레이션 상태. 0 : 성공, 1 : 실패, 2 : 진행중
 	private String status;
 	// 상세 메세지

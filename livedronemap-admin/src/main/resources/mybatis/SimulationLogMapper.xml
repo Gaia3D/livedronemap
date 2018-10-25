@@ -86,5 +86,35 @@
 		</trim>
 	</select>
 	
+	<!-- 시뮬레이션 로그 상태 업데이트 -->
+	<update id="updateSimulationLog" parameterType="simulationLog">
+		/* updateSimulationLog */
+		UPDATE simulation_log
+		<trim prefix="SET" suffixOverrides=",">
+	      <if test="status != null">
+	      	status = #{status},
+	      	complete_date = NOW(),
+	      </if>
+	      <if test="message != null">
+	      	message = #{message},
+	      </if>
+	   	</trim>
+	   	<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="simulation_log_id != null and simulation_log_id != ''">
+				AND simulation_log_id = #{simulation_log_id}
+			</if>
+			<if test="drone_project_id != null and drone_project_id != ''">
+				AND drone_project_id = #{drone_project_id}
+			</if>
+		</trim>
+	</update>
+	
+	<!-- 시뮬레이션 로그 프로젝트 ID 업데이트 -->
+	<update id="updateSimulationLogProjectId" parameterType="simulationLog">
+		/* updateSimulationLog */
+		UPDATE simulation_log
+		SET drone_project_id = #{drone_project_id}
+		WHERE simulation_log_id = #{simulation_log_id}
+	</update>
 	
 </mapper>

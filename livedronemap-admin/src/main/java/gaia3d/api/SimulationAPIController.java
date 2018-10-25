@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.Client;
 import gaia3d.domain.DroneProject;
-import gaia3d.domain.SimulationLevel;
+import gaia3d.domain.SimulationStep;
 import gaia3d.domain.SimulationLog;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.service.APILogService;
@@ -65,13 +65,15 @@ public class SimulationAPIController implements APIController {
 	@PostMapping("simulations/{client_id:[0-9]+}/{step:[a-z]+}")
 	public ResponseEntity<APIResult> simulateProcess(HttpServletRequest request, @PathVariable("client_id") Integer clientId, @PathVariable("step") String step) {
 		log.info("@@@@@ Start {} simulation.", step);
+		SimulationLog simulationLog = new SimulationLog();
 		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		String clientName = null;
+		int simulationLogId = 0;
 		
 		try {
-			SimulationLevel simulationLevel = SimulationLevel.valueOf(step.toUpperCase());
-			String levelCode = simulationLevel.getCode();
+			SimulationStep simulationStep = SimulationStep.valueOf(step.toUpperCase());
+			String levelCode = simulationStep.getCode();
 			
 			// get client
 			// name, ip, port 정보 확인
@@ -82,31 +84,33 @@ public class SimulationAPIController implements APIController {
 				aPIResult.setStatusCode(httpStatus.value());
 				return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 			}
-			
 			// TODO insert simulateion_log
-			SimulationLog simulationLog = new SimulationLog();
+			simulationLog = new SimulationLog();
 			simulationLog.setSimulation_type(levelCode);
 			simulationLog.setClient_id(client.getClient_id());
 			simulationLog.setClient_name(client.getClient_name());
 			simulationLogService.insertSimulationLog(simulationLog);
-			int simulationId = simulationLog.getSimulation_log_id();
-			log.info("@@@@@ simnulation id : {}", simulationId);
+			simulationLogId = simulationLog.getSimulation_log_id();
+			log.info("@@@@@ simnulation log id : {}", simulationLogId);
 			
 			// request 설정 
-			if (simulationLevel == SimulationLevel.ALL) {
+			if (simulationStep == SimulationStep.ALL) {
 				// TODO 시립대 
-			} else if(simulationLevel == SimulationLevel.CLIENT) {
+			} else if(simulationStep == SimulationStep.CLIENT) {
 				// TODO 시립대
-			} else if(simulationLevel == SimulationLevel.INNER) {
+				throw new Exception("not support method");
+			} else if(simulationStep == SimulationStep.INNER) {
 				// project 생성, 직접 insert 
 				DroneProject droneProject = getSimulationDroneProject();
-				droneProject.setDrone_project_name("Simulation Project " + simulationId);
+				droneProject.setDrone_project_name("Simulation Project " + simulationLogId);
 				droneProjectService.insertDroneProject(droneProject);
 				
+				simulationLog.setDrone_project_id(droneProject.getDrone_project_id());
+				simulationLogService.updateSimulationLogProjectId(simulationLog);
 				// 파일 전송
-				aPIResult = restTempateTransferData(droneProject.getDrone_project_id());
+				aPIResult = restTempateTransferData(droneProject.getDrone_project_id(), simulationLogId, request.getLocalPort());
 			} else {
-				
+				throw new Exception("not support method");
 			}
 			
 			httpStatus = HttpStatus.OK;
@@ -116,6 +120,12 @@ public class SimulationAPIController implements APIController {
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			aPIResult.setStatusCode(httpStatus.value());
 			aPIResult.setException(e.getMessage());
+			
+			// simulation update 
+			simulationLog.setSimulation_log_id(simulationLogId);
+			simulationLog.setStatus("1"); // TODO enum
+			simulationLog.setMessage(e.getMessage());
+			simulationLogService.updateSimulationLog(simulationLog);
 		} finally {
 			insertLog(aPILogService, WebUtil.getRequestIp(request), null, request.getRequestURL().toString(), clientId, clientName, aPIResult);
 		}
@@ -139,7 +149,7 @@ public class SimulationAPIController implements APIController {
 		return objectMapper.readValue(droneProjectStr, DroneProject.class);
 	}
 	
-	private APIResult restTempateTransferData(int droneProjectId) throws Exception {
+	private APIResult restTempateTransferData(int droneProjectId, int simulationId, int port) throws Exception {
 		MultiValueMap<String, Object> bodyMap = new LinkedMultiValueMap<>();
 		
 		HttpHeaders headers = new HttpHeaders();
@@ -149,7 +159,7 @@ public class SimulationAPIController implements APIController {
 		bodyMap.add("file", getFileResource());
 		
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://localhost:9999/transfer-data/simulation";
+		String url = "http://localhost:" + port + "/transfer-data/simulation/" + simulationId;
 		HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(bodyMap, headers);
 		return restTemplate.postForObject(url, requestEntity, APIResult.class);
 	}

@@ -3,6 +3,7 @@ package gaia3d.api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +20,12 @@ import gaia3d.domain.APIValidationType;
 import gaia3d.domain.CacheManager;
 import gaia3d.domain.FileInfo;
 import gaia3d.domain.Policy;
+import gaia3d.domain.SimulationLog;
 import gaia3d.domain.TokenLog;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.service.APILogService;
+import gaia3d.service.DroneProjectService;
+import gaia3d.service.SimulationLogService;
 import gaia3d.service.TokenLogService;
 import gaia3d.service.TransferDataService;
 import gaia3d.util.FileUtil;
@@ -38,10 +42,11 @@ public class TransferDataAPIController implements APIController {
 	@Autowired
 	private APILogService aPILogService;
 	@Autowired
+	private SimulationLogService simulationLogService;
+	@Autowired
 	private TokenLogService tokenLogService;
 	@Autowired
 	private TransferDataService transferDataService;
-	
 
 	/**
 	 * 
@@ -118,9 +123,10 @@ public class TransferDataAPIController implements APIController {
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
-	@PostMapping("/transfer-data/simulation")
+	@PostMapping("/transfer-data/simulation/{simulation_log_id}")
 	public ResponseEntity<APIResult> insertSimulationTransferData(MultipartHttpServletRequest request, 
-																	@RequestParam("file") MultipartFile multipartFile) {
+																	@RequestParam("file") MultipartFile multipartFile,
+																	@PathVariable("simulation_log_id") Integer simulationLogId) {
 		log.info("@@@@@@@@@@ simulation transfer data insert api call");
 		
 		APIResult aPIResult = new APIResult();
@@ -131,23 +137,9 @@ public class TransferDataAPIController implements APIController {
 		String clientName = null;
 		FileInfo fileInfo = null;
 		try {
-//			APIHeader aPIHeader = getHeader(policy.getRest_api_encryption_yn(), log, customHeader);
-//			aPIResult = validate(log, APIValidationType.TOKEN, aPIHeader);
-//			if(aPIResult.getStatusCode() != HttpStatus.OK.value()) return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
-//			
-//			tokenLog.setToken(aPIHeader.getToken());
-//			//tokenLog.setRest_api_token_max_age(policy.getRest_api_token_max_age());
-//			tokenLog = tokenLogService.getValidToken(tokenLog);
-//			if(tokenLog == null) {
-//				aPIResult.setStatusCode(HttpStatus.OK.value());
-//				aPIResult.setValidationCode("token.expires.invalid");
-//				aPIResult.setMessage("Your token validity period has expired.");
-//				return new ResponseEntity<APIResult>(aPIResult, HttpStatus.valueOf(aPIResult.getStatusCode()));
-//			}
-//			clientId = tokenLog.getClient_id();
-//			clientName = tokenLog.getClient_name();
 			
 			// TODO file size check
+			// TODO file extension check 
 			String fileMeta = request.getParameter("file_meta");
 			ObjectMapper objectMapper = new ObjectMapper();
 			TransferDataResource transferDataResource = objectMapper.readValue(fileMeta, TransferDataResource.class);
@@ -157,8 +149,7 @@ public class TransferDataAPIController implements APIController {
 			if(TransferDataResource.POSTPROCESSING_IMAGE.equals(transferDataResource.getData_type())) {
 				uploadRootDir = propertiesConfig.getPostprocessingImageDir();
 			}
-			// TODO file size check
-			// TODO file extension check 
+			
 			fileInfo = FileUtil.upload(FileUtil.SUBDIRECTORY_YEAR_MONTH, multipartFile, CacheManager.getPolicy(), uploadRootDir);
 			log.info("@@@@@ simulation filename = {}", multipartFile.getOriginalFilename());
 			if(fileInfo.getError_code() != null && !"".equals(fileInfo.getError_code())) {
@@ -182,6 +173,13 @@ public class TransferDataAPIController implements APIController {
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			aPIResult.setStatusCode(httpStatus.value());
 			aPIResult.setException(e.getMessage());
+			
+			// simulation update 
+			SimulationLog simulationLog = new SimulationLog();
+			simulationLog.setSimulation_log_id(simulationLogId);
+			simulationLog.setStatus("1"); // TODO enum
+			simulationLog.setMessage(e.getMessage());
+			simulationLogService.updateSimulationLog(simulationLog);
 		} finally {
 			insertLog(aPILogService, WebUtil.getRequestIp(request), null, request.getRequestURL().toString(), clientId, clientName, aPIResult);
 		}

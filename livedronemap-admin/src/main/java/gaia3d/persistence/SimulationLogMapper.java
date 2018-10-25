@@ -27,4 +27,19 @@ public interface SimulationLogMapper {
 	 * @return
 	 */
 	public Long getSimulationLogTotalCount(SimulationLog simulationLog);
+
+	/**
+	 * 시뮬레이션 로그 상테 업데이트 
+	 * @param simulationLog
+	 * @return
+	 */
+	public int updateSimulationLog(SimulationLog simulationLog);
+
+	/**
+	 * 시뮬레이션 로그 프로젝트 ID 업데이트 
+	 * @param simulationLog
+	 * @return
+	 */
+	public int updateSimulationLogProjectId(SimulationLog simulationLog);
+	
 }

@@ -36,7 +36,7 @@
 		/* getListDroneProject */
 		SELECT X.*, drone_name
 		FROM (
-			SELECT drone_project_id, drone_id, drone_project_name, shooting_area,
+			SELECT drone_project_id, drone_id, drone_project_name, drone_project_type, shooting_area,
 				shooting_upper_left_latitude, shooting_upper_left_longitude, 
 				shooting_upper_right_latitude, shooting_upper_right_longitude, 
 				shooting_lower_right_latitude, shooting_lower_right_longitude, 
@@ -82,7 +82,7 @@
 	<!-- 프로젝트 정보 조회 -->
 	<select id="getDroneProject" parameterType="droneProject" resultType="droneProject">
 		/* getDroneProject */
-		SELECT drone_project_id, drone_id, drone_project_name, shooting_area,
+		SELECT drone_project_id, drone_id, drone_project_name, drone_project_type, shooting_area,
 			shooting_upper_left_latitude, shooting_upper_left_longitude, 
 			shooting_upper_right_latitude, shooting_upper_right_longitude, 
 			shooting_lower_right_latitude, shooting_lower_right_longitude, 
@@ -101,14 +101,14 @@
     		SELECT NEXTVAL('drone_project_seq')
   		</selectKey>
 		INSERT INTO drone_project (
-			drone_project_id, drone_id, drone_project_name, shooting_area,
+			drone_project_id, drone_id, drone_project_name, drone_project_type, shooting_area, 
 			shooting_upper_left_latitude, shooting_upper_left_longitude, 
 			shooting_upper_right_latitude, shooting_upper_right_longitude, 
 			shooting_lower_right_latitude, shooting_lower_right_longitude, 
 			shooting_lower_left_latitude, shooting_lower_left_longitude,
 			location, shooting_date, description 
 		) VALUES (
-			#{drone_project_id}, #{drone_id}, #{drone_project_name}, #{shooting_area},
+			#{drone_project_id}, #{drone_id}, #{drone_project_name}, #{drone_project_type}, #{shooting_area},
 			#{shooting_upper_left_latitude}, #{shooting_upper_left_longitude}, 
 			#{shooting_upper_right_latitude}, #{shooting_upper_right_longitude}, 
 			#{shooting_lower_right_latitude}, #{shooting_lower_right_longitude}, 

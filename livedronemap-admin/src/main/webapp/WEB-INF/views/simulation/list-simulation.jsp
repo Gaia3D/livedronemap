@@ -108,6 +108,7 @@
 						<th><spring:message code='simulation.type'/></th>
 						<th><spring:message code='client.name'/></th>
 						<th><spring:message code='simulation.status'/></th>
+						<th><spring:message code='message'/></th>
 						<th><spring:message code='search.start.date'/></th>
 						<th><spring:message code='search.complete.date'/></th>
 					</tr>
@@ -135,6 +136,11 @@
 							<c:if test="${simulationLog.status eq '2'}">
 								<td class="alignCenter"><spring:message code='status.progressing'/></td>
 							</c:if>
+							<td class="alignCenter">
+								<c:if test="${simulationLog.message ne '' and simulationLog.message ne null}">
+									<button type="button" title="<spring:message code='open.message'/>" class="intd"><spring:message code='open.message'/></button>
+								</c:if>
+							</td>
 							<td class="alignCenter">${simulationLog.viewStart_date}</td>
 							<td class="alignCenter">${simulationLog.viewComplete_date}</td>
 						</tr>

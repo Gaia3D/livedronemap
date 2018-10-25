@@ -23,6 +23,7 @@ import gaia3d.domain.OrthoDetectedObject;
 import gaia3d.domain.OrthoImage;
 import gaia3d.domain.PostProcessingImage;
 import gaia3d.domain.ProjectStatus;
+import gaia3d.domain.SimulationLog;
 import gaia3d.domain.TransferData;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.domain.TransferDataStatus;
@@ -32,6 +33,7 @@ import gaia3d.service.DroneProjectService;
 import gaia3d.service.OrthoDetectedObjectService;
 import gaia3d.service.OrthoImageService;
 import gaia3d.service.PostProcessingImageService;
+import gaia3d.service.SimulationLogService;
 import gaia3d.service.TransferDataService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,6 +59,8 @@ public class TransferDataServiceImpl implements TransferDataService {
 	private OrthoDetectedObjectService orthoDetectedObjectService;
 	@Autowired
 	private OrthoImageService orthoImageService;
+	@Autowired
+	private SimulationLogService simulationLogService;
 	@Autowired
 	private TransferDataMapper transferDataMapper;
 	
@@ -158,6 +162,16 @@ public class TransferDataServiceImpl implements TransferDataService {
 		} catch (Exception e) {
 			transferData.setStatus(TransferDataStatus.CONVERTER_ERROR.getStatus());
 			status = TransferDataStatus.CONVERTER_ERROR.getStatus();
+			
+			DroneProject droneProject = droneProjectService.getDroneProject(transferDataResource.getDrone_project_id());
+			if (droneProject.getDrone_project_type().equals("1")) {
+				SimulationLog simulationLog = new SimulationLog();
+				simulationLog.setDrone_project_id(transferDataResource.getDrone_project_id());
+				simulationLog.setStatus("1");
+				simulationLog.setMessage(e.getMessage());
+				simulationLogService.updateSimulationLog(simulationLog);
+			}
+			
 		} finally {
 			DroneProject droneProject = new DroneProject();
 			droneProject.setDrone_project_id(transferDataResource.getDrone_project_id());
