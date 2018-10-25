@@ -179,6 +179,16 @@
 	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	// TODO 데이터가 없을때 layer 예외 처리도 해야 함
 	
+	// 초기 위치 설정
+	// TODO: 배책임님 소스랑 비교
+	var west = 37.8;
+	var south = 73;
+	var east = 217.8;
+	var north = 0.0;
+	var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
+	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
+	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+	
 	// 드론 촬영 이미지를 그리는 geoserver layer
 	var DRONE_IMAGE_PROVIDER = null;
 	// 객체 탐지를 그리는 geoserver layer
@@ -186,9 +196,10 @@
 	
   	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
   	$(document).ready(function() {
-  		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 5000, 3);
-		drawDroneProject();
-		drawDetailDroneImage("${viewTransferData.viewLayerShootingDate}", "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
+  		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);
+		// drawDroneProject();
+		// drawDetailDroneImage("${viewTransferData.viewLayerShootingDate}", "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
+		drawDetailDroneImage(null, "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
 		drawDetectedObjects("transfer_data_id=${viewTransferData.transfer_data_id}", "livedronemap:view_ortho_detected_object");
 	});
   	
@@ -227,6 +238,11 @@
    	
    	// 드론 이미지를 geoserver layer를 이용해서 그림
    	function drawDetailDroneImage(shootingDate, layerName) {
+   		var time_parameter = shootingDate;
+   		if (!time_parameter) {
+   			time_parameter = "P10Y/PRESENT";
+   		}
+   		
 	   	if(DRONE_IMAGE_PROVIDER !== null && DRONE_IMAGE_PROVIDER !== undefined) {
 	    	viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER, true);
 	    }
@@ -247,7 +263,7 @@
 				//format : 'image/png',
 				format : 'image/png',
 				//time : 'P2Y/PRESENT',
-				time : shootingDate,
+				time : time_parameter,
 		    	rand:rand,
 				maxZoom : 25,
 				maxNativeZoom : 23,
