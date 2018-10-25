@@ -95,15 +95,17 @@
 					<li class="title" style="height: 60px; padding-top: 30px;">드론 프로젝트가 존재하지 않습니다.</li>
 				</ul>
 </c:if>
-			<c:if test="${!empty droneProjectList }">
-				<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">			
+<c:if test="${!empty droneProjectList }">
+	<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">			
 					<ul class="projectInfo">
 						<li class="title">
 							<a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
+		<c:if test="${droneProject.ortho_image_count > 0 }">
 							<input type="button" id="droneImage_${droneProject.drone_project_id }" name="viewDroneImageButton" 
 								onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }'); return false;" 
 								style="width: 90px; height: 25px; float: right;" value="이미지 비표시" />
 							<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
+		</c:if>
 						</li>
 						<li class="half" title="촬영일자"><label class="date" >촬영일자</label>${droneProject.viewShootingDate}</li>
 						<li class="half">
@@ -163,7 +165,6 @@
 		<!-- E: 영상목록 -->
 	</div>
 	<!-- E: 1depth / 프로젝트 목록 -->
-	
 	<div id="droneMapContainer" class="mapWrap">
 	</div>
 	<!-- E: MAPWRAP -->
@@ -175,6 +176,16 @@
 <script type="text/javascript" src="/js/live-drone-map.js"></script>
 <script type="text/javascript" src="/js/geospatial.js"></script>
 <script type="text/javascript">
+	// 초기 위치 설정
+	// TODO: 배책임님 소스랑 비교
+	var west = 126.0;
+	var south = 32.0;
+	var east = 130.0;
+	var north = 39.0;
+	var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
+	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
+	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+
 	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
     // 드론 촬영 이미지를 그리는 geoserver layer
@@ -192,12 +203,54 @@
 		DRONE_PATH_ARRAY.push(null);
 		BILLBOARD_ARRAY.push(null);
 	}
+	var intervalTime = 5000;  // TODO: policy에 추가 
+	
+	// 프로젝트 id 처리 
+	var droneProjectIdList = new Array();
+	<c:forEach items="${droneProjectList}" var="droneProject">
+		droneProjectIdList.push(${droneProject.drone_project_id});
+	</c:forEach>
 	
 	$(document).ready(function() {
-		cameraFlyTo(127.827348, 36.590489, 2000000, 3);
-		drawDroneProject();
+		// cameraFlyTo(127.827348, 36.590489, 2000000, 3);
+		// drawDroneProject();
 		
 		initJqueryCalendar();
+		
+		// 리스트의 모든 프로젝트 드론 경로 표출 
+		for(i=0; i<droneProjectIdList.length; i++ ) {
+			var droneProjectId = droneProjectIdList[i];
+			var index = droneProjectId;
+			
+			setInterval(function() {
+	   			$.ajax({
+	   				url: "/drone-project/" + droneProjectId + "/transfer-datas",
+	   				type: "GET",
+	   				data: null,
+	   				dataType: "json",
+	   				success: function(msg){
+	   					if(msg.result == "success") {
+							var postDronePath = DRONE_PATH_ARRAY[index];
+	   						viewer.entities.remove(BILLBOARD_ARRAY[index]);
+	   						
+	   						drawDroneMovingPath(index, droneProjectId, msg);
+	   						
+	   						setTimeout(function() {
+								viewer.entities.remove(postDronePath);
+							}, intervalTime/2)
+	   						
+	   					} else {
+	   						alert(JS_MESSAGE[msg.result]);
+	   					}
+	   				},
+	   				error:function(request, status, error){
+	   					//alert(JS_MESSAGE["ajax.error.message"]);
+	   					alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+	   				}
+	   			});
+	   		}, intervalTime);
+		}
+		
 	});
 	
 	// 가장 최근 프로젝트 중 종료와 에러 이외의 프로젝트만 표시
@@ -261,48 +314,49 @@
    			// layer 삭제
    			viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER_ARRAY[index], true);
    			viewer.imageryLayers.remove(DETECTED_OBJECTS_PROVIDER_ARRAY[index], true);
-			viewer.entities.remove(DRONE_PATH_ARRAY[index]);
-			viewer.entities.remove(BILLBOARD_ARRAY[index]);
    			return;
    		} 
 		
+   		drawInterval(index, droneProjectId, false);
    		var droneImageInterval = setInterval(function() {
-   			$.ajax({
-   				url: "/drone-project/" + droneProjectId + "/transfer-datas",
-   				type: "GET",
-   				data: null,
-   				dataType: "json",
-   				success: function(msg){
-   					if(msg.result == "success") {
-   						var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index]
-						var postDetectedObjectsProvider = DETECTED_OBJECTS_PROVIDER_ARRAY[index]
-						var postDronePath = DRONE_PATH_ARRAY[index]
-   						viewer.entities.remove(BILLBOARD_ARRAY[index]);
-   						
-   						// 새로운 이미지 생성
-   						drawDroneLayer(index, droneProjectId, msg);
-   						drawDetectedObjects(index, droneProjectId,msg);
-   						drawDroneMovingPath(index, droneProjectId, msg);
-   						
-   						setTimeout(function() {
-							viewer.imageryLayers.remove(postDroneImageLayer, true);
-							viewer.imageryLayers.remove(postDetectedObjectsProvider, true);
-							viewer.entities.remove(postDronePath);
-						},1500)
-   						
-   					} else {
-   						alert(JS_MESSAGE[msg.result]);
-   					}
-   				},
-   				error:function(request, status, error){
-   					//alert(JS_MESSAGE["ajax.error.message"]);
-   					alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
-   				}
-   			});
-   		}, 3000);
+   			drawInterval(index, droneProjectId, true);
+   		}, intervalTime);
    		
    		DORNE_IMAGE_INTERVAL_ARRAY[index] = droneImageInterval
 
+	}
+	
+	// 이미지 그리는 건데 ... 메소드 명은 .. 음 .. 
+	function drawInterval(index, droneProjectId, deleteFlag) {
+		$.ajax({
+			url: "/drone-project/" + droneProjectId + "/transfer-datas",
+			type: "GET",
+			data: null,
+			dataType: "json",
+			success: function(msg){
+				if(msg.result == "success") {
+					var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index];
+					var postDetectedObjectsProvider = DETECTED_OBJECTS_PROVIDER_ARRAY[index];
+						
+					// 새로운 이미지 생성
+					drawDroneLayer(index, droneProjectId, msg);
+					drawDetectedObjects(index, droneProjectId,msg);
+					
+					if (deleteFlag) {
+						setTimeout(function() {
+							viewer.imageryLayers.remove(postDroneImageLayer, true);
+							viewer.imageryLayers.remove(postDetectedObjectsProvider, true);
+						}, intervalTime/2)
+					}
+				} else {
+					alert(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request, status, error){
+				//alert(JS_MESSAGE["ajax.error.message"]);
+				alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+			}
+		});
 	}
 	
 	// 드론 이미지 geoserver layer로 표시
