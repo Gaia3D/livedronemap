@@ -125,6 +125,7 @@
 			ortho_image_count = ortho_image_count + #{ortho_image_count},
 			postprocessing_image_count = postprocessing_image_count + #{postprocessing_image_count},
 			ortho_detected_object_count = ortho_detected_object_count + #{ortho_detected_object_count},
+			location = ST_GeographyFromText(#{location}),
 			update_date = NOW()
 		WHERE drone_project_id = #{drone_project_id}
 	</update>

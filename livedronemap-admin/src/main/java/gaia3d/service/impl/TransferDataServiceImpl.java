@@ -164,6 +164,8 @@ public class TransferDataServiceImpl implements TransferDataService {
 			droneProject.setOrtho_image_count(ortho_image_count);
 			droneProject.setPostprocessing_image_count(postprocessing_image_count);
 			droneProject.setOrtho_detected_object_count(ortho_detected_object_count);
+			String location = String.format("POINT (%f %f)", transferData.getDrone_longitude(), transferData.getDrone_latitude());
+			droneProject.setLocation(location);
 			
 			log.info("*************** ortho = {}, postprocessing = {}, ortho_detected_object_count={}", ortho_image_count, postprocessing_image_count, ortho_detected_object_count);
 			droneProjectService.updateDroneProject(droneProject);
