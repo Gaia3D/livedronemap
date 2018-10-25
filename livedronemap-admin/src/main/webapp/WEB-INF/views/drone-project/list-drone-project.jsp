@@ -99,11 +99,14 @@
 	<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">			
 					<ul class="projectInfo">
 						<li class="title">
-							<a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
+		<c:if test="${droneProject.ortho_image_count <= 0 }">
+							<span>${droneProject.drone_project_name}</span> 
+		</c:if>		
 		<c:if test="${droneProject.ortho_image_count > 0 }">
+							<a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
 							<input type="button" id="droneImage_${droneProject.drone_project_id }" name="viewDroneImageButton" 
 								onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }'); return false;" 
-								style="width: 90px; height: 25px; float: right;" value="이미지 비표시" />
+								style="width: 90px; height: 25px; float: right;" value="이미지 표시" />
 							<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
 		</c:if>
 						</li>
@@ -219,39 +222,41 @@
 		
 		// 리스트의 모든 프로젝트 드론 경로 표출 
 		for(i=0; i<droneProjectIdList.length; i++ ) {
-			var droneProjectId = droneProjectIdList[i];
-			var index = droneProjectId;
-			
-			setInterval(function() {
-	   			$.ajax({
-	   				url: "/drone-project/" + droneProjectId + "/transfer-datas",
-	   				type: "GET",
-	   				data: null,
-	   				dataType: "json",
-	   				success: function(msg){
-	   					if(msg.result == "success") {
-							var postDronePath = DRONE_PATH_ARRAY[index];
-	   						viewer.entities.remove(BILLBOARD_ARRAY[index]);
-	   						
-	   						drawDroneMovingPath(index, droneProjectId, msg);
-	   						
-	   						setTimeout(function() {
-								viewer.entities.remove(postDronePath);
-							}, intervalTime/2)
-	   						
-	   					} else {
-	   						alert(JS_MESSAGE[msg.result]);
-	   					}
-	   				},
-	   				error:function(request, status, error){
-	   					//alert(JS_MESSAGE["ajax.error.message"]);
-	   					alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
-	   				}
-	   			});
-	   		}, intervalTime);
+			drawIntervalDronePath(droneProjectIdList[i], i)	   			
 		}
 		
 	});
+	
+	function drawIntervalDronePath(droneProjectId, index) {
+		setInterval(function() {
+			$.ajax({
+				url: "/drone-project/" + droneProjectId + "/transfer-datas",
+				type: "GET",
+				data: null,
+				dataType: "json",
+				success: function(msg){
+					if(msg.result == "success") {
+						if (msg.transferDataListSize > 0) {
+							var postDronePath = DRONE_PATH_ARRAY[index];
+							viewer.entities.remove(BILLBOARD_ARRAY[index]);
+							drawDroneMovingPath(index, droneProjectId, msg);
+							
+							setTimeout(function() {
+								viewer.entities.remove(postDronePath);
+							}, intervalTime/2)
+						}
+					} else {
+						alert(JS_MESSAGE[msg.result]);
+					}
+				},
+				error:function(request, status, error){
+					//alert(JS_MESSAGE["ajax.error.message"]);
+					alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+				}
+			});
+			
+		}, intervalTime);
+	}
 	
 	// 가장 최근 프로젝트 중 종료와 에러 이외의 프로젝트만 표시
     function drawDroneProject() {
@@ -296,12 +301,12 @@
 		if($("#layter_" + droneProjectId).val() === "0") {
 			// 표시 버튼 클릭
 			$("#layter_" + droneProjectId).val("1");
-			$("#droneImage_" + droneProjectId).val("이미지 표시");
+			$("#droneImage_" + droneProjectId).val("이미지 비표시");
 			drawDetailDroneImage(index, true, droneProjectId);
 		} else {
 			// 비표시 버튼 클릭
 			$("#layter_" + droneProjectId).val("0");
-			$("#droneImage_" + droneProjectId).val("이미지 비표시");
+			$("#droneImage_" + droneProjectId).val("이미지 표시");
 			clearInterval(DORNE_IMAGE_INTERVAL_ARRAY[index])
 			drawDetailDroneImage(index, false, droneProjectId);
 		}
@@ -418,6 +423,7 @@
 				,format : 'image/png'
 				//,time : 'P2Y/PRESENT'
 		    	,rand:rand
+		    	,styles : "ortho_detected_object"
 				//,maxZoom : 25
 				//,maxNativeZoom : 23
 				,CQL_FILTER: queryString
