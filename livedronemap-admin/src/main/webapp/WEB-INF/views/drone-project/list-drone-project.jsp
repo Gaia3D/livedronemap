@@ -423,7 +423,7 @@
 				,format : 'image/png'
 				//,time : 'P2Y/PRESENT'
 		    	,rand:rand
-		    	,styles : "ortho_detected_object"
+		    	//,styles : "ortho_detected_object"
 				//,maxZoom : 25
 				//,maxNativeZoom : 23
 				,CQL_FILTER: queryString
