@@ -24,7 +24,6 @@ import gaia3d.domain.SimulationLog;
 import gaia3d.domain.TokenLog;
 import gaia3d.domain.TransferDataResource;
 import gaia3d.service.APILogService;
-import gaia3d.service.DroneProjectService;
 import gaia3d.service.SimulationLogService;
 import gaia3d.service.TokenLogService;
 import gaia3d.service.TransferDataService;
@@ -53,7 +52,6 @@ public class TransferDataAPIController implements APIController {
 	 * @param request
 	 * @return
 	 */
-	// @PostMapping(value = "/transfer-data", headers = ("content-type=multipart/*")
 	@PostMapping("/transfer-data")
 	public ResponseEntity<APIResult> insertTransferData(MultipartHttpServletRequest request, 
 														@RequestParam("file") MultipartFile multipartFile, 

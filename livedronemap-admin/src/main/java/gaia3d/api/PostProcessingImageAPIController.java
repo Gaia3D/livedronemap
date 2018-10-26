@@ -12,11 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import gaia3d.config.PropertiesConfig;
 import gaia3d.domain.APIResult;
-import gaia3d.domain.OrthoImage;
 import gaia3d.domain.PostProcessingImage;
 import gaia3d.domain.TokenLog;
 import gaia3d.service.APILogService;
-import gaia3d.service.OrthoImageService;
 import gaia3d.service.PostProcessingImageService;
 import gaia3d.service.TokenLogService;
 import gaia3d.util.WebUtil;
