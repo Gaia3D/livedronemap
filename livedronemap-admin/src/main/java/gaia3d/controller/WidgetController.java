@@ -1,8 +1,5 @@
 package gaia3d.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 import gaia3d.domain.DroneProject;
 import gaia3d.domain.PGStatActivity;
 import gaia3d.domain.UserInfo;
-import gaia3d.domain.UserSession;
 import gaia3d.domain.Widget;
 import gaia3d.helper.SessionUserHelper;
 import gaia3d.service.AccessLogService;
@@ -30,8 +27,6 @@ import gaia3d.service.UserService;
 import gaia3d.service.WidgetService;
 import gaia3d.util.DateUtil;
 import gaia3d.util.FormatUtil;
-import com.zaxxer.hikari.HikariDataSource;
-
 import lombok.extern.slf4j.Slf4j;
 
 

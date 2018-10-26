@@ -113,9 +113,10 @@
 		$("#deviceMenu").addClass("on");
 		$("#clientMenu").addClass("on");
 		$("input[name='use_yn'][value='N']").prop('checked', true);
-		$("#check_generate_apikey").val("0");
+		$("#check_generate_apikey").val("1");
 		$("#apikey_duplication").val(" ");
 	});
+	
 	
 	// apikey 발급
 	$( "#generate" ).on( "click", function() {
@@ -126,21 +127,18 @@
 			data: apikey,
 			dataType: "json",
 			success: function(msg){
-				if(msg.result == "success") {
-					
-					if($("#check_generate_apikey").val() == "0") {
+				if(msg.result == "success") {				
+					if($("#check_generate_apikey").val() == "1") {
 						apikey = msg.apikey;
 						$("#apikey_duplication").val(apikey); 
-						$("#check_generate_apikey").val("1");
+						$("#check_generate_apikey").val("0");
 						$("#api_key").val($("#apikey_duplication").val());
 						alert(JS_MESSAGE["client.apikey.generate"]);
-						return false;
 					}
-					else {
-						alert(JS_MESSAGE["client.apikey.generate"]);
-					}
+					$("#check_generate_apikey").val("1");
 				} else {
 					alert(JS_MESSAGE[msg.result]);
+					$("#check_generate_apikey").val("1");
 				}
 			},
 			error:function(request, status, error) {
@@ -171,7 +169,6 @@
 						    this.reset();
 						});
 						$("input[name='use_yn'][value='N']").prop('checked', true);
-						$("#check_generate_apikey").val("0");
 						$("#apikey_duplication").val(" ");
 					}
 					insertClientFlag = true;
@@ -193,14 +190,11 @@
 			$("#client_name").focus();
 			return false;
 		}
-		if ($("#client_group_id").val() == "") {
+		if ($("#client_group_id").val() == "" || $("#client_group_id").val() == null) {
 			alert(JS_MESSAGE["client.group.required"]);
 			$("#client_group_id").focus();
 			return false;
-		}
-		
-		client_group_id
-		
+		}		
 		if ($("#client_ip").val() == "") {
 			alert(JS_MESSAGE["client.ip.empty"]);
 			$("#client_ip").focus();
@@ -209,16 +203,13 @@
 			alert(JS_MESSAGE["client.ip.invalid"]);
 			$("#client_ip").focus();
 			return false;
-		}
-				
-		if ($("#api_key").val() == "" || ($("#check_generate_apikey").val() == "0")) {
+		}				
+		if ($("#api_key").val() == "") {
 			alert(JS_MESSAGE["client.apikey.empty"]);
 			$("#api_key").focus();
 			return false;
 		}
-	
-	}
-	
+	}	
 	
 </script>
 </body>
