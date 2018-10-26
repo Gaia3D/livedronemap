@@ -5,7 +5,7 @@
 <c:if test="${pagination.totalCount > 0}">
 	<ul class="pagination">
 		<li>
-			<a href="${pagination.uri }?pageNo=${pagination.firstPage }${pagination.searchParameters}" class="first">처음</span></a>
+			<a href="${pagination.uri }?pageNo=${pagination.firstPage }${pagination.searchParameters}" class="first">처음</a>
 		</li>
 	<c:if test="${pagination.existPrePage == 'true' }">
 		<li>	
