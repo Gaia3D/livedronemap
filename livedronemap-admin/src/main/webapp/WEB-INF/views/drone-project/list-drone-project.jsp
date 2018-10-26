@@ -436,6 +436,8 @@
    		DETECTED_OBJECTS_PROVIDER_ARRAY[index] = viewer.imageryLayers.addImageryProvider(provider);
    	}
 	
+	
+	
 	// 드론 이동 경로 표시    
     function drawDroneMovingPath(index, droneProjectId, msg) {
 		var serverTransferDataList = msg.transferDataList;

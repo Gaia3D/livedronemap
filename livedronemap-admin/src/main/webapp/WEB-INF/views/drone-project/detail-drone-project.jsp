@@ -166,7 +166,10 @@
 	<!-- E: 1depth / 프로젝트 목록 -->
 	
 	<div id="droneMapContainer" class="mapWrap">
+		<%@ include file="/WEB-INF/views/drone-project/featureInfo.jsp" %>
 	</div>
+	
+	
 	<!-- E: MAPWRAP -->
 </div>
 <!-- E: wrap -->
@@ -194,7 +197,7 @@
 	// 객체 탐지를 그리는 geoserver layer
 	var DETECTED_OBJECTS_PROVIDER = null; 
 	
-  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
+  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
   	$(document).ready(function() {
   		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);
 		// drawDroneProject();
@@ -286,6 +289,10 @@
    		if(DETECTED_OBJECTS_PROVIDER !== null && DETECTED_OBJECTS_PROVIDER !== undefined) {
 	    	viewer.imageryLayers.remove(DETECTED_OBJECTS_PROVIDER, true);
 	    }
+   		
+   		var infoList = new Array();
+   		infoList.push(new Cesium.GetFeatureInfoFormat("json", "application/json", CallbackGetFeatureInfo))
+   		
 	   	
 	    var provider = new Cesium.WebMapServiceImageryProvider({
 			url : '${policy.geoserver_data_url}/wms',
@@ -305,11 +312,52 @@
 				//bjcd LIKE '47820253%' AND name='청도읍'
 			}
 			//,proxy: new Cesium.DefaultProxy('/proxy/')
-			,enablePickFeatures: false
+			,enablePickFeatures: true
+			,getFeatureInfoFormats: infoList
 		});
 	    
 		DETECTED_OBJECTS_PROVIDER = viewer.imageryLayers.addImageryProvider(provider);
    	}
+   	
+   	// TODO: 화면에 표출
+	function CallbackGetFeatureInfo(featureInfo) {
+		console.log("@@@@@@@@@@@@@")
+		var features = featureInfo.features;
+		
+		for (var i=0; i<features.length;i++) {
+			var feature = features[i]
+			console.log(feature)
+			
+			var featureHtml = "<div>" +
+								"<h3>객체 속성</h3>" + 
+								"<p>객체 ID: " + feature.properties.ortho_detected_object_id + "</p>" +
+								"<p>객체 종류: " + feature.properties.object_type + "</p>" +
+								"<p>탐지 일시: " + feature.properties.detected_date + "</p>" +
+								"<p>위도: " + feature.properties.latitude + "</p>" +
+								"<p>경도: " + feature.properties.longitude + "</p>" +
+								"<p>방향: " + feature.properties.orientation + "</p>" +
+								"<p>속도: " + feature.properties.speed + "</p>" +
+								"<p>길이: " + feature.properties.length + "</p>" +
+							  "</div>"
+			
+			$("#featureInfo").html(featureHtml);
+			
+		}
+		$("#featureInfo").show();
+		/*
+		properties:
+			detected_date: "2018-09-29T11:38:00Z"
+			latitude: 34.7651373676212
+			length: 30
+			longitude: 128.382757714281
+			object_type: "0"
+			orientation: 260
+			ortho_detected_object_id: 29
+			speed: 12
+			transfer_data_id: 296
+		*/
+		// var featureHtml = "<h3>객체 속성</h3><p>객체 ID: </p><p>객체 종류: </p><p>탐지 일시: </p><p>위도: </p><p>경도: </p><p>방향: </p><p>속도: </p><p>길이: </p>"
+	}
 
 	// 드론 이동 경로 표시    
     function drawDroneMovingPath() {
