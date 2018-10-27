@@ -27,5 +27,5 @@ public interface APILogMapper {
 	 * @param aPILog
 	 * @return
 	 */
-	public Long getAPILogCount(APILog aPILog);
+	public Long getAPILogTotalCount(APILog aPILog);
 }

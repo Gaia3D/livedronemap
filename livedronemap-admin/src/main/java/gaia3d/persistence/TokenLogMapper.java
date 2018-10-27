@@ -53,5 +53,5 @@ public interface TokenLogMapper {
 	 * @param tokenLog
 	 * @return
 	 */
-	Long getTokenLogCount(TokenLog tokenLog);
+	Long getTokenLogTotalCount(TokenLog tokenLog);
 }

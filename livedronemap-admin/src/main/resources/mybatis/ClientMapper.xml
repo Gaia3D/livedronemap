@@ -4,15 +4,21 @@
 <mapper namespace="gaia3d.persistence.ClientMapper">
 
 	<!-- client 정보를 취득 -->
+	<select id="getClientByAPIKey" parameterType="string" resultType="client">
+		/* getClientByAPIKey */
+		SELECT * FROM client WHERE api_Key = #{api_Key}
+	</select>
+
+	<!-- client 정보를 취득 -->
 	<select id="getClient" parameterType="int" resultType="client">
 		/* getClientByClientId */
 		SELECT * FROM client WHERE client_id = #{client_id}
 	</select>
-
-	<!-- client 정보를 취득 -->
-	<select id="getClientByAPIKey" parameterType="string" resultType="client">
-		/* getClientByAPIKey */
-		SELECT * FROM client WHERE api_Key = #{api_Key}
+	
+	<!-- client 리스트 조회 -->
+	<select id="getClientList" resultType="client">
+		/* getClientList */
+		SELECT * FROM client WHERE use_yn = 'Y';
 	</select>
 		
 	<!-- client 등록 -->
@@ -27,11 +33,4 @@
 			#{client_id}, #{client_group_id}, #{client_name}, #{client_ip}, #{use_yn}, #{api_key}, #{description}
 		)
 	</insert>
-	
-	<!-- client 리스트 조회 -->
-	<select id="getClientList" resultType="client">
-		/* getClientList */
-		SELECT * FROM client WHERE use_yn = 'Y';
-	</select>
-
 </mapper>

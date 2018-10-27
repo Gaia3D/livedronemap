@@ -24,5 +24,5 @@ public interface APILogService {
 	 * @param aPILog
 	 * @return
 	 */
-	Long getAPILogCount(APILog aPILog);
+	Long getAPILogTotalCount(APILog aPILog);
 }

@@ -83,8 +83,8 @@ public class TokenLogServiceImpl implements TokenLogService {
 	 * @return
 	 */
 	@Transactional(readOnly=true)
-	public Long getTokenLogCount(TokenLog tokenLog) {
-		return tokenLogMapper.getTokenLogCount(tokenLog);
+	public Long getTokenLogTotalCount(TokenLog tokenLog) {
+		return tokenLogMapper.getTokenLogTotalCount(tokenLog);
 	}
 
 }

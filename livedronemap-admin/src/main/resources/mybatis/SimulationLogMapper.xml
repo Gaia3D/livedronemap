@@ -3,19 +3,37 @@
 
 <mapper namespace="gaia3d.persistence.SimulationLogMapper">
 
-	<!-- 시뮬레이션 등록 -->
-	<insert id="insertSimulationLog" parameterType="simulationLog" >
-		/* insertDroneProject */
-		<selectKey keyProperty="simulation_log_id" resultType="int" order="BEFORE">
-    		SELECT NEXTVAL('simulation_log_seq')
-  		</selectKey>
-		INSERT INTO simulation_log (
-			simulation_log_id, simulation_type, client_id, client_name
-		) VALUES (
-			#{simulation_log_id}, #{simulation_type}, #{client_id}, #{client_name}
-		)
-	</insert>
-	
+	<!-- 시뮬레이션 로그 카운트 -->
+	<select id="getSimulationLogTotalCount" parameterType="simulationLog" resultType="long">
+		/* getSimulationLogTotalCount */
+		SELECT COUNT(simulation_log_id)
+		FROM simulation_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND client_name = #{search_value}
+			</if>
+			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND client_name LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_type != null and search_type != ''">
+			AND simulation_type = #{search_type}
+			</if>
+			<if test="search_status != null and search_status != ''">
+			AND status = #{search_status}
+			</if>
+			<if test="search_date != null and search_date != '' and  search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
+
 	<!-- 시뮬레이션 로그 리스트 조회 -->
 	<select id="getSimulationLogList" parameterType="simulationLog" resultType="simulationLog">
 		/* getSimulationLogList */
@@ -55,36 +73,18 @@
 		OFFSET #{offset} LIMIT #{limit}
 	</select>
 	
-	<!-- 시뮬레이션 로그 카운트 -->
-	<select id="getSimulationLogTotalCount" parameterType="simulationLog" resultType="long">
-		/* getSimulationLogTotalCount */
-		SELECT COUNT(simulation_log_id)
-		FROM simulation_log
-		<trim prefix="WHERE" prefixOverrides="AND">
-			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
-			AND client_name = #{search_value}
-			</if>
-			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
-			AND client_name LIKE '%' || #{search_value} || '%'
-			</if>
-			<if test="search_type != null and search_type != ''">
-			AND simulation_type = #{search_type}
-			</if>
-			<if test="search_status != null and search_status != ''">
-			AND status = #{search_status}
-			</if>
-			<if test="search_date != null and search_date != '' and  search_start_date != null and search_start_date != ''">
-			<![CDATA[
-			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
-			]]>
-			</if>
-			<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
-			<![CDATA[
-			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
-			]]>
-			</if>
-		</trim>
-	</select>
+	<!-- 시뮬레이션 등록 -->
+	<insert id="insertSimulationLog" parameterType="simulationLog" >
+		/* insertDroneProject */
+		<selectKey keyProperty="simulation_log_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('simulation_log_seq')
+  		</selectKey>
+		INSERT INTO simulation_log (
+			simulation_log_id, simulation_type, client_id, client_name
+		) VALUES (
+			#{simulation_log_id}, #{simulation_type}, #{client_id}, #{client_name}
+		)
+	</insert>
 	
 	<!-- 시뮬레이션 로그 상태 업데이트 -->
 	<update id="updateSimulationLog" parameterType="simulationLog">

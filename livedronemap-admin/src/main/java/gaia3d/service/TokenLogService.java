@@ -46,5 +46,5 @@ public interface TokenLogService {
 	 * @param tokenLog
 	 * @return
 	 */
-	Long getTokenLogCount(TokenLog tokenLog);
+	Long getTokenLogTotalCount(TokenLog tokenLog);
 }

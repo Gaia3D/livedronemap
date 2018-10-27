@@ -20,6 +20,11 @@ import gaia3d.util.DateUtil;
 import gaia3d.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * TODO spinner 처리를 해야 함
+ * @author
+ *
+ */
 @Slf4j
 @RequestMapping("/log/")
 @Controller
@@ -39,7 +44,7 @@ public class APILogController {
 			aPILog.setSearch_end_date(aPILog.getSearch_end_date().substring(0, 8) + DateUtil.END_TIME);
 		}
 		
-		long totalCount = aPILogService.getAPILogCount(aPILog);
+		long totalCount = aPILogService.getAPILogTotalCount(aPILog);
 		Pagination pagination = new Pagination(	request.getRequestURI(), 
 												getSearchParameters(PageType.LIST, request, aPILog), 
 												totalCount, 
@@ -51,6 +56,7 @@ public class APILogController {
 		aPILog.setLimit(pagination.getPageRows());
 		List<APILog> aPILogList = new ArrayList<>();
 		if(totalCount > 0l) {
+			// TODO TODO spinner 처리를 해야 함
 			aPILogList = aPILogService.getListAPILog(aPILog);
 		}
 		
@@ -63,7 +69,7 @@ public class APILogController {
 	
 	/**
 	 * 검색 조건
-	 * @param droneProject
+	 * @param aPILog
 	 * @return
 	 */
 	private String getSearchParameters(PageType pageType, HttpServletRequest request, APILog aPILog) {

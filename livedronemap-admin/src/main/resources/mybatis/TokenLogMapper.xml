@@ -3,10 +3,31 @@
 
 <mapper namespace="gaia3d.persistence.TokenLogMapper">
 
-	<!-- 토근 로그 취득 -->
-	<select id="getTokenLog" parameterType="tokenLog" resultType="tokenLog">
-		/* getTokenLog */
-		SELECT * FROM token_log WHERE token_log_id = #{token_log_id}
+	<!-- token 로그 총 개수 -->
+	<select id="getTokenLogTotalCount" parameterType="tokenLog" resultType="long" >
+		/* getTokenLogTotalCount */
+		SELECT COUNT(token_log_id) FROM token_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_status != null and search_status != ''">
+			AND token_status = #{search_status}
+			</if>
+			<if test="search_date != null and search_date != '' and search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
 	</select>
 	
 	<!-- 토큰 로그 리스트 조회 -->
@@ -49,6 +70,12 @@
 		WHERE X.client_id = Y.client_id
 	</select>
 	
+	<!-- 토근 로그 취득 -->
+	<select id="getTokenLog" parameterType="tokenLog" resultType="tokenLog">
+		/* getTokenLog */
+		SELECT * FROM token_log WHERE token_log_id = #{token_log_id}
+	</select>
+	
 	<!-- token validation -->
 	<select id="getValidToken" parameterType="tokenLog" resultType="tokenLog">
 		/* getValidToken */
@@ -82,31 +109,4 @@
 		SET expires = NOW() + INTERVAL '${rest_api_token_max_age} MINUTES'
 		WHERE token_log_id = #{token_log_id}
 	</update>
-	
-	<!-- token 로그 개수 조회 -->
-	<select id="getTokenLogCount" parameterType="tokenLog" resultType="long" >
-		/* getTokenLogCount */
-		SELECT COUNT(token_log_id) FROM token_log
-		<trim prefix="WHERE" prefixOverrides="AND">
-			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
-			AND ${search_word} = #{search_value}
-			</if>
-			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
-			AND ${search_word} LIKE '%' || #{search_value} || '%'
-			</if>
-			<if test="search_status != null and search_status != ''">
-			AND token_status = #{search_status}
-			</if>
-			<if test="search_date != null and search_date != '' and search_start_date != null and search_start_date != ''">
-			<![CDATA[
-			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
-			]]>
-			</if>
-			<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
-			<![CDATA[
-			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
-			]]>
-			</if>
-		</trim>
-	</select>
 </mapper>

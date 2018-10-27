@@ -17,16 +17,6 @@ public class APILogServiceImpl implements APILogService {
 	private APILogMapper aPILogMapper;
 	
 	/**
-	 * api log 등록
-	 * @param aPILog
-	 * @return
-	 */
-	@Transactional
-	public int insertAPILog(APILog aPILog) {
-		return aPILogMapper.insertAPILog(aPILog);
-	}
-	
-	/**
 	 * api log 조회 
 	 * @return
 	 */
@@ -40,9 +30,17 @@ public class APILogServiceImpl implements APILogService {
 	 * @param aPILog
 	 * @return
 	 */
-	public Long getAPILogCount(APILog aPILog) {
-		return aPILogMapper.getAPILogCount(aPILog);
+	public Long getAPILogTotalCount(APILog aPILog) {
+		return aPILogMapper.getAPILogTotalCount(aPILog);
 	}
 	
-	
+	/**
+	 * api log 등록
+	 * @param aPILog
+	 * @return
+	 */
+	@Transactional
+	public int insertAPILog(APILog aPILog) {
+		return aPILogMapper.insertAPILog(aPILog);
+	}
 }

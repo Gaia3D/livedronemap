@@ -20,6 +20,11 @@ import gaia3d.util.DateUtil;
 import gaia3d.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * TODO spinner 처리를 해야 함
+ * @author
+ *
+ */
 @Slf4j
 @RequestMapping("/log/")
 @Controller
@@ -39,7 +44,7 @@ public class TokenLogController {
 			tokenLog.setSearch_end_date(tokenLog.getSearch_end_date().substring(0, 8) + DateUtil.END_TIME);
 		}
 		
-		long totalCount = tokenLogService.getTokenLogCount(tokenLog);
+		long totalCount = tokenLogService.getTokenLogTotalCount(tokenLog);
 		Pagination pagination = new Pagination(	request.getRequestURI(), 
 												getSearchParameters(PageType.LIST, request, tokenLog), 
 												totalCount, 
@@ -51,6 +56,7 @@ public class TokenLogController {
 		tokenLog.setLimit(pagination.getPageRows());
 		List<TokenLog> tokenLogList = new ArrayList<>();
 		if(totalCount > 0l) {
+			// TODO spinner 처리를 해야 함
 			tokenLogList = tokenLogService.getListTokenLog(tokenLog);
 		}
 		
@@ -63,7 +69,7 @@ public class TokenLogController {
 	
 	/**
 	 * 검색 조건
-	 * @param droneProject
+	 * @param tokenLog
 	 * @return
 	 */
 	private String getSearchParameters(PageType pageType, HttpServletRequest request, TokenLog tokenLog) {
