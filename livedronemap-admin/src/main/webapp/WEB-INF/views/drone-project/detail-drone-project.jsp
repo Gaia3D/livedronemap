@@ -328,22 +328,19 @@
 			var feature = features[i]
 			console.log(feature)
 			
-			var featureHtml = "<div>" +
-								"<h3>객체 속성</h3>" + 
-								"<p>객체 ID: " + feature.properties.ortho_detected_object_id + "</p>" +
+			var featureHtml = "<p>객체 ID: " + feature.properties.ortho_detected_object_id + "</p>" +
 								"<p>객체 종류: " + feature.properties.object_type + "</p>" +
 								"<p>탐지 일시: " + feature.properties.detected_date + "</p>" +
 								"<p>위도: " + feature.properties.latitude + "</p>" +
 								"<p>경도: " + feature.properties.longitude + "</p>" +
 								"<p>방향: " + feature.properties.orientation + "</p>" +
 								"<p>속도: " + feature.properties.speed + "</p>" +
-								"<p>길이: " + feature.properties.length + "</p>" +
-							  "</div>"
+								"<p>길이: " + feature.properties.length + "</p>"
 			
 			$("#featureInfo").html(featureHtml);
 			
 		}
-		$("#featureInfo").show();
+		$("#featureInfoLayer").show();
 		/*
 		properties:
 			detected_date: "2018-09-29T11:38:00Z"
@@ -358,6 +355,10 @@
 		*/
 		// var featureHtml = "<h3>객체 속성</h3><p>객체 ID: </p><p>객체 종류: </p><p>탐지 일시: </p><p>위도: </p><p>경도: </p><p>방향: </p><p>속도: </p><p>길이: </p>"
 	}
+   	
+   	function closeFeatureInfo() {
+   		$("#featureInfoLayer").hide();
+   	}
 
 	// 드론 이동 경로 표시    
     function drawDroneMovingPath() {

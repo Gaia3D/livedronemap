@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style>
 
-#featureInfo {
+#featureInfoLayer {
 	display: none;
 	width: 250px; 
 	position: absolute; 
@@ -11,23 +11,26 @@
 	background-color: white;
 }
 
-#featureInfo div {
-	margin: 5px; 
-	padding: 5px; 
-	border: 1px solid;
-}
-#featureInfo div h3 {
-	margin-bottom: 10px;
+#featureInfoHeader {
+    background-color: #5563cf;
+    padding: 5px;
+    color: #FFF;
 }
 
-#featureInfo div p {
-	margin-bottom: 5px;
+#featureInfo {
+	border: 1px solid;
+    padding: 5px;
 }
 
 </style>
-<div id="featureInfo" >
-	<div>
+<div id="featureInfoLayer" >
+	<div id="featureInfoHeader">
 		<h3>객체 속성</h3>
+		<div class="ctrlBtn">
+			<button type="button" title="닫기" class="close" onClick="closeFeatureInfo()">닫기</button>
+		</div>
+	</div>
+	<div id="featureInfo">
 		<p>객체 ID: </p>
 		<p>객체 종류: </p>
 		<p>탐지 일시: </p>
