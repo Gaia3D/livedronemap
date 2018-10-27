@@ -1,3 +1,6 @@
+// 대메뉴 css 적용
+// 이건 다음에 하자...... 지금 구조로는 쉽지 않음
+
 //url 페이지로 이동
 function goPage(url) {
 	if(url === location.pathname) {
@@ -40,4 +43,3 @@ $( "#menuCloseButton" ).on( "click", function() {
 		$(".mapWrap").css({"padding-left" : "51px"});
 	}
 });
-
