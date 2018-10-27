@@ -7,6 +7,12 @@ import gaia3d.domain.Client;
 public interface ClientService {
 
 	/**
+	 *  client 리스트 조회 
+	 *  @return
+	 */
+	 List<Client> getClientList();
+	
+	/**
 	 *  ID를 이용하여 client 정보 취득
 	 *  @param client_id
 	 *  @return
@@ -21,21 +27,15 @@ public interface ClientService {
 	Client getClientByAPIKey(String api_key);
 	
 	/**
+	 * API key 발행
+	 * @return
+	 */
+	 String generateApikey();
+	
+	/**
 	 * client 등록
 	 * @param client
 	 * @return
 	 */
 	int insertClient(Client client);
-
-	/**
-	 *  client 리스트 조회 
-	 *  @return
-	 */
-	 List<Client> getClientList();
-	 
-	/**
-	 * API key 발행
-	 * @return
-	 */
-	 String generateApikey();
 }

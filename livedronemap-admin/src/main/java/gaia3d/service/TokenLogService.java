@@ -7,18 +7,25 @@ import gaia3d.domain.TokenLog;
 public interface TokenLogService {
 
 	/**
+	 * token 로그 총 건수
+	 * @param tokenLog
+	 * @return
+	 */
+	Long getTokenLogTotalCount(TokenLog tokenLog);
+	
+	/**
+	 * 토큰 로그 목록
+	 * @param tokenLog
+	 * @return
+	 */
+	List<TokenLog> getListTokenLog(TokenLog tokenLog);
+	
+	/**
 	 * 토근 생성
 	 * @param tokenLog
 	 * @return
 	 */
 	TokenLog getToken(TokenLog tokenLog);
-	
-	/**
-	 * 토큰 로그 리스트 조회 
-	 * @param tokenLog
-	 * @return
-	 */
-	List<TokenLog> getListTokenLog(TokenLog tokenLog);
 	
 	/**
 	 * token validation
@@ -40,11 +47,4 @@ public interface TokenLogService {
 	 * @return
 	 */
 	TokenLog updateTokenExpires(TokenLog tokenLog);
-
-	/**
-	 * token 로그 개수 조회
-	 * @param tokenLog
-	 * @return
-	 */
-	Long getTokenLogTotalCount(TokenLog tokenLog);
 }

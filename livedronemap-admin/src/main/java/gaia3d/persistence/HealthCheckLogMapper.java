@@ -15,10 +15,11 @@ import gaia3d.domain.HealthCheckLog;
 public interface HealthCheckLogMapper {
 
 	/**
-	 * 상태 점검 이력 
+	 * 상태 점검 이력 개수 조회 
 	 * @param healthCheckLog
+	 * @return
 	 */
-	int insertHealthCheckLog(HealthCheckLog healthCheckLog);
+	long getHealthCheckLogTotalCount(HealthCheckLog healthCheckLog);
 
 	/**
 	 * 상태 점검 이력 리스트 조회
@@ -26,12 +27,11 @@ public interface HealthCheckLogMapper {
 	 * @return
 	 */
 	List<HealthCheckLog> gethealthCheckList(HealthCheckLog healthCheckLog);
-
+	
 	/**
-	 * 상태 점검 이력 개수 조회 
+	 * 상태 점검 이력 
 	 * @param healthCheckLog
-	 * @return
 	 */
-	long getHealthCheckLogTotalCount(HealthCheckLog healthCheckLog);
+	int insertHealthCheckLog(HealthCheckLog healthCheckLog);
 	
 }

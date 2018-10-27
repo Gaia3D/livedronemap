@@ -38,16 +38,6 @@ public class ClientServiceImpl implements ClientService {
 	}
 	
 	/**
-	 * client 등록
-	 * @param client
-	 * @return
-	 */
-	@Transactional
-	public int insertClient(Client client) {
-		return clientMapper.insertClient(client);
-	}
-	
-	/**
 	 *  client 리스트 조회 
 	 *  @return
 	 */
@@ -65,5 +55,15 @@ public class ClientServiceImpl implements ClientService {
 		return UUID.randomUUID().toString();
 		//return Long.toString(System.nanoTime()).substring(4, 12);
 	}
-		
+
+	/**
+	 * client 등록
+	 * @param client
+	 * @return
+	 */
+	@Transactional
+	public int insertClient(Client client) {
+		return clientMapper.insertClient(client);
+	}
+	
 }
