@@ -246,12 +246,11 @@
 							}, intervalTime/2)
 						}
 					} else {
-						alert(JS_MESSAGE[msg.result]);
+						console.log(JS_MESSAGE[msg.result]);
 					}
 				},
 				error:function(request, status, error){
-					//alert(JS_MESSAGE["ajax.error.message"]);
-					alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+					console.log(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
 				}
 			});
 			
@@ -354,12 +353,11 @@
 						}, intervalTime/2)
 					}
 				} else {
-					alert(JS_MESSAGE[msg.result]);
+					console.log(JS_MESSAGE[msg.result]);
 				}
 			},
 			error:function(request, status, error){
-				//alert(JS_MESSAGE["ajax.error.message"]);
-				alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+				console.log(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
 			}
 		});
 	}
