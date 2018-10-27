@@ -321,7 +321,7 @@ public class ImageProcessing implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			abstractGridCoverage2DReader.dispose();
+			if(abstractGridCoverage2DReader != null) abstractGridCoverage2DReader.dispose();
 		}
 		
 		return wkt;

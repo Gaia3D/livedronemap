@@ -52,7 +52,7 @@ public class AuthenticationAPIController implements APIController {
 	public ResponseEntity<APIResult> createToken(HttpServletRequest request, @RequestHeader("live_drone_map") String customHeader) {
 		log.info("@@@@@@@@@@ createToken api call");
 		
-		APIResult aPIResult = null;
+		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		Policy policy = CacheManager.getPolicy();
 		Client client = null;
@@ -107,7 +107,7 @@ public class AuthenticationAPIController implements APIController {
 	public ResponseEntity<APIResult> refreshToken(HttpServletRequest request, @RequestHeader("live_drone_map") String customHeader) {
 		log.info("@@@@@@@@@@ refreshToken api call");
 		
-		APIResult aPIResult = null;
+		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		Policy policy = CacheManager.getPolicy();
 		TokenLog tokenLog = new TokenLog();

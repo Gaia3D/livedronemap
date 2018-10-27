@@ -22,7 +22,8 @@ import gaia3d.service.GeoserverService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * GeoServer 처리 API 
+ * TODO 로그는 남겨야 할지는 고민해 보자.
+ * GeoServer 처리 API(내부 호출용 이라 APIController를 상속하지 않음. private rest를 분리하는게 맞을 듯)
  * @author jskim
  *
  */
