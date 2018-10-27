@@ -37,7 +37,7 @@ public class DroneProjectAPIController implements APIController {
 	public ResponseEntity<APIResult> insertProject(HttpServletRequest request, @RequestHeader("live_drone_map") String customHeader, DroneProject droneProject) {
 		log.info("@@@@@@@@@@ project insert api call");
 		
-		APIResult aPIResult = null;
+		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		Policy policy = CacheManager.getPolicy();
 		TokenLog tokenLog = new TokenLog();

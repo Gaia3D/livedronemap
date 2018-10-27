@@ -3,17 +3,34 @@
 
 <mapper namespace="gaia3d.persistence.HealthCheckLogMapper">
 
-	<!-- 상태 점검 이력 등록 -->
-	<insert id="insertHealthCheckLog" parameterType="healthCheckLog">
-		/* insertHealthCheckLog */
-		INSERT INTO health_check_log (
-			health_check_log_id, client_id, client_name, status, status_code, message
-		)
-		VALUES (
-			nextval('health_check_seq'), #{client_id}, #{client_name}, #{status}, #{status_code}, #{message}
-		)
-	</insert>
-	
+	<!-- 상태 점검 이력 총 건수 -->
+	<select id="getHealthCheckLogTotalCount" parameterType="healthCheckLog" resultType="long">
+		/* getHealthCheckLogTotalCount */
+		SELECT COUNT(health_check_log_id) 
+		FROM health_check_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND client_name = #{search_value}
+			</if>
+			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND client_name LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="search_status != null and search_status != ''">
+			AND status = #{search_status}
+			</if>
+			<if test="search_start_date != null and search_start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="search_end_date != null and search_end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
+
 	<!-- 상태 점검 리스트 조회 -->
 	<select id="gethealthCheckList" parameterType="healthCheckLog" resultType="healthCheckLog">
 		/* gethealthCheckList */
@@ -50,31 +67,17 @@
 		OFFSET #{offset} LIMIT #{limit}
 	</select>
 	
-	<!-- 상태 점검 이력 개수 조회 -->
-	<select id="getHealthCheckLogTotalCount" parameterType="healthCheckLog" resultType="long">
-		/* getHealthCheckLogTotalCount */
-		SELECT COUNT(health_check_log_id) 
-		FROM health_check_log
-		<trim prefix="WHERE" prefixOverrides="AND">
-			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
-			AND client_name = #{search_value}
-			</if>
-			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
-			AND client_name LIKE '%' || #{search_value} || '%'
-			</if>
-			<if test="search_status != null and search_status != ''">
-			AND status = #{search_status}
-			</if>
-			<if test="search_start_date != null and search_start_date != ''">
-			<![CDATA[
-			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
-			]]>
-			</if>
-			<if test="search_end_date != null and search_end_date != ''">
-			<![CDATA[
-			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
-			]]>
-			</if>
-		</trim>
-	</select>
+	<!-- 상태 점검 이력 등록 -->
+	<insert id="insertHealthCheckLog" parameterType="healthCheckLog">
+		/* insertHealthCheckLog */
+		<selectKey keyProperty="health_check_log_id" resultType="long" order="BEFORE">
+    		SELECT NEXTVAL('health_check_seq')
+  		</selectKey>
+		INSERT INTO health_check_log (
+			health_check_log_id, client_id, client_name, status, status_code, message
+		)
+		VALUES (
+			#{health_check_log_id}, #{client_id}, #{client_name}, #{status}, #{status_code}, #{message}
+		)
+	</insert>
 </mapper>

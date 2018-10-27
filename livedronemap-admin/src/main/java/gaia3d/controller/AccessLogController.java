@@ -41,7 +41,7 @@ public class AccessLogController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "list-access-log.do")
+	@RequestMapping(value = "list-access-log")
 	public String listAccessLog(HttpServletRequest request, AccessLog accessLog, @RequestParam(defaultValue="1") String pageNo, Model model) {
 		
 		log.info("@@ accessLog = {}", accessLog);
@@ -80,7 +80,7 @@ public class AccessLogController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "ajax-list-access-log.do")
+	@RequestMapping(value = "ajax-list-access-log")
 	@ResponseBody
 	public Map<String, Object> ajaxListAccessLog(HttpServletRequest request, AccessLog accessLog, @RequestParam(defaultValue="1") String pageNo, Model model) {
 		
@@ -127,7 +127,7 @@ public class AccessLogController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value = "ajax-access-log.do")
+	@RequestMapping(value = "ajax-access-log")
 	@ResponseBody
 	public Map<String, Object> ajaxUserGroupInfo(HttpServletRequest request, @RequestParam("access_log_id") Long access_log_id) {
 		

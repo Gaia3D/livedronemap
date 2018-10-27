@@ -7,12 +7,12 @@ import gaia3d.domain.APILog;
 public interface APILogService {
 
 	/**
-	 * api log 등록
+	 * api log 개수 조회 
 	 * @param aPILog
 	 * @return
 	 */
-	int insertAPILog(APILog aPILog);
-	
+	Long getAPILogTotalCount(APILog aPILog);
+
 	/**
 	 * api log 조회 
 	 * @return
@@ -20,9 +20,9 @@ public interface APILogService {
 	List<APILog> getListAPILog(APILog aPILog);
 	
 	/**
-	 * api log 개수 조회 
+	 * api log 등록
 	 * @param aPILog
 	 * @return
 	 */
-	Long getAPILogCount(APILog aPILog);
+	int insertAPILog(APILog aPILog);
 }

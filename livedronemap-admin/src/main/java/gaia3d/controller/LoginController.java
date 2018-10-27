@@ -181,7 +181,8 @@ public class LoginController {
 			return "redirect:/user/modify-password";
 		}
 		
-		return "redirect:/main/index";
+		return "redirect:/drone-project/list-drone-project";
+		//return "redirect:/main/index";
 	}
 	
 	/**
@@ -277,7 +278,7 @@ public class LoginController {
 //	 * @param model
 //	 * @return
 //	 */
-//	@GetMapping(value = "ajax-change-language.do")
+//	@GetMapping(value = "change-language")
 //	@ResponseBody
 //	public Map<String, Object> ajaxChangeLanguage(HttpServletRequest request, HttpServletResponse response, @RequestParam("lang") String lang, Model model) {
 //		Map<String, Object> map = new HashMap<>();

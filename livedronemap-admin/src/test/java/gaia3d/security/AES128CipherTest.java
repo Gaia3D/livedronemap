@@ -12,7 +12,7 @@ public class AES128CipherTest {
 			System.out.print(keyBytes[i] + ",");
 		}
 		
-		System.out.println(secretKey.getBytes());
+		System.out.println(secretKey.getBytes().toString());
 		
 		byte[] test = {49,50,51,52,53,54,55,56,57,48,49,50,51,52,53,54};
 		System.out.println(new String(test));

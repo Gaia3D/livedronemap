@@ -17,13 +17,13 @@ public class APILogServiceImpl implements APILogService {
 	private APILogMapper aPILogMapper;
 	
 	/**
-	 * api log 등록
+	 * api log 개수 조회 
 	 * @param aPILog
 	 * @return
 	 */
-	@Transactional
-	public int insertAPILog(APILog aPILog) {
-		return aPILogMapper.insertAPILog(aPILog);
+	@Transactional(readOnly=true)
+	public Long getAPILogTotalCount(APILog aPILog) {
+		return aPILogMapper.getAPILogTotalCount(aPILog);
 	}
 	
 	/**
@@ -36,13 +36,12 @@ public class APILogServiceImpl implements APILogService {
 	}
 
 	/**
-	 * api log 개수 조회 
+	 * api log 등록
 	 * @param aPILog
 	 * @return
 	 */
-	public Long getAPILogCount(APILog aPILog) {
-		return aPILogMapper.getAPILogCount(aPILog);
+	@Transactional
+	public int insertAPILog(APILog aPILog) {
+		return aPILogMapper.insertAPILog(aPILog);
 	}
-	
-	
 }

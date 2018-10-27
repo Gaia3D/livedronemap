@@ -17,15 +17,13 @@ public class TokenLogServiceImpl implements TokenLogService {
 	private TokenLogMapper tokenLogMapper;
 	
 	/**
-	 * token 정보를 취득
-	 * @param api_key
+	 * token 로그 개수 조회
+	 * @param tokenLog
 	 * @return
 	 */
-	@Transactional
-	public TokenLog getToken(TokenLog tokenLog) {
-		tokenLog.setToken(generateToken());
-		tokenLogMapper.insertTokenLog(tokenLog);
-		return tokenLog;
+	@Transactional(readOnly=true)
+	public Long getTokenLogTotalCount(TokenLog tokenLog) {
+		return tokenLogMapper.getTokenLogTotalCount(tokenLog);
 	}
 
 	/**
@@ -39,16 +37,6 @@ public class TokenLogServiceImpl implements TokenLogService {
 	}
 	
 	/**
-	 * 토근 로그 취득
-	 * @param tokenLog
-	 * @return
-	 */
-	@Transactional(readOnly=true)
-	public TokenLog getTokenLog(TokenLog tokenLog) {
-		return tokenLogMapper.getTokenLog(tokenLog);
-	}
-	
-	/**
 	 * token validation
 	 * @param tokenLog
 	 * @return
@@ -56,6 +44,16 @@ public class TokenLogServiceImpl implements TokenLogService {
 	@Transactional(readOnly=true)
 	public TokenLog getValidToken(TokenLog tokenLog) {
 		return tokenLogMapper.getValidToken(tokenLog);
+	}
+	
+	/**
+	 * 토근 로그 취득
+	 * @param tokenLog
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public TokenLog getTokenLog(TokenLog tokenLog) {
+		return tokenLogMapper.getTokenLog(tokenLog);
 	}
 	
 	/**
@@ -68,6 +66,18 @@ public class TokenLogServiceImpl implements TokenLogService {
 	}
 	
 	/**
+	 * token 정보를 취득
+	 * @param api_key
+	 * @return
+	 */
+	@Transactional
+	public TokenLog getToken(TokenLog tokenLog) {
+		tokenLog.setToken(generateToken());
+		tokenLogMapper.insertTokenLog(tokenLog);
+		return tokenLog;
+	}
+	
+	/**
 	 * token expires update
 	 * @param tokenLog
 	 * @return
@@ -75,16 +85,6 @@ public class TokenLogServiceImpl implements TokenLogService {
 	@Transactional
 	public TokenLog updateTokenExpires(TokenLog tokenLog) {
 		return tokenLogMapper.updateTokenExpires(tokenLog);
-	}
-
-	/**
-	 * token 로그 개수 조회
-	 * @param tokenLog
-	 * @return
-	 */
-	@Transactional(readOnly=true)
-	public Long getTokenLogCount(TokenLog tokenLog) {
-		return tokenLogMapper.getTokenLogCount(tokenLog);
 	}
 
 }

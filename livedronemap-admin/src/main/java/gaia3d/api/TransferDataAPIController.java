@@ -31,6 +31,11 @@ import gaia3d.util.FileUtil;
 import gaia3d.util.WebUtil;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * TODO 시뮬레이션 코드 통합 해야 함. 모든 처리는 동일하고 simulation_id의 존재 유무, update 처리만 차이날 뿐이다.
+ * @author Cheon JeongDae
+ *
+ */
 @Slf4j
 @RestController
 public class TransferDataAPIController implements APIController {
@@ -58,7 +63,7 @@ public class TransferDataAPIController implements APIController {
 														@RequestHeader("live_drone_map") String customHeader) {
 		log.info("@@@@@@@@@@ transfer data insert api call");
 		
-		APIResult aPIResult = null;
+		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
 		Policy policy = CacheManager.getPolicy();
 		TokenLog tokenLog = new TokenLog();
@@ -109,7 +114,7 @@ public class TransferDataAPIController implements APIController {
 			httpStatus = HttpStatus.OK;
 			aPIResult.setStatusCode(httpStatus.value());
 		} catch(Exception e) {
-			FileUtil.deleteFile(fileInfo.getFile_path() + fileInfo.getFile_real_name());
+			if(fileInfo != null) FileUtil.deleteFile(fileInfo.getFile_path() + fileInfo.getFile_real_name());
 			e.printStackTrace();
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			aPIResult.setStatusCode(httpStatus.value());
@@ -121,6 +126,13 @@ public class TransferDataAPIController implements APIController {
 		return new ResponseEntity<APIResult>(aPIResult, httpStatus);
 	}
 	
+	/**
+	 * TODO 위에 것과 통합 후 삭제해야 함.
+	 * @param request
+	 * @param multipartFile
+	 * @param simulationLogId
+	 * @return
+	 */
 	@PostMapping("/transfer-data/simulation/{simulation_log_id}")
 	public ResponseEntity<APIResult> insertSimulationTransferData(MultipartHttpServletRequest request, 
 																	@RequestParam("file") MultipartFile multipartFile,
@@ -129,8 +141,6 @@ public class TransferDataAPIController implements APIController {
 		
 		APIResult aPIResult = new APIResult();
 		HttpStatus httpStatus = null;
-		Policy policy = CacheManager.getPolicy();
-		TokenLog tokenLog = new TokenLog();
 		Integer clientId = null;
 		String clientName = null;
 		FileInfo fileInfo = null;
@@ -166,7 +176,7 @@ public class TransferDataAPIController implements APIController {
 			httpStatus = HttpStatus.OK;
 			aPIResult.setStatusCode(httpStatus.value());
 		} catch(Exception e) {
-			FileUtil.deleteFile(fileInfo.getFile_path() + fileInfo.getFile_real_name());
+			if(fileInfo != null) FileUtil.deleteFile(fileInfo.getFile_path() + fileInfo.getFile_real_name());
 			e.printStackTrace();
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			aPIResult.setStatusCode(httpStatus.value());

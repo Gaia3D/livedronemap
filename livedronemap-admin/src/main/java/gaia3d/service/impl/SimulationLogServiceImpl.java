@@ -16,21 +16,21 @@ public class SimulationLogServiceImpl implements SimulationLogService{
 	@Autowired
 	SimulationLogMapper simulationLogMapper;
 	
-	@Transactional
-	public int insertSimulationLog(SimulationLog simulationLog) {
-		return simulationLogMapper.insertSimulationLog(simulationLog);
+	@Transactional(readOnly=true)
+	public Long getSimulationLogTotalCount(SimulationLog simulationLog) {
+		return simulationLogMapper.getSimulationLogTotalCount(simulationLog);
 	}
 	
 	@Transactional(readOnly=true)
 	public List<SimulationLog> getSimulationLogList(SimulationLog simulationLog) {
 		return simulationLogMapper.getSimulationLogList(simulationLog);
 	}
-
-	@Transactional(readOnly=true)
-	public Long getSimulationLogTotalCount(SimulationLog simulationLog) {
-		return simulationLogMapper.getSimulationLogTotalCount(simulationLog);
+	
+	@Transactional
+	public int insertSimulationLog(SimulationLog simulationLog) {
+		return simulationLogMapper.insertSimulationLog(simulationLog);
 	}
-
+	
 	@Transactional
 	public int updateSimulationLog(SimulationLog simulationLog) {
 		return simulationLogMapper.updateSimulationLog(simulationLog);

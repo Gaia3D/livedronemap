@@ -17,14 +17,15 @@ public class HealthCheckLogServiceImpl implements HealthCheckLogService {
 	HealthCheckLogMapper healthCheckLogMapper;
 	
 	/**
-	 * 상태 점검 이력 
+	 * 상태 점검 이력 개수 조회 
 	 * @param healthCheckLog
+	 * @return
 	 */
-	@Transactional
-	public int insertHealthCheckLog(HealthCheckLog healthCheckLog) {
-		return healthCheckLogMapper.insertHealthCheckLog(healthCheckLog);
+	@Transactional(readOnly=true)
+	public long getHealthCheckLogTotalCount(HealthCheckLog healthCheckLog) {
+		return healthCheckLogMapper.getHealthCheckLogTotalCount(healthCheckLog);
 	}
-
+	
 	/**
 	 * 상태 점검 이력 리스트 조회
 	 * @param healthCheckLog
@@ -34,15 +35,13 @@ public class HealthCheckLogServiceImpl implements HealthCheckLogService {
 	public List<HealthCheckLog> gethealthCheckList(HealthCheckLog healthCheckLog) {
 		return healthCheckLogMapper.gethealthCheckList(healthCheckLog);
 	}
-
+	
 	/**
-	 * 상태 점검 이력 개수 조회 
+	 * 상태 점검 이력 
 	 * @param healthCheckLog
-	 * @return
 	 */
-	@Transactional(readOnly=true)
-	public long getHealthCheckLogTotalCount(HealthCheckLog healthCheckLog) {
-		return healthCheckLogMapper.getHealthCheckLogTotalCount(healthCheckLog);
+	@Transactional
+	public int insertHealthCheckLog(HealthCheckLog healthCheckLog) {
+		return healthCheckLogMapper.insertHealthCheckLog(healthCheckLog);
 	}
-
 }
