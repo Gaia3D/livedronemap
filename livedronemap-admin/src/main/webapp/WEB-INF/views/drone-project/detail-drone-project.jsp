@@ -90,7 +90,7 @@
 						</li>
 						<li class="half" class="half" title="후처리영상">
 							<label class="hc">후처리영상</label>
-							<span>${droneProject.postprocessing_image_count }</span>장</li>
+							<span>${droneProject.postprocessing_image_count }</span>장
 						</li>
 					</ul>
 		<!-- E: 프로젝트 정보 -->
@@ -474,7 +474,7 @@
    		
    	}, false);
    	
-	// 추가 영상 있는지 확인   	
+	// 추가 영상 있는지 확인 , 이 처리를 하면서 같지 않으면 아래 데이터도 가져오게 처리
    	setInterval(function() {
    		var droneProjectId = ${droneProject.drone_project_id};
    		

@@ -105,7 +105,7 @@
 		<c:if test="${droneProject.ortho_image_count > 0 }">
 							<a href="/drone-project/detail-drone-project?drone_project_id=${droneProject.drone_project_id }&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">${droneProject.drone_project_name}</a>
 							<input type="button" id="droneImage_${droneProject.drone_project_id }" name="viewDroneImageButton" 
-								onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }'); return false;" 
+								onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }','${droneProject.status }'); return false;" 
 								style="width: 90px; height: 25px; float: right;" value="이미지 표시" />
 							<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
 		</c:if>
@@ -180,12 +180,11 @@
 <script type="text/javascript" src="/js/geospatial.js"></script>
 <script type="text/javascript">
 	// 초기 위치 설정
-	// TODO: 배책임님 소스랑 비교
-	var west = 126.0;
-	var south = 32.0;
-	var east = 130.0;
-	var north = 39.0;
-	var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
+	var INIT_WEST = 126.0;
+	var INIT_SOUTH = 32.0;
+	var INIT_EAST = 130.0;
+	var INIT_NORTH = 39.0;
+	var rectangle = Cesium.Rectangle.fromDegrees(INIT_WEST, INIT_SOUTH, INIT_EAST, INIT_NORTH);
 	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
 	
@@ -207,9 +206,12 @@
 	
 	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
-    // 드론 촬영 이미지를 그리는 geoserver layer
+	
+	// 드론 촬영 이미지를 그리는 geoserver layer
 	var DRONE_IMAGE_PROVIDER_ARRAY = new Array();
     var DORNE_IMAGE_INTERVAL_ARRAY = new Array();
+    // 드론 프로젝트별 전송 파일 갯수 
+    var TRANSFER_DATA_COUNT_ARRAY = new Array();
 	// 객체 탐지를 그리는 geoserver layer
 	var DETECTED_OBJECTS_PROVIDER_ARRAY = new Array();
 	// 드론 경로를 그리는 layer
@@ -218,33 +220,30 @@
 	var BILLBOARD_ARRAY = new Array();
 	for(var i=0; i<10; i++) {
 		DRONE_IMAGE_PROVIDER_ARRAY.push(null);
+		TRANSFER_DATA_COUNT_ARRAY.push(null);
 		DETECTED_OBJECTS_PROVIDER_ARRAY.push(null);
 		DRONE_PATH_ARRAY.push(null);
 		BILLBOARD_ARRAY.push(null);
 	}
-	var intervalTime = 5000;  // TODO: policy에 추가 
 	
-	// 프로젝트 id 처리 
-	var droneProjectIdList = new Array();
-	<c:forEach items="${droneProjectList}" var="droneProject">
-		droneProjectIdList.push(${droneProject.drone_project_id});
-	</c:forEach>
-	
+	// TODO: policy에 추가
+	var INTERVALTIME = 5000; 
 	$(document).ready(function() {
 		$("#projectMenu").addClass("on");
-		// drawDroneProject();
-		
 		initJqueryCalendar();
 		
-		// 리스트의 모든 프로젝트 드론 경로 표출 
-		for(i=0; i<droneProjectIdList.length; i++ ) {
-			drawIntervalDronePath(droneProjectIdList[i], i)	   			
-		}
+		// 프로젝트 boundingbox 를 그리는 것은 보류 하고 드론 이미지만 그리기로 함
+		// drawDroneProject();
 		
+		// 리스트의 모든 프로젝트 드론 경로 표출 
+		<c:forEach var="droneProject" items="${droneProjectList}" varStatus="status">
+			drawIntervalDronePath(${droneProject.drone_project_id}, "${droneProject.status}", ${status.index});	   			
+		</c:forEach>
 	});
 	
-	function drawIntervalDronePath(droneProjectId, index) {
-		setInterval(function() {
+	// 각 프로젝트별 드론 경로를 표출
+	function drawIntervalDronePath(droneProjectId, droneProjectStatus, index) {
+		if(droneProjectStatus === "4" || droneProjectStatus === "5") {
 			$.ajax({
 				url: "/drone-project/" + droneProjectId + "/transfer-datas",
 				type: "GET",
@@ -252,25 +251,50 @@
 				dataType: "json",
 				success: function(msg){
 					if(msg.result == "success") {
+						console.log("droneProjectId = " + droneProjectId + ", droneProjectStatus = " + droneProjectStatus);
 						if (msg.transferDataListSize > 0) {
-							var postDronePath = DRONE_PATH_ARRAY[index];
 							viewer.entities.remove(BILLBOARD_ARRAY[index]);
 							drawDroneMovingPath(index, droneProjectId, msg);
-							
-							setTimeout(function() {
-								viewer.entities.remove(postDronePath);
-							}, intervalTime/2)
 						}
 					} else {
 						console.log(JS_MESSAGE[msg.result]);
 					}
 				},
-				error:function(request, status, error){
+				error:function(request, status, error) {
 					console.log(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
 				}
 			});
-			
-		}, intervalTime);
+		} else {		
+			setInterval(function() {
+				$.ajax({
+					url: "/drone-project/" + droneProjectId + "/transfer-datas",
+					type: "GET",
+					data: null,
+					dataType: "json",
+					success: function(msg){
+						if(msg.result == "success") {
+							console.log("droneProjectId = " + droneProjectId + ", droneProjectStatus = " + droneProjectStatus);
+							if (msg.transferDataListSize > 0) {
+								viewer.entities.remove(BILLBOARD_ARRAY[index]);
+								drawDroneMovingPath(index, droneProjectId, msg);
+								
+								// 이전 layer를 그리면서 깜박이는 현상을 없애기 위해 그리고 나서 삭제
+								if(droneProjectStatus !== "4" && droneProjectStatus !== "5") {
+									setTimeout(function() {
+										viewer.entities.remove(DRONE_PATH_ARRAY[index]);
+									}, INTERVALTIME/2);
+								}
+							}
+						} else {
+							console.log(JS_MESSAGE[msg.result]);
+						}
+					},
+					error:function(request, status, error) {
+						console.log(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+					}
+				});
+			}, INTERVALTIME);
+		}
 	}
 	
 	// 가장 최근 프로젝트 중 종료와 에러 이외의 프로젝트만 표시
@@ -309,26 +333,24 @@
 		});
 	}
     
-	//<input type="button" id="viewDroneImageButton" name="viewDroneImageButton" onclick="changeDroneImageLayer('${droneProject.drone_project_id }'); return false;" 
-	//	style="width: 90px; height: 25px;" value="이미지 표시" />
-	//<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
-	function changeDroneImageLayer(index, droneProjectId) {
+	// 프로젝트 개별 정사 영사 표시/비표시
+	function changeDroneImageLayer(index, droneProjectId, droneProjectStatus) {
 		if($("#layter_" + droneProjectId).val() === "0") {
 			// 표시 버튼 클릭
 			$("#layter_" + droneProjectId).val("1");
 			$("#droneImage_" + droneProjectId).val("이미지 비표시");
-			drawDetailDroneImage(index, true, droneProjectId);
+			drawDetailDroneImage(index, true, droneProjectId, droneProjectStatus);
 		} else {
 			// 비표시 버튼 클릭
 			$("#layter_" + droneProjectId).val("0");
 			$("#droneImage_" + droneProjectId).val("이미지 표시");
 			clearInterval(DORNE_IMAGE_INTERVAL_ARRAY[index])
-			drawDetailDroneImage(index, false, droneProjectId);
+			drawDetailDroneImage(index, false, droneProjectId, droneProjectStatus);
 		}
 	}
 	
 	// 드론 이미지를 geoserver layer를 이용해서 그림
-   	function drawDetailDroneImage(index, drawFlag, droneProjectId) {
+   	function drawDetailDroneImage(index, drawFlag, droneProjectId, droneProjectStatus) {
    		//shootingDate, layerName
    		if(!drawFlag) {
    			// layer 삭제
@@ -337,17 +359,16 @@
    			return;
    		} 
 		
-   		drawInterval(index, droneProjectId, false);
-   		var droneImageInterval = setInterval(function() {
-   			drawInterval(index, droneProjectId, true);
-   		}, intervalTime);
-   		
-   		DORNE_IMAGE_INTERVAL_ARRAY[index] = droneImageInterval
-
+   		drawDroneShooting(index, droneProjectId, false);
+   		if(droneProjectStatus !== "4" && droneProjectStatus !== "5") {
+			DORNE_IMAGE_INTERVAL_ARRAY[index] = setInterval(function() {
+													drawDroneShooting(index, droneProjectId, true);
+	   		}, INTERVALTIME);
+   		}
 	}
 	
 	// 이미지 그리는 건데 ... 메소드 명은 .. 음 .. 
-	function drawInterval(index, droneProjectId, deleteFlag) {
+	function drawDroneShooting(index, droneProjectId, deleteFlag) {
 		$.ajax({
 			url: "/drone-project/" + droneProjectId + "/transfer-datas",
 			type: "GET",
@@ -355,18 +376,22 @@
 			dataType: "json",
 			success: function(msg){
 				if(msg.result == "success") {
-					var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index];
-					var postDetectedObjectsProvider = DETECTED_OBJECTS_PROVIDER_ARRAY[index];
+					// 파일 갯수가 동일하지 않을때만 다시 그림
+					if(TRANSFER_DATA_COUNT_ARRAY[index] !== msg.transferDataListSize) {
+						var postDroneImageLayer = DRONE_IMAGE_PROVIDER_ARRAY[index];
+						var postDetectedObjectsProvider = DETECTED_OBJECTS_PROVIDER_ARRAY[index];
+							
+						// 새로운 이미지 생성
+						drawDroneLayer(index, droneProjectId, msg);
+						drawDetectedObjects(index, droneProjectId,msg);
 						
-					// 새로운 이미지 생성
-					drawDroneLayer(index, droneProjectId, msg);
-					drawDetectedObjects(index, droneProjectId,msg);
-					
-					if (deleteFlag) {
-						setTimeout(function() {
-							viewer.imageryLayers.remove(postDroneImageLayer, true);
-							viewer.imageryLayers.remove(postDetectedObjectsProvider, true);
-						}, intervalTime/2)
+						if (deleteFlag) {
+							setTimeout(function() {
+								viewer.imageryLayers.remove(postDroneImageLayer, true);
+								viewer.imageryLayers.remove(postDetectedObjectsProvider, true);
+							}, INTERVALTIME/2)
+						}
+						TRANSFER_DATA_COUNT_ARRAY[index] = msg.transferDataListSize;
 					}
 				} else {
 					console.log(JS_MESSAGE[msg.result]);
@@ -449,8 +474,6 @@
 	    
    		DETECTED_OBJECTS_PROVIDER_ARRAY[index] = viewer.imageryLayers.addImageryProvider(provider);
    	}
-	
-	
 	
 	// 드론 이동 경로 표시    
     function drawDroneMovingPath(index, droneProjectId, msg) {

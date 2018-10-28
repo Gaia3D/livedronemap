@@ -23,12 +23,16 @@ import gaia3d.domain.PageType;
 import gaia3d.domain.Pagination;
 import gaia3d.domain.TransferData;
 import gaia3d.service.DroneProjectService;
-import gaia3d.service.DroneService;
 import gaia3d.service.TransferDataService;
 import gaia3d.util.DateUtil;
 import gaia3d.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 프로젝트 가시화
+ * @author Cheon JeongDae
+ *
+ */
 @Slf4j
 @RequestMapping("/drone-project/")
 @Controller
@@ -61,10 +65,10 @@ public class DroneProjectController {
 												totalCount, 
 												Long.valueOf(pageNo).longValue(), 
 												droneProject.getList_counter());
-		log.info("@@ pagination = {}", pagination);
 		
 		droneProject.setOffset(pagination.getOffset());
 		droneProject.setLimit(pagination.getPageRows());
+		
 		List<DroneProject> droneProjectList = new ArrayList<>();
 		if(totalCount > 0l) {
 			droneProjectList = droneProjectService.getListDroneProject(droneProject);
@@ -137,6 +141,7 @@ public class DroneProjectController {
 	/**
 	 * TODO 외부 api, 내부 api, 일반적인 url 3 종류로 url을 구분하자.
 	 * @param request
+	 * @param drone_project_id
 	 * @return
 	 */
 	@GetMapping("{drone_project_id}/transfer-datas")
@@ -172,7 +177,7 @@ public class DroneProjectController {
 	}
 	
 	/**
-	 * TODO total-count? 
+	 * TODO 이름을 바꾸고.... count 검사하고.... 다르면 데이터도 가져감, 원샷 여러 킬....
 	 * @param request
 	 * @param drone_project_id
 	 * @return
