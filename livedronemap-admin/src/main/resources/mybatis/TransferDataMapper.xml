@@ -11,6 +11,13 @@
 		WHERE drone_project_id = #{drone_project_id}
 		ORDER BY shooting_date DESC, transfer_data_id DESC
 	</select>
+	
+	<!-- count of transfer data -->
+	<select id="getTransferDataCount" parameterType="integer"  resultType="integer" >
+		/* getTransferDataCount */
+		SELECT COUNT(transfer_data_id) FROM transfer_data
+		WHERE drone_project_id = #{drone_project_id}
+	</select>
 
 	<!-- transfer data 등록 -->
 	<insert id="insertTransferData" parameterType="transferData" >

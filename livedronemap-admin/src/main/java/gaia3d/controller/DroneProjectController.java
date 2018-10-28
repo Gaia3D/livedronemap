@@ -23,6 +23,7 @@ import gaia3d.domain.PageType;
 import gaia3d.domain.Pagination;
 import gaia3d.domain.TransferData;
 import gaia3d.service.DroneProjectService;
+import gaia3d.service.DroneService;
 import gaia3d.service.TransferDataService;
 import gaia3d.util.DateUtil;
 import gaia3d.util.StringUtil;
@@ -103,9 +104,39 @@ public class DroneProjectController {
 	}
 	
 	/**
+	 * 드론 프로젝트 조회 by 프로젝트 id
+	 * @param request
+	 * @return
+	 */
+	@GetMapping("{drone_project_id}")
+	@ResponseBody
+	public Map<String, Object> getDroneProject(HttpServletRequest request, @PathVariable Integer drone_project_id) {
+		log.info("@@@@@@@@@@ drone_project_id = {}", drone_project_id);
+		
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+			if(drone_project_id == null || drone_project_id.intValue() <= 0) {
+				result = "drone.project.id.require";
+				map.put("result", result);
+				return map;
+			}
+			
+			DroneProject droneProject = droneProjectService.getDroneProject(drone_project_id);
+			map.put("droneProject", droneProject);
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
+	/**
 	 * TODO 외부 api, 내부 api, 일반적인 url 3 종류로 url을 구분하자.
 	 * @param request
-	 * @param drone
 	 * @return
 	 */
 	@GetMapping("{drone_project_id}/transfer-datas")
@@ -130,6 +161,39 @@ public class DroneProjectController {
 			map.put("viewTransferData", viewTransferData);
 			map.put("transferDataList", transferDataList);
 			map.put("transferDataListSize", transferDataList.size());
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
+	/**
+	 * TODO total-count? 
+	 * @param request
+	 * @param drone_project_id
+	 * @return
+	 */
+	@GetMapping("{drone_project_id}/transfer-datas/count")
+	@ResponseBody
+	public Map<String, Object> getTransferDataCount(HttpServletRequest request, @PathVariable Integer drone_project_id) {
+		log.info("@@@@@@@@@@ drone_project_id = {}", drone_project_id);
+		
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		try {
+			if(drone_project_id == null || drone_project_id.intValue() <= 0) {
+				result = "drone.project.id.require";
+				map.put("result", result);
+				return map;
+			}
+			
+			int transferDataCount = transferDataService.getTransferDataCount(drone_project_id);
+			
+			map.put("transferDataCount", transferDataCount);
 			
 		} catch(Exception e) {
 			e.printStackTrace();

@@ -19,6 +19,13 @@ public interface TransferDataMapper {
 	 * @return
 	 */
 	List<TransferData> getListTransferData(Integer drone_project_id);
+
+	/**
+	 * count of total transfer data
+	 * @param drone_project_id
+	 * @return
+	 */
+	int getTransferDataCount(Integer drone_project_id);
 	
 	/**
 	 * transfer data insert
@@ -33,4 +40,6 @@ public interface TransferDataMapper {
 	 * @return
 	 */
 	int updateTransferData(TransferData transferData);
+
+	
 }

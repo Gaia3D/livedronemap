@@ -188,7 +188,23 @@
 	var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
 	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
-
+	
+	// 배경지도 일단 보류 
+	/* var imageryProvider = new Cesium.WebMapServiceImageryProvider({
+		url : '${policy.geoserver_data_url}/wms',
+		layers : "livedronemap:background",
+		parameters : {
+			service : 'WMS'
+			,version : '1.1.1'
+			,request : 'GetMap'
+			,transparent : 'true'
+			,tiled : 'true'
+			,format : 'image/png'
+		}
+		//,proxy: new Cesium.DefaultProxy('/proxy/')
+		,enablePickFeatures: false
+	}); */
+	
 	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
     // 드론 촬영 이미지를 그리는 geoserver layer
@@ -215,7 +231,7 @@
 	</c:forEach>
 	
 	$(document).ready(function() {
-		// cameraFlyTo(127.827348, 36.590489, 2000000, 3);
+		$("#projectMenu").addClass("on");
 		// drawDroneProject();
 		
 		initJqueryCalendar();

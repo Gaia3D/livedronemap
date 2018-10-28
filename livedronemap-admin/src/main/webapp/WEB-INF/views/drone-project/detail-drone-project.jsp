@@ -43,7 +43,7 @@
 		<!-- E: 프로젝트 제목, 목록가기, 닫기 -->
 		
 		<!-- S: 프로젝트 정보 -->
-		<ul class="projectInfo">
+		<ul id="projectInfo" class="projectInfo">
 						<li class="half" title="촬영일자"><label class="date" >촬영일자</label>${droneProject.viewShootingDate}</li>
 						<li class="half">
 							<label class="step">진행단계</label>
@@ -91,7 +91,7 @@
 						<li class="half" class="half" title="후처리영상">
 							<label class="hc">후처리영상</label>
 							<span>${droneProject.postprocessing_image_count }</span>장</li>
-						<li>
+						</li>
 					</ul>
 		<!-- E: 프로젝트 정보 -->
 				
@@ -112,7 +112,7 @@
 							<th scope="col" class="col-name" style="width: 68%;">[구분] 파일명 (탐지)</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="transferDataList">
 <c:if test="${empty transferDataList }">
 						<tr>
 							<td colspan="3" class="col-none">전송 이력이 존재하지 않습니다.</td>
@@ -151,7 +151,9 @@
 									onclick="refreshDroneImage('${transferData.drone_project_id}', 
 																'${transferData.transfer_data_id}', 
 																'${transferData.data_type}', 
-																'${transferData.viewLayerShootingDate}'); return false;">${transferData.file_name }</a>
+																'${transferData.viewLayerShootingDate}',
+																${transferData.drone_latitude},
+																${transferData.drone_longitude});">${transferData.file_name }</a>
 								(${transferData.ortho_detected_object_count })
 							</td>
 						</tr>
@@ -166,6 +168,10 @@
 	<!-- E: 1depth / 프로젝트 목록 -->
 	
 	<div id="droneMapContainer" class="mapWrap">
+		<div style="position: absolute; z-index: 1; margin-top: 8px; right: 200px;">
+			<input type="button" id="autoRefreshButton" style="font-size: 20px;" value="영상 자동 갱신 끄기" />
+			<input type="hidden" id="autoRefreshFlag" value="0" />
+		</div>
 		<%@ include file="/WEB-INF/views/drone-project/featureInfo.jsp" %>
 	</div>
 	
@@ -196,19 +202,63 @@
 	var DRONE_IMAGE_PROVIDER = null;
 	// 객체 탐지를 그리는 geoserver layer
 	var DETECTED_OBJECTS_PROVIDER = null; 
+	// 드론 경로
+	var DRONE_PATH = null;
+	// 드론 아이콘 
+	var BILLBOARD = null;
+	// 드론 영상 갱신 Interval
+	var DRONE_REFRESH_INTERVAL = null;
+	var INTERVAL_TIME = 5000;  // TODO: policy에 추가 
+	// 영상 개수 저장 
+	var TRANSFER_DATA_COUNT = ${transferDataListSize};
+	var LAST_TRANSFER_DATA = null;
 	
   	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
   	$(document).ready(function() {
+		$("#projectMenu").addClass("on");
   		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);
 		// drawDroneProject();
 		// drawDetailDroneImage("${viewTransferData.viewLayerShootingDate}", "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
-		drawDetailDroneImage(null, "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
-		drawDetectedObjects("transfer_data_id=${viewTransferData.transfer_data_id}", "livedronemap:view_ortho_detected_object");
+		setDrawInterval(null, "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
 	});
+  	
+  	function setDrawInterval(shootingDate, layerName) {
+  		drawDetailDroneImage(shootingDate, layerName);
+  		drawDetectedObjects("transfer_data_id=${viewTransferData.transfer_data_id}", "livedronemap:view_ortho_detected_object");
+  		
+  		DRONE_REFRESH_INTERVAL = setInterval(function() {
+  			var postDroneImageLayer = DRONE_IMAGE_PROVIDER
+  			var postDetectedObjects = DETECTED_OBJECTS_PROVIDER
+  			
+  			var transferDataid = ${viewTransferData.transfer_data_id}
+  			if (LAST_TRANSFER_DATA) {
+  				transferDataId =  LAST_TRANSFER_DATA.transfer_data_id;
+  				cameraFlyTo(LAST_TRANSFER_DATA.drone_longitude, LAST_TRANSFER_DATA.drone_latitude, viewer.camera.positionCartographic.height, 1);
+  				LAST_TRANSFER_DATA = null;
+  			}
+  			
+  			drawDetectedObjects("transfer_data_id=" + transferDataid, "livedronemap:view_ortho_detected_object");
+  			drawDetailDroneImage(shootingDate, layerName);
+  			
+  			setTimeout(function() {
+  				viewer.imageryLayers.remove(postDroneImageLayer, true);
+  				viewer.imageryLayers.remove(postDetectedObjects, true);
+  			}, INTERVAL_TIME/2);
+  			
+  		}, INTERVAL_TIME);
+  	}
   	
 	// 2.5초 후에 드론 비행 경로를 그림
    	var droneMovingPathTimer = setTimeout(function() {
-		drawDroneMovingPath();
+   		var transferDataList = new Array();
+   		<c:if test="${!empty transferDataList }">
+   			<c:forEach var="transferData" items="${transferDataList}" varStatus="status">
+   				transferDataList.push(parseFloat("${transferData.drone_longitude}"));
+   				transferDataList.push(parseFloat("${transferData.drone_latitude}"));
+   				transferDataList.push(parseFloat("${transferData.drone_altitude}"));
+   			</c:forEach>
+   		</c:if>
+		drawDroneMovingPath(transferDataList);
    	}, 2500);
 
 	// 클릭 프로젝트
@@ -246,7 +296,7 @@
    			time_parameter = "P10Y/PRESENT";
    		}
    		
-	   	if(DRONE_IMAGE_PROVIDER !== null && DRONE_IMAGE_PROVIDER !== undefined) {
+	   	if($("#autoRefreshFlag").val() == "1" && DRONE_IMAGE_PROVIDER !== null && DRONE_IMAGE_PROVIDER !== undefined) {
 	    	viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER, true);
 	    }
 	   	
@@ -286,13 +336,12 @@
    		var now = new Date();
 		var rand = ( now - now % 5000) / 5000;
    		
-   		if(DETECTED_OBJECTS_PROVIDER !== null && DETECTED_OBJECTS_PROVIDER !== undefined) {
+   		if($("#autoRefreshFlag").val() == "1" && DETECTED_OBJECTS_PROVIDER !== null && DETECTED_OBJECTS_PROVIDER !== undefined) {
 	    	viewer.imageryLayers.remove(DETECTED_OBJECTS_PROVIDER, true);
 	    }
    		
    		var infoList = new Array();
    		infoList.push(new Cesium.GetFeatureInfoFormat("json", "application/json", CallbackGetFeatureInfo))
-   		
 	   	
 	    var provider = new Cesium.WebMapServiceImageryProvider({
 			url : '${policy.geoserver_data_url}/wms',
@@ -341,19 +390,7 @@
 			
 		}
 		$("#featureInfoLayer").show();
-		/*
-		properties:
-			detected_date: "2018-09-29T11:38:00Z"
-			latitude: 34.7651373676212
-			length: 30
-			longitude: 128.382757714281
-			object_type: "0"
-			orientation: 260
-			ortho_detected_object_id: 29
-			speed: 12
-			transfer_data_id: 296
-		*/
-		// var featureHtml = "<h3>객체 속성</h3><p>객체 ID: </p><p>객체 종류: </p><p>탐지 일시: </p><p>위도: </p><p>경도: </p><p>방향: </p><p>속도: </p><p>길이: </p>"
+	
 	}
    	
    	function closeFeatureInfo() {
@@ -361,16 +398,13 @@
    	}
 
 	// 드론 이동 경로 표시    
-    function drawDroneMovingPath() {
-   		var transferDataList = new Array();
-<c:if test="${!empty transferDataList }">
-	<c:forEach var="transferData" items="${transferDataList}" varStatus="status">
-		transferDataList.push("${transferData.drone_longitude}");
-		transferDataList.push("${transferData.drone_latitude}");
-		transferDataList.push("${transferData.drone_altitude}");
-	</c:forEach>
-</c:if>
-		viewer.entities.add({
+    function drawDroneMovingPath(transferDataList) {
+		
+		if (DRONE_PATH) {
+			viewer.entities.remove(DRONE_PATH);
+		};
+		
+		DRONE_PATH = viewer.entities.add({
 		    name : '드론 비행 경로',
 		    polyline : {
 		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
@@ -382,8 +416,12 @@
 		    }
 		});
 		
+		if (BILLBOARD) {
+			viewer.entities.remove(BILLBOARD);
+		};
+		
 		// 드론 이미지
-		viewer.entities.add({
+		BILLBOARD = viewer.entities.add({
 	        position : Cesium.Cartesian3.fromDegrees(parseFloat(transferDataList[0]), parseFloat(transferDataList[1]), parseFloat(transferDataList[2])),
 	        billboard : {
 	            image : '/images/drone.png',
@@ -408,14 +446,19 @@
    	viewer.zoomTo(viewer.entities);
    	
    	// 파일 클릭시 drome image, 객체 탐지 geoserver layer를 다시 그림
-   	function refreshDroneImage(droneProjectId, transferDataId, dataType, shootingDate) {
+   	function refreshDroneImage(droneProjectId, transferDataId, dataType, shootingDate, droneLatitude, droneLongitude) {
 		// TODO 이동할 위치 정보가 없음. image point를 받아야 함
-   		//cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 500, 3);
+		if ($("#autoRefreshFlag").val() == "0") {
+			$("#autoRefreshButton").val("영상 자동 갱신 켜기")
+			$("#autoRefreshFlag").val("1")
+			clearInterval(DRONE_REFRESH_INTERVAL);
+		}
+   		cameraFlyTo(droneLongitude, droneLatitude, viewer.camera.positionCartographic.height, 3);
    		drawDetailDroneImage(shootingDate, "livedronemap:livedronemap_" + droneProjectId + "_" + dataType);
-   		drawDetectedObjects("transfer_data_id=" + transferDataId, "livedronemap:view_ortho_detected_object");
+   		// drawDetectedObjects("transfer_data_id=" + transferDataId, "livedronemap:view_ortho_detected_object");
    	}
    			
-   	 // 현재 클릭 포인트 위치 좌표.
+   	// 현재 클릭 포인트 위치 좌표.
    	viewer.canvas.addEventListener('click', function(e){
    	    var mousePosition = new Cesium.Cartesian2(e.clientX, e.clientY);
    	    var ellipsoid = viewer.scene.globe.ellipsoid;
@@ -430,6 +473,178 @@
    	    }
    		
    	}, false);
+   	
+	// 추가 영상 있는지 확인   	
+   	setInterval(function() {
+   		var droneProjectId = ${droneProject.drone_project_id};
+   		
+   		$.ajax({
+			url: "/drone-project/" + droneProjectId + "/transfer-datas/count",
+			type: "GET",
+			data: null,
+			dataType: "json",
+			success: function(msg){
+				if(msg.result == "success") {
+					if (msg.transferDataCount > TRANSFER_DATA_COUNT) {
+						refreshDroneProject(droneProjectId);
+						refreshTransferData(droneProjectId);
+					}
+				} else {
+					console.log(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request, status, error){
+				console.log(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+			}
+		});
+   		
+   	}, 5000)
+	
+	// 프로젝트 정보 갱신
+	function refreshDroneProject(droneProjectId) {
+   		$.ajax({
+			url: "/drone-project/" + droneProjectId,
+			type: "GET",
+			data: null,
+			dataType: "json",
+			success: function(msg){
+				if(msg.result == "success") {
+					var droneProject = msg.droneProject;
+					var droneProjectStatus = droneProject.status;
+					var droneProjectStatusText = "";
+					var droneProjectStatusColor = "";
+					if (droneProjectStatus == "0") {
+						droneProjectStatusText = "준비중";
+						droneProjectStatusColor = "gray";
+					} else if (droneProjectStatus == "1") {
+						droneProjectStatusText = "점검/테스트";
+						droneProjectStatusColor = "gray";
+					} else if (droneProjectStatus == "2") {
+						droneProjectStatusText = "개별 정사영상";
+						droneProjectStatusColor = "#19cc3c";
+					} else if (droneProjectStatus == "3") {
+						droneProjectStatusText = "후처리 영상";
+						droneProjectStatusColor = "blue";
+					} else if (droneProjectStatus == "4") {
+						droneProjectStatusText = "프로젝트 종료";
+						droneProjectStatusColor = "gray";
+					}
+					
+					var ulHtml = '<li class="half" title="촬영일자"><label class="date" >촬영일자</label>' + droneProject.viewShootingDate + '</li>';
+					ulHtml += '<li class="half"><label class="step">진행단계</label>' 
+							+ '<span style="display: inline-block; width: 100px; color:' + droneProjectStatusColor + '; font-weight: bold;">' 
+							+ droneProjectStatusText + '</span></li>';
+					ulHtml += '<li title="촬영지역"><label class="location">촬영지역</label>' + droneProject.shooting_area + '</li>';
+					ulHtml += '<li class="half" title="실시간정사영상"><label class="js">정사영상</label>' 
+							+ '<span>' + droneProject.ortho_image_count + '</span>장' 
+							+ '<ul class="detect"><li class="ship">' + droneProject.ortho_detected_object_count + '</li>' 
+							+ '<li class="oil">' + droneProject.ortho_detected_object_count + '</li></ul></li>';
+					ulHtml += '<li class="half" class="half" title="후처리영상">' 
+							+ '<label class="hc">후처리영상</label><span>' + droneProject.postprocessing_image_count + '</span>장</li>';
+					
+					$("#projectInfo").html(ulHtml);
+					
+				} else {
+					console.log(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request, status, error){
+				console.log(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+			}
+		});
+	}
+   	
+	// 영상 목록 갱신
+   	function refreshTransferData(droneProjectId) {
+   		$.ajax({
+			url: "/drone-project/" + droneProjectId + "/transfer-datas",
+			type: "GET",
+			data: null,
+			dataType: "json",
+			success: function(msg){
+				if(msg.result == "success") {
+					var transderDataPositionList = new Array();
+					var transferDataList = msg.transferDataList;
+					var transferDataListSize = msg.transferDataListSize;
+					
+					var tableHtml = "";
+					
+					for(var i=0; i < transferDataListSize; i++ ) {
+						var transferData = transferDataList[i];
+						
+						transderDataPositionList.push(parseFloat(transferData.drone_longitude));
+						transderDataPositionList.push(parseFloat(transferData.drone_latitude));
+						transderDataPositionList.push(parseFloat(transferData.drone_altitude));
+						
+						var transferDataStatus = transferData.status;
+						var transferDataStatusText = "";
+						if (transferDataStatus == '0') {
+							transferDataStatusText = '전송';
+						} else if (transferDataStatus == '1') {
+							transferDataStatusText = '완료';
+						} else if (transferDataStatus == '2'){ 
+							transferDataStatusText = '실패';
+						} else if (transferDataStatus == '3') {
+							transferDataStatusText = '에러';
+						}
+						var transferDataType = transferData.data_type;
+						var transferDataTypeText = "";
+						if (transferDataType == "0") {
+							transferDataTypeText = "[ O ]"
+						} else if (transferDataType == "1") {
+							transferDataTypeText = "[ P ]"
+						}
+						
+						tableHtml += '<tr><td class="col-number" >' + (transferDataListSize-i) + '</td>';
+						tableHtml += '<td class="col-toggle"><span class="icon-text">' + transferDataStatusText + '</span></td>';
+						tableHtml += '</td><td class="col-number">' + transferDataTypeText 
+									+ '<a href="#" class="view-group-detail" onclick="refreshDroneImage(\'' 
+									+ droneProjectId + "','"
+									+ transferData.transfer_data_id + "','"
+									+ transferDataType + "','" 
+									+ transferData.viewLayerShootingDate + "',"
+									+ transferData.drone_latitude + ","
+									+ transferData.drone_longitude + ');">'
+									+ transferData.file_name + '</a>'
+									+ '(' + transferData.ortho_detected_object_count + ')</td></tr>';
+					}
+					
+					$("#transferDataList").html(tableHtml);
+					TRANSFER_DATA_COUNT = transferDataListSize;
+					LAST_TRANSFER_DATA = transferDataList[0];
+					
+					drawDroneMovingPath(transderDataPositionList);
+					
+				} else {
+					console.log(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request, status, error){
+				console.log(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+			}
+		});
+   	}
+	
+	$("#autoRefreshButton").click(function() {
+		if ($("#autoRefreshFlag").val() == "0") {
+			$("#autoRefreshButton").val("영상 자동 갱신 켜기")
+			$("#autoRefreshFlag").val("1")
+			clearInterval(DRONE_REFRESH_INTERVAL);
+			
+		} else if ($("#autoRefreshFlag").val() == "1") {
+			$("#autoRefreshButton").val("영상 자동 갱신 끄기")
+			$("#autoRefreshFlag").val("0")
+			
+			if(DRONE_IMAGE_PROVIDER !== null && DRONE_IMAGE_PROVIDER !== undefined) {
+		    	viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER, true);
+		    }
+			if(DETECTED_OBJECTS_PROVIDER !== null && DETECTED_OBJECTS_PROVIDER !== undefined) {
+		    	viewer.imageryLayers.remove(DETECTED_OBJECTS_PROVIDER, true);
+		    }
+			setDrawInterval(null, "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
+		} 
+	});
+	
 </script>
 </body>
 </html>

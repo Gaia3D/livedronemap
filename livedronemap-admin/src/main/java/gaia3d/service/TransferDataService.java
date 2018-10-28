@@ -21,6 +21,13 @@ public interface TransferDataService {
 	List<TransferData> getListTransferData(Integer drone_project_id);
 
 	/**
+	 * count of total transfer data
+	 * @param drone_project_id
+	 * @return
+	 */
+	int getTransferDataCount(Integer drone_project_id);
+	
+	/**
 	 * transfer data insert
 	 * @param fileInfo
 	 * @param transferDataResource

@@ -73,6 +73,15 @@ public class TransferDataServiceImpl implements TransferDataService {
 	public List<TransferData> getListTransferData(Integer drone_project_id) {
 		return transferDataMapper.getListTransferData(drone_project_id);
 	}
+
+	/**
+	 * count of total transfer data
+	 * @param drone_project_id
+	 * @return
+	 */
+	public int getTransferDataCount(Integer drone_project_id) {
+		return transferDataMapper.getTransferDataCount(drone_project_id);
+	}
 	
 	/**
 	 * transfer data insert
@@ -219,4 +228,5 @@ public class TransferDataServiceImpl implements TransferDataService {
 		log.info("callImageProcessing body = {}", response.getBody());
 		return response.getStatusCode();
 	}
+
 }
