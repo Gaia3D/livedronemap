@@ -38,11 +38,11 @@ public class SimulationController {
 			@RequestParam(defaultValue="1") String pageNo, Model model) {
 		
 		log.info("@@ simulationLog = {}", simulationLog);
-		if(StringUtil.isNotEmpty(simulationLog.getSearch_start_date())) {
-			simulationLog.setSearch_start_date(simulationLog.getSearch_start_date().substring(0, 8) + DateUtil.START_TIME);
+		if(StringUtil.isNotEmpty(simulationLog.getStart_date())) {
+			simulationLog.setStart_date(simulationLog.getStart_date().substring(0, 8) + DateUtil.START_TIME);
 		}
-		if(StringUtil.isNotEmpty(simulationLog.getSearch_end_date())) {
-			simulationLog.setSearch_end_date(simulationLog.getSearch_end_date().substring(0, 8) + DateUtil.END_TIME);
+		if(StringUtil.isNotEmpty(simulationLog.getEnd_date())) {
+			simulationLog.setEnd_date(simulationLog.getEnd_date().substring(0, 8) + DateUtil.END_TIME);
 		}
 		
 		long totalCount = simulationLogService.getSimulationLogTotalCount(simulationLog);
@@ -95,15 +95,13 @@ public class SimulationController {
 			buffer.append("search_value=");
 		}
 		buffer.append("&");
-		buffer.append("search_type=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getSearch_type() : request.getParameter("search_type")));
+		buffer.append("simulation_type=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getSimulation_type() : request.getParameter("simulation_type")));
 		buffer.append("&");
-		buffer.append("search_status=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getSearch_status() : request.getParameter("search_status")));
+		buffer.append("status=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getStatus() : request.getParameter("status")));
 		buffer.append("&");
-		buffer.append("search_date=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getSearch_date() : request.getParameter("search_date")));
+		buffer.append("start_date=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getStart_date() : request.getParameter("start_date")));
 		buffer.append("&");
-		buffer.append("search_start_date=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getSearch_start_date() : request.getParameter("search_start_date")));
-		buffer.append("&");
-		buffer.append("search_end_date=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getSearch_end_date() : request.getParameter("search_end_date")));
+		buffer.append("end_date=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getEnd_date() : request.getParameter("end_date")));
 		buffer.append("&");
 		buffer.append("order_word=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getOrder_word() : request.getParameter("order_word")));
 		buffer.append("&");

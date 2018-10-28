@@ -17,6 +17,7 @@ import gaia3d.domain.PageType;
 import gaia3d.domain.Pagination;
 import gaia3d.service.HealthCheckLogService;
 import gaia3d.util.DateUtil;
+import gaia3d.util.FormatUtil;
 import gaia3d.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,11 +34,16 @@ public class HealthCheckLogController {
 			@RequestParam(defaultValue="1") String pageNo, Model model) {
 		
 		log.info("@@ healthCheckLog = {}", healthCheckLog);
-		if(StringUtil.isNotEmpty(healthCheckLog.getSearch_start_date())) {
-			healthCheckLog.setSearch_start_date(healthCheckLog.getSearch_start_date().substring(0, 8) + DateUtil.START_TIME);
+		String today = DateUtil.getToday(FormatUtil.YEAR_MONTH_DAY);
+		if(StringUtil.isEmpty(healthCheckLog.getStart_date())) {
+			healthCheckLog.setStart_date(today.substring(0,4) + DateUtil.START_DAY_TIME);
+		} else {
+			healthCheckLog.setStart_date(healthCheckLog.getStart_date().substring(0, 8) + DateUtil.START_TIME);
 		}
-		if(StringUtil.isNotEmpty(healthCheckLog.getSearch_end_date())) {
-			healthCheckLog.setSearch_end_date(healthCheckLog.getSearch_end_date().substring(0, 8) + DateUtil.END_TIME);
+		if(StringUtil.isEmpty(healthCheckLog.getEnd_date())) {
+			healthCheckLog.setEnd_date(today + DateUtil.END_TIME);
+		} else {
+			healthCheckLog.setEnd_date(healthCheckLog.getEnd_date().substring(0, 8) + DateUtil.END_TIME);
 		}
 		
 		long totalCount = healthCheckLogService.getHealthCheckLogTotalCount(healthCheckLog);
@@ -88,11 +94,11 @@ public class HealthCheckLogController {
 			buffer.append("search_value=");
 		}
 		buffer.append("&");
-		buffer.append("search_status=" + StringUtil.getDefaultValue(isListPage ? healthCheckLog.getSearch_status() : request.getParameter("search_status")));
+		buffer.append("status=" + StringUtil.getDefaultValue(isListPage ? healthCheckLog.getStatus() : request.getParameter("status")));
 		buffer.append("&");
-		buffer.append("search_start_date=" + StringUtil.getDefaultValue(isListPage ? healthCheckLog.getSearch_start_date() : request.getParameter("search_start_date")));
+		buffer.append("start_date=" + StringUtil.getDefaultValue(isListPage ? healthCheckLog.getStart_date() : request.getParameter("start_date")));
 		buffer.append("&");
-		buffer.append("search_end_date=" + StringUtil.getDefaultValue(isListPage ? healthCheckLog.getSearch_end_date() : request.getParameter("search_end_date")));
+		buffer.append("end_date=" + StringUtil.getDefaultValue(isListPage ? healthCheckLog.getEnd_date() : request.getParameter("end_date")));
 		buffer.append("&");
 		buffer.append("order_word=" + StringUtil.getDefaultValue(isListPage ? healthCheckLog.getOrder_word() : request.getParameter("order_word")));
 		buffer.append("&");

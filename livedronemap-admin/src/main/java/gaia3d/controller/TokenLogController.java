@@ -37,11 +37,11 @@ public class TokenLogController {
 	public String listTokenLog(HttpServletRequest request, TokenLog tokenLog, @RequestParam(defaultValue="1") String pageNo, Model model) {
 		
 		log.info("@@ tokenLog = {}", tokenLog);
-		if(StringUtil.isNotEmpty(tokenLog.getSearch_start_date())) {
-			tokenLog.setSearch_start_date(tokenLog.getSearch_start_date().substring(0, 8) + DateUtil.START_TIME);
+		if(StringUtil.isNotEmpty(tokenLog.getStart_date())) {
+			tokenLog.setStart_date(tokenLog.getStart_date().substring(0, 8) + DateUtil.START_TIME);
 		}
-		if(StringUtil.isNotEmpty(tokenLog.getSearch_end_date())) {
-			tokenLog.setSearch_end_date(tokenLog.getSearch_end_date().substring(0, 8) + DateUtil.END_TIME);
+		if(StringUtil.isNotEmpty(tokenLog.getEnd_date())) {
+			tokenLog.setEnd_date(tokenLog.getEnd_date().substring(0, 8) + DateUtil.END_TIME);
 		}
 		
 		long totalCount = tokenLogService.getTokenLogTotalCount(tokenLog);
@@ -95,13 +95,11 @@ public class TokenLogController {
 		buffer.append("&");
 		buffer.append("search_word=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getSearch_word() : request.getParameter("search_type")));
 		buffer.append("&");
-		buffer.append("search_status=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getSearch_status() : request.getParameter("search_status")));
+		buffer.append("token_status=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getToken_status() : request.getParameter("token_status")));
 		buffer.append("&");
-		buffer.append("search_date=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getSearch_date() : request.getParameter("search_date")));
+		buffer.append("start_date=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getStart_date() : request.getParameter("start_date")));
 		buffer.append("&");
-		buffer.append("search_start_date=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getSearch_start_date() : request.getParameter("search_start_date")));
-		buffer.append("&");
-		buffer.append("search_end_date=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getSearch_end_date() : request.getParameter("search_end_date")));
+		buffer.append("end_date=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getEnd_date() : request.getParameter("end_date")));
 		buffer.append("&");
 		buffer.append("order_word=" + StringUtil.getDefaultValue(isListPage ? tokenLog.getOrder_word() : request.getParameter("order_word")));
 		buffer.append("&");

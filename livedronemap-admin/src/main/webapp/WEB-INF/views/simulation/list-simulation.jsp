@@ -27,11 +27,11 @@
 	
 	<div class="contents limited">
 		<h3>시뮬레이션</h3>
-		<form:form id="simulationSearchForm" modelAttribute="simulationLog" method="post" action="/simulation/list-simulation" onsubmit="return searchCheck();">
+		<form:form id="searchForm" modelAttribute="simulationLog" method="post" action="/simulation/list-simulation" onsubmit="return searchCheck();">
 			<ul class="searchForm">
 				<li>
-					<form:label path="search_type"><spring:message code='simulation.type'/></form:label>
-					<form:select path="search_type" class="select">
+					<form:label path="simulation_type"><spring:message code='simulation.type'/></form:label>
+					<form:select path="simulation_type" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
 		  				<form:option value="0"><spring:message code='simulation.type.all'/></form:option>
 		  				<form:option value="1"><spring:message code='simulation.type.client'/></form:option>
@@ -39,8 +39,8 @@
 					</form:select>
 				</li>
 				<li>
-					<form:label path="search_status"><spring:message code='simulation.status'/></form:label>
-					<form:select path="search_status" name="search_status" class="select">
+					<form:label path="status"><spring:message code='simulation.status'/></form:label>
+					<form:select path="status" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
 		  				<form:option value="0"><spring:message code='status.success'/></form:option>
 		  				<form:option value="1"><spring:message code='status.fail'/></form:option>
@@ -57,24 +57,20 @@
 					<form:errors path="search_value" cssClass="error" />
 				</li>
 				<li>
-					<form:label path="search_date"><spring:message code='search.date'/></form:label>
-					<form:select path="search_date" name="search_date" class="select">
-		  				<form:option value="start_date"><spring:message code='search.start.date'/></form:option>
-		  				<form:option value="complete_date"><spring:message code='search.complete.date'/></form:option>
-					</form:select>
-					<input type="text" class="s date" id="search_start_date" name="search_start_date" readonly="readonly" />
+					<label for="start_date"><spring:message code='search.date'/></label>
+					<input type="text" class="s date" id="start_date" name="start_date" />
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="search_end_date" name="search_end_date" readonly="readonly" />
+					<input type="text" class="s date" id="end_date" name="end_date" />
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
 					<form:select path="order_word" name="order_word" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
-						<form:option value="client_id"><spring:message code='client.name'/></form:option>
-	                	<form:option value="simulation_type"><spring:message code='simulation.type'/></form:option>
+						<form:option value="simulation_type"><spring:message code='simulation.type'/></form:option>
 	                	<form:option value="status"><spring:message code='simulation.status'/></form:option>
-	                	<form:option value="start_date"><spring:message code='search.start.date'/></form:option>
-	                	<form:option value="complete_date"><spring:message code='search.complete.date'/></form:option>
+	                	<%-- <form:option value="start_date"><spring:message code='search.start.date'/></form:option>
+	                	<form:option value="complete_date"><spring:message code='search.complete.date'/></form:option> --%>
+	                	<form:option value="insert_date"><spring:message code='search.insert.date'/></form:option>
 					</form:select>
 					<form:select path="order_value" name="order_value" class="select">
 	                	<form:option value="ASC"> <spring:message code='search.ascending'/> </form:option>
@@ -89,11 +85,12 @@
 				</li>
 			</ul>
 			<div class="alignRight">
-				<button type="submit" form="simulationSearchForm" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
+				<button type="submit" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
 			</div>
 		</form:form>
 		
 		<!-- 목록정렬 -->
+		<form:form id="listForm" modelAttribute="simulationLog" method="post">
 		<div class="boardHeader">
 			<p>
 				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
@@ -114,7 +111,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="simulationLog" items="${simulationLogList}" varStatus="status">
+<c:if test="${empty simulationLogList }">
+						<tr>
+							<td colspan="7" class="col-none" style="text-align: center; font-size: 14px;">시뮬레이션 로그가 존재하지 않습니다.</td>
+						</tr>
+</c:if>
+<c:if test="${!empty simulationLogList }">
+	<c:forEach var="simulationLog" items="${simulationLogList}" varStatus="status">
 						<tr>
 							<td class="alignCenter">${pagination.rowNumber - status.index }</td>
 							<c:if test="${simulationLog.simulation_type eq '0'}">
@@ -144,12 +147,15 @@
 							<td class="alignCenter">${simulationLog.viewStart_date}</td>
 							<td class="alignCenter">${simulationLog.viewComplete_date}</td>
 						</tr>
-					</c:forEach>
+	</c:forEach>
+</c:if>
 				</tbody>
 			</table>
 			
 			<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 		</div>
+		</form:form>
+		
 	</div>
 </div>
 
@@ -159,7 +165,7 @@
 		$("#simulationLogMenu").addClass("on");
 		
 		initJqueryCalendar();
-		initCalendar(new Array("search_start_date", "search_end_date"), new Array("${simulationLog.search_start_date}", "${simulationLog.search_end_date}"));
+		initCalendar(new Array("start_date", "end_date"), new Array("${simulationLog.start_date}", "${simulationLog.end_date}"));
 		
 	});
 	
@@ -181,6 +187,27 @@
 		        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
+	}
+	
+	function searchCheck() {
+		if($("#search_option").val() == "1") {
+			if(confirm(JS_MESSAGE["search.option.warning"])) {
+				// go
+			} else {
+				return false;
+			}
+		} 
+		
+		var start_date = $("#start_date").val();
+		var end_date = $("#end_date").val();
+		if(start_date != null && start_date != "" && end_date != null && end_date != "") {
+			if(parseInt(start_date) > parseInt(end_date)) {
+				alert(JS_MESSAGE["search.date.warning"]);
+				$("#start_date").focus();
+				return false;
+			}
+		}
+		return true;
 	}
 </script>
 

@@ -15,25 +15,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TokenLog {
-	
-	// 페이지 처리를 위한 시작
-	private Long offset;
-	// 페이지별 표시할 건수
-	private Long limit;
-
-	/********** 검색 조건 ************/
-	private String search_word;
-	// 검색 옵션. 0 : 일치, 1 : 포함
-	private String search_option;
-	private String search_value;
-	private String search_status;
-	private String search_date;
-	private String search_start_date;
-	private String search_end_date;
-	private String order_word;
-	private String order_value;
-	private Long list_counter = 10l;
+public class TokenLog extends SearchFilter {
 	
 	// 날짜 포맷
 	// TODO 환경설정에서 읽기

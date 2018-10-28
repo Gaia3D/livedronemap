@@ -6,7 +6,8 @@
 	<!-- token 로그 총 개수 -->
 	<select id="getTokenLogTotalCount" parameterType="tokenLog" resultType="long" >
 		/* getTokenLogTotalCount */
-		SELECT COUNT(token_log_id) FROM token_log
+		SELECT COUNT(token_log_id) 
+		FROM token_log
 		<trim prefix="WHERE" prefixOverrides="AND">
 			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
 			AND ${search_word} = #{search_value}
@@ -14,17 +15,17 @@
 			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
 			AND ${search_word} LIKE '%' || #{search_value} || '%'
 			</if>
-			<if test="search_status != null and search_status != ''">
-			AND token_status = #{search_status}
+			<if test="token_status != null and token_status != ''">
+			AND token_status = #{token_status}
 			</if>
-			<if test="search_date != null and search_date != '' and search_start_date != null and search_start_date != ''">
+			<if test="start_date != null and start_date != ''">
 			<![CDATA[
-			AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
-			<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
+			<if test="end_date != null and end_date != ''">
 			<![CDATA[
-			AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
 		</trim>
@@ -35,7 +36,8 @@
 		/* getListTokenLog */
 		SELECT X.*, client_name
 		FROM ( 
-			SELECT * FROM token_log 
+			SELECT * 
+			FROM token_log 
 			<trim prefix="WHERE" prefixOverrides="AND">
 				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
 				AND ${search_word} = #{search_value}
@@ -43,17 +45,17 @@
 				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
 				AND ${search_word} LIKE '%' || #{search_value} || '%'
 				</if>
-				<if test="search_status != null and search_status != ''">
-				AND token_status = #{search_status}
+				<if test="token_status != null and token_status != ''">
+				AND token_status = #{token_status}
 				</if>
-				<if test="search_date != null and search_date != '' and search_start_date != null and search_start_date != ''">
+				<if test="start_date != null and start_date != ''">
 				<![CDATA[
-				AND ${search_date} >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+				AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
 				]]>
 				</if>
-				<if test="search_date != null and search_date != '' and search_end_date != null and search_end_date != ''">
+				<if test="end_date != null and end_date != ''">
 				<![CDATA[
-				AND ${search_date} <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+				AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
 				]]>
 				</if>
 			</trim>

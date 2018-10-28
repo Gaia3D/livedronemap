@@ -9,23 +9,23 @@
 		SELECT COUNT(health_check_log_id) 
 		FROM health_check_log
 		<trim prefix="WHERE" prefixOverrides="AND">
-			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
-			AND client_name = #{search_value}
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
 			</if>
-			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
-			AND client_name LIKE '%' || #{search_value} || '%'
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
 			</if>
-			<if test="search_status != null and search_status != ''">
-			AND status = #{search_status}
+			<if test="status != null and status != ''">
+			AND status = #{status}
 			</if>
-			<if test="search_start_date != null and search_start_date != ''">
+			<if test="start_date != null and start_date != ''">
 			<![CDATA[
-			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
-			<if test="search_end_date != null and search_end_date != ''">
+			<if test="end_date != null and end_date != ''">
 			<![CDATA[
-			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
 		</trim>
@@ -34,25 +34,26 @@
 	<!-- 상태 점검 리스트 조회 -->
 	<select id="gethealthCheckList" parameterType="healthCheckLog" resultType="healthCheckLog">
 		/* gethealthCheckList */
-		SELECT * FROM health_check_log
+		SELECT * 
+		FROM health_check_log
 		<trim prefix="WHERE" prefixOverrides="AND">
-			<if test="search_value != null and search_value != '' and search_option == '0'.toString()">
-			AND client_name = #{search_value}
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
 			</if>
-			<if test="search_value != null and search_value != '' and search_option == '1'.toString()">
-			AND client_name LIKE '%' || #{search_value} || '%'
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
 			</if>
-			<if test="search_status != null and search_status != ''">
-			AND status = #{search_status}
+			<if test="status != null and status != ''">
+			AND status = #{status}
 			</if>
-			<if test="search_start_date != null and search_start_date != ''">
+			<if test="start_date != null and start_date != ''">
 			<![CDATA[
-			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
-			<if test="search_end_date != null and search_end_date != ''">
+			<if test="end_date != null and end_date != ''">
 			<![CDATA[
-			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
 		</trim>

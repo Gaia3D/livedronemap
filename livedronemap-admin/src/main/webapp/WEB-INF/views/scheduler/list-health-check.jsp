@@ -27,11 +27,11 @@
 	
 	<div class="contents limited">
 		<h3>상태 점검</h3>
-		<form:form id="HealthCheckLogSearchForm" modelAttribute="healthCheckLog" method="post" action="/scheduler/list-health-check" onsubmit="return searchCheck();">
+		<form:form id="searchForm" modelAttribute="healthCheckLog" method="post" action="/scheduler/list-health-check" onsubmit="return searchCheck();">
 			<ul class="searchForm">
 				<li>
-					<form:label path="search_status"><spring:message code='simulation.status'/></form:label>
-					<form:select path="search_status" name="search_status" class="select">
+					<form:label path="status"><spring:message code='simulation.status'/></form:label>
+					<form:select path="status" name="status" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
 		  				<form:option value="ALIVE">정상</form:option>
 		  				<form:option value="DOWN">다운</form:option>
@@ -48,17 +48,16 @@
 					<form:errors path="search_value" cssClass="error" />
 				</li>
 				<li>
-					<form:label path="search_start_date"><spring:message code='search.date'/></form:label>
-					<input type="text" class="s date" id="search_start_date" name="search_start_date" readonly="readonly" />
+					<label for="start_date"><spring:message code='search.date'/></label>
+					<input type="text" class="s date" id="start_date" name="start_date" />
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="search_end_date" name="search_end_date" readonly="readonly" />
+					<input type="text" class="s date" id="end_date" name="end_date" />
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
 					<form:select path="order_word" name="order_word" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
-						<form:option value="client_id"><spring:message code='client.name'/></form:option>
-	                	<form:option value="status"><spring:message code='simulation.status'/></form:option>
+						<form:option value="status"><spring:message code='simulation.status'/></form:option>
 	                	<form:option value="insert_date"><spring:message code='search.insert.date'/></form:option>
 					</form:select>
 					<form:select path="order_value" name="order_value" class="select">
@@ -73,10 +72,12 @@
 				</li>
 			</ul>
 			<div class="alignRight">
-				<button type="submit" form="HealthCheckLogSearchForm" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
+				<button type="submit" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
 			</div>
 		</form:form>
+		
 		<!-- 목록정렬 -->
+		<form:form id="listForm" modelAttribute="healthCheckLog" method="post">
 		<div class="boardHeader">
 			<p>
 				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
@@ -96,35 +97,43 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="healthCheckLog" items="${healthCheckLogList}" varStatus="status">
+<c:if test="${empty healthCheckLogList }">
+										<tr>
+											<td colspan="6" class="col-none" style="text-align: center; font-size: 14px;">스케줄 이력이 존재하지 않습니다.</td>
+										</tr>
+</c:if>
+<c:if test="${!empty healthCheckLogList }">
+	<c:forEach var="healthCheckLog" items="${healthCheckLogList}" varStatus="status">
 						<tr>
 							<td class="alignCenter">${pagination.rowNumber - status.index}</td>
 							<td class="alignCenter">${healthCheckLog.client_name}</td>
 							<td class="alignCenter">
-								<c:if test="${healthCheckLog.status == 'ALIVE'}">
+		<c:if test="${healthCheckLog.status == 'ALIVE'}">
 									<span class="alive">정상</span>
-								</c:if>
-								<c:if test="${healthCheckLog.status == 'DOWN'}">
+		</c:if>
+		<c:if test="${healthCheckLog.status == 'DOWN'}">
 									<span class="down">다운</span>
-								</c:if>
-								<c:if test="${healthCheckLog.status == 'UNKNOWN'}">
+		</c:if>
+		<c:if test="${healthCheckLog.status == 'UNKNOWN'}">
 									<span class="unknown">알수없음</span>
-								</c:if>
+		</c:if>
 							</td>
 							<td class="alignCenter">${healthCheckLog.status_code}</td>
 							<td class="alignCenter">
-								<c:if test="${healthCheckLog.message ne '' and healthCheckLog.message ne null}">
+		<c:if test="${healthCheckLog.message ne '' and healthCheckLog.message ne null}">
 									<button type="button" title="<spring:message code='open.message'/>" class="intd"><spring:message code='open.message'/></button>
-								</c:if>
+		</c:if>
 							</td>
 							<td class="alignCenter">${healthCheckLog.viewInsertDate}</td>
 						</tr>
-					</c:forEach>
+	</c:forEach>
+</c:if>
 				</tbody>
 			</table>
 			
 			<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 		</div>
+		</form:form>
 	</div>
 </div>
 
@@ -134,8 +143,29 @@
 		$("#healthCheckMenu").addClass("on");
 		
 		initJqueryCalendar();
-		initCalendar(new Array("search_start_date", "search_end_date"), new Array("${simulationLog.search_start_date}", "${simulationLog.search_end_date}"));
+		initCalendar(new Array("start_date", "end_date"), new Array("${healthCheckLog.start_date}", "${healthCheckLog.end_date}"));
 	});
+	
+	function searchCheck() {
+		if($("#search_option").val() == "1") {
+			if(confirm(JS_MESSAGE["search.option.warning"])) {
+				// go
+			} else {
+				return false;
+			}
+		} 
+		
+		var start_date = $("#start_date").val();
+		var end_date = $("#end_date").val();
+		if(start_date != null && start_date != "" && end_date != null && end_date != "") {
+			if(parseInt(start_date) > parseInt(end_date)) {
+				alert(JS_MESSAGE["search.date.warning"]);
+				$("#start_date").focus();
+				return false;
+			}
+		}
+		return true;
+	}
 </script>
 
 </body>

@@ -15,19 +15,19 @@
 			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
 			AND ${search_word} LIKE '%' || #{search_value} || '%'
 			</if>
-			<if test="search_status != null and search_status != ''">
+			<if test="status_code != null and status_code > 0">
 			<![CDATA[
-			AND status_code >= #{search_status}::int AND status_code < #{search_status}::int+100
+			AND status_code >= #{status_code}::int AND status_code < #{status_code}::int+100
 			]]>
 			</if>
-			<if test="search_start_date != null and search_start_date != ''">
+			<if test="start_date != null and start_date != ''">
 			<![CDATA[
-			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
-			<if test="search_end_date != null and search_end_date != ''">
+			<if test="end_date != null and end_date != ''">
 			<![CDATA[
-			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
 		</trim>
@@ -36,7 +36,8 @@
 	<!-- api log 조회 -->
 	<select id="getListAPILog" parameterType="aPILog" resultType="aPILog">
 		/* getListAPILog */
-		SELECT * FROM api_log
+		SELECT * 
+		FROM api_log
 		<trim prefix="WHERE" prefixOverrides="AND">
 			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
 			AND ${search_word} = #{search_value}
@@ -44,19 +45,19 @@
 			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
 			AND ${search_word} LIKE '%' || #{search_value} || '%'
 			</if>
-			<if test="search_status != null and search_status != ''">
+			<if test="status_code != null and status_code > 0">
 			<![CDATA[
-			AND status_code >= #{search_status}::int AND status_code < #{search_status}::int+100
+			AND status_code >= #{status_code}::int AND status_code < #{status_code}::int+100
 			]]>
 			</if>
-			<if test="search_start_date != null and search_start_date != ''">
+			<if test="start_date != null and start_date != ''">
 			<![CDATA[
-			AND insert_date >= TO_TIMESTAMP(#{search_start_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
-			<if test="search_end_date != null and search_end_date != ''">
+			<if test="end_date != null and end_date != ''">
 			<![CDATA[
-			AND insert_date <= TO_TIMESTAMP(#{search_end_date}, 'YYYYMMDDHH24MISSUS')
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
 			]]>
 			</if>
 		</trim>

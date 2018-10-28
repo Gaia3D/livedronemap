@@ -12,24 +12,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class HealthCheckLog {
+public class HealthCheckLog extends SearchFilter {
 	
-	// 페이지 처리를 위한 시작
-	private Long offset;
-	// 페이지별 표시할 건수
-	private Long limit;
-	
-	private String search_value;
-	// 검색 옵션. 0 : 일치, 1 : 포함
-	private String search_option;
-	private String search_status;
-	private String search_http_code;
-	private String search_start_date;
-	private String search_end_date;
-	private String order_word;
-	private String order_value;
-	private Long list_counter = 10l;
-
 	// 상태 점검 이력 ID
 	private Long health_check_log_id;
 	// client 고유키

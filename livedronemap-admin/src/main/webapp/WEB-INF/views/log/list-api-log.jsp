@@ -28,7 +28,7 @@
 	<div class="contents limited"><!-- 컨텐츠영역을 100%로 사용하려면 limited를 삭제하세요 -->
 		<h3>API 로그</h3>
 		<!-- 검색폼 -->
-		<form:form id="aPILogSearchForm" modelAttribute="aPILog" method="post" action="/log/list-api-log" onsubmit="return searchCheck();">
+		<form:form id="searchForm" modelAttribute="aPILog" method="post" action="/log/list-api-log" onsubmit="return searchCheck();">
 			<ul class="searchForm">
 				<li>
 					<form:label path="search_word"><spring:message code='search.word'/></form:label>
@@ -36,18 +36,16 @@
 						<form:option value=""><spring:message code='search.basic'/></form:option>
 	                	<form:option value="client_name"><spring:message code='client.name'/></form:option>
 	                	<form:option value="user_id"><spring:message code='user.id'/></form:option>
-	                	<form:option value="request_ip"><spring:message code='request.ip'/></form:option>
-	                	<form:option value="url"><spring:message code='request.url'/></form:option>
 					</form:select>
 					<form:select path="search_option" name="search_option" class="select">
 						<form:option value="0"><spring:message code='search.same'/></form:option>
 						<form:option value="1"><spring:message code='search.include'/></form:option>
 					</form:select>
-					<form:input type="text" class="s date" path="search_value" name="search_value"/>
+					<form:input type="text" path="search_value" name="search_value"/>
 				</li>
 				<li>
-					<form:label path="search_status"><spring:message code='http.code'/></form:label>
-					<form:select path="search_status" name="search_status" class="select">
+					<form:label path="status_code"><spring:message code='http.code'/></form:label>
+					<form:select path="status_code" name="status_code" class="select">
 						<form:option value=""><spring:message code='search.basic'/></form:option>
 	                	<form:option value="200">2xx</form:option>
 	                	<form:option value="300">3xx</form:option>
@@ -56,17 +54,15 @@
 					</form:select>
 				</li>
 				<li>
-					<form:label path="search_start_date"><spring:message code='search.date'/></form:label>
-					<input type="text" class="s date" id="search_start_date" name="search_start_date" readonly="readonly" />
+					<label for="start_date"><spring:message code='search.date'/></label>
+					<input type="text" class="s date" id="start_date" name="start_date" />
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="search_end_date" name="search_end_date" readonly="readonly" />
+					<input type="text" class="s date" id="end_date" name="end_date" />
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
 					<form:select path="order_word" name="order_word" class="select">
 						<form:option value=""><spring:message code='search.basic'/></form:option>
-	                	<form:option value="client_name"><spring:message code='client.name'/></form:option>
-	                	<form:option value="user_id"><spring:message code='user.id'/></form:option>
 	                	<form:option value="insert_date"><spring:message code='search.insert.date'/></form:option>
 					</form:select>
 					<form:select path="order_value" name="order_value" class="select">
@@ -81,10 +77,12 @@
 				</li>
 			</ul>
 			<div class="alignRight">
-				<button type="submit" form="aPILogSearchForm" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
+				<button type="submit" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
 			</div>
 		</form:form>
+		
 		<!-- 목록정렬 -->
+		<form:form id="listForm" modelAttribute="aPILog" method="post">
 		<div class="boardHeader">
 			<p>
 				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
@@ -106,7 +104,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach var="aPILog" items="${aPILogList}" varStatus="status">
+<c:if test="${empty aPILogList }">
+						<tr>
+							<td colspan="8" class="col-none" style="text-align: center; font-size: 14px;">API 로그가 존재하지 않습니다.</td>
+						</tr>
+</c:if>
+<c:if test="${!empty aPILogList }">
+	<c:forEach var="aPILog" items="${aPILogList}" varStatus="status">
 						<tr>
 							<td class="alignCenter">${pagination.rowNumber - status.index }</td>
 							<td class="alignCenter">${aPILog.client_name}</td>
@@ -121,13 +125,15 @@
 							</td>
 							<td class="alignCenter">${aPILog.viewInsert_date}</td>
 						</tr>
-					</c:forEach>
+	</c:forEach>
+</c:if>
 					
 				</tbody>
 			</table>
 			
 			<%@ include file="/WEB-INF/views/common/pagination.jsp" %>
 		</div>
+		</form:form>
 		<!-- END BOARDLIST -->
 	</div>
 	<!-- E: CONTENTS -->
@@ -140,9 +146,30 @@
 		$("#aPILogMenu").addClass("on");
 		
 		initJqueryCalendar();
-		initCalendar(new Array("search_start_date", "search_end_date"), new Array("${simulationLog.search_start_date}", "${simulationLog.search_end_date}"));
+		initCalendar(new Array("start_date", "end_date"), new Array("${aPILog.start_date}", "${aPILog.end_date}"));
 		
 	});
+	
+	function searchCheck() {
+		if($("#search_option").val() == "1") {
+			if(confirm(JS_MESSAGE["search.option.warning"])) {
+				// go
+			} else {
+				return false;
+			}
+		} 
+		
+		var start_date = $("#start_date").val();
+		var end_date = $("#end_date").val();
+		if(start_date != null && start_date != "" && end_date != null && end_date != "") {
+			if(parseInt(start_date) > parseInt(end_date)) {
+				alert(JS_MESSAGE["search.date.warning"]);
+				$("#start_date").focus();
+				return false;
+			}
+		}
+		return true;
+	}
 </script>
 
 </body>

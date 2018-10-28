@@ -7,26 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SimulationLog {
-	
-	// 페이지 처리를 위한 시작
-	private Long offset;
-	// 페이지별 표시할 건수
-	private Long limit;
-	
-	/********** 검색 조건 ************/
-	private String search_value;
-	// 검색 옵션. 0 : 일치, 1 : 포함
-	private String search_option;
-	private String search_type;
-	private String search_status;
-	// 시작일 또는 완료일
-	private String search_date;
-	private String search_start_date;
-	private String search_end_date;
-	private String order_word;
-	private String order_value;
-	private Long list_counter = 10l;
+public class SimulationLog extends SearchFilter {
 	
 	// 시뮬레이션 ID
 	private Integer simulation_log_id;

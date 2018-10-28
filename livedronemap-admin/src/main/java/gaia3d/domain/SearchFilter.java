@@ -1,9 +1,10 @@
 package gaia3d.domain;
 
-public class SearchItem {
+public class SearchFilter {
 
 	// 총건수
 	private Long totalCount;
+	
 	// 페이지 처리를 위한 시작
 	private Long offset;
 	// 페이지별 표시할 건수
@@ -18,6 +19,8 @@ public class SearchItem {
 	private String end_date;
 	private String order_word;
 	private String order_value;
+	private Long list_counter = 10l;
+	
 	public Long getTotalCount() {
 		return totalCount;
 	}
@@ -78,4 +81,11 @@ public class SearchItem {
 	public void setOrder_value(String order_value) {
 		this.order_value = order_value;
 	}
+	public Long getList_counter() {
+		return list_counter;
+	}
+	public void setList_counter(Long list_counter) {
+		this.list_counter = list_counter;
+	}
+	
 }
