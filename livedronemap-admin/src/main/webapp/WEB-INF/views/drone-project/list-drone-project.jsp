@@ -107,7 +107,7 @@
 							<input type="button" id="droneImage_${droneProject.drone_project_id }" name="viewDroneImageButton" 
 								onclick="changeDroneImageLayer('${status.index}','${droneProject.drone_project_id }','${droneProject.status }'); return false;" 
 								style="width: 90px; height: 25px; float: right;" value="이미지 표시" />
-							<input type="hidden" id="layter_${droneProject.drone_project_id }" value="0" />
+							<input type="hidden" id="layer_${droneProject.drone_project_id }" value="0" />
 		</c:if>
 						</li>
 						<li class="half" title="촬영일자"><label class="date" >촬영일자</label>${droneProject.viewShootingDate}</li>
@@ -335,14 +335,14 @@
     
 	// 프로젝트 개별 정사 영사 표시/비표시
 	function changeDroneImageLayer(index, droneProjectId, droneProjectStatus) {
-		if($("#layter_" + droneProjectId).val() === "0") {
+		if($("#layer_" + droneProjectId).val() === "0") {
 			// 표시 버튼 클릭
-			$("#layter_" + droneProjectId).val("1");
+			$("#layer_" + droneProjectId).val("1");
 			$("#droneImage_" + droneProjectId).val("이미지 비표시");
 			drawDetailDroneImage(index, true, droneProjectId, droneProjectStatus);
 		} else {
 			// 비표시 버튼 클릭
-			$("#layter_" + droneProjectId).val("0");
+			$("#layer_" + droneProjectId).val("0");
 			$("#droneImage_" + droneProjectId).val("이미지 표시");
 			clearInterval(DORNE_IMAGE_INTERVAL_ARRAY[index])
 			drawDetailDroneImage(index, false, droneProjectId, droneProjectStatus);
