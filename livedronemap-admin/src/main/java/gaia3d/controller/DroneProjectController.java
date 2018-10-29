@@ -52,6 +52,8 @@ public class DroneProjectController {
 	public String listDroneProject(HttpServletRequest request, DroneProject droneProject, @RequestParam(defaultValue="1") String pageNo, Model model) {
 		
 		log.info("@@ droneProject = {}", droneProject);
+		droneProject.setList_counter(5l);
+		
 		if(StringUtil.isNotEmpty(droneProject.getStart_date())) {
 			droneProject.setStart_date(droneProject.getStart_date().substring(0, 8) + DateUtil.START_TIME);
 		}
