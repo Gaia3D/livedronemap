@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class HealthCheckLog extends SearchFilter {
+public class HealthCheckLog extends SearchDomain {
 	
 	// 상태 점검 이력 ID
 	private Long health_check_log_id;

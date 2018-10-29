@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class APILog extends SearchFilter {
+public class APILog extends SearchDomain {
 	
 	// 고유키
 	private Long api_log_id;

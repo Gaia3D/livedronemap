@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SimulationLog extends SearchFilter {
+public class SimulationLog extends SearchDomain {
 	
 	// 시뮬레이션 ID
 	private Integer simulation_log_id;

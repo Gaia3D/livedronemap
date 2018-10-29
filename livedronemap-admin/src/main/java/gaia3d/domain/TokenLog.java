@@ -15,7 +15,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class TokenLog extends SearchFilter {
+public class TokenLog extends SearchDomain {
 	
 	// 날짜 포맷
 	// TODO 환경설정에서 읽기

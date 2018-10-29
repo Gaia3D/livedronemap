@@ -1,6 +1,6 @@
 package gaia3d.domain;
 
-public class SearchFilter {
+public class SearchDomain {
 
 	// 총건수
 	private Long totalCount;

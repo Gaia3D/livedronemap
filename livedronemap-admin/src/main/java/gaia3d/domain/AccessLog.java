@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AccessLog extends SearchFilter {
+public class AccessLog extends SearchDomain {
 	
 	// 고유번호
 	private Long access_log_id;
