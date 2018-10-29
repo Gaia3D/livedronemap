@@ -371,6 +371,7 @@
    	// TODO: 화면에 표출
 	function CallbackGetFeatureInfo(featureInfo) {
 		console.log("@@@@@@@@@@@@@")
+			return;
 		var features = featureInfo.features;
 		
 		for (var i=0; i<features.length;i++) {
