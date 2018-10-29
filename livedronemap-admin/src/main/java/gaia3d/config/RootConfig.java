@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import gaia3d.security.Crypt;
 import com.zaxxer.hikari.HikariDataSource;
 
 import lombok.extern.slf4j.Slf4j;
@@ -49,9 +50,9 @@ public class RootConfig {
 	public DataSource dataSource() {
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(driverClassName);
-		dataSource.setJdbcUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
+		dataSource.setJdbcUrl(Crypt.decrypt(url));
+		dataSource.setUsername(Crypt.decrypt(username));
+		dataSource.setPassword(Crypt.decrypt(password));
 		dataSource.setMaximumPoolSize(maximumPoolSize);
 		dataSource.setMinimumIdle(minimumIdle);
 		

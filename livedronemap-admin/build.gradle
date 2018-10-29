@@ -57,12 +57,15 @@ sourceSets {
 				println " ===========> profile file is ${profile}"
 				srcDir "src/main/resources/${profile}"
 				
-				//copy {
-				//	from("src/main/resources/properties-$targetServer") {
-				//		exclude 'logback.xml'
-				//	}
-				//	into "src/main/resources/properties"
-				//}
+				copy {
+					from("src/main/resources/real") {
+						//exclude 'logback.xml'
+						include 'application.properties'
+						include 'livedronemap.properties'
+						include 'logback-spring.xml'
+					}
+					into "src/main/resources"
+				}
 				
 				//copy {
 				//	from("src/main/resources/properties-$targetServer") {
