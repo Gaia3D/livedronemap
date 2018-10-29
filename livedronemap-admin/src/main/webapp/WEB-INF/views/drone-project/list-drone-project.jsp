@@ -43,45 +43,45 @@
 				
 		<div class="subContents">
 			<form:form id="searchForm" modelAttribute="droneProject" method="post" action="/drone-project/list-drone-project" onsubmit="return searchCheck();">
-				<div class="input-group row">
+				<div class="searchForm input-group row">
 					<div class="input-set">
 						<label for="search_word"><spring:message code='search.word'/></label>
-						<select id="search_word" name="search_word" class="select" style="height: 30px;">
+						<select id="search_word" name="search_word" class="select" >
 							<option value=""><spring:message code='select'/></option>
 		          			<option value="drone_project_name">프로젝트명</option>
 						</select>
-						<select id="search_option" name="search_option" class="select" style="height: 30px;">
+						<select id="search_option" name="search_option" class="select" >
 							<option value="0"><spring:message code='search.same'/></option>
 							<option value="1"><spring:message code='search.include'/></option>
 						</select>
-						<form:input path="search_value" type="search" size="12" cssClass="m" style="height: 30px;" />
+						<form:input path="search_value" type="search" size="12" cssClass="m" />
 					</div>
 					<div class="input-set" style="padding-top: 2px;">
 						<label for="start_date"><spring:message code='search.date'/></label>&nbsp;&nbsp;&nbsp;
-						<input type="text" id="start_date" name="start_date" class="s date" size="11" maxlength="8" style="height: 25px;" />
+						<input type="text" id="start_date" name="start_date" class="s date" size="11" maxlength="8" />
 						<span class="delimeter tilde">~</span>
-						<input type="text" id="end_date" name="end_date" class="s date" size="11" maxlength="8" style="height: 25px;" />
+						<input type="text" id="end_date" name="end_date" class="s date" size="11" maxlength="8"/>
 					</div>
 					<div class="input-set"  style="padding-top: 2px;">
 						<label for="order_word"><spring:message code='search.order'/></label>&nbsp;&nbsp;&nbsp;
-						<select id="order_word" name="order_word" class="select" style="height: 30px;">
+						<select id="order_word" name="order_word" class="select">
 							<option value=""> <spring:message code='search.basic'/> </option>
 							<option value="drone_project_name">프로젝트명</option>
 							<option value="insert_date"><spring:message code='search.insert.date'/></option>
 						</select>
-						<select id="order_value" name="order_value" class="select" style="height: 30px;">
+						<select id="order_value" name="order_value" class="select">
 	                		<option value=""><spring:message code='search.basic'/></option>
 		                	<option value="ASC"><spring:message code='search.ascending'/></option>
 							<option value="DESC"><spring:message code='search.descending.order'/></option>
 						</select>
-						<select id="list_counter" name="list_counter" class="select" style="height: 30px;">
+						<select id="list_counter" name="list_counter" class="select">
 	                		<option value="10"><spring:message code='search.ten.count'/></option>
 		                	<option value="50"><spring:message code='search.fifty.count'/></option>
 							<option value="100"><spring:message code='search.hundred.count'/></option>
 						</select>
 					</div>
-					<div class="input-set" style="padding-top:5px; text-align: center;">
-						<input type="submit" value="<spring:message code='search'/>" class="button" style="width: 50px; height: 25px;" />
+					<div class="alignCenter input-set">
+						<button type="submit" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
 					</div>
 				</div>
 			</form:form>
@@ -501,10 +501,14 @@
 		});
 		
 		// 드론 이미지
+		var droneImage = '/images/${lang}/drone_working.gif';
+		if(droneProjectStatus === "4" || droneProjectStatus === "5") {
+			droneImage = '/images/${lang}/drone_done.png';
+		};
 		BILLBOARD_ARRAY[index] = viewer.entities.add({
 	        position : Cesium.Cartesian3.fromDegrees(parseFloat(transferDataList[0]), parseFloat(transferDataList[1]), parseFloat(transferDataList[2])),
 	        billboard : {
-	            image : '/images/drone.png',
+	            image : droneImage,
 	            width : 25, // default: undefined
 	            height : 25 // default: undefined
 	            /* image : '../images/Cesium_Logo_overlay.png', // default: undefined

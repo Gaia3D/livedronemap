@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <div class="snb">
-	<h2 class="log"><span>시뮬레이션</span></h2>
+	<h2 class="simulation"><span>시뮬레이션</span></h2>
 	<ul>
 		<li id="simulationLogMenu" class="" title="시뮬레이션" onclick="goPage('/simulation/list-simulation');">
 		시뮬레이션

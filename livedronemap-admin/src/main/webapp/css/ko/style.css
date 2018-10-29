@@ -68,7 +68,7 @@ padding-top: 50px;
 #contentsWrap > #nav {
 position: fixed;
 top: 50px;
-width: 50px;
+width: 130px;
 height: 100%;
 background-color: #51515b;
 }
@@ -76,26 +76,27 @@ background-color: #51515b;
 position: fixed;
 width: 230px;
 top: 50px;
-left: 50px;
+left: 130px;
 background-color: #fff;
 }
 #contentsWrap > .contents {
 height: 100%;
-min-width: 1000px;
+min-width: 1400px;
+max-width: 1920px;
 min-height: 800px;
-margin-left: 280px;
+margin-left: 360px;
 padding: 30px;
 border-left: 1px solid #cecece;
 border-right: 1px solid #cecece;
 background-color: #fff;
 }
 #contentsWrap > .limited {
-width: 1000px;
+width: 1400px;
 }
 .footer {
 position: fixed;
 width: 200px;
-left:70px;
+left:150px;
 bottom: 5px;
 }
 .footer > span {
@@ -122,7 +123,7 @@ color: #fff;
 .gnb {
 position: absolute;
 top: 0px;
-right: 50px;
+right: 0px;
 }
 .gnb > li {
 display: inline-block;
@@ -152,7 +153,7 @@ background: url(../../images/ico.png) no-repeat left -299px;
 .condition li span {
 display: inline-block;
 }
-.condition li span.alive {
+.condition li span.ok {
 padding: 3px 7px;
 border-radius: 5px;
 background-color: #5c7be8;
@@ -185,11 +186,8 @@ background-color: tomato;
 
 /* ///// NAV ///// */
 /* 메뉴 NAV */
-#navWrap.on {
-overflow: hidden;
-width: 110px;
-}
-#nav li:hover {
+
+#nav ul li:hover {
 background-color: #494143;
 }
 #nav > ul li.on {
@@ -198,14 +196,15 @@ border-left: 3px solid #5c7be8;
 opacity: 1.0;
 }
 #nav > ul li {
-width: 50px;
 height: 50px;
 cursor: pointer;
 background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 } 
 #nav > ul li span {
-display: none;
+display: block;
+padding: 15px 0 0 50px;
+color: #fff;
 }
 #nav > ul li.menu {
 background-position: 10px 15px;
@@ -213,7 +212,7 @@ background-position: 10px 15px;
 #nav > ul li.project {
 background-position: -190px 17px;
 }
-#nav > ul li.monitoring {
+#nav > ul li.simulation {
 background-position: -390px 17px;
 }
 #nav > ul li.log {
@@ -224,6 +223,9 @@ background-position: -590px -35px;
 }
 #nav > ul li.setup {
 background-position: -190px -35px;
+}
+#nav > ul li.device {
+background-position: -595px 17px;
 }
 
 /* 메뉴 SNB */
@@ -240,7 +242,7 @@ color: #fff;
 font-size: 22px;
 font-weight: normal;
 }
-h2.monitor {
+h2.simulation {
 background-position: -475px -85px;
 }
 h2.log {
@@ -252,7 +254,9 @@ background-position: 20px -85px;
 h2.setup {
 background-position: -725px -85px;
 }
-
+h2.device {
+background-position: -220px -265px;
+}
 .snb > ul {
 border-top: 1px solid #e7e7e9;
 }
@@ -285,10 +289,12 @@ box-shadow: 1px 1px 1px #ddd;
 }
 .searchForm li {
 display: inline-block;
+margin-bottom: 7px;
 padding-right: 50px;
 }
 .searchForm li > label {
 display: inline-block;
+width: 70px;
 padding: 0 7px 0 10px;
 font-weight: bold;
 background: url(../../images/ico.png) no-repeat -795px -393px;
