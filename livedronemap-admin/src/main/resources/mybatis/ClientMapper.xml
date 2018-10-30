@@ -6,25 +6,25 @@
 	<!-- 해당 api_Key를 포함한 client 총 건수 -->
 	<select id="getClientByAPIKeyTotalCount" parameterType="string" resultType="Integer">
 		/* getClientByAPIKeyTotalCount */
-		SELECT COUNT(api_Key) FROM client WHERE api_Key = #{api_Key}
+		SELECT COUNT(api_key) FROM client WHERE api_key = #{api_key}
 	</select>
 
 	<!-- client 목록 조회 -->
 	<select id="getListClient" resultType="client">
 		/* getListClient */
-		SELECT * FROM client WHERE use_yn = 'Y';
+		SELECT * FROM client WHERE use_yn = 'Y'
 	</select>
 
 	<!-- client 정보를 취득 -->
 	<select id="getClient" parameterType="int" resultType="client">
-		/* getClientByClientId */
+		/* getClient */
 		SELECT * FROM client WHERE client_id = #{client_id}
 	</select>
 
 	<!-- client 정보를 취득 -->
 	<select id="getClientByAPIKey" parameterType="string" resultType="client">
 		/* getClientByAPIKey */
-		SELECT * FROM client WHERE api_Key = #{api_Key}
+		SELECT * FROM client WHERE api_key = #{api_key}
 	</select>
 		
 	<!-- client 등록 -->
