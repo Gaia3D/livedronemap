@@ -54,11 +54,17 @@ sourceSets {
 			
 			if (profile == 'real') {
 				println " ===========> profile file is ${profile}"
-				srcDir "src/main/resources/${profile}"
-				//copy {
-		        //	from "src/main/resources/${profile}"
-				//	into "src/main/resources"
-		        //}
+				println " ===========> copy from src/main/resources/real to src/main/resources"
+				
+				copy {
+					from("src/main/resources/real") {
+						//exclude 'logback.xml'
+						include 'application.properties'
+						include 'api-server.properties'
+						include 'gdal.properties'
+					}
+					into "src/main/resources"
+				}
 			} else {
 				println " ===========> profile file is ${profile}"
 				//srcDir "src/main/resources"

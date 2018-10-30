@@ -55,7 +55,7 @@ sourceSets {
 			
 			if (profile == 'real') {
 				println " ===========> profile file is ${profile}"
-				srcDir "src/main/resources/${profile}"
+				println " ===========> copy from src/main/resources/real to src/main/resources"
 				
 				copy {
 					from("src/main/resources/real") {
