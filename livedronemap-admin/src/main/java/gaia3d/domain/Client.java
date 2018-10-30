@@ -15,10 +15,14 @@ public class Client {
 	
 	// 상태 : 사용중
 	public static final String IN_USE = "Y";
+		
+	private String view_api_key;
+	private String generate_api_key_check;
 	
-	private String apikey_duplication;
-	private String check_generate_apikey;	
+	/****** validator ********/
+	private String method_mode;
 
+	/****** DB 사용 ********/
 	// 고유번호
 	private Integer client_id;
 	// 그룹 고유번호

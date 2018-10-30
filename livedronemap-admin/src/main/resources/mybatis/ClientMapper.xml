@@ -3,10 +3,16 @@
 
 <mapper namespace="gaia3d.persistence.ClientMapper">
 
-	<!-- client 정보를 취득 -->
-	<select id="getClientByAPIKey" parameterType="string" resultType="client">
-		/* getClientByAPIKey */
-		SELECT * FROM client WHERE api_Key = #{api_Key}
+	<!-- 해당 api_Key를 포함한 client 총 건수 -->
+	<select id="getClientByAPIKeyTotalCount" parameterType="string" resultType="Integer">
+		/* getClientByAPIKeyTotalCount */
+		SELECT COUNT(api_Key) FROM client WHERE api_Key = #{api_Key}
+	</select>
+
+	<!-- client 목록 조회 -->
+	<select id="getListClient" resultType="client">
+		/* getListClient */
+		SELECT * FROM client WHERE use_yn = 'Y';
 	</select>
 
 	<!-- client 정보를 취득 -->
@@ -14,11 +20,11 @@
 		/* getClientByClientId */
 		SELECT * FROM client WHERE client_id = #{client_id}
 	</select>
-	
-	<!-- client 리스트 조회 -->
-	<select id="getClientList" resultType="client">
-		/* getClientList */
-		SELECT * FROM client WHERE use_yn = 'Y';
+
+	<!-- client 정보를 취득 -->
+	<select id="getClientByAPIKey" parameterType="string" resultType="client">
+		/* getClientByAPIKey */
+		SELECT * FROM client WHERE api_Key = #{api_Key}
 	</select>
 		
 	<!-- client 등록 -->

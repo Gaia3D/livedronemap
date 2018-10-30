@@ -74,9 +74,9 @@
 					<th scope="row">
 						<span class="required"><form:label path="api_key"><spring:message code='client.apikey'/></form:label></span>
 					<td>
-						<form:hidden path="apikey_duplication" />
-						<form:hidden path="check_generate_apikey" />
-				 		<form:input path="api_key" size= "40px" cssClass="m" readonly="true" />
+						<form:hidden path="generate_api_key_check" />
+						<form:hidden path="api_key" />
+				 		<form:input path="view_api_key" size= "40px" cssClass="m" readonly="true" />
 						<input type="button" id="generate" value="<spring:message code='client.generate'/>" />
 						
 					</td>
@@ -111,42 +111,40 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#deviceMenu").addClass("on");
-		$("#clientMenu").addClass("on");
-		$("input[name='use_yn'][value='N']").prop('checked', true);
-		$("#check_generate_apikey").val("1");
-		$("#apikey_duplication").val(" ");
+		$("#clientInputMenu").addClass("on");
+		$("input[name='use_yn'][value='Y']").prop('checked', true);
 	});
 	
-	
 	// apikey 발급
+	var generateApikeyFlag = true;
 	$( "#generate" ).on( "click", function() {
-		var apikey = "";
-		$.ajax({
-			url: "/client/ajax-generate-api-key",
-			type: "POST",
-			data: apikey,
-			dataType: "json",
-			success: function(msg){
-				if(msg.result == "success") {				
-					if($("#check_generate_apikey").val() == "1") {
-						apikey = msg.apikey;
-						$("#apikey_duplication").val(apikey); 
-						$("#check_generate_apikey").val("0");
-						$("#api_key").val($("#apikey_duplication").val());
+		if(generateApikeyFlag) {
+			generateApikeyFlag = false;
+			$.ajax({
+				url: "/client/api-keys",
+				type: "POST",
+				dataType: "json",
+				success: function(msg){
+					if(msg.result == "success") {
 						alert(JS_MESSAGE["client.apikey.generate"]);
+						$("#api_key").val(msg.apikey);
+						$("#view_api_key").val(msg.apikey);
+						$("#generate_api_key_check").val("1");						
+					} else {
+						alert(JS_MESSAGE[msg.result]);
 					}
-					$("#check_generate_apikey").val("1");
-				} else {
-					alert(JS_MESSAGE[msg.result]);
-					$("#check_generate_apikey").val("1");
-				}
-			},
-			error:function(request, status, error) {
-				//alert(JS_MESSAGE["ajax.error.message"]);
-				alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
-    		}
-		});
-
+					generateApikeyFlag = true;
+				},
+				error:function(request, status, error) {
+					//alert(JS_MESSAGE["ajax.error.message"]);
+					alert(" code : " + request.status + "\n" + ", message : " + request.responseText + "\n" + ", error : " + error);
+					generateApikeyFlag = true;
+	    		}
+			});
+		} else {
+			alert(JS_MESSAGE["button.dobule.click"]);
+			return;
+		}
 	});
 	
 	// client 정보 저장
@@ -160,7 +158,7 @@
 			$.ajax({
 				url: "/clients",
 				type: "POST",
-				data: $("#client").serialize(),
+				data: $("#client").serialize()	,
 				dataType: "json",
 				success: function(msg){
 					if(msg.result == "success") {
@@ -168,8 +166,10 @@
 						$('form').each(function(){
 						    this.reset();
 						});
-						$("input[name='use_yn'][value='N']").prop('checked', true);
-						$("#apikey_duplication").val(" ");
+						$("input[name='use_yn'][value='Y']").prop('checked', true);
+						$("#generate_api_key_check").val("");
+					} else {
+						alert(JS_MESSAGE[msg.result]);
 					}
 					insertClientFlag = true;
 				},
@@ -206,7 +206,11 @@
 		}				
 		if ($("#api_key").val() == "") {
 			alert(JS_MESSAGE["client.apikey.empty"]);
-			$("#api_key").focus();
+			$("#generate").focus();
+			return false;
+		} else if (!$("#generate_api_key_check").val()) {
+			alert(JS_MESSAGE["client.apikey.invalid"]);
+			$("#generate").focus();
 			return false;
 		}
 	}	

@@ -52,8 +52,8 @@ comment on column client_group_role.insert_date is '등록일';
 
 -- 서버
 create table client (
-	client_id					int,
-	client_group_id				int,
+	client_id					int,							
+	client_group_id				int,								
 	client_name					varchar(100)					not null,
 	client_ip 					varchar(45) 					not null,
 	use_yn 						char(1) 						default 'N',
@@ -61,7 +61,8 @@ create table client (
 	description 				varchar(256),
   	update_date 				timestamp with time zone,
 	insert_date					timestamp with time zone		default now(),
-	constraint client_pk primary key (client_id)	
+	constraint client_pk primary key (client_id),
+	constraint client_api_key_uk UNIQUE (api_key)
 );
 
 
