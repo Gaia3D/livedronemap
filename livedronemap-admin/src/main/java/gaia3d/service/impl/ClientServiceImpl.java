@@ -1,21 +1,12 @@
 package gaia3d.service.impl;
 
-import java.util.UUID;
 import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.context.config.*;
-import org.springframework.test.context.ActiveProfiles; 
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
 import gaia3d.domain.Client;
 import gaia3d.persistence.ClientMapper;
 import gaia3d.service.ClientService;
@@ -25,12 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-	private int count = 0;
 	@Autowired
 	private ClientMapper clientMapper;
-	
-	public ClientService clientService;
-	
+		
 	/**
 	 *  client 리스트 조회 
 	 *  @return

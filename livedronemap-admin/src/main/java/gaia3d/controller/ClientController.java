@@ -11,12 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import gaia3d.domain.Client;
 import gaia3d.domain.ClientGroup;
-import gaia3d.persistence.ClientMapper;
 import gaia3d.service.ClientGroupService;
 import gaia3d.service.ClientService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +30,7 @@ public class ClientController {
 	
 	@Autowired
 	private ClientService clientService;
-	@Autowired
-	private ClientMapper clientMapper;
+
 	@Autowired
 	private ClientGroupService clientgroupService;
 
@@ -110,6 +107,11 @@ public class ClientController {
 		return null;
 	}
 	
+	/**
+	 * api key 생성
+	 * @param request
+	 * @return
+	 */
 	@PostMapping("/client/api-keys")
 	@ResponseBody
 	public Map<String, Object> generateApiKey(HttpServletRequest request) {		
