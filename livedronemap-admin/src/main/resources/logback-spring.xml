@@ -9,7 +9,7 @@
 		</layout>
 	</appender>
 
-	<appender name="dailyRollingFileAppender"
+	<!-- <appender name="dailyRollingFileAppender"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<prudent>true</prudent>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -23,7 +23,7 @@
 		<encoder>
 		    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36}[%method:%line] - %msg%n</pattern>
 		</encoder>
-	</appender>
+	</appender> -->
 
 	<logger name="org.apache.tomcat" level="debug" additivity="false" />
 	<logger name="org.apache.commons" level="INFO" additivity="false" />
@@ -35,6 +35,6 @@
 	
 	<root level="debug">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="dailyRollingFileAppender" />
+		<!-- <appender-ref ref="dailyRollingFileAppender" /> -->
 	</root>
 </configuration>
