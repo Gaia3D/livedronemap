@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Role {
+public class Role extends SearchDomain {
 
 	public static final String DELIMITER = "!@#";
 	
@@ -23,9 +23,6 @@ public class Role {
 	
 	/****** validator ********/
 	private String method_mode;
-	
-	private String order_word;
-	private String order_value;
 	
 	// 고유번호
 	private Long role_id;
@@ -45,10 +42,6 @@ public class Role {
 	private String description;
 	// 등록일
 	private String insert_date;
-	// 페이지 처리를 위한 시작
-	private Long offset;
-	// 페이지별 표시할 건수
-	private Long limit;
 	
 	public String getViewRoleType() {
 		// Role 유형. 0 : 사용자, 1 : 서버, 2 : 계정

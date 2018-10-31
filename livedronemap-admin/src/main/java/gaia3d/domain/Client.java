@@ -10,8 +10,8 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
-public class Client {
+@ToString(callSuper=true)
+public class Client extends SearchDomain {
 	
 	// 상태 : 사용중
 	public static final String IN_USE = "Y";

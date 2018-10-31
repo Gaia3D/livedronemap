@@ -12,7 +12,7 @@ import lombok.ToString;
  */
 @Getter
 @Setter
-@ToString
+@ToString(callSuper=true)
 public class UserGroupRole {
 	
 	// Role 유형. 0 : 사용자
@@ -62,10 +62,7 @@ public class UserGroupRole {
 	private String description;
 	// 등록일
 	private String insert_date;
-	// 페이지 처리를 위한 시작
-	private Long offset;
-	// 페이지별 표시할 건수
-	private Long limit;
+	
 	// 사용자ID
 	private String user_id;
 	

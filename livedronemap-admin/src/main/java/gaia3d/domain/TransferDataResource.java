@@ -31,18 +31,4 @@ public class TransferDataResource implements Serializable {
 	private List<OrthoDetectedObject> detected_objects;
 	private Drone drone;
 	private String shooting_date;
-	
-//	/**
-//	 * 무시하기 위해
-//	 */
-//	@JsonIgnore
-//	private MultipartFile file;
-//	@JsonIgnore
-//	public MultipartFile getFile() {
-//		return this.file;
-//	}
-//	@JsonIgnore
-//	public void setFile(MultipartFile file) {
-//		this.file = file;
-//	}
 }
