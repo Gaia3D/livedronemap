@@ -83,6 +83,51 @@ public class DroneProjectController {
 		return "/drone-project/list-drone-project";
 	}
 	
+	@GetMapping("drone-projects")
+	@ResponseBody
+	public Map<String, Object> getListDroneProject(HttpServletRequest request, DroneProject droneProject, @RequestParam(defaultValue="1") String pageNo) {
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		
+		log.info("@@ droneProject = {}", droneProject);
+		droneProject.setList_counter(5l);
+		
+		if(StringUtil.isNotEmpty(droneProject.getStart_date())) {
+			droneProject.setStart_date(droneProject.getStart_date().substring(0, 8) + DateUtil.START_TIME);
+		}
+		if(StringUtil.isNotEmpty(droneProject.getEnd_date())) {
+			droneProject.setEnd_date(droneProject.getEnd_date().substring(0, 8) + DateUtil.END_TIME);
+		}
+		long droneProjectTotalCount = droneProjectService.getDroneProjectTotalCount(droneProject);
+		Pagination pagination = new Pagination(	request.getRequestURI(), 
+												getSearchParameters(PageType.LIST, request, droneProject), 
+												droneProjectTotalCount, 
+												Long.valueOf(pageNo).longValue(), 
+												droneProject.getList_counter());
+		map.put("pagination", pagination);
+		
+		droneProject.setOffset(pagination.getOffset());
+		droneProject.setLimit(pagination.getPageRows());
+		
+		try {
+			
+			// droneProjectList
+			List<DroneProject> droneProjectList = droneProjectService.getListDroneProject(droneProject); 
+			map.put("droneProjectList", droneProjectList);
+			// droenProjectTotalCount
+			
+			map.put("droneProjectTotalCount", droneProjectTotalCount);
+			// image total count 
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		
+		map.put("result", result);
+		return map;
+	}
+	
 	/**
 	 * Project 목록
 	 * @param model
