@@ -27,7 +27,7 @@
 <body>
 <%@ include file="/WEB-INF/views/layouts/header.jsp" %>
 
-<div id="wrap" style="height:94.7%; width: 100%;">
+<div id="wrap" style="height:94.9%; width: 100%;">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
 	
 	<!-- S: 1depth / 프로젝트 목록 -->
