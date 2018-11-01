@@ -187,7 +187,7 @@ background-color: tomato;
 /* 메뉴 NAV */
 
 #nav ul li:hover {
-background-color: #494143;
+background-color: #5c7be8;
 }
 #nav > ul li.on {
 margin-left: 0px;
@@ -298,9 +298,12 @@ padding: 0 7px 0 10px;
 font-weight: bold;
 background: url(../../images/ico.png) no-repeat -795px -393px;
 }
-/* .searchForm li > input, select{
-padding: 5px;
-} */
+.searchForm li > select {
+padding: 4px;
+} 
+.searchForm li > input {
+padding: 4px;
+} 
 .searchForm li * {
 vertical-align: middle;
 }
@@ -468,9 +471,11 @@ margin: 15px;
 float: right;
 margin-top: 0px;
 }
+.count {
+margin-bottom: 3px;
+}
 /* 프로젝트 / 검색 */
 .projectSearch >  {
-
 }
 .projectSearch {
 margin-bottom: 10px;
@@ -584,13 +589,13 @@ background: url(../../images/ico.png) no-repeat -786px -250px;
 width: 70px;
 padding-left: 25px;
 font-weight: bold;
-background: url(../../images/ico.png) no-repeat -784px -298px;	
+background: url(../../images/ico.png) no-repeat -784px -299px;	
 }
 .hc {
 width: 70px;
 padding-left: 25px;
 font-weight: bold;
-background: url(../../images/ico.png) no-repeat -784px -347px;	
+background: url(../../images/ico.png) no-repeat -784px -349px;	
 }
 .icoJs {
 display: inline-block;
@@ -625,33 +630,33 @@ color:#4769ff;
 color: #ff3300;
 }
 .sceneimage {
-width: 50px;
-height: 25px;
+width: 40px;
+height: 20px;
 text-indent: -999em;
-border: 1px solid #cecece;
+border: none;
 background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
-background-position: -635px -246px;
+background-position: -640px -248px;
 background-color:transparent;
 }
 .sceneimage.off {
-border: 1px solid #cecece;
-background-position: -635px -296px;
+border: none;
+background-position: -640px -298px;
 }
 .autoRenewal {
 padding: 5px 5px 5px 30px;
-	border-radius: 3px;
-	border: 1px solid #bbb;
-	background-image: url(../../images/ico.png);
-	background-repeat: no-repeat;
-	background-position: -397px -294px;
-	background-color: #ccc;
+border-radius: 3px;
+border: 1px solid #bbb;
+background-image: url(../../images/ico.png);
+background-repeat: no-repeat;
+background-position: -490px -299px;
+background-color: #ccc;
 }
 .autoRenewal.on {
-	color: #fff;
-	border: 1px solid #3c5df1;
-	background-position: -397px -244px;
-	background-color: #4769ff;
+color: #fff;
+border: 1px solid #3c5df1;
+background-position: -490px -249px;
+background-color: #4769ff;
 }
 
 /* 프로젝트 / 이슈탐지 */
@@ -817,16 +822,16 @@ background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 .pagination .first {
-background-position: -643px -385px;
+background-position: -643px -388px;
 }
 .pagination .forward {
-background-position: -670px -385px;
+background-position: -670px -388px;
 }
 .pagination .back {
-background-position: -697px -385px;
+background-position: -697px -388px;
 }
 .pagination .end {
-background-position: -726px -385px;
+background-position: -726px -388px;
 }
 .pagerInput {
 padding:10px;
@@ -960,6 +965,19 @@ font-weight: normal;
 .layer > .layerContents {
 margin: 15px 10px;
 }
+ul.layerContents {
+min-width: 220px;
+}
+ul.layerContents > li {
+padding: 3px;
+border-bottom: 1px dotted #ccc;
+}
+ul.layerContents > li > label {
+display: inline-block;
+width: 70px;
+font-weight: bold;
+}
+
 /* 프로젝트 / 드론상태모니터링 */
 .droneState {
 position: relative;
