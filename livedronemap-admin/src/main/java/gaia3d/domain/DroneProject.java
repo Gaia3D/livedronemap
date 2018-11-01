@@ -15,7 +15,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class DroneProject extends SearchFilter {
+public class DroneProject extends SearchDomain {
 	
 	/****** validator ********/
 	private String method_mode;
