@@ -117,15 +117,13 @@ public class DroneProjectController {
 		droneProject.setLimit(pagination.getPageRows());
 		
 		try {
-			
-			// droneProjectList
-			List<DroneProject> droneProjectList = droneProjectService.getListDroneProject(droneProject); 
+			List<DroneProject> droneProjectList = new ArrayList<>();
+			if(droneProjectTotalCount > 0l) {
+				droneProjectList = droneProjectService.getListDroneProject(droneProject); 
+			}
 			map.put("droneProjectList", droneProjectList);
-			// droenProjectTotalCount
-			
 			map.put("droneProjectTotalCount", droneProjectTotalCount);
 			// image total count 
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 			result = "db.exception";
