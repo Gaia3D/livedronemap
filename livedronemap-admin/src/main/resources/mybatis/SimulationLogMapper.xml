@@ -49,8 +49,8 @@
 			<if test="simulation_type != null and simulation_type != ''">
 			AND simulation_type = #{simulation_type}
 			</if>
-			<if test="search_status != null and search_status != ''">
-			AND status = #{search_status}
+			<if test="status != null and status != ''">
+			AND status = #{status}
 			</if>
 			<if test="start_date != null and start_date != ''">
 			<![CDATA[

@@ -71,12 +71,20 @@
 			ORDER BY A.${order_word} ${order_value}
 			</when>
 			<otherwise>
-			ORDER BY A.insert_date DESC, A.drone_project_id DESC
+			ORDER BY A.shooting_date DESC, A.drone_project_id DESC
 			</otherwise>
 			</choose>
 			OFFSET #{offset} LIMIT #{limit}
 		) X, drone Y
 		WHERE X.drone_id = Y.drone_id
+		<choose>
+		<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+		ORDER BY X.${order_word} ${order_value}
+		</when>
+		<otherwise>
+		ORDER BY X.shooting_date DESC, X.drone_project_id DESC
+		</otherwise>
+		</choose>
 	</select>
 	
 	<!-- 프로젝트 정보 조회 -->
