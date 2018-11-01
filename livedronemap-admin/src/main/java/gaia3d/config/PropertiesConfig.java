@@ -21,4 +21,6 @@ public class PropertiesConfig {
 	private String orthoImageDir;
 	private String postprocessingImageDir;
 	
+	// cesium ion token
+	private String cesiumIonToken;
 }
