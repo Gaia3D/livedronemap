@@ -60,7 +60,7 @@ public class SimulationController {
 			simulationLogList = simulationLogService.getSimulationLogList(simulationLog);
 		}
 		
-		List<Client> clientList = clientService.geListClient();
+		List<Client> clientList = clientService.getListClient();
 		model.addAttribute("clientList", clientList);
 		model.addAttribute(pagination);
 		model.addAttribute("simulationLog", simulationLog);

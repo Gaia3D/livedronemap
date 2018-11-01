@@ -10,7 +10,7 @@ public interface ClientService {
 	 *  client 리스트 조회 
 	 *  @return
 	 */
-	 List<Client> geListClient();
+	 List<Client> getListClient();
 	
 	/**
 	 *  ID를 이용하여 client 정보 취득

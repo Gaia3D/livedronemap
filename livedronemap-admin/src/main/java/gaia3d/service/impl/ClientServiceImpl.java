@@ -24,8 +24,8 @@ public class ClientServiceImpl implements ClientService {
 	 *  @return
 	 */
 	@Transactional(readOnly=true)
-	public List<Client> geListClient() {
-		return clientMapper.geListClient();
+	public List<Client> getListClient() {
+		return clientMapper.getListClient();
 	}
 	
 	/**
