@@ -183,7 +183,6 @@ span.error {
 background-color: tomato;
 }
 
-
 /* ///// NAV ///// */
 /* 메뉴 NAV */
 
@@ -294,14 +293,14 @@ padding-right: 50px;
 }
 .searchForm li > label {
 display: inline-block;
-width: 70px;
+width: 100px;
 padding: 0 7px 0 10px;
 font-weight: bold;
 background: url(../../images/ico.png) no-repeat -795px -393px;
 }
-.searchForm li > input, select{
+/* .searchForm li > input, select{
 padding: 5px;
-}
+} */
 .searchForm li * {
 vertical-align: middle;
 }
@@ -465,6 +464,46 @@ background: url(../../images/ico.png) no-repeat right -440px;
 .subContents{
 margin: 15px;
 }
+.index {
+float: right;
+margin-top: 0px;
+}
+/* 프로젝트 / 검색 */
+.projectSearch >  {
+
+}
+.projectSearch {
+margin-bottom: 10px;
+padding: 15px;
+border: 1px solid #5c7be8;
+box-shadow: 1px 1px 1px #ddd;
+}
+.projectSearch li {
+display: inline-block;
+margin-bottom: 7px;
+}
+.projectSearch li > label {
+display: inline-block;
+width: 60px;
+padding: 0 7px 0 10px;
+font-weight: bold;
+background: url(../../images/ico.png) no-repeat -795px -393px;
+}
+.projectSearch li > input, select {
+padding: 5px;
+}
+.projectSearch li * {
+vertical-align: middle;
+}
+.projectSearch > li.btn {
+width: 100%;
+text-align: center;
+}
+.projectSearch > li.btn > button {
+width: 150px;
+}
+
+
 /* 프로젝트 / 1depth / 목록 */
 .sorting {
 margin: 0;
@@ -484,7 +523,10 @@ margin: 00;
 border-bottom: 1px solid #999;
 }
 .projectList > ul:hover {
-background-color: #eee;
+background-color: #efefef;
+}
+.projectList > ul:hover > li {
+border-bottom: 1px dotted #fff;
 }
 
 /* 프로젝트 / 헤더 */
@@ -526,24 +568,90 @@ width: 49%;
 }
 .projectInfo li > label {
 display: inline-block;
-text-indent: -999em;
-width: 20px;
 height: 20px;
 }
-.projectInfo li > label.date {
+label.date {
+width: 20px;
+text-indent: -999em;
 background: url(../../images/ico.png) no-repeat -400px -196px;
 }
-.projectInfo li > label.location {
-background: url(../../images/ico.png) no-repeat -347px -196px;
+.location {
+padding-left: 8px;
+text-indent: -999em;
+background: url(../../images/ico.png) no-repeat -786px -250px;
 }
-.projectInfo li > label.js {
-background: url(../../images/ico.png) no-repeat -450px -196px;
+.js {
+width: 70px;
+padding-left: 25px;
+font-weight: bold;
+background: url(../../images/ico.png) no-repeat -784px -298px;	
 }
-.projectInfo li > label.hc {
-background: url(../../images/ico.png) no-repeat -500px -196px;
+.hc {
+width: 70px;
+padding-left: 25px;
+font-weight: bold;
+background: url(../../images/ico.png) no-repeat -784px -347px;	
+}
+.icoJs {
+display: inline-block;
+width: 20px;
+text-indent: -999px;
+background: url(../../images/ico.png) no-repeat -784px -298px;	
+}
+.icoHc {
+display: inline-block;
+width: 20px;
+text-indent: -999em;
+font-weight: bold;
+background: url(../../images/ico.png) no-repeat -784px -347px;	
 }
 .projectInfo li > label.step {
+width: 20px;
+text-indent: -999em;
 background: url(../../images/ico.png) no-repeat -550px -196px;
+}
+.projectInfo > li > span {
+display: inline-block;
+margin-left: 10px;
+}
+.message {
+font-weight: bold;
+color: #000;
+}
+.message.ing {
+color:#4769ff;
+}
+.message.error {
+color: #ff3300;
+}
+.sceneimage {
+width: 50px;
+height: 25px;
+text-indent: -999em;
+border: 1px solid #cecece;
+background-image: url(../../images/ico.png);
+background-repeat: no-repeat;
+background-position: -635px -246px;
+background-color:transparent;
+}
+.sceneimage.off {
+border: 1px solid #cecece;
+background-position: -635px -296px;
+}
+.autoRenewal {
+padding: 5px 5px 5px 30px;
+	border-radius: 3px;
+	border: 1px solid #bbb;
+	background-image: url(../../images/ico.png);
+	background-repeat: no-repeat;
+	background-position: -397px -294px;
+	background-color: #ccc;
+}
+.autoRenewal.on {
+	color: #fff;
+	border: 1px solid #3c5df1;
+	background-position: -397px -244px;
+	background-color: #4769ff;
 }
 
 /* 프로젝트 / 이슈탐지 */
@@ -553,8 +661,8 @@ height: 20px;
 margin-left: 8px;
 }
 ul.detect li {
-width: 15px;
-margin: 0;
+/* width: 15px; */
+margin: 0 10px 0 0;
 padding: 0 0 0 20px;
 font-size: 11px;
 color: #ff3000;
@@ -709,16 +817,16 @@ background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 .pagination .first {
-background-position: -643px -390px;
+background-position: -643px -385px;
 }
 .pagination .forward {
-background-position: -670px -390px;
+background-position: -670px -385px;
 }
 .pagination .back {
-background-position: -697px -390px;
+background-position: -697px -385px;
 }
 .pagination .end {
-background-position: -726px -390px;
+background-position: -726px -385px;
 }
 .pagerInput {
 padding:10px;
@@ -1018,9 +1126,15 @@ background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 background-color: transparent;
 }
-div.ctrlBtn > button.goList {
+div.ctrlBtn > .goList {
+display: inline-block;
 width:28px;
 height: 28px;
+text-indent: -999em;
+border: none;
+background-image: url(../../images/ico.png);
+background-repeat: no-repeat;
+background-color: transparent;
 border-radius: 14px;	
 background-position: 6px -393px;
 background-color: #4855b5;	

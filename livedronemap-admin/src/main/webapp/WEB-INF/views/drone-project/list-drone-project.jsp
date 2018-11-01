@@ -43,8 +43,8 @@
 				
 		<div class="subContents">
 			<form:form id="searchForm" modelAttribute="droneProject" method="post" action="/drone-project/list-drone-project" onsubmit="return searchCheck();">
-				<div class="searchForm input-group row">
-					<div class="input-set">
+				<ul class="projectSearch input-group row">
+					<li class="input-set">
 						<label for="search_word">프로젝트</label>
 						<%-- <select id="search_word" name="search_word" class="select" >
 							<option value=""><spring:message code='select'/></option>
@@ -54,14 +54,14 @@
 							<option value="0"><spring:message code='search.same'/></option>
 							<option value="1"><spring:message code='search.include'/></option>
 						</select> --%>
-						<form:input path="search_value" type="search" size="12" cssClass="m" />
-					</div>
-					<div class="input-set">
-						<label for="start_date"><spring:message code='search.date'/></label>&nbsp;&nbsp;&nbsp;
-						<input type="text" id="start_date" name="start_date" class="s date" size="11" maxlength="8" />
+						<form:input path="search_value" type="search" size="25" cssClass="m" />
+					</li>
+					<li class="input-set">
+						<label for="start_date"><spring:message code='search.date'/></label>
+						<input type="text" id="start_date" name="start_date" class="s date" size="8" maxlength="8" />
 						<span class="delimeter tilde">~</span>
-						<input type="text" id="end_date" name="end_date" class="s date" size="11" maxlength="8"/>
-					</div>
+						<input type="text" id="end_date" name="end_date" class="s date" size="8" maxlength="8"/>
+					</li>
 					<%-- <div class="input-set"  style="padding-top: 2px;">
 						<label for="order_word"><spring:message code='search.order'/></label>&nbsp;&nbsp;&nbsp;
 						<select id="order_word" name="order_word" class="select">
@@ -80,10 +80,10 @@
 							<option value="20"><spring:message code='search.twenty.count'/></option>
 						</select>
 					</div> --%>
-					<div class="alignCenter input-set">
+					<li class="input-set btn">
 						<button type="submit" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
-					</div>
-				</div>
+					</li>
+				</ul>
 			</form:form>
 			<div id="projectListHeader" class="count" style="margin-top: 20px; margin-bottom: 5px;">
 				<spring:message code='all.d'/> <em><fmt:formatNumber value="${pagination.totalCount}" type="number"/></em> <spring:message code='search.what.count'/>
@@ -184,13 +184,15 @@
 		if($("#layer_" + droneProjectId).val() === "0") {
 			// 표시 버튼 클릭
 			$("#layer_" + droneProjectId).val("1");
-			$("#droneImage_" + droneProjectId).val("이미지 비표시");
+			// $("#droneImage_" + droneProjectId).val("이미지 비표시");
+			$("#droneImage_" + droneProjectId).addClass("off");
 			DRONE_IMAGE_REFRESH_FLAG_ARRAY[index] = true;
 			drawDetailDroneImage(index, droneProjectId, droneProjectStatus);
 		} else {
 			// 비표시 버튼 클릭
 			$("#layer_" + droneProjectId).val("0");
-			$("#droneImage_" + droneProjectId).val("이미지 표시");
+			// $("#droneImage_" + droneProjectId).val("이미지 표시");
+			$("#droneImage_" + droneProjectId).removeClass("off");
 			DRONE_IMAGE_REFRESH_FLAG_ARRAY[index] = false;
 			viewer.imageryLayers.remove(DRONE_IMAGE_PROVIDER_ARRAY[index], true);
    			viewer.imageryLayers.remove(DETECTED_OBJECTS_PROVIDER_ARRAY[index], true);
@@ -333,17 +335,15 @@
 					droneProjectListHtml += '<a href="/drone-project/detail-drone-project?drone_project_id=' + droneProject.drone_project_id 
 										+ '&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">'
 										+ droneProject.drone_project_name + '</a>'
-										+ '<input type="button" id="droneImage_' + droneProject.drone_project_id + '" name="viewDroneImageButton"'
-										+ 'onclick="changeDroneImageLayer(\'' + i + '\',\'' + droneProject.drone_project_id + '\',\'' + droneProject.status + '\'); return false;" '
-										+ 'style="width: 90px; height: 25px; float: right;" value="이미지 비표시" />'
+										+ '<input type="button" class="sceneimage off" id="droneImage_' + droneProject.drone_project_id + '" name="viewDroneImageButton"'
+										+ 'onclick="changeDroneImageLayer(\'' + i + '\',\'' + droneProject.drone_project_id + '\',\'' + droneProject.status + '\'); return false;" />'
 										+ '<input type="hidden" id="layer_' + droneProject.drone_project_id + '" value="1" />';
 				} else {
 					droneProjectListHtml += '<a href="/drone-project/detail-drone-project?drone_project_id=' + droneProject.drone_project_id 
 										+ '&amp;pageNo=${pagination.pageNo }${pagination.searchParameters}">'
 										+ droneProject.drone_project_name + '</a>'
-										+ '<input type="button" id="droneImage_' + droneProject.drone_project_id + '" name="viewDroneImageButton"'
-										+ 'onclick="changeDroneImageLayer(\'' + i + '\',\'' + droneProject.drone_project_id + '\',\'' + droneProject.status + '\'); return false;" '
-										+ 'style="width: 90px; height: 25px; float: right;" value="이미지 표시" />'
+										+ '<input type="button" class="sceneimage" id="droneImage_' + droneProject.drone_project_id + '" name="viewDroneImageButton"'
+										+ 'onclick="changeDroneImageLayer(\'' + i + '\',\'' + droneProject.drone_project_id + '\',\'' + droneProject.status + '\'); return false;" />'
 										+ '<input type="hidden" id="layer_' + droneProject.drone_project_id + '" value="0" />';
 				}
 				
@@ -354,27 +354,27 @@
 			droneProjectListHtml += '<li class="half" title="촬영일자"><label class="date" >촬영일자</label>' + droneProject.viewShootingDate + '</li>';
 			droneProjectListHtml += '<li class="half"><label class="step">진행단계</label>';
 			if (droneProject.status === "0") {
-				droneProjectListHtml += '<span style="display: inline-block; width: 100px; color: gray; font-weight: bold;">준비중</span>';
+				droneProjectListHtml += '<label class="message">준비중</label>';
 			} else if (droneProject.status === "1") {
-				droneProjectListHtml += '<span style="display: inline-block; width: 100px; color: gray; font-weight: bold;">점검/테스트</span>';
+				droneProjectListHtml += '<label class="message">점검/테스트</label>';
 			} else if (droneProject.status === "2") {
-				droneProjectListHtml += '<span style="display: inline-block; width: 100px; color: #19cc3c; font-weight: bold;">개별 정사영상</span>';
+				droneProjectListHtml += '<label class="message ing">개별 정사영상</label>';
 			} else if (droneProject.status === "3") {
-				droneProjectListHtml += '<span style="display: inline-block; width: 100px; color: blue; font-weight: bold;">후처리 영상</span>';
+				droneProjectListHtml += '<label class="message ing">후처리 영상</label>';
 			} else if (droneProject.status === "4") {
-				droneProjectListHtml += '<span style="display: inline-block; width: 100px; color: gray; font-weight: bold;">프로젝트 종료</span>';
+				droneProjectListHtml += '<label class="message">프로젝트 종료</label>';
 			} else {
-				droneProjectListHtml += '<span style="display: inline-block; width: 100px; color: red; font-weight: bold;">에러</span>';
+				droneProjectListHtml += '<label class="message error">에러</label>';
 			}
 			droneProjectListHtml += '</li>';
 			droneProjectListHtml += '<li title="촬영지역"><label class="location">촬영지역</label>' + droneProject.shooting_area + '</li>';
-			droneProjectListHtml += '<li class="" title="실시간정사영상"> <label class="js">정사영상</label><span>' + droneProject.ortho_image_count + '</span>장' 
+			droneProjectListHtml += '<li class="" title="실시간정사영상"> <label class="js">정사영상</label><span>: ' + droneProject.ortho_image_count + '</span>장' 
 								+ '<ul class="detect">'
 								+ '<li class="ship">' + droneProject.ortho_detected_object_count + '</li>'
 								+ '<li class="oil">' + droneProject.ortho_detected_object_count + '</li>'
 								+ '</ul></li>';
 			droneProjectListHtml += '<li class="half" class="half" title="후처리영상"><label class="hc">후처리영상</label>' 
-								+ '<span>' + droneProject.postprocessing_image_count + '</span>장</li>';
+								+ '<span>: ' + droneProject.postprocessing_image_count + '</span>장</li>';
 			droneProjectListHtml += '</ul>';
 			
 		}
@@ -580,7 +580,7 @@
 		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
 		        width : 5,
 		        material : new Cesium.PolylineDashMaterialProperty({
-		            color : Cesium.Color.ORANGE,
+		            color : Cesium.Color.ORANGE, // FFF000
 		            dashLength: 8.0
 		        })
 		    }
@@ -592,7 +592,7 @@
 		
 		// 드론 이미지
 		viewer.entities.remove(BILLBOARD_ARRAY[index], true);
-		var droneImage = '/images/${lang}/drone_working.gif';
+		var droneImage = '/images/${lang}/drone_working.png';
 		if(droneProjectStatus === "4" || droneProjectStatus === "5") {
 			droneImage = '/images/${lang}/drone_done.png';
 		};

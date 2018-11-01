@@ -96,9 +96,12 @@
 		<!-- E: 프로젝트 정보 -->
 				
 		<div class="subContents">
-			<div class="count" style="height:30px; padding-top:5px;">
+			<div class="count">
 				<spring:message code='all.d'/> <em><fmt:formatNumber value="${transferDataListSize}" type="number"/></em> <spring:message code='search.what.count'/>
-				<span style="display: inline-block; float: right;">개별(O) | 후처리(P)</span>
+				<div class="index">
+		            <span class="js">개별정사영상</span>
+		            <span class="hc">후처리영상</span>
+		         </div>
 			</div>
 			<div class="transferDataList" style="max-height: 500px;">
 				<table class="list-table scope-col">
@@ -142,10 +145,10 @@
 							</td>
 							<td class="col-number">
 		<c:if test="${transferData.data_type eq '0'}">					
-								[ O ]
+								<span class="icoJs">개별정사영상</span>
 		</c:if>
 		<c:if test="${transferData.data_type eq '1'}">					
-								[ P ]
+								<span class="icoHc">후처리영상</span>
 		</c:if>
 								<a href="#" class="view-group-detail" 
 									onclick="refreshDroneImage('${transferData.drone_project_id}', 
@@ -168,8 +171,8 @@
 	<!-- E: 1depth / 프로젝트 목록 -->
 	
 	<div id="droneMapContainer" class="mapWrap">
-		<div style="position: absolute; z-index: 1; margin-top: 8px; right: 200px;">
-			<input type="button" id="autoRefreshButton" style="font-size: 20px;" value="영상 자동 갱신 끄기" />
+		<div style="position: absolute; z-index: 1; margin-top: 5px; right: 200px;">
+			<input type="button" class="autoRenewal" id="autoRefreshButton" value="영상 자동 갱신" />
 			<input type="hidden" id="autoRefreshFlag" value="0" />
 		</div>
 		<%@ include file="/WEB-INF/views/drone-project/featureInfo.jsp" %>
@@ -424,7 +427,8 @@
    	function refreshDroneImage(droneProjectId, transferDataId, dataType, shootingDate, droneLatitude, droneLongitude) {
 		// TODO 이동할 위치 정보가 없음. image point를 받아야 함
 		if ($("#autoRefreshFlag").val() == "0") {
-			$("#autoRefreshButton").val("영상 자동 갱신 켜기")
+			// $("#autoRefreshButton").val("영상 자동 갱신 켜기")
+			$("#autoRefreshButton").addClass("on");
 			$("#autoRefreshFlag").val("1")
 			clearInterval(DRONE_REFRESH_INTERVAL);
 		}
@@ -596,9 +600,9 @@
 						var transferDataType = transferData.data_type;
 						var transferDataTypeText = "";
 						if (transferDataType == "0") {
-							transferDataTypeText = "[ O ]";
+							transferDataTypeText = '<span class="icoJs">개별정사영상</span>';
 						} else if (transferDataType == "1") {
-							transferDataTypeText = "[ P ]";
+							transferDataTypeText = '<span class="icoHc">후처리영상</span>';
 						}
 						
 						tableHtml += '<tr><td class="col-number" >' + (transferDataListSize-i) + '</td>';
@@ -633,12 +637,14 @@
 	
 	$("#autoRefreshButton").click(function() {
 		if ($("#autoRefreshFlag").val() == "0") {
-			$("#autoRefreshButton").val("영상 자동 갱신 켜기");
+			// $("#autoRefreshButton").val("영상 자동 갱신 켜기");
+			$("#autoRefreshButton").addClass("on");
 			$("#autoRefreshFlag").val("1");
 			clearInterval(DRONE_REFRESH_INTERVAL);
 			
 		} else if ($("#autoRefreshFlag").val() == "1") {
-			$("#autoRefreshButton").val("영상 자동 갱신 끄기");
+			// $("#autoRefreshButton").val("영상 자동 갱신 끄기");
+			$("#autoRefreshButton").removeClass("on");
 			$("#autoRefreshFlag").val("0");
 			drawDroneImageLayer();
 		} 
