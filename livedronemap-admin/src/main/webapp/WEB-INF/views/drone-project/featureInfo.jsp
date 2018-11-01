@@ -1,43 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<style>
 
-#featureInfoLayer {
-	display: none;
-	width: 250px; 
-	position: absolute; 
-	z-index: 1; 
-	right: 20px; 
-	top: 100px;
-	background-color: white;
-}
-
-#featureInfoHeader {
-    background-color: #5563cf;
-    padding: 5px;
-    color: #FFF;
-}
-
-#featureInfo {
-	border: 1px solid;
-    padding: 5px;
-}
-
-</style>
-<div id="featureInfoLayer" >
-	<div id="featureInfoHeader">
-		<h3>객체 속성</h3>
+<div id="featureInfoLayer" class="layer" style="top:100px; right:15px; z-index:1; display: none;">
+	<div class="layerHeader">
+		<h2>객체속성</h2>
 		<div class="ctrlBtn">
-			<button type="button" title="닫기" class="close" onClick="closeFeatureInfo()">닫기</button>
+			<button type="button" title="닫기" class="layerClose" onClick="closeFeatureInfo()">닫기</button>
 		</div>
 	</div>
-	<div id="featureInfo">
-		<p>객체 ID: </p>
-		<p>객체 종류: </p>
-		<p>탐지 일시: </p>
-		<p>위도: </p>
-		<p>경도: </p>
-		<p>방향: </p>
-		<p>속도: </p>
-		<p>길이: </p>
-	</div>
+	<ul id="featureInfo" class="layerContents">
+		<li>
+			<label>객체ID</label>
+			61192
+		</li>
+		<li>
+			<label>객체종류</label>
+			A
+		</li>
+		<li>
+			<label>탐지일시</label>
+			2018-10-29 14:00:00
+		</li>
+		<li>
+			<label>위도</label>
+			123.45°
+		</li>
+		<li>
+			<label>경도</label>
+			123.45°
+		</li>
+		<li>
+			<label>방향</label>
+			동서남북
+		</li>
+		<li>
+			<label>속도</label>
+			100 m/s
+		</li>
+		<li>
+			<label>길이</label>
+			1,290km
+		</li>
+	</ul>
 </div>

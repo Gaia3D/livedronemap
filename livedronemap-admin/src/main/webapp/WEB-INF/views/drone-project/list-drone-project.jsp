@@ -580,7 +580,7 @@
 		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
 		        width : 5,
 		        material : new Cesium.PolylineDashMaterialProperty({
-		            color : Cesium.Color.ORANGE, // FFF000
+		            color : Cesium.Color.fromCssColorString('#FFF000'),
 		            dashLength: 8.0
 		        })
 		    }

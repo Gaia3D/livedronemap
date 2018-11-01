@@ -215,6 +215,7 @@
 	// 영상 개수 저장 
 	var TRANSFER_DATA_COUNT = ${transferDataListSize};
 	var LAST_TRANSFER_DATA = null;
+	var DRONE_PROJECT_STATUS = "${droneProject.status}";
 	
   	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
   	$(document).ready(function() {
@@ -355,14 +356,14 @@
 			var feature = features[i]
 			console.log(feature)
 			
-			var featureHtml = "<p>객체 ID: " + feature.properties.ortho_detected_object_id + "</p>" +
-								"<p>객체 종류: " + feature.properties.object_type + "</p>" +
-								"<p>탐지 일시: " + feature.properties.detected_date + "</p>" +
-								"<p>위도: " + feature.properties.latitude + "</p>" +
-								"<p>경도: " + feature.properties.longitude + "</p>" +
-								"<p>방향: " + feature.properties.orientation + "</p>" +
-								"<p>속도: " + feature.properties.speed + "</p>" +
-								"<p>길이: " + feature.properties.length + "</p>"
+			var featureHtml = "<li><label>객체 ID</label>" + feature.properties.ortho_detected_object_id + "</li>" +
+								"<li><label>객체 종류</label>" + feature.properties.object_type + "</li>" +
+								"<li><label>탐지 일시</label>" + feature.properties.detected_date + "</li>" +
+								"<li><label>위도</label>" + feature.properties.latitude + "</li>" +
+								"<li><label>경도</label>" + feature.properties.longitude + "</li>" +
+								"<li><label>방향</label>" + feature.properties.orientation + "</li>" +
+								"<li><label>속도</label>" + feature.properties.speed + "</li>" +
+								"<li><label>길이</label>" + feature.properties.length + "</li>"
 			
 			$("#featureInfo").html(featureHtml);
 			
@@ -388,7 +389,7 @@
 		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
 		        width : 5,
 		        material : new Cesium.PolylineDashMaterialProperty({
-		            color : Cesium.Color.ORANGE,
+		            color : Cesium.Color.fromCssColorString('#FFF000'),
 		            dashLength: 8.0
 		        })
 		    }
@@ -399,10 +400,14 @@
 		};
 		
 		// 드론 이미지
+		var droneImage = '/images/${lang}/drone_working.png';
+		if(DRONE_PROJECT_STATUS === "4" || DRONE_PROJECT_STATUS === "5") {
+			droneImage = '/images/${lang}/drone_done.png';
+		};
 		BILLBOARD = viewer.entities.add({
 	        position : Cesium.Cartesian3.fromDegrees(parseFloat(transferDataList[0]), parseFloat(transferDataList[1]), parseFloat(transferDataList[2])),
 	        billboard : {
-	            image : '/images/ko/drone_done.png',
+	            image : droneImage,
 	            width : 25, // default: undefined
 	            height : 25 // default: undefined
 	            /* image : '../images/Cesium_Logo_overlay.png', // default: undefined
@@ -553,6 +558,8 @@
 							+ '<label class="hc">후처리영상</label><span>' + droneProject.postprocessing_image_count + '</span>장</li>';
 					
 					$("#projectInfo").html(ulHtml);
+					
+					DRONE_PROJECT_STATUS = droneProjectStatus;
 					
 				} else {
 					console.log(JS_MESSAGE[msg.result]);
