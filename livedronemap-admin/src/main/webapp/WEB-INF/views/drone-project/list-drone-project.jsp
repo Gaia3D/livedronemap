@@ -138,7 +138,7 @@
 		,enablePickFeatures: false
 	}); */
 	
-	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
+	Cesium.Ion.defaultAccesToken = '${cesiumIonToken}';
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
 	
 	// 프로젝트 리스트

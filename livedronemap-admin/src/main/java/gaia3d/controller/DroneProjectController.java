@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import gaia3d.config.PropertiesConfig;
+
 import gaia3d.domain.CacheManager;
 import gaia3d.domain.DroneProject;
 import gaia3d.domain.PageType;
@@ -38,6 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class DroneProjectController {
 	
+	@Autowired
+	private PropertiesConfig propertiesConfig;
 	@Autowired
 	private DroneProjectService droneProjectService;
 	@Autowired
@@ -76,10 +80,13 @@ public class DroneProjectController {
 			droneProjectList = droneProjectService.getListDroneProject(droneProject);
 		}
 		
+		String cesiumIonToken = propertiesConfig.getCesiumIonToken();
+		
 		model.addAttribute("policy", CacheManager.getPolicy());
 		model.addAttribute(pagination);
 		model.addAttribute("droneProject", droneProject);
 		model.addAttribute("droneProjectList", droneProjectList);
+		model.addAttribute("cesoumIonToken", cesiumIonToken);
 		return "/drone-project/list-drone-project";
 	}
 	
