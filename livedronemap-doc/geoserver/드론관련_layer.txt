@@ -5,10 +5,13 @@
  레이어 생성
  - view를 만들어서 layer 생성
  - view sql
-   select ortho_detected_object_id, transfer_data_id, object_type, detected_date, orientation, length, speed, ST_X(geometry::geometry) AS longitude, ST_Y(geometry::geometry) AS latitude, bounding_box_geometry 
-   from ortho_detected_object
+   select ortho_detected_object_id, transfer_data_id, object_type, detected_date, 
+	COALESCE(orientation::text, '') AS orientation, COALESCE(length::text, '') AS length, COALESCE(speed::text, '') AS speed, 
+	COALESCE(ST_X(geometry::geometry)::text, '') AS longitude, COALESCE(ST_Y(geometry::geometry)::text, '') AS latitude, 
+	bounding_box_geometry 
+	from ortho_detected_object
 
-   이름을 view_ortho_detected_object
+   이름 : view_ortho_detected_object
 
 스타일 생성
  - 이름은 ortho_detected_object
@@ -43,4 +46,4 @@
 	  </NamedLayer>
 	</StyledLayerDescriptor>
 	
-view_ortho_detected_object 레이어에 기본 스타일로 적용
+스타일 생성 후 view_ortho_detected_object 레이어에 기본 스타일로 적용
