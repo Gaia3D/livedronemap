@@ -1,9 +1,9 @@
 package gaia3d.domain;
 
 public enum APIURL {
-	GEOSERVER_IMAGES("/geoserver/images"),
-	GEOSERVER_LAYERS_ORTHO_IMAGES("/geoserver/layers/ortho-images"),
-	GEOSERVER_LAYERS_POSTPROCESSING_IMAGES("/geoserver/layers/postprocessing-images"),
+	GEOSERVER_IMAGES("/geoservers/images"),
+	GEOSERVER_LAYERS_ORTHO_IMAGES("/geoservers/layers/ortho-images"),
+	GEOSERVER_LAYERS_POSTPROCESSING_IMAGES("/geoservers/layers/postprocessing-images"),
 	ORTHO_IMAGES("/ortho-images"),
 	POSTPROCESSING_IMAGES("/postprocessing-images");
 	

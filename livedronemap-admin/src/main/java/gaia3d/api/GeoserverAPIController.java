@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-@RequestMapping("/geoserver/")
+@RequestMapping("/geoservers/")
 @RestController
 public class GeoserverAPIController {
 	
