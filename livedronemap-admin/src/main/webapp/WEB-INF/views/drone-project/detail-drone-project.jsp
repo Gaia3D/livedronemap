@@ -84,8 +84,8 @@
 							<label class="js">정사영상</label>
 							<span>${droneProject.ortho_image_count }</span>장
 							<ul class="detect">
-								<li class="ship">${droneProject.ortho_detected_object_count}</li>
-								<li class="oil">${droneProject.ortho_detected_object_count}</li>
+								<li class="ship">${droneProject.detected_object_item1_count}</li>
+								<li class="oil">${droneProject.detected_object_item2_count}</li>
 							</ul>
 						</li>
 						<li class="half" class="half" title="후처리영상">
@@ -552,8 +552,8 @@
 					ulHtml += '<li title="촬영지역"><label class="location">촬영지역</label>' + droneProject.shooting_area + '</li>';
 					ulHtml += '<li class="" title="실시간정사영상"><label class="js">정사영상</label>' 
 							+ '<span>' + droneProject.ortho_image_count + '</span>장' 
-							+ '<ul class="detect"><li class="ship">' + droneProject.ortho_detected_object_count + '</li>' 
-							+ '<li class="oil">' + droneProject.ortho_detected_object_count + '</li></ul></li>';
+							+ '<ul class="detect"><li class="ship">' + droneProject.detected_object_item1_count + '</li>' 
+							+ '<li class="oil">' + droneProject.detected_object_item2_count + '</li></ul></li>';
 					ulHtml += '<li class="half" class="half" title="후처리영상">' 
 							+ '<label class="hc">후처리영상</label><span>' + droneProject.postprocessing_image_count + '</span>장</li>';
 					

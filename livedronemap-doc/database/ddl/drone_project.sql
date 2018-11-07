@@ -37,7 +37,10 @@ create table drone_project(
 	description							varchar(256),
 	ortho_image_count					int default 0,
 	postprocessing_image_count			int default 0,
-	ortho_detected_object_count			int default 0,
+	detected_object_item1_count			int default 0,
+	detected_object_item2_count			int default 0,
+	detected_object_item3_count			int default 0,
+	detected_object_item4_count			int default 0,
 	update_date							timestamp with time zone,
 	insert_date							timestamp with time zone		default now(),
 	constraint drone_project_pk			primary key (drone_project_id)
@@ -63,6 +66,9 @@ comment on column drone_project.status is '상태. 0:준비중, 1:점검/테스트, 2:개별
 comment on column drone_project.description is '설명';
 comment on column drone_project.ortho_image_count is '개별정사 영상 개수(중복,속도때문)';
 comment on column drone_project.postprocessing_image_count is '후처리 영상 개수(중복,속도때문)';
-comment on column drone_project.ortho_detected_object_count is '객체 탐지 개수(중복,속도때문)';
+comment on column drone_project.detected_object_item1_count is '1객체 탐지 개수(중복,속도때문,확장)';
+comment on column drone_project.detected_object_item2_count is '2객체 탐지 개수(중복,속도때문,확장)';
+comment on column drone_project.detected_object_item3_count is '3객체 탐지 개수(중복,속도때문,확장)';
+comment on column drone_project.detected_object_item4_count is '4객체 탐지 개수(중복,속도때문,확장)';
 comment on column drone_project.update_date is '수정일';
 comment on column drone_project.insert_date is '등록일';

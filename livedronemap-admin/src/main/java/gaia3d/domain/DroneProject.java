@@ -31,7 +31,11 @@ public class DroneProject extends SearchDomain {
 	// 후처리 영상 개수
 	private Integer postprocessing_image_count;
 	// 객체 탐지 개수
-	private Integer ortho_detected_object_count;
+	// 레이블 테이블 확장 필요 
+	private Integer detected_object_item1_count;
+	private Integer detected_object_item2_count;
+	private Integer detected_object_item3_count;
+	private Integer detected_object_item4_count;
 	
 	// 고유번호
 	private Integer drone_project_id;
