@@ -35,6 +35,7 @@
 					<li><a href="#geoserver_tab"><spring:message code='config.geoserver.title'/></a></li>
 					<li><a href="#restapi_tab"><spring:message code='config.restapi.title'/></a></li>
 					<li><a href="#project_tab"><spring:message code='config.project.title'/></a></li>
+					<li><a href="#simulation_tab"><spring:message code='config.simulation.title'/></a></li>
 					<li><a href="#notice_tab"><spring:message code='config.notice.title'/></a></li>
 					<li><a href="#security_tab"><spring:message code='config.security.title'/></a></li>
 					<li><a href="#upload_tab"><spring:message code='config.uplaod.title'/></a></li>
@@ -47,6 +48,7 @@
 				<%@ include file="/WEB-INF/views/config/modify-policy-geoserver.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-restapi.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-project.jsp" %>
+				<%@ include file="/WEB-INF/views/config/modify-policy-simulation.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-notice.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-security.jsp" %>
 				<%@ include file="/WEB-INF/views/config/modify-policy-upload.jsp" %>
