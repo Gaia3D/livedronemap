@@ -129,7 +129,7 @@ public class ImageProcessing implements Runnable {
 			
 			// 내부 시뮬레이션 프로젝트인지 확인
 			if (simulationLog != null && simulationLog.getSimulation_log_id() != null && simulationLog.getSimulation_type().equals("2")) {
-				projectService.updateDroneProject(projectId, "4");
+				// projectService.updateDroneProject(projectId, "4");
 				projectService.updateSimulationLog(simulationLog.getSimulation_log_id(), "1", e.getMessage());
 			}
 			
