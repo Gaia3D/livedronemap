@@ -17,6 +17,7 @@ import gaia3d.config.GdalConfig;
 import gaia3d.domain.ImageInfo;
 import gaia3d.service.GeoserverService;
 import gaia3d.service.LogService;
+import gaia3d.service.ProjectService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,6 +28,8 @@ public class ImageProcessingTest {
 	private GeoserverService geoserverService;
 	@Autowired
 	private LogService logService;
+	@Autowired
+	private ProjectService simulationService;
 	@Autowired
 	private GdalConfig gdalConfig;
 	
@@ -40,7 +43,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, simulationService, gdalConfig, imageInfo);
 		imageConvertUtil.convertProjection(srcImg);
 	}
 	
@@ -54,7 +57,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, simulationService, gdalConfig, imageInfo);
 		imageConvertUtil.createInnerTile(srcImg);
 	}
 	
@@ -68,7 +71,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, simulationService, gdalConfig, imageInfo);
 		imageConvertUtil.createOverview(srcImg);
 	}
 	
@@ -82,7 +85,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
+		ImageProcessing imageConvertUtil = new ImageProcessing(geoserverService, logService, simulationService, gdalConfig, imageInfo);
 		imageConvertUtil.removeBackground(srcImg);
 	}
 	
@@ -98,7 +101,7 @@ public class ImageProcessingTest {
 		imageInfo.setImageId(1L);
 		imageInfo.setImagePath(srcImg);
 		
-		Runnable imageConvertUtil = new ImageProcessing(geoserverService, logService, gdalConfig, imageInfo);
+		Runnable imageConvertUtil = new ImageProcessing(geoserverService, logService, simulationService, gdalConfig, imageInfo);
 		Thread thread = new Thread(imageConvertUtil);
 		thread.start();
 		

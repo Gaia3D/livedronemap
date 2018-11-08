@@ -134,6 +134,9 @@ public class Policy {
 	// 프로젝트 최대 대기 시간. 기본 10시간 
 	private String project_max_idle_time;
 	
+	// 시뮬레이션 서버 URL
+	private String simulation_server_url;
+	
 	// 알림 서비스 사용 유무. Y : 사용, N : 미사용(기본값)
 	private String notice_service_yn;
 	// 알림 발송 매체. 0 : SMS(기본값), 1 : 이메일, 2 : 메신저

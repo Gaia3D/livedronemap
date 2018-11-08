@@ -18,9 +18,16 @@ public interface OrthoImageMapper {
 	int insertOrthoImage(OrthoImage orthoImage);
 	
 	/**
+	 * get transfer data id using ortho image id
+	 * @param ortho_image_id
+	 * @return
+	 */
+	Long selectTransferDataId(Long ortho_image_id);
+	
+	/**
 	 * @param orthoImage
 	 * @return
 	 */
 	int updateOrthoImage(OrthoImage orthoImage);
-	
+
 }

@@ -16,6 +16,12 @@
 		)
 	</insert>
 	
+	<!-- transferDataId 조회 -->
+	<select id="selectTransferDataId" parameterType="long" resultType="long">
+		SELECT transfer_data_id FROM ortho_image
+		WHERE ortho_image_id = #{ortho_image_id}
+	</select>
+	
 	<!-- 개별 정사 영상 수정 -->
 	<update id="updateOrthoImage" parameterType="orthoImage">
 		/* updateOrthoImage */

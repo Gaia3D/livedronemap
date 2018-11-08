@@ -169,9 +169,9 @@
 		
 	});
 	
-	function simulateProcess(clientId, step) {
+	function simulateProcess(step) {
 		$.ajax({
-			url: "/simulations/" + clientId + "/" + step,
+			url: "/simulations/" + step,
 			type: "POST",
 			cache: false,
 			success: function(msg){

@@ -33,7 +33,21 @@
 			</if>
 		</trim>
 	</select>
-
+	
+	<!-- 시뮬레이션 로그 조회 -->
+	<select id="getSimulationLog" parameterType="int" resultType="simulationLog" >
+		/* getSimulationLog */
+		SELECT * FROM simulation_log
+		WHERE simulation_log_id = ${value}
+	</select>
+	
+	<!-- 시뮬레이션 로그 조회 by DroneProjectId -->
+	<select id="getSimulationLogByDroneProjectId" parameterType="int" resultType="simulationLog" >
+		/* getSimulationLogByDroneProjectId */
+		SELECT * FROM simulation_log
+		WHERE drone_project_id = ${value}
+	</select>
+	
 	<!-- 시뮬레이션 로그 리스트 조회 -->
 	<select id="getSimulationLogList" parameterType="simulationLog" resultType="simulationLog">
 		/* getSimulationLogList */

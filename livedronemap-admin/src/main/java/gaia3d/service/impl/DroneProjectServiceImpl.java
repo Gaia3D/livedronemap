@@ -7,14 +7,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import gaia3d.domain.DroneProject;
+import gaia3d.domain.SimulationLog;
 import gaia3d.persistence.DroneProjectMapper;
+import gaia3d.persistence.SimulationLogMapper;
 import gaia3d.service.DroneProjectService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class DroneProjectServiceImpl implements DroneProjectService {
 
 	@Autowired
 	private DroneProjectMapper droneProjectMapper;
+	@Autowired
+	private SimulationLogMapper simulationLogMapper;
 	
 	/**
 	 * 총건수
@@ -63,6 +69,17 @@ public class DroneProjectServiceImpl implements DroneProjectService {
 	 */
 	@Transactional
 	public int updateDroneProject(DroneProject droneProject) {
-		return droneProjectMapper.updateDroneProject(droneProject);
+		int result = droneProjectMapper.updateDroneProject(droneProject);
+		
+		droneProject = droneProjectMapper.getDroneProject(droneProject.getDrone_project_id());
+		
+		if (droneProject.getDrone_project_type().equals("1") && droneProject.getStatus().equals("4")) {
+			SimulationLog simulationLog = new SimulationLog();
+			simulationLog.setDrone_project_id(droneProject.getDrone_project_id());
+			simulationLog.setStatus("0");
+			simulationLogMapper.updateSimulationLog(simulationLog);
+		}
+		
+		return result;
 	}
 }

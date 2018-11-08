@@ -17,6 +17,20 @@ public interface SimulationLogMapper {
 	public int insertSimulationLog(SimulationLog simulationLog);
 
 	/**
+	 * 시뮬레이션 로그 조회
+	 * @param simulationLogId
+	 * @return
+	 */
+	public SimulationLog getSimulationLog(Integer simulationLogId);
+	
+	/**
+	 * 시뮬레이션 로그 조회 by droneProjectId
+	 * @param droneProjectId
+	 * @return
+	 */
+	public SimulationLog getSimulationLogByDroneProjectId(Integer droneProjectId);
+	
+	/**
 	 * 시뮬레이션 로그 리스트 조회
 	 * @return
 	 */
@@ -41,5 +55,9 @@ public interface SimulationLogMapper {
 	 * @return
 	 */
 	public int updateSimulationLogProjectId(SimulationLog simulationLog);
+
+	
+
+	
 	
 }

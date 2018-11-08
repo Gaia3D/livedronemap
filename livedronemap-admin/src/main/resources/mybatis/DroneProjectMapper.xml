@@ -138,7 +138,9 @@
 			detected_object_item2_count = detected_object_item2_count + #{detected_object_item2_count}, 
 			detected_object_item3_count = detected_object_item3_count + #{detected_object_item3_count}, 
 			detected_object_item4_count = detected_object_item4_count + #{detected_object_item4_count}, 
-			location = ST_GeographyFromText(#{location}),
+			<if test="location != null and location != ''">
+				location = ST_GeographyFromText(#{location}),
+			</if>
 			update_date = NOW()
 		WHERE drone_project_id = #{drone_project_id}
 	</update>

@@ -5,7 +5,9 @@ public enum APIURL {
 	GEOSERVER_LAYERS_ORTHO_IMAGES("/geoservers/layers/ortho-images"),
 	GEOSERVER_LAYERS_POSTPROCESSING_IMAGES("/geoservers/layers/postprocessing-images"),
 	ORTHO_IMAGES("/ortho-images"),
-	POSTPROCESSING_IMAGES("/postprocessing-images");
+	POSTPROCESSING_IMAGES("/postprocessing-images"),
+	SIMULATION("/simulations"),
+	PROJECT("/drone-projects");
 	
 	private String url;
 	

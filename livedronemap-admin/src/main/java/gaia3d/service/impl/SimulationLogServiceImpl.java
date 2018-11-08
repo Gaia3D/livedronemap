@@ -16,19 +16,29 @@ public class SimulationLogServiceImpl implements SimulationLogService{
 	@Autowired
 	SimulationLogMapper simulationLogMapper;
 	
+	@Transactional
+	public int insertSimulationLog(SimulationLog simulationLog) {
+		return simulationLogMapper.insertSimulationLog(simulationLog);
+	}
+	
 	@Transactional(readOnly=true)
 	public Long getSimulationLogTotalCount(SimulationLog simulationLog) {
 		return simulationLogMapper.getSimulationLogTotalCount(simulationLog);
 	}
 	
 	@Transactional(readOnly=true)
-	public List<SimulationLog> getSimulationLogList(SimulationLog simulationLog) {
-		return simulationLogMapper.getSimulationLogList(simulationLog);
+	public SimulationLog getSimulationLogByDroneProjectId(Integer droneProjectId) {
+		return simulationLogMapper.getSimulationLogByDroneProjectId(droneProjectId);
 	}
 	
-	@Transactional
-	public int insertSimulationLog(SimulationLog simulationLog) {
-		return simulationLogMapper.insertSimulationLog(simulationLog);
+	@Transactional(readOnly=true)
+	public SimulationLog getSimulationLog(Integer simulationLogId) {
+		return simulationLogMapper.getSimulationLog(simulationLogId);
+	}
+	
+	@Transactional(readOnly=true)
+	public List<SimulationLog> getSimulationLogList(SimulationLog simulationLog) {
+		return simulationLogMapper.getSimulationLogList(simulationLog);
 	}
 	
 	@Transactional
@@ -40,5 +50,9 @@ public class SimulationLogServiceImpl implements SimulationLogService{
 	public int updateSimulationLogProjectId(SimulationLog simulationLog) {
 		return simulationLogMapper.updateSimulationLogProjectId(simulationLog);
 	}
+
+	
+
+	
 	
 }

@@ -23,14 +23,17 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import gaia3d.config.GdalConfig;
 import gaia3d.domain.APIResult;
 import gaia3d.domain.ImageInfo;
 import gaia3d.domain.ImageMosaic;
 import gaia3d.domain.ProcessingResult;
+import gaia3d.domain.SimulationLog;
 import gaia3d.service.GeoserverService;
 import gaia3d.service.LogService;
+import gaia3d.service.ProjectService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -46,12 +49,15 @@ public class ImageProcessing implements Runnable {
 	
 	private GeoserverService geoserverService;
 	private LogService logService;
+	private ProjectService projectService;
 	private GdalConfig gdalConfig;
 	private ImageInfo imageInfo;
 	
-	public ImageProcessing(GeoserverService geoserverService, LogService logService, GdalConfig gdalConfig, ImageInfo imageInfo) {
+	public ImageProcessing(GeoserverService geoserverService, LogService logService, ProjectService projectService, 
+			GdalConfig gdalConfig, ImageInfo imageInfo) {
 		this.geoserverService = geoserverService;
 		this.logService = logService;
+		this.projectService = projectService;
 		this.gdalConfig = gdalConfig;
 		this.imageInfo = imageInfo;
 	}
@@ -60,7 +66,12 @@ public class ImageProcessing implements Runnable {
 		String sourceImage = imageInfo.getImagePath();
 		String sourceName = FilenameUtils.getBaseName(sourceImage);
 		
+		Integer projectId = imageInfo.getProjectId();
+		SimulationLog simulationLog = null;
+		
 		try {
+			simulationLog = projectService.getSimulationLog(projectId);
+			
 			// TODO 단계별로 진행 여부 필요, properties로 관리할지 파일별로 플레그를 둘지 고려 필요 
 			if (gdalConfig.getNearblackUse().equals(PROCESS_USE_FLAG)) {
 				sourceImage = removeBackground(sourceImage);
@@ -83,7 +94,6 @@ public class ImageProcessing implements Runnable {
 			// Geoserver 영상 등록 호출 
 			ImageMosaic imageMosaic = new ImageMosaic();
 			String imageName = FilenameUtils.getName(resultImagePath);
-			Integer projectId = imageInfo.getProjectId();
 			String location = String.format("%d/%s", projectId, imageName);
 			imageMosaic.setLocation(location);
 			String theGeom = getImageBoundaryAsWKT(resultImagePath);
@@ -98,18 +108,31 @@ public class ImageProcessing implements Runnable {
 			ResponseEntity<APIResult> insertResult = geoserverService.insertImageInfoForGeoServer(imageMosaic);
 			log.info("@@@ {}", insertResult.getStatusCode());
 			
+			ProcessingResult processingResult = ProcessingResult.PROCESSING_SUCCESS;
 			try {
 				ResponseEntity<APIResult> checkResult = geoserverService.checkGeoServerLayer(imageMosaic);
 				log.info("@@@ {}", checkResult.getStatusCode());
 			} catch (HttpClientErrorException e) {
 				ResponseEntity<APIResult> createResult = geoserverService.createGeoserverLayer(imageMosaic);
 				log.info("@@@ {}", createResult.getStatusCode());
+			} 
+			
+			// 내부 시뮬레이션 프로젝트인지 확인
+			if (simulationLog != null && simulationLog.getSimulation_log_id() != null && simulationLog.getSimulation_type().equals("2")) {
+				projectService.updateDroneProject(projectId, "4");
 			}
 			
-			logService.updateImageProcessingStatus(imageInfo, ProcessingResult.PROCESSING_SUCCESS);
+			logService.updateImageProcessingStatus(imageInfo, processingResult);
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			// 내부 시뮬레이션 프로젝트인지 확인
+			if (simulationLog != null && simulationLog.getSimulation_log_id() != null && simulationLog.getSimulation_type().equals("2")) {
+				projectService.updateDroneProject(projectId, "4");
+				projectService.updateSimulationLog(simulationLog.getSimulation_log_id(), "1", e.getMessage());
+			}
+			
 			logService.updateImageProcessingStatus(imageInfo, ProcessingResult.PROCESSING_FAIL);
 		}
 		
