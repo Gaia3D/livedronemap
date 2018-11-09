@@ -122,10 +122,11 @@
 	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
 	
-	// 배경지도 일단 보류 
-	/* var imageryProvider = new Cesium.WebMapServiceImageryProvider({
-		url : '${policy.geoserver_data_url}/wms',
-		layers : "livedronemap:background",
+	// 배경지도
+	/*
+	var imageryProvider = new Cesium.WebMapServiceImageryProvider({
+		url : 'http://192.168.10.5/geoserver/gwc/service/wms',
+		layers : "osm:osm",
 		parameters : {
 			service : 'WMS'
 			,version : '1.1.1'
@@ -136,7 +137,8 @@
 		}
 		//,proxy: new Cesium.DefaultProxy('/proxy/')
 		,enablePickFeatures: false
-	}); */
+	});
+	*/
 	
 	Cesium.Ion.defaultAccesToken = '${cesiumIonToken}';
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
@@ -298,7 +300,7 @@
 			} else {
 				droneProjectListPagingHtml += '<li><span class="ico first"></span></li>'
 			}
-			if (pagination.existPrePage == 'true') {
+			if (pagination.existPrePage) {
 				droneProjectListPagingHtml += '<li><a href="${pagination.uri}?pageNo=' + pagination.prePageNo + pagination.searchParameters + '" class="prev"><span class="ico forward"></span></a></li>'
 			} else {
 				droneProjectListPagingHtml += '<li><span class="ico forward"></span></li>'
@@ -310,7 +312,7 @@
 					droneProjectListPagingHtml += '<li><a href="${pagination.uri}?pageNo=' + i + pagination.searchParameters + '">' + i + '</a></li>'
 				}
 			}
-			if (pagination.existNextPage == 'true') {
+			if (pagination.existNextPage) {
 				droneProjectListPagingHtml += '<li><a href="${pagination.uri}?pageNo=' + pagination.nextPageNo + pagination.searchParameters + '" class="next"><span class="ico back"></span></a></li>'
 			} else {
 				droneProjectListPagingHtml += '<li><span class="ico back"></span></li>'
