@@ -121,7 +121,10 @@
 	var rectangle = Cesium.Rectangle.fromDegrees(INIT_WEST, INIT_SOUTH, INIT_EAST, INIT_NORTH);
 	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
-	
+	var worldTerrain = Cesium.createWorldTerrain({
+	    requestWaterMask: false,
+	    requestVertexNormals: true
+	});
 	// 배경지도
 	/*
 	var imageryProvider = new Cesium.WebMapServiceImageryProvider({
@@ -141,7 +144,7 @@
 	*/
 	
 	Cesium.Ion.defaultAccesToken = '${cesiumIonToken}';
-	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
+	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, terrainProvider : worldTerrain});
 	
 	// 프로젝트 리스트
 	var DRONE_PROJECT_ARRAY = new Array();	
