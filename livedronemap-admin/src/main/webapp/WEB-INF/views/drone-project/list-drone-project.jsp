@@ -46,6 +46,7 @@
 				<ul class="projectSearch input-group row">
 					<li class="input-set">
 						<label for="search_word">프로젝트</label>
+
 						<%-- <select id="search_word" name="search_word" class="select" >
 							<option value=""><spring:message code='select'/></option>
 		          			<option value="drone_project_name">프로젝트명</option>
@@ -55,6 +56,8 @@
 							<option value="1"><spring:message code='search.include'/></option>
 						</select> --%>
 						<form:input path="search_value" type="search" size="25" cssClass="m" />
+						<form:hidden path="search_word" value="drone_project_name" />
+						<form:hidden path="search_option" value="1" />
 					</li>
 					<li class="input-set">
 						<label for="start_date"><spring:message code='search.date'/></label>
