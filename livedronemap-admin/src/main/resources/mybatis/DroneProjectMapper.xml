@@ -9,14 +9,8 @@
 		SELECT COUNT(drone_project_id) 
 		FROM drone_project
 		<trim prefix="WHERE" prefixOverrides="AND">
-			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
-			AND ${search_word} = #{search_value}
-			</if>
-			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
-			AND ${search_word} LIKE '%' || #{search_value} || '%'
-			</if>
-			<if test="status != null and status != ''">
-			AND status = #{status}
+			<if test="search_value != null and search_value != ''">
+			AND drone_project_name LIKE '%' || #{search_value} || '%'
 			</if>
 			<if test="start_date != null and start_date != ''">
 			<![CDATA[
@@ -47,15 +41,9 @@
 				update_date, insert_date
 			FROM drone_project A
 			<trim prefix="WHERE" prefixOverrides="AND">
-				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
-				AND A.${search_word} = #{search_value}
-				</if>
-				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
-				AND A.${search_word} LIKE '%' || #{search_value} || '%'
-				</if>
-				<if test="status != null and status != ''">
-				AND A.status = #{status}
-				</if>
+				<if test="search_value != null and search_value != ''">
+				AND drone_project_name LIKE '%' || #{search_value} || '%'
+				</if>	
 				<if test="start_date != null and start_date != ''">
 				<![CDATA[
 				AND A.insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
