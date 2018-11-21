@@ -23,7 +23,7 @@
 			최종시간 : <span><%=lastCheckTime %></span>
 		</li>
 		<li>
-			Drone
+			Drone 
 <% if(HealthCheck.ALIVE.equals(droneStatus)) { %>
 			<span class="alive">정상</span>
 <% } else if(HealthCheck.DOWN.equals(droneStatus)) { %>
@@ -34,7 +34,7 @@
 	
 		</li>
 		<li>
-			AI
+		   	Processing
 <% if(HealthCheck.ALIVE.equals(aIStatus)) { %>
 			<span class="alive">정상</span>
 <% } else if(HealthCheck.DOWN.equals(aIStatus)) { %>
@@ -44,7 +44,7 @@
 <% } %>
 		</li>
 		<li>
-			Converter
+			Visualization
 <% if(HealthCheck.ALIVE.equals(converterStatus)) {%>
 			<span class="alive">정상</span>
 <% } else if(HealthCheck.DOWN.equals(converterStatus)) {%>

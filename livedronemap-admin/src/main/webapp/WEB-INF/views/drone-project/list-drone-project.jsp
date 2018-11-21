@@ -128,6 +128,8 @@
 	    requestWaterMask: false,
 	    requestVertexNormals: true
 	});
+	
+	
 	// 배경지도
 	/*
 	var imageryProvider = new Cesium.WebMapServiceImageryProvider({
@@ -148,6 +150,7 @@
 	
 	Cesium.Ion.defaultAccesToken = '${cesiumIonToken}';
 	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, terrainProvider : worldTerrain});
+	viewer.scene.globe.depthTestAgainstTerrain = false;
 	
 	// 프로젝트 리스트
 	var DRONE_PROJECT_ARRAY = new Array();	
@@ -590,10 +593,10 @@
 		    name : '드론 비행 경로',
 		    polyline : {
 		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
-		        width : 5,
+		        width : 3,
 		        material : new Cesium.PolylineDashMaterialProperty({
 		            color : Cesium.Color.fromCssColorString('#FFF000'),
-		            dashLength: 8.0
+		            dashLength: 3.0
 		        })
 		    }
 		});
@@ -613,7 +616,8 @@
 	        billboard : {
 	            image : droneImage,
 	            width : 25, // default: undefined
-	            height : 25 // default: undefined
+	            height : 25, // default: undefined
+	            disableDepthTestDistance : Number.POSITIVE_INFINITY
 	            /* image : '../images/Cesium_Logo_overlay.png', // default: undefined
 	            show : true, // default
 	            pixelOffset : new Cesium.Cartesian2(0, -50), // default: (0, 0)

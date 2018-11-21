@@ -41,8 +41,7 @@
 				</tr>			
 			</table>
 			<div class="alignCenter">
-				<button type="button" class="basic" onclick="insertDrone();"><spring:message code='save'/></button>
-				<button type="button" class="basic">목록</button>
+				<button type="button" class="point" onclick="insertDrone();"><spring:message code='save'/></button>
 			</div>
 		</div>
 		</form:form>
