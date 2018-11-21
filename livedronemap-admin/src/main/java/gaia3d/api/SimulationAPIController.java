@@ -93,12 +93,14 @@ public class SimulationAPIController implements APIController {
 			Policy policy = CacheManager.getPolicy();
 			if (simulationStep == SimulationStep.ALL) {
 				// 시립대 
-				String url = policy.getSimulation_server_url() + APIURL.SIMULATION_DRONE.getUrl();
+				String url = policy.getSimulation_server_url() + APIURL.SIMULATION_DRONE.getUrl()  + "?simulation_id=" + simulationLogId;
+				log.info(url);
 				RestTemplate restTemplate = new RestTemplate();
 				restTemplate.getForEntity(url, Map.class);
 			} else if(simulationStep == SimulationStep.CLIENT) {
 				// 시립대
-				String url = policy.getSimulation_server_url() + APIURL.SIMULATION_AI.getUrl();
+				String url = policy.getSimulation_server_url() + APIURL.SIMULATION_AI.getUrl() + "?simulation_id=" + simulationLogId;
+				log.info(url);
 				RestTemplate restTemplate = new RestTemplate();
 				restTemplate.getForEntity(url, Map.class);
 			} else if(simulationStep == SimulationStep.INNER) {
