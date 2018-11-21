@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="/externlib/cesium_orgin/Widgets/widgets.css?cache_version=${cache_version}" /> 
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/externlib/jquery/fixedheadertable.js"></script>
 	<script type="text/javascript" src="/externlib/cesium_orgin/Cesium.js"></script>
 	<style>
 		.mapWrap {
@@ -22,6 +23,61 @@
 			padding-left: 391px;
 			height:100%;
 		}
+		
+		/* table scroll start */
+		
+		th.col-name {
+			width: 68%;
+		}
+				
+		.fht-table {
+			/* appearance */
+		    border-collapse: collapse;
+		    border-spacing: 0;
+		}
+		
+		.fht-table-wrapper,
+		.fht-table-wrapper .fht-thead,
+		.fht-table-wrapper .fht-tfoot,
+		.fht-table-wrapper .fht-fixed-column .fht-tbody,
+		.fht-table-wrapper .fht-fixed-body .fht-tbody,
+		.fht-table-wrapper .fht-tbody {
+			/* appearance */
+			overflow: hidden;
+			
+			/* position */
+			position: relative;
+		}
+	
+		.fht-table-wrapper .fht-fixed-body .fht-tbody,
+		.fht-table-wrapper .fht-tbody {
+			/* appearance */
+		    overflow: auto;
+		}
+	
+		.fht-table-wrapper .fht-table .fht-cell {
+			/* appearance */
+			overflow: hidden;
+			
+			/* size */
+		    height: 1px;
+		}
+		
+		.fht-table-wrapper .fht-fixed-column,
+		.fht-table-wrapper .fht-fixed-body {
+		    /* position */
+		    top: 0;
+		    left: 0;
+		    position: absolute;
+	    }
+		    
+		.fht-table-wrapper .fht-fixed-column {
+		    /* position */
+		    z-index: 1;
+	    }
+		
+		/* table scroll end */
+		
 	</style>
 </head>
 
@@ -103,7 +159,7 @@
 		            <span class="hc">후처리영상</span>
 		         </div>
 			</div>
-			<div class="transferDataList" style="max-height: 500px;">
+			<div class="transferDataList" style="max-height: 650px; overflow-y: auto; height:650px;">
 				<table class="list-table scope-col">
 					<col class="col-number" />
 					<col class="col-toggle" />
@@ -112,7 +168,7 @@
 						<tr>
 							<th scope="col" class="col-number"><spring:message code='number'/></th>
 							<th scope="col" class="col-toggle">상태</th>
-							<th scope="col" class="col-name" style="width: 68%;">[구분] 파일명 (탐지)</th>
+							<th scope="col" class="col-name" style="width:68%">[구분] 파일명 (탐지)</th>
 						</tr>
 					</thead>
 					<tbody id="transferDataList">
@@ -143,7 +199,7 @@
 		</c:if>									
 								</span>
 							</td>
-							<td class="col-number">
+							<td class="col-name">
 		<c:if test="${transferData.data_type eq '0'}">					
 								<span class="icoJs">개별정사영상</span>
 		</c:if>
@@ -200,10 +256,6 @@
 	var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
 	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
-	var worldTerrain = Cesium.createWorldTerrain({
-	    requestWaterMask: false,
-	    requestVertexNormals: true
-	});
 	
 	// 드론 촬영 이미지를 그리는 geoserver layer
 	var DRONE_IMAGE_PROVIDER = null;
@@ -221,12 +273,13 @@
 	var LAST_TRANSFER_DATA = null;
 	var DRONE_PROJECT_STATUS = "${droneProject.status}";
 	
-  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false, terrainProvider : worldTerrain});
+  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
   	$(document).ready(function() {
 		$("#projectMenu").addClass("on");
   		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);
   		drawDetailDroneImage(null, "livedronemap:livedronemap_${viewTransferData.drone_project_id}_${viewTransferData.data_type}");
 		drawDetectedObjects("transfer_data_id=" + ${viewTransferData.transfer_data_id}, "livedronemap:view_ortho_detected_object");
+		checkScroll();
 	});
   	
 	// 2.5초 후에 드론 비행 경로를 그림
@@ -618,7 +671,7 @@
 						
 						tableHtml += '<tr><td class="col-number" >' + (transferDataListSize-i) + '</td>';
 						tableHtml += '<td class="col-toggle"><span class="icon-text">' + transferDataStatusText + '</span></td>';
-						tableHtml += '</td><td class="col-number">' + transferDataTypeText 
+						tableHtml += '</td><td class="col-name">' + transferDataTypeText 
 									+ '<a href="#" class="view-group-detail" onclick="refreshDroneImage(\'' 
 									+ droneProjectId + "','"
 									+ transferData.transfer_data_id + "','"
@@ -631,6 +684,8 @@
 					}
 					
 					$("#transferDataList").html(tableHtml);
+					checkScroll();
+					
 					TRANSFER_DATA_COUNT = transferDataListSize;
 					LAST_TRANSFER_DATA = transferDataList[0];
 					
@@ -660,6 +715,17 @@
 			drawDroneImageLayer();
 		} 
 	});
+	
+	function checkScroll() {
+		var $table = $('table.list-table');
+		var tableHeight = $table.innerHeight();
+		var tableAreaHeight = $(".transferDataList").height();
+		var isOverflow = tableHeight <= tableAreaHeight;
+		if(!isOverflow){
+		  $('table.list-table').fixedHeaderTable({autoShow: true, width: 310});
+		  $( "thead th:last-child" ).css({ width:"215px" });
+		}
+	}
 	
 </script>
 </body>
