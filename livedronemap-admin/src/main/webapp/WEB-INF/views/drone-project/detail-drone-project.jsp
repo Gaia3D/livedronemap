@@ -200,6 +200,10 @@
 	var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
 	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
+	var worldTerrain = Cesium.createWorldTerrain({
+	    requestWaterMask: false,
+	    requestVertexNormals: true
+	});
 	
 	// 드론 촬영 이미지를 그리는 geoserver layer
 	var DRONE_IMAGE_PROVIDER = null;
@@ -217,7 +221,7 @@
 	var LAST_TRANSFER_DATA = null;
 	var DRONE_PROJECT_STATUS = "${droneProject.status}";
 	
-  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
+  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false, terrainProvider : worldTerrain});
   	$(document).ready(function() {
 		$("#projectMenu").addClass("on");
   		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);

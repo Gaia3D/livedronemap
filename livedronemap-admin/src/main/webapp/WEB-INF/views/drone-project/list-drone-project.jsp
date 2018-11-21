@@ -46,6 +46,7 @@
 				<ul class="projectSearch input-group row">
 					<li class="input-set">
 						<label for="search_word">프로젝트</label>
+
 						<%-- <select id="search_word" name="search_word" class="select" >
 							<option value=""><spring:message code='select'/></option>
 		          			<option value="drone_project_name">프로젝트명</option>
@@ -55,6 +56,8 @@
 							<option value="1"><spring:message code='search.include'/></option>
 						</select> --%>
 						<form:input path="search_value" type="search" size="25" cssClass="m" />
+						<form:hidden path="search_word" value="drone_project_name" />
+						<form:hidden path="search_option" value="1" />
 					</li>
 					<li class="input-set">
 						<label for="start_date"><spring:message code='search.date'/></label>
@@ -121,7 +124,10 @@
 	var rectangle = Cesium.Rectangle.fromDegrees(INIT_WEST, INIT_SOUTH, INIT_EAST, INIT_NORTH);
 	Cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 	Cesium.Camera.DEFAULT_VIEW_RECTANGLE = rectangle;
-	
+	var worldTerrain = Cesium.createWorldTerrain({
+	    requestWaterMask: false,
+	    requestVertexNormals: true
+	});
 	// 배경지도
 	/*
 	var imageryProvider = new Cesium.WebMapServiceImageryProvider({
@@ -141,7 +147,7 @@
 	*/
 	
 	Cesium.Ion.defaultAccesToken = '${cesiumIonToken}';
-	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false});
+	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, terrainProvider : worldTerrain});
 	
 	// 프로젝트 리스트
 	var DRONE_PROJECT_ARRAY = new Array();	
