@@ -8,17 +8,17 @@
 			<div style="margin-top:15px;">
 				<table>
 					<tr style="height:25px;">
-						<td style="width:150px;"><span>- 전체</span></td>
+						<td style="width:150px;"><span> Aerial-Ground Segment</span></td>
 						<td><button type="button" class="btnText" onclick="simulateProcess('all')">테스트</button></td>
 					</tr>
 					
 					<tr style="height:25px;">
-						<td style="width:150px;"><span>- 시립대</span></td>
+						<td style="width:150px;"><span> Ground Segment</span></td>
 						<td><button type="button" class="btnText" onclick="simulateProcess('client')">테스트</button></td>
 					</tr>
 					
 					<tr style="height:25px;">
-						<td style="width:150px;"><span>- Gaia3D</span></td>
+						<td style="width:150px;"><span> Converter</span></td>
 						<td><button type="button" class="btnText" onclick="simulateProcess('inner')">테스트</button></td>
 					</tr>
 						

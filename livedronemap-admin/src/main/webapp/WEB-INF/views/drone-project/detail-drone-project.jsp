@@ -274,6 +274,7 @@
 	var DRONE_PROJECT_STATUS = "${droneProject.status}";
 	
   	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
+  	viewer.scene.globe.depthTestAgainstTerrain = false;
   	$(document).ready(function() {
 		$("#projectMenu").addClass("on");
   		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);
@@ -466,7 +467,8 @@
 	        billboard : {
 	            image : droneImage,
 	            width : 25, // default: undefined
-	            height : 25 // default: undefined
+	            height : 25, // default: undefined
+	            disableDepthTestDistance : Number.POSITIVE_INFINITY
 	            /* image : '../images/Cesium_Logo_overlay.png', // default: undefined
 	            show : true, // default
 	            pixelOffset : new Cesium.Cartesian2(0, -50), // default: (0, 0)

@@ -95,8 +95,7 @@
 								
 			</table>
 			<div class="alignCenter">
-				<button type="button" class="basic" onclick="insertClient();"><spring:message code='save'/></button>
-				<button type="button" class="basic">목록</button>
+				<button type="button" class="point" onclick="insertClient();"><spring:message code='save'/></button>
 			</div>
 		</div>
 		</form:form>			
