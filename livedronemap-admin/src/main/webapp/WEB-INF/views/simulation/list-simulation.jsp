@@ -26,6 +26,7 @@
 	<%@ include file="/WEB-INF/views/simulation/simulation-menu.jsp" %>
 	
 	<div class="contents limited">
+		
 		<h3>시뮬레이션</h3>
 		<form:form id="searchForm" modelAttribute="simulationLog" method="post" action="/simulation/list-simulation" onsubmit="return searchCheck();">
 			<ul class="searchForm">
@@ -98,6 +99,7 @@
 			</p>
 		</div>
 		<div class="boardList">
+			<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 			<table>
 				<thead>
 					<tr>
@@ -141,7 +143,9 @@
 							</c:if>
 							<td class="alignCenter">
 								<c:if test="${simulationLog.message ne '' and simulationLog.message ne null}">
-									<button type="button" title="<spring:message code='open.message'/>" class="intd"><spring:message code='open.message'/></button>
+									<button type="button" title="<spring:message code='open.message'/>" class="intd" onclick="showDetailMessage(${simulationLog.simulation_log_id})">
+										<spring:message code='open.message'/>
+									</button>
 								</c:if>
 							</td>
 							<td class="alignCenter">${simulationLog.viewStart_date}</td>
@@ -183,7 +187,6 @@
 				}
 			},
 			error:function(request,status,error){
-		        //alert(JS_MESSAGE["ajax.error.message"]);
 		        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
@@ -209,6 +212,27 @@
 		}
 		return true;
 	}
+	
+	function showDetailMessage(simulationId) {
+		$.ajax({
+			url: "/simulation/" + simulationId + "/messages",
+			type: "GET",
+			cache: false,
+			success: function(msg){
+				console.log(msg)
+				if(msg.result == "success") {
+					$("#detailMessageContents").html(msg.message);
+					$("#detailMessage").show();
+				} else {
+					alert(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request,status,error){
+		        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+	}
+	
 </script>
 
 </body>

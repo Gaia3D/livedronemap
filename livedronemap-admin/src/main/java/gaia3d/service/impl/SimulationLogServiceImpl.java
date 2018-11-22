@@ -45,6 +45,11 @@ public class SimulationLogServiceImpl implements SimulationLogService{
 		return simulationLogMapper.getSimulationLogList(simulationLog);
 	}
 	
+	@Transactional(readOnly=true)
+	public String getSimulationMessage(Integer simulation_log_id) {
+		return simulationLogMapper.getSimulationMessage(simulation_log_id);
+	}
+	
 	@Transactional
 	public int updateSimulationLog(SimulationLog simulationLog) {
 		int result = simulationLogMapper.updateSimulationLog(simulationLog);
@@ -72,9 +77,5 @@ public class SimulationLogServiceImpl implements SimulationLogService{
 	public int updateSimulationLogProjectId(SimulationLog simulationLog) {
 		return simulationLogMapper.updateSimulationLogProjectId(simulationLog);
 	}
-
-	
-
-	
 	
 }

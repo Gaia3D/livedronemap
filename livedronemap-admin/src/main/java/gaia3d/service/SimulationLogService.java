@@ -34,6 +34,13 @@ public interface SimulationLogService {
 	List<SimulationLog> getSimulationLogList(SimulationLog simulationLog);
 	
 	/**
+	 * 시뮬레이션 오류 메세지 조회 
+	 * @param simulation_log_id
+	 * @return
+	 */
+	String getSimulationMessage(Integer simulation_log_id);
+	
+	/**
 	 * 시뮬레이션 로그 카운트
 	 * @param simulationLog
 	 * @return
@@ -53,6 +60,5 @@ public interface SimulationLogService {
 	 * @return
 	 */
 	int updateSimulationLogProjectId(SimulationLog simulationLog);
-	
 	
 }

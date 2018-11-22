@@ -88,6 +88,13 @@
 		OFFSET #{offset} LIMIT #{limit}
 	</select>
 	
+	<!-- 시뮬레이션 오류 메세지 조회 -->
+	<select id="getSimulationMessage" parameterType="int" resultType="string">
+		/* getSimulationMessage */
+		SELECT message FROM simulation_log
+		WHERE simulation_log_id = ${value}
+	</select>
+	
 	<!-- 시뮬레이션 등록 -->
 	<insert id="insertSimulationLog" parameterType="simulationLog" >
 		/* insertDroneProject */

@@ -2,17 +2,23 @@ package gaia3d.controller;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import gaia3d.domain.Client;
+import gaia3d.domain.DroneProject;
 import gaia3d.domain.PageType;
 import gaia3d.domain.Pagination;
 import gaia3d.domain.SimulationLog;
@@ -31,7 +37,6 @@ public class SimulationController {
 	ClientService clientService;
 	@Autowired
 	SimulationLogService simulationLogService;
-	
 	
 	@RequestMapping(value = "list-simulation")
 	public String listSimulation(HttpServletRequest request, SimulationLog simulationLog, 
@@ -68,6 +73,24 @@ public class SimulationController {
 		
 		return "/simulation/list-simulation";
 	}
+	
+	@GetMapping("{simulation_log_id:[0-9]+}/messages")
+	@ResponseBody
+	public Map<String, Object> getSimulationMessage(HttpServletRequest request, @PathVariable("simulation_log_id") Integer simulation_log_id) {
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		
+		log.info("@@ simulation_log_id = {}", simulation_log_id);
+		try {
+			String message = simulationLogService.getSimulationMessage(simulation_log_id);
+			map.put("message", message);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		map.put("result", result);
+		return map;
+	} 
 	
 	/**
 	 * 검색 조건
@@ -112,5 +135,7 @@ public class SimulationController {
 		}
 		return buffer.toString();
 	}
+	
+	
 	
 }
