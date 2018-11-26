@@ -4,7 +4,7 @@
 	<div id="notice_tab" class="boardNew">
 		<table>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="notice_service_yn"><spring:message code='config.notice.use'/></form:label>
 				</th>
 				
@@ -16,7 +16,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="notice_service_send_type"><spring:message code='config.notice.type'/></form:label>
 				</th>
 				<td>	
@@ -28,7 +28,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="notice_risk_yn"><spring:message code='config.notice.risk.use'/></form:label>
 				</th>
 				
@@ -38,7 +38,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="notice_risk_send_type"><spring:message code='config.notice.risk.type'/></form:label>
 				</th>
 				<td>	
@@ -50,7 +50,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="notice_risk_grade"><spring:message code='config.notice.risk.grade'/></form:label>
 				</th>
 				<td>	

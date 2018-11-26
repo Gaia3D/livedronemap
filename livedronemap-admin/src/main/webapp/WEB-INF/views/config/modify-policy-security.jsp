@@ -4,7 +4,7 @@
 	<div id="security_tab" class="boardNew">
 		<table>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="security_session_timeout_yn"><spring:message code='config.security.session.timeout.use'/></form:label>
 				</th>
 				
@@ -20,13 +20,13 @@
 					<form:label path="security_session_timeout"><spring:message code='config.security.session.timeout'/></form:label>
 				</th>
 				<td>
-					<form:input path="security_session_timeout" maxlength="5" cssClass="s"/>
+					<form:input path="security_session_timeout" size="5" maxlength="5" cssClass="s"/>
 					<span class="table-desc"><spring:message code='unit.minute'/></span>
 					<form:errors path="security_session_timeout" cssClass="error" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="security_user_ip_check_yn"><spring:message code='config.security.check.ip'/></form:label>
 				</th>
 				
@@ -36,7 +36,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="security_log_save_type"><spring:message code='config.security.log.save.type'/></form:label>
 				</th>
 				<td>	
@@ -51,13 +51,13 @@
 					<form:label path="security_log_save_term"><spring:message code='config.security.log.expired.time'/></form:label>
 				</th>
 				<td>
-					<form:input path="security_log_save_term" maxlength="5" cssClass="s" readonly="true" />
+					<form:input path="security_log_save_term" size="5" maxlength="5" cssClass="s" readonly="true" />
 					<span class="table-desc"><spring:message code='unit.year'/></span>
 					<form:errors path="security_log_save_term" cssClass="error" />
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="security_api_result_secure_yn"><spring:message code='config.security.api.result.encrypt.use'/></form:label>
 				</th>
 				
@@ -67,7 +67,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 38px;">
 					<form:label path="security_masking_yn"><spring:message code='config.security.user.info.masking.use'/></form:label>
 				</th>
 				

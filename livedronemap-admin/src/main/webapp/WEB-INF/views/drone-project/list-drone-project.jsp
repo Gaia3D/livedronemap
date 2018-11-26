@@ -298,7 +298,7 @@
 	
 	function drawDroneProjectList(pagination) {
 		// TODO: 세자리 , 추가 
-		var droneProjectListHeaderHtml = '<spring:message code="all.d"/> <em>' + pagination.totalCount + ' </em><spring:message code="search.what.count"/>&nbsp;'
+		var droneProjectListHeaderHtml = '<spring:message code="all.d"/> <strong>' + pagination.totalCount + ' </strong><spring:message code="search.what.count"/>&nbsp;'
 										+ pagination.pageNo + ' / ' + pagination.lastPage + ' <spring:message code="search.page"/>';
 		$("#projectListHeader").html(droneProjectListHeaderHtml); 
 		

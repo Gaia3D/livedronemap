@@ -8,7 +8,7 @@
 					<form:label path="project_drone_expired_time"><spring:message code='config.project.drone.expired.time'/></form:label>
 				</th>
 				<td>
-					<form:input path="project_drone_expired_time" maxlength="3" cssClass="s"/>
+					<form:input path="project_drone_expired_time" size="5" maxlength="3" cssClass="s"/>
 					<span class="table-desc"><spring:message code='unit.day'/></span>
 					<form:errors path="project_drone_expired_time" cssClass="error" />
 				</td>
@@ -18,7 +18,7 @@
 					<form:label path="rest_api_token_max_age"><spring:message code='config.project.project.max.idle.time'/></form:label>
 				</th>
 				<td>
-					<form:input path="rest_api_token_max_age" maxlength="2" cssClass="s"/>
+					<form:input path="rest_api_token_max_age" size="5" maxlength="2" cssClass="s"/>
 					<span class="table-desc"><spring:message code='unit.hour'/></span>
 					<form:errors path="rest_api_token_max_age" cssClass="error" />
 				</td>

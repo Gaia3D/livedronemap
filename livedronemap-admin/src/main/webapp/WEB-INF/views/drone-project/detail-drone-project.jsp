@@ -12,11 +12,11 @@
 	<link rel="stylesheet" href="/css/${lang}/style.css">
 	<link rel="stylesheet" href="/css/${lang}/live-drone-map.css">
 	<link rel="stylesheet" href="/css/fontawesome-free-5.2.0-web/css/all.min.css">
-	<link rel="stylesheet" href="/externlib/cesium_orgin/Widgets/widgets.css?cache_version=${cache_version}" /> 
+	<link rel="stylesheet" href="/externlib/cesium_new/Widgets/widgets.css?cache_version=${cache_version}" /> 
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/externlib/jquery/fixedheadertable.js"></script>
-	<script type="text/javascript" src="/externlib/cesium_orgin/Cesium.js"></script>
+	<script type="text/javascript" src="/externlib/cesium_new/Cesium.js"></script>
 	<style>
 		.mapWrap {
 			min-width: 1420px;
@@ -273,8 +273,18 @@
 	var LAST_TRANSFER_DATA = null;
 	var DRONE_PROJECT_STATUS = "${droneProject.status}";
 	
-  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
+	var worldTerrain = Cesium.createWorldTerrain({
+	    requestWaterMask: false,
+	    requestVertexNormals: true
+	});
+	
+	
+	Cesium.Ion.defaultAccesToken = '${cesiumIonToken}';
+  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false, terrainProvider : worldTerrain});
   	viewer.scene.globe.depthTestAgainstTerrain = false;
+	viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+  	
   	$(document).ready(function() {
 		$("#projectMenu").addClass("on");
   		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);
@@ -445,10 +455,10 @@
 		    name : '드론 비행 경로',
 		    polyline : {
 		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
-		        width : 5,
+		        width : 3,
 		        material : new Cesium.PolylineDashMaterialProperty({
 		            color : Cesium.Color.fromCssColorString('#FFF000'),
-		            dashLength: 8.0
+		            dashLength: 3.0
 		        })
 		    }
 		});

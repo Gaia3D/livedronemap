@@ -49,9 +49,9 @@
 				</li>
 				<li>
 					<label for="start_date"><spring:message code='search.date'/></label>
-					<input type="text" class="s date" id="start_date" name="start_date" />
+					<input type="text" class="s date" id="start_date" name="start_date" size="10"/>
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="end_date" name="end_date" />
+					<input type="text" class="s date" id="end_date" name="end_date" size="10"/>
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
@@ -64,23 +64,23 @@
 	                	<form:option value="ASC"> <spring:message code='search.ascending'/> </form:option>
 						<form:option value="DESC"> <spring:message code='search.descending.order'/> </form:option>
 					</form:select>
-					<form:select path="list_counter" name="list_counter" class="select">
+					<%-- <form:select path="list_counter" name="list_counter" class="select">
                 		<form:option value="10"> <spring:message code='search.ten.count'/> </form:option>
 	                	<form:option value="50"> <spring:message code='search.fifty.count'/> </form:option>
 						<form:option value="100"> <spring:message code='search.hundred.count'/> </form:option>
-					</form:select>
+					</form:select> --%>
+				</li>
+				<li>
+					<button type="submit" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>				
 				</li>
 			</ul>
-			<div class="alignRight">
-				<button type="submit" value="<spring:message code='search'/>" class="point"><spring:message code='search'/></button>
-			</div>
 		</form:form>
 		
 		<!-- 목록정렬 -->
 		<form:form id="listForm" modelAttribute="healthCheckLog" method="post">
 		<div class="boardHeader">
 			<p>
-				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
+				<spring:message code='all.d'/> <strong><fmt:formatNumber value="${pagination.totalCount}" type="number"/></strong> <spring:message code='search.what.count'/>
 				<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/> <spring:message code='search.page'/>
 			</p>
 		</div>
@@ -88,12 +88,12 @@
 			<table>
 				<thead>
 					<tr>
-						<th><spring:message code='number'/></th>
-						<th><spring:message code='client.name'/></th>
-						<th><spring:message code='search.status'/></th>
-						<th><spring:message code='http.code'/></th>
-						<th><spring:message code='message'/></th>
-						<th><spring:message code='search.insert.date'/></th>
+						<th style="width:5%; font-weight: bold"><spring:message code='number'/></th>
+						<th style="width:20%; font-weight: bold"><spring:message code='client.name'/></th>
+						<th style="width:10%; font-weight: bold"><spring:message code='search.status'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='http.code'/></th>
+						<th style="width:20%; font-weight: bold"><spring:message code='message'/></th>
+						<th style="width:20%; font-weight: bold"><spring:message code='search.insert.date'/></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -106,7 +106,7 @@
 	<c:forEach var="healthCheckLog" items="${healthCheckLogList}" varStatus="status">
 						<tr>
 							<td class="alignCenter">${pagination.rowNumber - status.index}</td>
-							<td class="alignCenter">${healthCheckLog.client_name}</td>
+							<td class="alignLeft">${healthCheckLog.client_name}</td>
 							<td class="alignCenter">
 		<c:if test="${healthCheckLog.status == 'ALIVE'}">
 									<span class="alive">정상</span>

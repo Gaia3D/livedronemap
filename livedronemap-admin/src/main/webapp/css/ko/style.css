@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* RESET CSS */
-* { margin:0; padding:0; outline:0; vertical-align:top; }
+* { margin:0; padding:0; outline:0; vertical-align:center; }
 article, aside, details, figcaption, figure, footer, header, hgroup, menu nav, section { display:block; }
 ul, ol, dl { list-style:none; }
 img, video { max-width:100%; border:0; vertical-align:top; }
@@ -209,22 +209,22 @@ color: #fff;
 background-position: 10px 15px;
 }
 #nav > ul li.project {
-background-position: -190px 17px;
+background-position: -183px 17px;
 }
 #nav > ul li.simulation {
-background-position: -390px 17px;
+background-position: -384px 17px;
 }
 #nav > ul li.log {
-background-position: 10px -35px;
+background-position: 14px -35px;
 }
 #nav > ul li.schedule {
-background-position: -590px -35px;
+background-position: -585px -35px;
 }
 #nav > ul li.setup {
-background-position: -190px -35px;
+background-position: -183px -35px;
 }
 #nav > ul li.device {
-background-position: -595px 17px;
+background-position: -584px 17px;
 }
 
 /* 메뉴 SNB */
@@ -442,6 +442,7 @@ font-weight: normal;
 font-size: 12pt;
 text-align: left;
 background-color: #f4f4f6;
+width:250px;
 }
 div.boardNew > table tr td {
 padding: 10px;
@@ -822,10 +823,10 @@ background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 .pagination .first {
-background-position: -643px -388px;
+background-position: -643px -385px;
 }
 .pagination .forward {
-background-position: -670px -388px;
+background-position: -674px -385px;
 }
 .pagination .back {
 background-position: -697px -388px;
