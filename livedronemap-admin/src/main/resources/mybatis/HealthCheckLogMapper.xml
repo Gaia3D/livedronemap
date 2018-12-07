@@ -81,4 +81,12 @@
 			#{health_check_log_id}, #{client_id}, #{client_name}, #{status}, #{status_code}, #{message}
 		)
 	</insert>
+	
+	<!-- 오류 메세지 조회 -->
+	<select id="getHealthCheckLogMessage" parameterType="int" resultType="string">
+		/* getHealthCheckLogMessage */
+		SELECT message
+		FROM health_check_log
+		WHERE health_check_log_id = ${value}
+	</select>
 </mapper>

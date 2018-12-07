@@ -44,4 +44,14 @@ public class HealthCheckLogServiceImpl implements HealthCheckLogService {
 	public int insertHealthCheckLog(HealthCheckLog healthCheckLog) {
 		return healthCheckLogMapper.insertHealthCheckLog(healthCheckLog);
 	}
+
+	/**
+	 * 상태 점검 오류 메세지 조회 
+	 * @param health_check_log_id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public String getHealthCheckLogMessage(Integer healthCheckLogId) {
+		return healthCheckLogMapper.getHealthCheckLogMessage(healthCheckLogId);
+	}
 }

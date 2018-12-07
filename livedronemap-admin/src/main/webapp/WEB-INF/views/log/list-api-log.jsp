@@ -90,6 +90,7 @@
 			</p>
 		</div>
 		<div class="boardList">
+			<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 			<table>
 				<thead>
 					<tr>
@@ -120,7 +121,7 @@
 							<td class="alignCenter">${aPILog.status_code}</td>
 							<td class="alignCenter">
 								<c:if test="${aPILog.message ne '' and aPILog.message ne null}">
-									<button type="button" title="<spring:message code='open.message'/>" class="intd"><spring:message code='open.message'/></button>
+									<button type="button" title="<spring:message code='open.message'/>" class="intd" onclick="showDetailMessage(${aPILog.api_log_id})"><spring:message code='open.message'/></button>
 								</c:if>
 							</td>
 							<td class="alignCenter">${aPILog.viewInsert_date}</td>
@@ -169,6 +170,26 @@
 			}
 		}
 		return true;
+	}
+	
+	function showDetailMessage(apiLogId) {
+		$.ajax({
+			url: "/log/" + apiLogId + "/messages",
+			type: "GET",
+			cache: false,
+			success: function(msg){
+				console.log(msg)
+				if(msg.result == "success") {
+					$("#detailMessageContents").html(msg.message);
+					$("#detailMessage").show();
+				} else {
+					alert(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request,status,error){
+		        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
 	}
 </script>
 

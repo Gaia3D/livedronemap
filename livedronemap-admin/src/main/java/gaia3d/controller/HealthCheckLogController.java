@@ -2,15 +2,20 @@ package gaia3d.controller;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import gaia3d.domain.HealthCheckLog;
 import gaia3d.domain.PageType;
@@ -67,6 +72,24 @@ public class HealthCheckLogController {
 		
 		return "/scheduler/list-health-check";
 	}
+	
+	@GetMapping("health-check/{health_check_log_id:[0-9]+}/messages")
+	@ResponseBody
+	public Map<String, Object> getSimulationMessage(HttpServletRequest request, @PathVariable("health_check_log_id") Integer health_check_log_id) {
+		Map<String, Object> map = new HashMap<>();
+		String result = "success";
+		
+		log.info("@@ simulation_log_id = {}", health_check_log_id);
+		try {
+			String message = healthCheckLogService.getHealthCheckLogMessage(health_check_log_id);
+			map.put("message", message);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+		map.put("result", result);
+		return map;
+	} 
 	
 	/**
 	 * 검색 조건

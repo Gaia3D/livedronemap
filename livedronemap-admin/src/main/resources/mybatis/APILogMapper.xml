@@ -84,4 +84,12 @@
 			#{api_log_id}, #{client_id}, #{client_name}, #{request_ip}, #{user_id}, #{url}, #{status_code}, #{message}
 		)
 	</insert>
+	
+	<!-- 오류 메세지 조회 -->
+	<select id="getLogMessage" parameterType="int" resultType="string">
+		/* getLogMessage */
+		SELECT message 
+		FROM api_log
+		WHERE api_log_id = ${value}
+	</select>
 </mapper>

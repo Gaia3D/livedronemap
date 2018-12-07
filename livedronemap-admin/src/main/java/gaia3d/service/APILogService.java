@@ -25,4 +25,11 @@ public interface APILogService {
 	 * @return
 	 */
 	int insertAPILog(APILog aPILog);
+	
+	/**
+	 * 오류 메세지 조회 
+	 * @param api_log_id
+	 * @return
+	 */
+	String getLogMessage(Integer api_log_id);
 }

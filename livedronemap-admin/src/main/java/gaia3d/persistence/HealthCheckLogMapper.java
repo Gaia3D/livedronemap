@@ -33,5 +33,12 @@ public interface HealthCheckLogMapper {
 	 * @param healthCheckLog
 	 */
 	int insertHealthCheckLog(HealthCheckLog healthCheckLog);
+
+	/**
+	 * 상태 점검 오류 메세지 조회 
+	 * @param health_check_log_id
+	 * @return
+	 */
+	String getHealthCheckLogMessage(Integer healthCheckLogId);
 	
 }

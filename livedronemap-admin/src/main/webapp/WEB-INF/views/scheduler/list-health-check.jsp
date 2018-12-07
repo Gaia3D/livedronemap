@@ -85,6 +85,7 @@
 			</p>
 		</div>
 		<div class="boardList">
+			<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 			<table>
 				<thead>
 					<tr>
@@ -121,7 +122,7 @@
 							<td class="alignCenter">${healthCheckLog.status_code}</td>
 							<td class="alignCenter">
 		<c:if test="${healthCheckLog.message ne '' and healthCheckLog.message ne null}">
-									<button type="button" title="<spring:message code='open.message'/>" class="intd"><spring:message code='open.message'/></button>
+									<button type="button" title="<spring:message code='open.message'/>" class="intd" onclick="showDetailMessage(${healthCheckLog.health_check_log_id})"><spring:message code='open.message'/></button>
 		</c:if>
 							</td>
 							<td class="alignCenter">${healthCheckLog.viewInsertDate}</td>
@@ -165,6 +166,26 @@
 			}
 		}
 		return true;
+	}
+	
+	function showDetailMessage(healthCheckLogId) {
+		$.ajax({
+			url: "/scheduler/health-check/" + healthCheckLogId + "/messages",
+			type: "GET",
+			cache: false,
+			success: function(msg){
+				console.log(msg)
+				if(msg.result == "success") {
+					$("#detailMessageContents").html(msg.message);
+					$("#detailMessage").show();
+				} else {
+					alert(JS_MESSAGE[msg.result]);
+				}
+			},
+			error:function(request,status,error){
+		        console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
 	}
 </script>
 

@@ -44,4 +44,14 @@ public class APILogServiceImpl implements APILogService {
 	public int insertAPILog(APILog aPILog) {
 		return aPILogMapper.insertAPILog(aPILog);
 	}
+	
+	/**
+	 * 오류 메시지 조회 
+	 * @param api_log_id
+	 * @return
+	 */
+	@Transactional(readOnly=true)
+	public String getLogMessage(Integer api_log_id) {
+		return aPILogMapper.getLogMessage(api_log_id);
+	}
 }
