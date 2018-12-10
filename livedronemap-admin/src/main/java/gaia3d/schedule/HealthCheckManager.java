@@ -197,13 +197,4 @@ public class HealthCheckManager {
 			healthCheckLogService.insertHealthCheckLog(healthCheckLog);
 		}
 	}
-	
-	/**
-	 * 프로젝트가 정상 종료 되지 않고 하루가 지난 경우 완료 처리 하는 배치
-	 */
-	@Scheduled(cron = "0 0 1 * * *")
-	public void droneProjectStatusCheck() {
-		log.info("@@@@@@@@@@@@@ HealthCheckManager droneProjectStatusCheck execute.");
-		// droneProjectService
-	}
 }

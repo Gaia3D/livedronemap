@@ -82,4 +82,12 @@ public class DroneProjectServiceImpl implements DroneProjectService {
 		
 		return result;
 	}
+
+	/**
+	 * drone project 종료 
+	 */
+	@Transactional
+	public int updateDroneProjectClose() {
+		return droneProjectMapper.updateDroneProjectClose();
+	}
 }

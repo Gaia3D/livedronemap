@@ -40,4 +40,9 @@ public interface DroneProjectService {
 	 * @return
 	 */
 	int updateDroneProject(DroneProject droneProject);
+
+	/**
+	 * drone project 종료 
+	 */
+	int updateDroneProjectClose();
 }
