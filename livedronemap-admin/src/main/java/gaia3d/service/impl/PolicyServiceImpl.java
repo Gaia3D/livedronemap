@@ -80,6 +80,16 @@ public class PolicyServiceImpl implements PolicyService {
 	}
 	
 	/**
+	 * simulation 수정
+	 * @param policy
+	 * @return
+	 */
+	@Transactional
+	public int updatePolicySimulation(Policy policy) {
+		return policyMapper.updatePolicySimulation(policy);
+	}
+	
+	/**
 	 * 운영 정책 알림 수정
 	 * @param policy
 	 * @return
@@ -148,4 +158,6 @@ public class PolicyServiceImpl implements PolicyService {
 	public int updatePolicySolution(Policy policy) {
 		return policyMapper.updatePolicySolution(policy);
 	}
+
+	
 }

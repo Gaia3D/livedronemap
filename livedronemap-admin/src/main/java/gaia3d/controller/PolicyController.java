@@ -100,13 +100,13 @@ public class PolicyController {
 			if(policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0
 					|| policy.getUser_id_min_length() == null || policy.getUser_id_min_length() < 4
 					|| policy.getUser_fail_login_count() == null || policy.getUser_fail_login_count().intValue() <= 0
-//					|| policy.getUser_fail_lock_release() == null || "".equals(policy.getUser_fail_lock_release())
+					|| policy.getUser_fail_lock_release() == null || "".equals(policy.getUser_fail_lock_release())
 					|| policy.getUser_last_login_lock() == null || "".equals(policy.getUser_last_login_lock())
 					|| policy.getUser_duplication_login_yn() == null || "".equals(policy.getUser_duplication_login_yn())
 //					|| policy.getUser_login_type() == null || "".equals(policy.getUser_login_type())
-//					|| policy.getUser_update_check() == null || "".equals(policy.getUser_update_check())
-//					|| policy.getUser_delete_check() == null || "".equals(policy.getUser_delete_check())
-//					|| policy.getUser_delete_type() == null || "".equals(policy.getUser_delete_type())
+					|| policy.getUser_update_check() == null || "".equals(policy.getUser_update_check())
+					|| policy.getUser_delete_check() == null || "".equals(policy.getUser_delete_check())
+					|| policy.getUser_delete_type() == null || "".equals(policy.getUser_delete_type())
 //					|| policy.getUser_device_modify_yn() == null || "".equals(policy.getUser_device_modify_yn())
 					) {
 				result = "policy.user.invalid";
@@ -282,6 +282,40 @@ public class PolicyController {
 	}
 	
 	/**
+	 * simulation
+	 * @param request
+	 * @param policy
+	 * @return
+	 */
+	@PostMapping(value = "ajax-update-policy-simulation")
+	@ResponseBody
+	public Map<String, String> ajaxUpdatePolicySimulation(HttpServletRequest request, Policy policy) {
+		Map<String, String> map = new HashMap<>();
+		String result = "success";
+		try {
+			log.info("@@ policy = {} ", policy);
+			if(policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0) {
+				result = "policy.project.invalid";
+				map.put("result", result);
+				return map;
+			}
+			
+			policyService.updatePolicySimulation(policy);
+			
+			CacheParams cacheParams = new CacheParams();
+			cacheParams.setCacheName(CacheName.POLICY);
+			cacheParams.setCacheType(CacheType.BROADCAST);
+			cacheConfig.loadCache(cacheParams);
+		} catch(Exception e) {
+			e.printStackTrace();
+			result = "db.exception";
+		}
+	
+		map.put("result", result);
+		return map;
+	}
+	
+	/**
 	 * 운영 정책 알림 수정
 	 * @param request
 	 * @param policy
@@ -340,12 +374,12 @@ public class PolicyController {
 			log.info("@@ policy = {} ", policy);
 			if(policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0
 					|| policy.getSecurity_session_timeout_yn() == null || "".equals(policy.getSecurity_session_timeout_yn())
-					|| (Policy.Y.equals(policy.getSecurity_session_timeout_yn()) && (policy.getSecurity_session_timeout() == null || "".equals(policy.getSecurity_session_timeout())))
-					|| policy.getSecurity_session_hijacking() == null || "".equals(policy.getSecurity_session_hijacking())
-					|| policy.getSecurity_sso() == null || "".equals(policy.getSecurity_sso())
+					// || (Policy.Y.equals(policy.getSecurity_session_timeout_yn()) && (policy.getSecurity_session_timeout() == null || "".equals(policy.getSecurity_session_timeout())))
+					// || policy.getSecurity_session_hijacking() == null || "".equals(policy.getSecurity_session_hijacking())
+					// || policy.getSecurity_sso() == null || "".equals(policy.getSecurity_sso())
 					|| policy.getSecurity_log_save_type() == null || "".equals(policy.getSecurity_log_save_type())
 					|| policy.getSecurity_log_save_term() == null || "".equals(policy.getSecurity_log_save_term())
-					|| policy.getSecurity_dynamic_block_yn() == null || "".equals(policy.getSecurity_dynamic_block_yn())
+					// || policy.getSecurity_dynamic_block_yn() == null || "".equals(policy.getSecurity_dynamic_block_yn())
 					) {
 				result = "policy.security.invalid";
 				map.put("result", result);
@@ -426,7 +460,7 @@ public class PolicyController {
 	 * @param policy
 	 * @return
 	 */
-	@PostMapping(value = "ajax-update-policy-userupload")
+	@PostMapping(value = "ajax-update-policy-upload")
 	@ResponseBody
 	public Map<String, String> ajaxUpdatePolicyUserUpload(HttpServletRequest request, Policy policy) {
 		Map<String, String> map = new HashMap<>();
@@ -435,8 +469,8 @@ public class PolicyController {
 			log.info("@@ policy = {} ", policy);
 			if( ( policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0 )
 					|| ( policy.getUser_upload_type() == null || "".equals(policy.getUser_upload_type()) )
-					|| ( policy.getUser_upload_max_filesize() == null || policy.getUser_upload_max_filesize().longValue() < 0l )
-					|| ( policy.getUser_upload_max_count() == null || policy.getUser_upload_max_count().intValue() < 0 )) {
+					|| ( policy.getUser_upload_max_filesize() == null || policy.getUser_upload_max_filesize().longValue() < 0l )) {
+					// || ( policy.getUser_upload_max_count() == null || policy.getUser_upload_max_count().intValue() < 0 )) 
 				result = "policy.userupload.invalid";
 				map.put("result", result);
 				return map;
@@ -469,25 +503,25 @@ public class PolicyController {
 		Map<String, String> map = new HashMap<>();
 		String result = "success";
 		try {
-//			log.info("@@ policy = {} ", policy);
-//			if( ( policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0 )) {
-//				result = "policy.site.invalid";
-//				map.put("result", result);
-//				return map.toString();
-//			}
-//			
+			log.info("@@ policy = {} ", policy);
+			if( ( policy.getPolicy_id() == null || policy.getPolicy_id().intValue() <= 0 )) {
+				result = "policy.site.invalid";
+				map.put("result", result);
+				return map;
+			}
+			
 //			if(policy.getServer_ip() == null || "".equals(policy.getServer_ip()) || !WebUtil.isIP(policy.getServer_ip())) {
 //				result = "policy.os.server_ip.invalid";
 //				map.put("result", result);
 //				return map.toString();
 //			}
-//			
+			
 //			WebUtil.setServerIp(CACHE_FILE, policy.getServer_ip());
 //			configCacheController.reloadServerIp();
-//			
-//			policy.setSite_admin_mobile_phone(Crypt.encrypt(policy.getSite_admin_mobile_phone()));
-//			policy.setSite_admin_email(Crypt.encrypt(policy.getSite_admin_email()));
-//			policyService.updatePolicySite(policy);
+			
+			policy.setSite_admin_mobile_phone(Crypt.encrypt(policy.getSite_admin_mobile_phone()));
+			policy.setSite_admin_email(Crypt.encrypt(policy.getSite_admin_email()));
+			policyService.updatePolicySite(policy);
 
 			CacheParams cacheParams = new CacheParams();
 			cacheParams.setCacheName(CacheName.POLICY);

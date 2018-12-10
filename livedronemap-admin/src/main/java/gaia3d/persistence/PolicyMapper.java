@@ -54,6 +54,13 @@ public interface PolicyMapper {
 	int updatePolicyProject(Policy policy);
 	
 	/**
+	 * simulation 수정
+	 * @param policy
+	 * @return
+	 */
+	int updatePolicySimulation(Policy policy);
+	
+	/**
 	 * 운영 정책 알림 수정
 	 * @param policy
 	 * @return
@@ -101,4 +108,6 @@ public interface PolicyMapper {
 	 * @return
 	 */
 	int updatePolicySolution(Policy policy);
+
+	
 }

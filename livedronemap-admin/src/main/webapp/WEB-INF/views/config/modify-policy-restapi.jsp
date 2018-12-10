@@ -36,7 +36,7 @@
 			</tr>
 		</table>
 		<div class="alignCenter">
-			<button type="button" onclick="updatePolicyRestapi();" class="point">저장</button>
+			<button type="button" onclick="updatePolicyRestApi();" class="point">저장</button>
 		</div>
 	</div>
 </form:form>

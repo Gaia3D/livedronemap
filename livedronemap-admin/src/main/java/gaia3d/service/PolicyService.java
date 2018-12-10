@@ -58,6 +58,13 @@ public interface PolicyService {
 	int updatePolicyNotice(Policy policy);
 	
 	/**
+	 * 운영 정책 시뮬레이션 수정
+	 * @param policy
+	 * @return
+	 */
+	int updatePolicySimulation(Policy policy);
+	
+	/**
 	 * 운영 정책 보안 수정
 	 * @param policy
 	 * @return
@@ -98,4 +105,6 @@ public interface PolicyService {
 	 * @return
 	 */
 	int updatePolicySolution(Policy policy);
+
+	
 }

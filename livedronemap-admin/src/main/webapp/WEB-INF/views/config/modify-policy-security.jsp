@@ -40,10 +40,10 @@
 					<form:label path="security_log_save_type"><spring:message code='config.security.log.save.type'/></form:label>
 				</th>
 				<td>	
-					<select id="security_log_save_type" name="security_log_save_type" class="select">
-		  				<option value="0"><spring:message code='config.security.log.save.type.db'/></option>
-		  				<option value="1"><spring:message code='config.security.log.save.type.file'/></option>
-					</select>
+					<form:select path="security_log_save_type" name="security_log_save_type" class="select">
+		  				<form:option value="0"><spring:message code='config.security.log.save.type.db'/></form:option>
+		  				<form:option value="1"><spring:message code='config.security.log.save.type.file'/></form:option>
+					</form:select>
 				</td>
 			</tr>
 			<tr>

@@ -20,10 +20,10 @@
 					<form:label path="geoserver_wms_version"><spring:message code='config.geoserver.wms.version'/></form:label>
 				</th>
 				<td>	
-					<select id="geoserver_wms_version" name="geoserver_wms_version" class="select">
-		  				<option value="1.1.1">1.1.1</option>
-		  				<option value="1.3.0">1.3.0</option>
-					</select>
+					<form:select path="geoserver_wms_version" name="geoserver_wms_version" class="select">
+		  				<form:option value="1.1.1">1.1.1</form:option>
+		  				<form:option value="1.3.0">1.3.0</form:option>
+					</form:select>
 				</td>
 			</tr>
 			<tr>

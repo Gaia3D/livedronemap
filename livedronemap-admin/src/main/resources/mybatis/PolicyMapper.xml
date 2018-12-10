@@ -49,7 +49,7 @@
 	<update id="updatePolicyGeoServer" parameterType="policy">
 		/* updatePolicyGeoServer */
 		UPDATE policy
-		SET geo_server_enable = #{geo_server_enable},
+		SET geoserver_enable = #{geoserver_enable},
 			geoserver_wms_version = #{geoserver_wms_version},
 			geoserver_background_url = #{geoserver_background_url},
 			geoserver_background_workspace = #{geoserver_background_workspace},
@@ -71,7 +71,7 @@
 		UPDATE policy
 		SET rest_api_converter_url = #{rest_api_converter_url},
 			rest_api_encryption_yn = #{rest_api_encryption_yn},
-			rest_api_token_expired_time = #{rest_api_token_expired_time}
+			rest_api_token_max_age = #{rest_api_token_max_age}
 		WHERE policy_id = #{policy_id}
 	</update>
 	
@@ -84,13 +84,20 @@
 		WHERE policy_id = #{policy_id}
 	</update>
 	
+	<!-- 시뮬레이션 설정 수정 -->
+	<update id="updatePolicySimulation" parameterType="policy">
+		/* updatePolicySimulation */
+		UPDATE policy
+		SET simulation_server_url = #{simulation_server_url}
+		WHERE policy_id = #{policy_id}
+	</update>
+	
 	<!-- 운영 정책 알림 수정 -->	
 	<update id="updatePolicyNotice" parameterType="policy">
 		/* updatePolicyNotice */
 		UPDATE policy
 		SET notice_service_yn = #{notice_service_yn},
 			notice_service_send_type = #{notice_service_send_type},
-			notice_approval_request_yn = #{notice_approval_request_yn},
 			notice_risk_yn = #{notice_risk_yn},
 			notice_risk_send_type = #{notice_risk_send_type},
 			notice_risk_grade = #{notice_risk_grade}
