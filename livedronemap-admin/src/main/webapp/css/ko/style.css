@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* RESET CSS */
-* { margin:0; padding:0; outline:0; vertical-align:top; }
+* { margin:0; padding:0; outline:0; vertical-align:center; }
 article, aside, details, figcaption, figure, footer, header, hgroup, menu nav, section { display:block; }
 ul, ol, dl { list-style:none; }
 img, video { max-width:100%; border:0; vertical-align:top; }
@@ -23,6 +23,7 @@ min-width: 1000px;
 height: 50px;
 text-align: center;
 background-color: #3f3f4b;
+z-index:1;
 }
 /* ///// LAYOUT MAP ///// */
 #wrap {
@@ -34,6 +35,7 @@ float: left;
 width: 50px;
 height: 100%;
 background-color: #51515b;
+z-index:1;
 }
 .subWrap {
 float: left;
@@ -78,6 +80,8 @@ width: 230px;
 top: 50px;
 left: 130px;
 background-color: #fff;
+z-index:1;
+height:100%;
 }
 #contentsWrap > .contents {
 height: 100%;
@@ -209,22 +213,22 @@ color: #fff;
 background-position: 10px 15px;
 }
 #nav > ul li.project {
-background-position: -190px 17px;
+background-position: -183px 17px;
 }
 #nav > ul li.simulation {
-background-position: -390px 17px;
+background-position: -384px 17px;
 }
 #nav > ul li.log {
-background-position: 10px -35px;
+background-position: 14px -35px;
 }
 #nav > ul li.schedule {
-background-position: -590px -35px;
+background-position: -585px -35px;
 }
 #nav > ul li.setup {
-background-position: -190px -35px;
+background-position: -183px -35px;
 }
 #nav > ul li.device {
-background-position: -595px 17px;
+background-position: -584px 17px;
 }
 
 /* 메뉴 SNB */
@@ -327,9 +331,13 @@ right: 0;
 div.boardList {
 position: relative;
 margin: 15px 0;
+overflow-x: hidden;
+overflow-y: auto;
+max-height: 650px;
 }
 div.boardList > table {
 width: 100%;
+
 }
 div.boardList > table thead th {
 padding: 10px;
@@ -353,7 +361,7 @@ div.boardList > table tr td {
 padding: 10px;
 border-bottom: 1px solid #aaabb6;
 border-right: 1px dotted #d8d9df;	
-font-size: 12pt;	
+font-size: 12pt;
 }
 div.boardList > table tr td:last-child {
 border-right: none;
@@ -442,6 +450,7 @@ font-weight: normal;
 font-size: 12pt;
 text-align: left;
 background-color: #f4f4f6;
+width:250px;
 }
 div.boardNew > table tr td {
 padding: 10px;
@@ -454,6 +463,7 @@ padding: 5px;
 div.boardNew > table tr td > label {
 display: inline-block;
 margin-right: 30px;
+font-size: 1.3 rem;
 }
 
 span.required {
@@ -822,10 +832,10 @@ background-image: url(../../images/ico.png);
 background-repeat: no-repeat;
 }
 .pagination .first {
-background-position: -643px -388px;
+background-position: -643px -385px;
 }
 .pagination .forward {
-background-position: -670px -388px;
+background-position: -674px -385px;
 }
 .pagination .back {
 background-position: -697px -388px;
@@ -1214,14 +1224,4 @@ div.ctrlBtn > button.connect.on {
 border: 1px solid #3c49a8;
 background-position: -349px -395px;	
 background-color: #4855b5;
-} 
-
-
-
-
-
-
-
-
-
-
+}

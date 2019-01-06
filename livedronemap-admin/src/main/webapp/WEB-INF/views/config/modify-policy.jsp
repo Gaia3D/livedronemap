@@ -16,6 +16,15 @@
 	<script type="text/javascript" src="/js/${lang}/common.js"></script>
 	<script type="text/javascript" src="/js/${lang}/message.js"></script>
 	<script type="text/javascript" src="/js/live-drone-map.js"></script>
+	<style>
+		div.boardNew>table tr td>input {
+			padding: 0px;
+		}
+		.ui-widget {
+		    font-family: 'Malgun Gothic','돋움',dotum, sans-serif;
+		    font-size: 15px;
+		}
+	</style>
 </head>
 
 <body>
@@ -569,8 +578,8 @@
 					updateSolutionFlag = true;
 				},
 				error:function(request,status,error){
-			        alert(JS_MESSAGE["ajax.error.message"]);
-			        updateSolutionFlag = true;
+			    	alert(JS_MESSAGE["ajax.error.message"]);
+			    	updateSolutionFlag = true;
 				}
 			});
 		} else {

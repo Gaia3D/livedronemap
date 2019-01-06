@@ -18,11 +18,11 @@
 </head>
 
 <body>
+<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 <%@ include file="/WEB-INF/views/layouts/header.jsp" %>
 
 <div id="contentsWrap">
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
-	
 	<%@ include file="/WEB-INF/views/log/log-menu.jsp" %>
 	
 	<div class="contents limited"><!-- 컨텐츠영역을 100%로 사용하려면 limited를 삭제하세요 -->
@@ -30,7 +30,7 @@
 		<!-- 검색폼 -->
 		<form:form id="searchForm" modelAttribute="aPILog" method="post" action="/log/list-api-log" onsubmit="return searchCheck();">
 			<ul class="searchForm">
-				<li>
+<%-- 				<li>
 					<form:label path="search_word"><spring:message code='search.word'/></form:label>
 					<form:select path="search_word" name="search_word" class="select">
 						<form:option value=""><spring:message code='search.basic'/></form:option>
@@ -42,7 +42,7 @@
 						<form:option value="1"><spring:message code='search.include'/></form:option>
 					</form:select>
 					<form:input type="text" path="search_value" name="search_value"/>
-				</li>
+				</li> --%>
 				<li>
 					<form:label path="status_code"><spring:message code='http.code'/></form:label>
 					<form:select path="status_code" name="status_code" class="select">
@@ -55,9 +55,9 @@
 				</li>
 				<li>
 					<label for="start_date"><spring:message code='search.date'/></label>
-					<input type="text" class="s date" id="start_date" name="start_date" />
+					<input type="text" class="s date" id="start_date" name="start_date" size="10"/>
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="end_date" name="end_date" />
+					<input type="text" class="s date" id="end_date" name="end_date" size="10"/>
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
@@ -85,23 +85,22 @@
 		<form:form id="listForm" modelAttribute="aPILog" method="post">
 		<div class="boardHeader">
 			<p>
-				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
+				<spring:message code='all.d'/> <strong></strong><fmt:formatNumber value="${pagination.totalCount}" type="number"/></strong> <spring:message code='search.what.count'/>
 				<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/> <spring:message code='search.page'/>
 			</p>
 		</div>
 		<div class="boardList">
-			<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 			<table>
 				<thead>
 					<tr>
-						<th><spring:message code='number'/></th>
-						<th><spring:message code='client.name'/></th>
-						<th><spring:message code='user.id'/></th>
-						<th><spring:message code='request.ip'/></th>
-						<th><spring:message code='request.url'/></th>
-						<th><spring:message code='http.code'/></th>
-						<th><spring:message code='message'/></th>
-						<th><spring:message code='search.insert.date'/></th>
+						<th style="font-weight: bold"><spring:message code='number'/></th>
+						<th style="font-weight: bold"><spring:message code='client.name'/></th>
+						<th style="font-weight: bold"><spring:message code='user.id'/></th>
+						<th style="font-weight: bold"><spring:message code='request.ip'/></th>
+						<th style="font-weight: bold"><spring:message code='request.url'/></th>
+						<th style="font-weight: bold"><spring:message code='http.code'/></th>
+						<th style="font-weight: bold"><spring:message code='message'/></th>
+						<th style="font-weight: bold"><spring:message code='search.insert.date'/></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -116,8 +115,8 @@
 							<td class="alignCenter">${pagination.rowNumber - status.index }</td>
 							<td class="alignCenter">${aPILog.client_name}</td>
 							<td class="alignCenter">${aPILog.user_id}</td>
-							<td class="alignCenter">${aPILog.request_ip}</td>
-							<td class="alignCenter">${aPILog.url}</td>
+							<td class="alignRight">${aPILog.request_ip}</td>
+							<td class="alignLeft">${aPILog.url}</td>
 							<td class="alignCenter">${aPILog.status_code}</td>
 							<td class="alignCenter">
 								<c:if test="${aPILog.message ne '' and aPILog.message ne null}">

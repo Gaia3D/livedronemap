@@ -137,7 +137,7 @@ public class HealthCheckManager {
 			log.info("@@@@@@@@@@@@@ exception message = {}", e.getMessage());
 		} finally {
 			healthCheckLog.setClient_id(0);
-			healthCheckLog.setClient_name("분석");
+			healthCheckLog.setClient_name("영상처리");
 			healthCheckLog.setStatus(healthCheckStatus);
 			healthCheckLog.setMessage(healthCheckMessage);
 			if (httpStatus != null) {

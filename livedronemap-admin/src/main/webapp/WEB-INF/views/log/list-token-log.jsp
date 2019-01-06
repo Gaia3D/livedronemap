@@ -30,7 +30,7 @@
 		
 		<form:form id="searchForm" modelAttribute="tokenLog" method="post" action="/log/list-token-log" onsubmit="return searchCheck();">
 			<ul class="searchForm">
-				<li>
+<%-- 				<li>
 					<form:label path="search_word"><spring:message code='search.word'/></form:label>
 					<form:select path="search_word" name="search_word" class="select">
 						<form:option value=""><spring:message code='search.basic'/></form:option>
@@ -42,7 +42,7 @@
 						<form:option value="1"><spring:message code='search.include'/></form:option>
 					</form:select>
 					<form:input type="text" class="s date" path="search_value" name="search_value"/>
-				</li>
+				</li> --%>
 				<li>
 					<form:label path="token_status"><spring:message code='token.status'/></form:label>
 					<form:select path="token_status" class="select">
@@ -53,9 +53,9 @@
 				</li>
 				<li>
 					<label for="start_date"><spring:message code='search.date'/></label>
-					<input type="text" class="s date" id="start_date" name="start_date" />
+					<input type="text" class="s date" id="start_date" name="start_date" size="10" />
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="end_date" name="end_date" />
+					<input type="text" class="s date" id="end_date" name="end_date" size="10" />
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
@@ -72,7 +72,7 @@
 	               		<form:option value="10"> <spring:message code='search.ten.count'/> </form:option>
 	                	<form:option value="50"> <spring:message code='search.fifty.count'/> </form:option>
 						<form:option value="100"> <spring:message code='search.hundred.count'/> </form:option>
-					</form:select>
+					</form:select> 
 				</li>
 			</ul>
 			<div class="alignRight">
@@ -83,7 +83,7 @@
 		<form:form id="listForm" modelAttribute="tokenLog" method="post">
 		<div class="boardHeader">
 			<p>
-				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
+				<spring:message code='all.d'/> <strong><fmt:formatNumber value="${pagination.totalCount}" type="number"/></strong> <spring:message code='search.what.count'/>
 				<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/> <spring:message code='search.page'/>
 			</p>
 		</div>
@@ -91,13 +91,13 @@
 			<table>
 				<thead>
 					<tr>
-						<th><spring:message code='number'/></th>
-						<th><spring:message code='client.name'/></th>
-						<th><spring:message code='user.id'/></th>
-						<th><spring:message code='token.status'/></th>
-						<th><spring:message code='token.expires'/></th>
-						<th><spring:message code='search.update.date'/></th>
-						<th><spring:message code='search.insert.date'/></th>
+						<th style="width:5%; font-weight: bold"><spring:message code='number'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='client.name'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='user.id'/></th>
+						<th style="width:10%; font-weight: bold"><spring:message code='token.status'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='token.expires'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='search.update.date'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='search.insert.date'/></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -109,9 +109,9 @@
 <c:if test="${!empty tokenLogList }">
 	<c:forEach var="tokenLog" items="${tokenLogList}" varStatus="status">
 						<tr>
-							<td class="alignCenter">${status.index }</td>
-							<td class="alignCenter">${tokenLog.client_name}</td>
-							<td class="alignCenter">${tokenLog.user_id}</td>
+							<td class="alignCenter">${pagination.rowNumber - status.index}</td>
+							<td class="alignLeft">${tokenLog.client_name}</td>
+							<td class="alignLeft">${tokenLog.user_id}</td>
 							<td class="alignCenter">${tokenLog.token_status}</td>
 							<td class="alignCenter">${tokenLog.viewExpires}</td>
 							<td class="alignCenter">${tokenLog.viewUpdate_date}</td>

@@ -14,7 +14,7 @@ function goPage(url) {
 					$(".mapWrap").css({"padding-left" : "391px"});
 				} else {
 					$("#leftMenuArea").hide();
-					$(".mapWrap").css({"padding-left" : "51px"});
+					$(".mapWrap").css({"padding-left" : "50px"});
 				}
 				return;
 			} else {
@@ -40,6 +40,6 @@ $( "#menuCloseButton" ).on( "click", function() {
 		$(".mapWrap").css({"padding-left" : "391px"});
 	} else {
 		$("#leftMenuArea").hide();
-		$(".mapWrap").css({"padding-left" : "51px"});
+		$(".mapWrap").css({"padding-left" : "50px"});
 	}
 });

@@ -31,7 +31,7 @@
 		<div class="boardNew">
 			<table class="input-table scope-row">
 				<tr>
-					<th style="width: 140px" scope="row">
+					<th  style="width: 100px" scope="row">
 						<span class="required"><form:label path="client_name"><spring:message code='client.name'/></form:label></span>
 					</th>
 					<td>
@@ -65,8 +65,8 @@
 					</th>
 					<td >
 						<spring:message var='use' code='use'/>
-						<spring:message var='noUse' code='no.use'/>
 						<form:radiobutton path="use_yn" value="Y" label="${use}" />
+						<spring:message var='noUse' code='no.use'/>
 						<form:radiobutton path="use_yn" value="N" label="${noUse}" />
 					</td>
 				</tr>
@@ -110,9 +110,10 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#deviceMenu").addClass("on");
-		$("#clientInputMenu").addClass("on");
+		$("#clientMenu").addClass("on");
 		$("input[name='use_yn'][value='Y']").prop('checked', true);
 	});
+	
 	
 	// apikey 발급
 	var generateApikeyFlag = true;

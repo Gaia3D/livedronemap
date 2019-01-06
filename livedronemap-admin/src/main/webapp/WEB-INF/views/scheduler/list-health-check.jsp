@@ -18,11 +18,11 @@
 </head>
 
 <body>
+<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 <%@ include file="/WEB-INF/views/layouts/header.jsp" %>
 
 <div id="contentsWrap">
-	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
-	
+	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>	
 	<%@ include file="/WEB-INF/views/scheduler/scheduler-menu.jsp" %>
 	
 	<div class="contents limited">
@@ -38,7 +38,7 @@
 		  				<form:option value="UNKNOWN">알수없음</form:option>
 					</form:select>
 				</li>
-				<li>
+<%-- 				<li>
 					<form:label path="search_value"><spring:message code='client.name'/></form:label>
 					<form:select path="search_option" name="search_option" class="select">
 						<form:option value="0"><spring:message code='search.same'/></form:option>
@@ -46,12 +46,12 @@
 					</form:select>
 					<form:input path="search_value" maxlength="20" cssClass="s" />
 					<form:errors path="search_value" cssClass="error" />
-				</li>
+				</li> --%>
 				<li>
 					<label for="start_date"><spring:message code='search.date'/></label>
-					<input type="text" class="s date" id="start_date" name="start_date" />
+					<input type="text" class="s date" id="start_date" name="start_date" size="10"/>
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="end_date" name="end_date" />
+					<input type="text" class="s date" id="end_date" name="end_date" size="10"/>
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
@@ -85,7 +85,6 @@
 			</p>
 		</div>
 		<div class="boardList">
-			<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 			<table>
 				<thead>
 					<tr>
@@ -99,9 +98,9 @@
 				</thead>
 				<tbody>
 <c:if test="${empty healthCheckLogList }">
-										<tr>
-											<td colspan="6" class="col-none" style="text-align: center; font-size: 14px;">스케줄 이력이 존재하지 않습니다.</td>
-										</tr>
+						<tr>
+							<td colspan="6" class="col-none" style="text-align: center; font-size: 14px;">스케줄 이력이 존재하지 않습니다.</td>
+						</tr>
 </c:if>
 <c:if test="${!empty healthCheckLogList }">
 	<c:forEach var="healthCheckLog" items="${healthCheckLogList}" varStatus="status">

@@ -129,13 +129,9 @@ public class SimulationController {
 		buffer.append("order_word=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getOrder_word() : request.getParameter("order_word")));
 		buffer.append("&");
 		buffer.append("order_value=" + StringUtil.getDefaultValue(isListPage ? simulationLog.getOrder_value() : request.getParameter("order_value")));
-		if(!isListPage) {
-			buffer.append("&");
-			buffer.append("list_count=" + simulationLog.getList_counter());
-		}
+		buffer.append("&");
+		buffer.append("list_counter=" + simulationLog.getList_counter());
 		return buffer.toString();
-	}
-	
-	
-	
+	}	
+		
 }

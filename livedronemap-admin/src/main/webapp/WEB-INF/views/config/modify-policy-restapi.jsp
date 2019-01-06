@@ -13,7 +13,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 28px;">
 					<form:label path="rest_api_encryption_yn"><spring:message code='config.restapi.encrypt.use'/></form:label>
 				</th>
 				
@@ -29,8 +29,8 @@
 					<form:label path="rest_api_token_max_age"><spring:message code='config.restapi.token.max.age'/></form:label>
 				</th>
 				<td>
-					<form:input path="rest_api_token_max_age" maxlength="5" cssClass="s"/>
-					<span class="table-desc"><spring:message code='unit.minute'/></span>
+					<form:input path="rest_api_token_max_age" size="5" maxlength="5" cssClass="s"/>
+					<span class="table-desc" style="font-size:13px"><spring:message code='unit.minute'/></span>
 					<form:errors path="rest_api_token_max_age" cssClass="error" />
 				</td>
 			</tr>

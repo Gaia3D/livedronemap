@@ -11,10 +11,10 @@
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
 	<link rel="stylesheet" href="/css/${lang}/style.css">
 	<link rel="stylesheet" href="/css/fontawesome-free-5.2.0-web/css/all.min.css">
-	<link rel="stylesheet" href="/externlib/cesium_orgin/Widgets/widgets.css?cache_version=${cache_version}" /> 
+	<link rel="stylesheet" href="/externlib/cesium_53/Widgets/widgets.css?cache_version=${cache_version}" /> 
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
-	<script type="text/javascript" src="/externlib/cesium_orgin/Cesium.js"></script>
+	<script type="text/javascript" src="/externlib/cesium_53/Cesium.js"></script>
 	<style>
 		.mapWrap {
 			min-width: 1420px;
@@ -31,7 +31,7 @@
 	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
 	
 	<!-- S: 1depth / 프로젝트 목록 -->
-	<div id="leftMenuArea" class="subWrap">
+	<div id= "leftMenuArea" class="subWrap">
 		<!-- S: 프로젝트 제목, 목록가기, 닫기 -->
 		<div class="subHeader">
 			<h2>프로젝트</h2>
@@ -129,11 +129,10 @@
 	    requestVertexNormals: true
 	});
 	
-	
 	// 배경지도
 	/*
 	var imageryProvider = new Cesium.WebMapServiceImageryProvider({
-		url : 'http://192.168.10.5/geoserver/gwc/service/wms',
+		url : '${policy.geoserver_data_url}/gwc/service/wms',
 		layers : "osm:osm",
 		parameters : {
 			service : 'WMS'
@@ -267,7 +266,7 @@
 								
 								if (imageTotalCount != TRANSFER_DATA_COUNT_ARRAY[i]) {
 									// 드론 경로 갱신 
-									drawDronePath(i, droneProjectId, droneProject.status);
+									drawDronePath(i, droneProjectId, droneProject.status, droneProject.drone_project_name);
 									// 이미지/객체 탐지 새로 그리기
 									if (DRONE_IMAGE_REFRESH_FLAG_ARRAY[i]) {
 										drawDetailDroneImage(i, droneProjectId, droneProjectStatus);
@@ -298,7 +297,7 @@
 	
 	function drawDroneProjectList(pagination) {
 		// TODO: 세자리 , 추가 
-		var droneProjectListHeaderHtml = '<spring:message code="all.d"/> <em>' + pagination.totalCount + ' </em><spring:message code="search.what.count"/>&nbsp;'
+		var droneProjectListHeaderHtml = '<spring:message code="all.d"/> <strong>' + pagination.totalCount + ' </strong><spring:message code="search.what.count"/>&nbsp;'
 										+ pagination.pageNo + ' / ' + pagination.lastPage + ' <spring:message code="search.page"/>';
 		$("#projectListHeader").html(droneProjectListHeaderHtml); 
 		
@@ -403,7 +402,7 @@
 			
 			TRANSFER_DATA_COUNT_ARRAY[i] = droneProject.ortho_image_count + droneProject.postprocessing_image_count;
 			
-			drawDronePath(i, droneProjectId, droneProject.status);
+			drawDronePath(i, droneProjectId, droneProject.status, droneProject.drone_project_name);
 			if (DRONE_IMAGE_REFRESH_FLAG_ARRAY[i]) {
 				drawDetailDroneImage(i, droneProjectId, droneProject.status);
 			} else {
@@ -413,7 +412,7 @@
 		}
 	}
 	
-	function drawDronePath(index, droneProjectId, droneProjectStatus) {
+	function drawDronePath(index, droneProjectId, droneProjectStatus, droneProjectName) {
 		$.ajax({
 			url: "/drone-project/" + droneProjectId + "/transfer-datas",
 			type: "GET",
@@ -423,7 +422,7 @@
 				if(msg.result == "success") {
 					console.log("droneProjectId = " + droneProjectId + ", droneProjectStatus = " + droneProjectStatus);
 					if (msg.transferDataListSize > 0) {
-						drawDroneMovingPath(index, droneProjectId, droneProjectStatus, msg);
+						drawDroneMovingPath(index, droneProjectId, droneProjectStatus, droneProjectName, msg);
 					}
 				} else {
 					console.log(JS_MESSAGE[msg.result]);
@@ -575,7 +574,7 @@
    	}
 	
 	// 드론 이동 경로 표시    
-    function drawDroneMovingPath(index, droneProjectId, droneProjectStatus, msg) {
+    function drawDroneMovingPath(index, droneProjectId, droneProjectStatus, droneProjectName, msg) {
 		var serverTransferDataList = msg.transferDataList;
 		var transferDataList = new Array();
 		if (serverTransferDataList != null && serverTransferDataList.length > 0) {
@@ -612,6 +611,7 @@
 			droneImage = '/images/${lang}/drone_done.png';
 		};
 		BILLBOARD_ARRAY[index] = viewer.entities.add({
+			name : droneProjectName,
 	        position : Cesium.Cartesian3.fromDegrees(parseFloat(transferDataList[0]), parseFloat(transferDataList[1]), parseFloat(transferDataList[2])),
 	        billboard : {
 	            image : droneImage,

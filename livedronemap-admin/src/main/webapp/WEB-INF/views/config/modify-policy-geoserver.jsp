@@ -4,7 +4,7 @@
 	<div id="geoserver_tab" class="boardNew">
 		<table>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 28px;">
 					<form:label path="geoserver_enable"><spring:message code='config.geoserver.use'/></form:label>
 				</th>
 				
@@ -16,7 +16,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">
+				<th scope="row" style="height: 28px;">
 					<form:label path="geoserver_wms_version"><spring:message code='config.geoserver.wms.version'/></form:label>
 				</th>
 				<td>	
@@ -31,7 +31,7 @@
 					<form:label path="geoserver_background_url"><spring:message code='config.geoserver.background.url'/></form:label>
 				</th>
 				<td>
-					<form:input path="geoserver_background_url" maxlength="100" cssClass="s"/>
+					<form:input path="geoserver_background_url" size="50" maxlength="100" cssClass="s"/>
 					<form:errors path="geoserver_background_url" cssClass="error" />
 				</td>
 			</tr>
@@ -67,7 +67,7 @@
 					<form:label path="geoserver_terrain_url"><spring:message code='config.geoserver.terrain.url'/></form:label>
 				</th>
 				<td>
-					<form:input path="geoserver_terrain_url" maxlength="100" cssClass="s"/>
+					<form:input path="geoserver_terrain_url" size="50" maxlength="100" cssClass="s"/>
 					<form:errors path="geoserver_terrain_url" cssClass="error" />
 				</td>
 			</tr>
@@ -103,7 +103,7 @@
 					<form:label path="geoserver_data_url"><spring:message code='config.geoserver.data.url'/></form:label>
 				</th>
 				<td>
-					<form:input path="geoserver_data_url" maxlength="100" cssClass="s"/>
+					<form:input path="geoserver_data_url" size="50" maxlength="100" cssClass="s"/>
 					<form:errors path="geoserver_data_url" cssClass="error" />
 				</td>
 			</tr>
@@ -148,5 +148,4 @@
 			<button type="button" onclick="updatePolicyGeoserver();" class="point">저장</button>
 		</div>
 	</div>
-</form:form>
-							
+</form:form>							

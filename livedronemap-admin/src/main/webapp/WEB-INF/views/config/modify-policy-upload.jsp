@@ -17,7 +17,7 @@
 					<form:label path="user_upload_max_filesize"><spring:message code='config.uplaod.max.size'/></form:label>
 				</th>
 				<td>
-					<form:input path="user_upload_max_filesize" maxlength="3" cssClass="s"/>
+					<form:input path="user_upload_max_filesize" size="5" maxlength="3" cssClass="s"/>
 					<form:errors path="user_upload_max_filesize" cssClass="error" />
 				</td>
 			</tr>

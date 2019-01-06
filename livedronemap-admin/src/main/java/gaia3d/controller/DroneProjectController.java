@@ -299,7 +299,7 @@ public class DroneProjectController {
 		buffer.append("&");
 		buffer.append("order_value=" + StringUtil.getDefaultValue(isListPage ? droneProject.getOrder_value() : request.getParameter("order_value")));
 		buffer.append("&");
-		buffer.append("list_count=" + (isListPage ? droneProject.getList_counter() : StringUtil.getDefaultValue(request.getParameter("list_count"))));
+		buffer.append("list_counter=" + (isListPage ? droneProject.getList_counter() : StringUtil.getDefaultValue(request.getParameter("list_count"))));
 		return buffer.toString();
 	}
 }

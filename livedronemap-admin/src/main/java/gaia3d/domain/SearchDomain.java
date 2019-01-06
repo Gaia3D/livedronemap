@@ -19,6 +19,7 @@ public class SearchDomain {
 	private String end_date;
 	private String order_word;
 	private String order_value;
+//	private Long list_counter;
 	private Long list_counter = 10l;
 	
 	public Long getTotalCount() {

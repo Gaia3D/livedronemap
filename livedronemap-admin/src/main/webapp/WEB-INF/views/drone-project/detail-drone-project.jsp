@@ -12,11 +12,11 @@
 	<link rel="stylesheet" href="/css/${lang}/style.css">
 	<link rel="stylesheet" href="/css/${lang}/live-drone-map.css">
 	<link rel="stylesheet" href="/css/fontawesome-free-5.2.0-web/css/all.min.css">
-	<link rel="stylesheet" href="/externlib/cesium_orgin/Widgets/widgets.css?cache_version=${cache_version}" /> 
+	<link rel="stylesheet" href="/externlib/cesium_53/Widgets/widgets.css?cache_version=${cache_version}" />  
 	<link rel="stylesheet" href="/externlib/jquery-ui/jquery-ui.css" />
 	<script type="text/javascript" src="/externlib/jquery/jquery.js"></script>
 	<script type="text/javascript" src="/externlib/jquery/fixedheadertable.js"></script>
-	<script type="text/javascript" src="/externlib/cesium_orgin/Cesium.js"></script>
+	<script type="text/javascript" src="/externlib/cesium_53/Cesium.js"></script>
 	<style>
 		.mapWrap {
 			min-width: 1420px;
@@ -244,7 +244,6 @@
 <script type="text/javascript" src="/js/live-drone-map.js"></script>
 <script type="text/javascript" src="/js/geospatial.js"></script>
 <script type="text/javascript">
-	// TODO mago3D에 Cesium.ion key 발급 받아서 세팅한거 설명 듣고 Terrain 바꿔 주세요.
 	// TODO 데이터가 없을때 layer 예외 처리도 해야 함
 	
 	// 초기 위치 설정
@@ -273,8 +272,36 @@
 	var LAST_TRANSFER_DATA = null;
 	var DRONE_PROJECT_STATUS = "${droneProject.status}";
 	
-  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false});
+	var worldTerrain = Cesium.createWorldTerrain({
+	    requestWaterMask: false,
+	    requestVertexNormals: true
+	});
+	
+	// 배경지도
+	/*
+	var imageryProvider = new Cesium.WebMapServiceImageryProvider({
+		url : '${policy.geoserver_data_url}/gwc/service/wms',
+		layers : "osm:osm",
+		parameters : {
+			service : 'WMS'
+			,version : '1.1.1'
+			,request : 'GetMap'
+			,transparent : 'true'
+			,tiled : 'true'
+			,format : 'image/png'
+		}
+		//,proxy: new Cesium.DefaultProxy('/proxy/')
+		,enablePickFeatures: false
+	});
+	*/
+	
+	
+	Cesium.Ion.defaultAccesToken = '${cesiumIonToken}';
+  	var viewer = new Cesium.Viewer('droneMapContainer', {imageryProvider : imageryProvider, baseLayerPicker : true, animation:false, timeline:false, fullscreenButton:false, infoBox: false, terrainProvider : worldTerrain});
   	viewer.scene.globe.depthTestAgainstTerrain = false;
+	viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+
+  	
   	$(document).ready(function() {
 		$("#projectMenu").addClass("on");
   		cameraFlyTo("${droneProject.location_longitude}", "${droneProject.location_latitude}", 1500, 3);
@@ -445,10 +472,10 @@
 		    name : '드론 비행 경로',
 		    polyline : {
 		        positions : Cesium.Cartesian3.fromDegreesArrayHeights(transferDataList),
-		        width : 5,
+		        width : 3,
 		        material : new Cesium.PolylineDashMaterialProperty({
 		            color : Cesium.Color.fromCssColorString('#FFF000'),
-		            dashLength: 8.0
+		            dashLength: 3.0
 		        })
 		    }
 		});

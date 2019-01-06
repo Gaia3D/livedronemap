@@ -18,15 +18,15 @@
 </head>
 
 <body>
+<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>	
 <%@ include file="/WEB-INF/views/layouts/header.jsp" %>
 
 <div id="contentsWrap">
-	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>
-	
+	<%@ include file="/WEB-INF/views/layouts/menu.jsp" %>	
 	<%@ include file="/WEB-INF/views/simulation/simulation-menu.jsp" %>
-	
+
 	<div class="contents limited">
-		
+
 		<h3>시뮬레이션</h3>
 		<form:form id="searchForm" modelAttribute="simulationLog" method="post" action="/simulation/list-simulation" onsubmit="return searchCheck();">
 			<ul class="searchForm">
@@ -35,8 +35,8 @@
 					<form:select path="simulation_type" class="select">
 						<form:option value=""> <spring:message code='search.basic'/> </form:option>
 		  				<form:option value="0"><spring:message code='simulation.type.all'/></form:option>
-		  				<form:option value="1"><spring:message code='simulation.type.client'/></form:option>
-		  				<form:option value="2"><spring:message code='simulation.type.inner'/></form:option>
+		  				<form:option value="1"><spring:message code='simulation.type.processing'/></form:option>
+		  				<form:option value="2"><spring:message code='simulation.type.converter'/></form:option>
 					</form:select>
 				</li>
 				<li>
@@ -48,7 +48,7 @@
 		  				<form:option value="2"><spring:message code='status.progressing'/></form:option>
 					</form:select>
 				</li>
-				<li>
+<%-- 			<li>
 					<form:label path="search_value"><spring:message code='client.name'/></form:label>
 					<form:select path="search_option" name="search_option" class="select">
 						<form:option value="0"><spring:message code='search.same'/></form:option>
@@ -56,12 +56,12 @@
 					</form:select>
 					<form:input path="search_value" maxlength="20" cssClass="s" />
 					<form:errors path="search_value" cssClass="error" />
-				</li>
+				</li> --%>
 				<li>
 					<label for="start_date"><spring:message code='search.date'/></label>
-					<input type="text" class="s date" id="start_date" name="start_date" />
+					<input type="text" class="s date" id="start_date" name="start_date" size="10" />
 					<span class="delimeter tilde">~</span>
-					<input type="text" class="s date" id="end_date" name="end_date" />
+					<input type="text" class="s date" id="end_date" name="end_date" size="10" />
 				</li>
 				<li>
 					<form:label path="order_word"><spring:message code='search.order'/></form:label>
@@ -81,8 +81,7 @@
                 		<form:option value="10"> <spring:message code='search.ten.count'/> </form:option>
 	                	<form:option value="50"> <spring:message code='search.fifty.count'/> </form:option>
 						<form:option value="100"> <spring:message code='search.hundred.count'/> </form:option>
-					</form:select>
-				
+					</form:select> 
 				</li>
 			</ul>
 			<div class="alignRight">
@@ -94,25 +93,24 @@
 		<form:form id="listForm" modelAttribute="simulationLog" method="post">
 		<div class="boardHeader">
 			<p>
-				<spring:message code='all.d'/> <fmt:formatNumber value="${pagination.totalCount}" type="number"/> <spring:message code='search.what.count'/>
+				<spring:message code='all.d'/> <strong><fmt:formatNumber value="${pagination.totalCount}" type="number"/></strong> <spring:message code='search.what.count'/>
 				<fmt:formatNumber value="${pagination.pageNo}" type="number"/> / <fmt:formatNumber value="${pagination.lastPage }" type="number"/> <spring:message code='search.page'/>
 			</p>
 		</div>
 		<div class="boardList">
-			<%@ include file="/WEB-INF/views/common/detail-message.jsp" %>
 			<table>
 				<thead>
 					<tr>
-						<th><spring:message code='number'/></th>
-						<th><spring:message code='simulation.type'/></th>
-						<th><spring:message code='client.name'/></th>
-						<th><spring:message code='simulation.status'/></th>
-						<th><spring:message code='message'/></th>
-						<th><spring:message code='search.start.date'/></th>
-						<th><spring:message code='search.complete.date'/></th>
+						<th style="width:5%; font-weight: bold"><spring:message code='number'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='simulation.type'/></th>
+						<th style="width:20%; font-weight: bold"><spring:message code='client.name'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='simulation.status'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='message'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='search.start.date'/></th>
+						<th style="width:15%; font-weight: bold"><spring:message code='search.complete.date'/></th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody style="overflow-x: hidden; overflow-y: auto;">
 <c:if test="${empty simulationLogList }">
 						<tr>
 							<td colspan="7" class="col-none" style="text-align: center; font-size: 14px;">시뮬레이션 로그가 존재하지 않습니다.</td>
@@ -123,15 +121,15 @@
 						<tr>
 							<td class="alignCenter">${pagination.rowNumber - status.index }</td>
 							<c:if test="${simulationLog.simulation_type eq '0'}">
-								<td class="alignCenter"><spring:message code='simulation.type.all'/></td>
+								<td class="alignLeft"><spring:message code='simulation.type.all'/></td>
 							</c:if>
 							<c:if test="${simulationLog.simulation_type eq '1'}">
-								<td class="alignCenter"><spring:message code='simulation.type.client'/></td>
+								<td class="alignLeft"><spring:message code='simulation.type.processing'/></td>
 							</c:if>
 							<c:if test="${simulationLog.simulation_type eq '2'}">
-								<td class="alignCenter"><spring:message code='simulation.type.inner'/></td>
+								<td class="alignLeft"><spring:message code='simulation.type.converter'/></td>
 							</c:if>
-							<td class="alignCenter">${simulationLog.client_name}</td>
+							<td class="alignLeft">${simulationLog.client_name}</td>
 							<c:if test="${simulationLog.status eq '0'}">
 								<td class="alignCenter"><span class="state good"></span><spring:message code='status.success'/></td>
 							</c:if>
