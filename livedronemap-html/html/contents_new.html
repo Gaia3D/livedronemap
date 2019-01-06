@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<title>라이브드론맵</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+<div id="header">
+	<h1><span>Live Drone Map</span></h1>
+	<ul class="condition">
+		<li class="time">
+			최종시간 : 
+			<span>2018-10-10</span>
+			<span>09:37:51</span>
+		</li>
+		<li>
+			Drone
+			<span class="down">다운</span>
+		</li>
+		<li>
+			AI
+			<span class="unknown">알수없음</span>
+		</li>
+		<li>
+			Converter
+			<span class="ok">정상</span>
+		</li>
+	</ul>
+	<ul class="gnb">
+		<li>로그인</li>
+		<li>도움말</li>
+	</ul>
+</div>
+<!-- E: HEADER -->
+
+<div id="contentsWrap"><!-- 브라우저에 맞게 높이조절 -->
+	<div id="nav">
+		<ul>
+			<li class="menu" title="메뉴"><span>메뉴</span></li>
+			<li class="project" title="프로젝트"><span>프로젝트</span></li>
+			<li class="simulation" title="시물레이션"><span>시물레이션</span></li>
+			<li class="log" title="로그"><span>로그</span></li>
+			<li class="schedule" title="스케쥴"><span>스케쥴</span></li>
+			<li class="device on" title="장비"><span>장비</span></li>
+			<li class="setup" title="환경설정"><span>환경설정</span></li>
+		</ul>
+	</div>
+	<!-- E: NAV -->
+	
+	<div class="snb">
+		<h2 class="device"><span>장비</span></h2>
+		<ul>
+			<li class="" title="프로젝트상태">프로젝트상태</li>
+			<li class="on" title="드론상태">드론상태</li>
+			<li class="" title="시립대상태">시립대상태</li>
+			<li class="" title="AI상태">AI상태</li>
+			<li class="" title="이미지컨버터상태">이미지컨버터상태</li>
+		</ul>
+		<div class="footer">
+			<span>LiveDroneMap&#64; Gaia3d Corp.</span>
+			<span>All Rights Reserved</span>
+		</div>
+	</div>
+
+	<div class="contents limited"><!-- 컨텐츠영역을 100%로 사용하려면 limited를 삭제하세요 -->
+		<h3>페이지 등록</h3>
+
+		<div class="boardNew">
+			<table>
+				<tr>
+					<th style="width: 100px">프로젝트명</th>
+					<td><input type="text"></td>
+				</tr>
+				<tr>
+					<th><span class="required">제목</span></th>
+					<td><input type="text"></td>
+				</tr>
+				<tr>
+					<th><span class="required">필수항목</span></th>
+					<td>
+						<label for=""><input type="radio"> 기본</label>
+						<label for=""><input type="radio"> 선택</label>
+					</td>
+				</tr>
+				<tr>
+					<th>설명</th>
+					<td><textarea name="" id="" cols="100" rows="4"></textarea></td>
+				</tr>
+			</table>
+			<div class="alignCenter">
+				<button type="button" class="point">저장</button>
+				<button type="button" class="basic">목록</button>
+			</div>
+
+		</div>
+		<!-- END BOARD NEW -->
+	</div>
+	<!-- E: CONTENTS -->
+</div>
+<!-- E: CONTENTSWRAP -->
+</body>
+</html>

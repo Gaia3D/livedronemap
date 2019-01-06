@@ -1,8 +1,12 @@
 rootProject.name = 'livedronemap'
 include ':livedronemap-admin'
 include ':livedronemap-user'
+include ':livedronemap-converter'
 include ':livedronemap-doc'
+include ':livedronemap-html'
 
 project(':livedronemap-admin').projectDir = "$rootDir/livedronemap-admin" as File
 project(':livedronemap-user').projectDir = "$rootDir/livedronemap-user" as File
+project(':livedronemap-converter').projectDir = "$rootDir/livedronemap-converter" as File
 project(':livedronemap-doc').projectDir = "$rootDir/livedronemap-doc" as File
+project(':livedronemap-html').projectDir = "$rootDir/livedronemap-html" as File

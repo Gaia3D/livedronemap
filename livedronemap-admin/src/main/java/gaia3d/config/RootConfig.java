@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Component;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import gaia3d.security.Crypt;
 import com.zaxxer.hikari.HikariDataSource;
 
 import lombok.extern.slf4j.Slf4j;
@@ -50,9 +50,9 @@ public class RootConfig {
 	public DataSource dataSource() {
 		HikariDataSource dataSource = new HikariDataSource();
 		dataSource.setDriverClassName(driverClassName);
-		dataSource.setJdbcUrl(url);
-		dataSource.setUsername(username);
-		dataSource.setPassword(password);
+		dataSource.setJdbcUrl(Crypt.decrypt(url));
+		dataSource.setUsername(Crypt.decrypt(username));
+		dataSource.setPassword(Crypt.decrypt(password));
 		dataSource.setMaximumPoolSize(maximumPoolSize);
 		dataSource.setMinimumIdle(minimumIdle);
 		
@@ -73,7 +73,7 @@ public class RootConfig {
 		factory.setDataSource(dataSource());
 		factory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/*.xml"));
 		factory.setConfigLocation(new PathMatchingResourcePatternResolver().getResource("mybatis-config.xml"));
-		factory.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
+		//factory.setConfigLocation(new ClassPathResource("mybatis-config.xml"));
 		return factory.getObject();
     }
 

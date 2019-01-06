@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.SimulationLogMapper">
+
+	<!-- 시뮬레이션 로그 카운트 -->
+	<select id="getSimulationLogTotalCount" parameterType="simulationLog" resultType="long">
+		/* getSimulationLogTotalCount */
+		SELECT COUNT(simulation_log_id)
+		FROM simulation_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="simulation_type != null and simulation_type != ''">
+			AND simulation_type = #{simulation_type}
+			</if>
+			<if test="status != null and status != ''">
+			AND status = #{status}
+			</if>
+			<if test="start_date != null and start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="end_date != null and end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 시뮬레이션 로그 조회 -->
+	<select id="getSimulationLog" parameterType="int" resultType="simulationLog" >
+		/* getSimulationLog */
+		SELECT * FROM simulation_log
+		WHERE simulation_log_id = ${value}
+	</select>
+	
+	<!-- 시뮬레이션 로그 조회 by DroneProjectId -->
+	<select id="getSimulationLogByDroneProjectId" parameterType="int" resultType="simulationLog" >
+		/* getSimulationLogByDroneProjectId */
+		SELECT * FROM simulation_log
+		WHERE drone_project_id = ${value}
+	</select>
+	
+	<!-- 시뮬레이션 로그 리스트 조회 -->
+	<select id="getSimulationLogList" parameterType="simulationLog" resultType="simulationLog">
+		/* getSimulationLogList */
+		SELECT * 
+		FROM simulation_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="simulation_type != null and simulation_type != ''">
+			AND simulation_type = #{simulation_type}
+			</if>
+			<if test="status != null and status != ''">
+			AND status = #{status}
+			</if>
+			<if test="start_date != null and start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="end_date != null and end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+			ORDER BY ${order_word} ${order_value}
+			</when>
+			<otherwise>
+			ORDER BY insert_date DESC, simulation_log_id DESC
+			</otherwise>
+		</choose>
+		OFFSET #{offset} LIMIT #{limit}
+	</select>
+	
+	<!-- 시뮬레이션 오류 메세지 조회 -->
+	<select id="getSimulationMessage" parameterType="int" resultType="string">
+		/* getSimulationMessage */
+		SELECT message FROM simulation_log
+		WHERE simulation_log_id = ${value}
+	</select>
+	
+	<!-- 시뮬레이션 등록 -->
+	<insert id="insertSimulationLog" parameterType="simulationLog" >
+		/* insertDroneProject */
+		<selectKey keyProperty="simulation_log_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('simulation_log_seq')
+  		</selectKey>
+		INSERT INTO simulation_log (
+			simulation_log_id, simulation_type, client_id, client_name
+		) VALUES (
+			#{simulation_log_id}, #{simulation_type}, #{client_id}, #{client_name}
+		)
+	</insert>
+	
+	<!-- 시뮬레이션 로그 상태 업데이트 -->
+	<update id="updateSimulationLog" parameterType="simulationLog">
+		/* updateSimulationLog */
+		UPDATE simulation_log
+		<trim prefix="SET" suffixOverrides=",">
+	      <if test="status != null">
+	      	status = #{status},
+	      	complete_date = NOW(),
+	      </if>
+	      <if test="message != null">
+	      	message = #{message},
+	      </if>
+	   	</trim>
+	   	<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="simulation_log_id != null and simulation_log_id != ''">
+				AND simulation_log_id = #{simulation_log_id}
+			</if>
+			<if test="drone_project_id != null and drone_project_id != ''">
+				AND drone_project_id = #{drone_project_id}
+			</if>
+		</trim>
+	</update>
+	
+	<!-- 시뮬레이션 로그 프로젝트 ID 업데이트 -->
+	<update id="updateSimulationLogProjectId" parameterType="simulationLog">
+		/* updateSimulationLog */
+		UPDATE simulation_log
+		SET drone_project_id = #{drone_project_id}
+		WHERE simulation_log_id = #{simulation_log_id}
+	</update>
+	
+</mapper>

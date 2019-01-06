@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<title>라이브드론맵</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+<div id="header">
+	<h1><span>Live Drone Map</span></h1>
+	<ul class="condition">
+		<li class="time">
+			최종시간 : 
+			<span>2018-10-10</span>
+			<span>09:37:51</span>
+		</li>
+		<li>
+			Drone
+			<span class="down">다운</span>
+		</li>
+		<li>
+			AI
+			<span class="unknown">알수없음</span>
+		</li>
+		<li>
+			Converter
+			<span class="ok">정상</span>
+		</li>
+	</ul>
+	<ul class="gnb">
+		<li>로그인</li>
+		<li>도움말</li>
+	</ul>
+</div>
+<!-- E: HEADER -->
+
+<div id="wrap" style="height: 850px;"><!-- 브라우저에 맞게 높이조절, Header없을때 높이조절 -->
+	<div id="nav">
+		<h1>LOGO</h1>
+		<ul>
+			<li class="menu" title="메뉴"><span>메뉴</span></li>
+			<li class="project" title="프로젝트"><span>프로젝트</span></li>
+			<li class="monitoring" title="모니터링"><span>모니터링</span></li>
+			<li class="log" title="로그"><span>로그</span></li>
+			<li class="setup" title="환경설정"><span>환경설정</span></li>
+		</ul>
+	</div>
+	<!-- E: NAV -->
+	
+	<!-- S: 1depth / 프로젝트 목록 -->
+	<div class="subWrap" style="display:none ;">
+		<!-- S: 프로젝트 제목, 목록가기, 닫기 -->
+		<div class="subHeader">
+			<h2>프로젝트</h2>
+			<div class="ctrlBtn">
+				<button type="button" title="닫기" class="close">닫기</button>
+			</div>
+		</div>
+		<!-- E: 프로젝트 제목, 목록가기, 닫기 -->
+				
+		<div class="subContents">
+			<div class="sorting">
+				<select name="" id="">
+					<option value="">전체</option>
+					<option value="">최신순</option>
+					<option value="">과거순</option>
+				</select>
+				<select name="" id="">
+					<option value="">연도별</option>
+					<option value="">2018</option>
+					<option value="">2017</option>
+					<option value="">2016</option>
+				</select>
+				<select name="" id="">
+					<option value="">이슈별</option>
+					<option value="">전체</option>
+					<option value="">불법선박</option>
+					<option value="">오일유출</option>
+				</select>
+			</div>
+
+			<div class="projectList" style="height:270px;"><!-- 브라우저 높이에 따라 자동조정, 세로스크롤 됨 -->
+				<ul class="projectInfo">
+					<li class="title">병풍도 주변해역 불법선박 정찰</li>
+					<li title="촬영일자">
+						<label class="date" >촬영일자</label> 2018.09.01
+						<label class="js">정사영상</label><span>45</span>장
+						<label class="hc">후처리영상</label><span>7</span>장
+					</li>
+					<li>
+						<label class="step">진행단계</label> 2단계-드론촬영 중
+						<button type="button" title="상태모니터링" class="typeB">상태모니터링</button>
+					</li>
+				</ul>
+				
+				<ul class="projectInfo">
+					<li class="title">굴업도 기름유출</li>
+					<li title="촬영일자">
+						<label class="date" >촬영일자</label> 2018.09.01
+						<label class="js">정사영상</label><span>45</span>장
+						<label class="hc">후처리영상</label><span>7</span>장
+					</li>
+				</ul>
+				
+				<ul class="projectInfo">
+					<li class="title">병풍도 주변해역 불법선박 정찰</li>
+					<li title="촬영일자">
+						<label class="date" >촬영일자</label> 2018.09.01
+						<label class="js">정사영상</label><span>45</span>장
+						<label class="hc">후처리영상</label><span>7</span>장
+					</li>
+				</ul>
+				
+				<ul class="projectInfo">
+					<li class="title">병풍도 주변해역 불법선박 정찰</li>
+					<li title="촬영일자">
+						<label class="date" >촬영일자</label> 2018.09.01
+						<label class="js">정사영상</label><span>45</span>장
+						<label class="hc">후처리영상</label><span>7</span>장
+					</li>
+				</ul>
+			</div>
+			
+			<!-- S: 페이징 -->
+			<div class="paginationWrap">
+				<div class="count"><span>20</span> / 총123</div>
+				<ul class="pagination">
+					<li class="ico forward" title="앞으로">앞으로</li>
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li class="on">4</li>
+					<li>5</li>
+					<li>6</li>
+					<li class="ico back" title="뒤로">뒤로</li>
+				</ul>
+			</div>
+			<!-- E: 페이징 -->	
+		</div>
+		<!-- E: 영상목록 -->
+	</div>
+	<!-- E: 1depth / 프로젝트 목록 -->
+	
+	<!-- S: 2depth / 프로젝트 상세 -->
+	<div class="subWrap" style="display:;">
+		<!-- S: 프로젝트 제목, 목록가기, 닫기 -->
+		<div class="subHeader">
+			<h2>병풍도주변해역 불법선박 신고 정찰</h2>
+			<div class="ctrlBtn">
+				<button type="button" title="목록" class="goList on">목록</button>
+				<button type="button" title="닫기" class="close">닫기</button>
+			</div>
+		</div>
+		<!-- E: 프로젝트 제목, 목록가기, 닫기 -->
+		
+		<!-- S: 프로젝트 정보 -->
+		<ul class="projectInfo">
+			<li class="half" title="촬영일자"><label class="date" >촬영일자</label> 2018.09.01</li>
+			<li class="half" title="촬영지역"><label class="location">촬영지역</label> 병풍도주변해역</li>
+			<li class="half" title="실시간정사영상">
+				<label class="js">정사영상</label>
+				<span>45</span>장
+				<ul class="detect">
+					<li class="ship">6</li>
+					<li class="oil">7</li>
+				</ul>
+			</li>
+			<li class="half" title="후처리영상">
+				<label class="hc">후처리영상</label>
+				<span>7</span>장</li>
+			<li>
+				<label class="step">진행단계</label> <span class="state good"></span>원활 / 2단계-드론촬영 중
+				<button type="button" title="상태모니터링" class="typeB">상태모니터링</button>
+			</li>
+		</ul>
+		<!-- E: 프로젝트 정보 -->
+
+		<!-- S: 영상목록 -->
+		<div class="subContents">
+			<ul class="sceneListHeader">
+				<li><button type="button" title="보임" class="ico sceneOn">보임</button></li><!-- Toggle버튼 sceneOn, sceneOff -->
+				<li class="type">
+					<select name="" id="">
+						<option value="">전체</option>
+						<option value="">실시간</option>
+						<option value="">후처리</option>
+					</select>
+				</li>
+				<li class="filename"><span>파일명</span></li>
+				<li class="type">
+					<select name="" id="">
+						<option value="">전체</option>
+						<option value="">선박</option>
+						<option value="">기름</option>
+					</select>
+				</li>
+			</ul>
+			<ul class="sceneList" style="height: 250px;"><!-- 브라우저 높이에 따라 자동조정, 세로스크롤 됨 -->
+				<li class="on">
+					<button type="button" title="보임" class="ico sceneOn">보임</button>
+					<span class="type js">실시간</span>
+					<span class="title">project_A_201809092130_ace</span>
+					<span class="ico ship">불법선박</span>
+				</li>
+				<li>
+					<button type="button" title="숨김" class="ico sceneOff">숨김</button>
+					<span class="type hc">후처리</span>
+					<span class="title off">project_A_201809092130_ace</span>
+				</li>
+				<li>
+					<button type="button" title="보임" class="ico sceneOn">보임</button>
+					<span class="type js">실시간</span>
+					<span class="title">project_A_201809092130_ace</span>
+				</li>
+				<li>
+					<button type="button" title="보임" class="ico sceneOn">보임</button>
+					<span class="type js">실시간</span>
+					<span class="title">project_A_201809092130_ace</span>
+					<span class="ico ship">불법선박</span>
+				</li>
+				<li>
+					<button type="button" title="숨김" class="ico sceneOff">숨김</button>
+					<span class="type js">실시간</span>
+					<span class="title off">project_A_201809092130_ace</span>
+				</li>
+				<li>
+					<button type="button" title="보임" class="ico sceneOn">보임</button>
+					<span class="type js">실시간</span>
+					<span class="title">project_A_201809092130_ace</span>
+					<span class="ico oil">기름유출</span>
+				</li>
+				<li>
+					<button type="button" title="보임" class="ico sceneOn">보임</button>
+					<span class="type js">실시간</span>
+					<span class="title">project_A_201809092130_ace</span>
+				</li>
+			</ul>
+		</div>
+		<!-- E: 영상목록 -->
+	</div>
+	<!-- E: 2depth / 프로젝트 상세 -->
+	
+	<div id="mapWrap" style="width: 700px;">
+		<div class="ctrlBtn">
+			<button type="button" class="divide on" title="화면분할">화면분할</button><!-- 프로젝트 상세화면일때 보여짐-->
+			<button type="button" class="fullscreen" title="전체화면">전체화면</button>
+		</div>
+		
+		<div class="zoom">
+			<button type="button" class="zoomin">확대</button>
+			<button type="button"  class="zoomout">축소</button>
+		</div>
+			
+		<div class="mapInfo">
+			<span>127.156797, 38.012334</span>
+			<span>100km</span>
+		</div>
+	</div>
+	<!-- E: MAPWRAP -->
+	
+	<div id="viewWrap" style="width: 700px; display: ;">
+		<div class="ctrlBtn">
+			<button type="button" class="connect on" title="동기화">동기화</button>
+		</div>
+		<div class="zoom">
+			<button type="button" class="zoomin">확대</button>
+			<button type="button"  class="zoomout">축소</button>
+		</div>
+	</div>
+	<!-- E: VIEWWRAP -->
+</div>
+<!-- E: warp -->
+
+<!-- S: 레이어 / 프로젝트모니터링 -->
+<div class="layer" style="top:55px; right:15px; display:;">
+	<div class="layerHeader">
+		<h2>상태모니터링</h2>
+		<div class="ctrlBtn">
+			<button type="button" title="닫기" class="layerClose">닫기</button>
+		</div>
+	</div>
+	<div class="layerContents">
+		<div class="droneState">
+			<ul class="drone">
+				<li>
+					<label>진행</label>
+					2단계, 드론촬영중
+				</li>
+				<li>
+					<label>상태</label>
+					<span class="state good"></span>원활
+				</li>
+				<li>
+					<label>좌표</label>
+					36.698°N 127.894°E
+				</li>
+				<li>
+					<label>고도</label>
+					12234 km
+				</li>
+				<li>
+					<label>배터리</label>
+					45%
+				</li>
+				<li>
+					<label>수신거리</label>
+					12234 km
+				</li>
+			</ul>
+			<!--S: 상태모니터링 / 목록 -->
+			<div class="stateList">
+				<table>
+					<tr>
+						<td>10:09:16</td>
+						<td>Project_A_201809092130</td>
+						<td>실시간 정사영상 생성중</td>
+					</tr>
+					<tr>
+						<td>10:09:15</td>
+						<td>Project_A_201809092130</td>
+						<td>실시간 정사영상 완료</td>
+					</tr>
+					<tr class="fail">
+						<td>10:09:14</td>
+						<td>Project_A_201809092130</td>
+						<td>영상생성 실패</td>
+					</tr>
+					<tr>
+						<td>10:09:13</td>
+						<td>Project_A_201809092130</td>
+						<td>실시간 정사영상 완료</td>
+					</tr>
+									<tr>
+						<td>10:09:16</td>
+						<td>Project_A_201809092130</td>
+						<td>실시간 정사영상 생성중</td>
+					</tr>
+				</table>
+			</div>
+			<!--E: 상태모니터링 / 목록 -->
+		</div>	
+	</div>
+	<!--E: LAYER CONTENTS -->
+</div>
+<!-- E: 레이어 / 프로젝트모니터링 -->
+
+<!-- S: 레이어 / 장비모니터링 -->
+<div class="layer" style="top:55px; right:15px; display: none;">
+	<div class="layerHeader">
+		<h2>모니터링</h2>
+		<div class="ctrlBtn">
+			<button type="button" title="닫기" class="layerClose">닫기</button>
+		</div>
+	</div>
+	<div class="layerContents">
+		<div class="monitoringWrap">
+			<ul class="monitoring">
+				<li>
+					<span class="title">
+						<button type="button" class="btnText">점검</button>
+						<label>LDM상태</label>
+						<span class="state good"></span>원활
+					</span>
+					<span class="date">최종점검 : 2018.08.29 10:22</span>
+				</li>
+				<li>
+					<span class="title">
+						<button type="button" class="btnText">점검</button>
+						<label>Drone점검</label>
+					</span>
+					<span class="date">최종점검 : 2018.08.29 10:22</span>
+				</li>
+				<li>
+					<span class="title">
+						<button type="button" class="btnText">점검</button>
+						<label>LDM</label>
+						<span class="state good"></span>원활
+					</span>
+					<span class="date">최종점검 : 2018.08.29 10:22</span>
+				</li>
+				<li>
+					<span class="title">
+						<button type="button" class="btnText">점검</button>
+						<label>Cloud</label>
+						<span class="state error"></span>통신장애
+					</span>
+					<span class="date">최종점검 : 2018.08.29 10:22</span>
+				</li>
+				<li>
+					<span class="title">
+						<button type="button" class="btnText">점검</button>
+						<label>모의비행</label>
+						<span class="state good"></span>원활
+					</span>
+					<span class="date">최종점검 : 2018.08.29 10:22</span>
+				</li>
+			</ul>
+		</div>	
+	</div>
+	<!--E: LAYER CONTENTS -->
+</div>
+<!-- E: 레이어 / 프로젝트모니터링 -->
+</body>
+</html>

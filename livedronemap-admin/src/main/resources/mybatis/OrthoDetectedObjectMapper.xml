@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.OrthoDetectedObjectMapper">
+
+	<!-- orthoDetectedObject 등록 -->
+	<insert id="insertOrthoDetectedObject" parameterType="orthoDetectedObject" >
+		/* insertOrthoDetectedObject */
+		<selectKey keyProperty="ortho_detected_object_id" resultType="long" order="BEFORE">
+    		SELECT NEXTVAL('ortho_detected_object_seq')
+  		</selectKey>
+		INSERT INTO ortho_detected_object (
+			ortho_detected_object_id, drone_project_id, transfer_data_id, ortho_image_id, object_type, geometry, detected_date,
+			bounding_box_geometry, major_axis, minor_axis, orientation, bounding_box_area, length, speed
+		) VALUES (
+			#{ortho_detected_object_id}, #{drone_project_id}, #{transfer_data_id}, #{ortho_image_id}, #{object_type}, ST_GeographyFromText(#{geometry}), TO_TIMESTAMP(#{detected_date}, 'YYYYMMDDHH24MISSUS'),
+			ST_Multi(ST_GeomFromText(#{bounding_box_geometry}, 4326)), #{major_axis}, #{minor_axis}, #{orientation}, #{bounding_box_area}, #{length}, #{speed}
+		)
+	</insert>
+	
+</mapper>

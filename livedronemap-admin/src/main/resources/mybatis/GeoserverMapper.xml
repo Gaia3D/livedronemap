@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.GeoserverMapper">
+
+	<!-- geoserver에 image 정보 등록 -->
+	<insert id="insertGeoserverImage" parameterType="imageMosaic">
+		/* insertGeoserverImage */
+		INSERT INTO geoserver.livedronemap (
+			location,
+			the_geom,
+			image_date,
+			project_id,
+			data_type
+		)
+		VALUES (
+			#{location},
+			ST_GeomFromText(#{the_geom}, 4326),
+			TO_TIMESTAMP(#{image_date}, 'YYYYMMDDHH24MISSUS'),
+			#{project_id},
+			#{data_type}
+		)
+	</insert>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.APILogMapper">
+
+	<!-- api log 총 건수 -->
+	<select id="getAPILogTotalCount" parameterType="aPILog" resultType="long">
+		/* getAPILogTotalCount */
+		SELECT COUNT(api_log_id) 
+		FROM api_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="status_code != null and status_code > 0">
+			<![CDATA[
+			AND status_code >= #{status_code}::int AND status_code < #{status_code}::int+100
+			]]>
+			</if>
+			<if test="start_date != null and start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="end_date != null and end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- api log 조회 -->
+	<select id="getListAPILog" parameterType="aPILog" resultType="aPILog">
+		/* getListAPILog */
+		SELECT * 
+		FROM api_log
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="status_code != null and status_code > 0">
+			<![CDATA[
+			AND status_code >= #{status_code}::int AND status_code < #{status_code}::int+100
+			]]>
+			</if>
+			<if test="start_date != null and start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="end_date != null and end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+		<choose>
+			<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+			ORDER BY ${order_word} ${order_value}
+			</when>
+			<otherwise>
+			ORDER BY insert_date DESC, api_log_id DESC
+			</otherwise>
+		</choose>
+		OFFSET #{offset} LIMIT #{limit}
+	</select>
+	
+	<!-- api log 등록 -->
+	<insert id="insertAPILog" parameterType="aPILog" >
+		/* insertAPILog */
+		<selectKey keyProperty="api_log_id" resultType="long" order="BEFORE">
+    		SELECT NEXTVAL('api_log_seq')
+  		</selectKey>
+		INSERT INTO api_log (
+			api_log_id, client_id, client_name, request_ip, user_id, url, status_code, message
+		) VALUES (
+			#{api_log_id}, #{client_id}, #{client_name}, #{request_ip}, #{user_id}, #{url}, #{status_code}, #{message}
+		)
+	</insert>
+	
+	<!-- 오류 메세지 조회 -->
+	<select id="getLogMessage" parameterType="int" resultType="string">
+		/* getLogMessage */
+		SELECT message 
+		FROM api_log
+		WHERE api_log_id = ${value}
+	</select>
+</mapper>

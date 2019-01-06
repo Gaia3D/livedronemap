@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.DroneProjectMapper">
+
+	<!-- 프로젝트 총 건수 -->
+	<select id="getDroneProjectTotalCount" parameterType="droneProject" resultType="long">
+		/* getDroneProjectTotalCount */
+		SELECT COUNT(drone_project_id) 
+		FROM drone_project
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+			AND ${search_word} = #{search_value}
+			</if>
+			<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+			AND ${search_word} LIKE '%' || #{search_value} || '%'
+			</if>
+			<if test="status != null and status != ''">
+			AND status = #{status}
+			</if>
+			<if test="start_date != null and start_date != ''">
+			<![CDATA[
+			AND insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+			<if test="end_date != null and end_date != ''">
+			<![CDATA[
+			AND insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
+			]]>
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 프로젝트 목록 -->
+	<select id="getListDroneProject" parameterType="droneProject" resultType="droneProject">
+		/* getListDroneProject */
+		SELECT X.*, drone_name
+		FROM (
+			SELECT drone_project_id, drone_id, drone_project_name, drone_project_type, shooting_area,
+				shooting_upper_left_latitude, shooting_upper_left_longitude, 
+				shooting_upper_right_latitude, shooting_upper_right_longitude, 
+				shooting_lower_right_latitude, shooting_lower_right_longitude, 
+				shooting_lower_left_latitude, shooting_lower_left_longitude,
+				ST_AsText(location) AS location, shooting_date, status, description, 
+				ortho_image_count, postprocessing_image_count, detected_object_item1_count, 
+			detected_object_item2_count, detected_object_item3_count, detected_object_item4_count,
+				update_date, insert_date
+			FROM drone_project A
+			<trim prefix="WHERE" prefixOverrides="AND">
+				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '0'.toString()">
+				AND A.${search_word} = #{search_value}
+				</if>
+				<if test="search_word != null and search_word != '' and search_value != null and search_value != '' and search_option == '1'.toString()">
+				AND A.${search_word} LIKE '%' || #{search_value} || '%'
+				</if>
+				<if test="status != null and status != ''">
+				AND A.status = #{status}
+				</if>
+				<if test="start_date != null and start_date != ''">
+				<![CDATA[
+				AND A.insert_date >= TO_TIMESTAMP(#{start_date}, 'YYYYMMDDHH24MISSUS')
+				]]>
+				</if>
+				<if test="end_date != null and end_date != ''">
+				<![CDATA[
+				AND A.insert_date <= TO_TIMESTAMP(#{end_date}, 'YYYYMMDDHH24MISSUS')
+				]]>
+				</if>
+			</trim>
+			<choose>
+			<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+			ORDER BY A.${order_word} ${order_value}
+			</when>
+			<otherwise>
+			ORDER BY A.shooting_date DESC, A.drone_project_id DESC
+			</otherwise>
+			</choose>
+			OFFSET #{offset} LIMIT #{limit}
+		) X, drone Y
+		WHERE X.drone_id = Y.drone_id
+		<choose>
+		<when test="order_word != null and order_word != '' and order_value != null and order_value != ''">
+		ORDER BY X.${order_word} ${order_value}
+		</when>
+		<otherwise>
+		ORDER BY X.shooting_date DESC, X.drone_project_id DESC
+		</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 프로젝트 정보 조회 -->
+	<select id="getDroneProject" parameterType="droneProject" resultType="droneProject">
+		/* getDroneProject */
+		SELECT drone_project_id, drone_id, drone_project_name, drone_project_type, shooting_area,
+			shooting_upper_left_latitude, shooting_upper_left_longitude, 
+			shooting_upper_right_latitude, shooting_upper_right_longitude, 
+			shooting_lower_right_latitude, shooting_lower_right_longitude, 
+			shooting_lower_left_latitude, shooting_lower_left_longitude,
+			ST_AsText(location) AS location, shooting_date, status, description, 
+			ortho_image_count, postprocessing_image_count, detected_object_item1_count, 
+			detected_object_item2_count, detected_object_item3_count, detected_object_item4_count,
+			update_date, insert_date 
+		FROM drone_project
+		WHERE drone_project_id = #{drone_project_id}
+	</select>
+	
+	<!-- drone project 등록 -->
+	<insert id="insertDroneProject" parameterType="droneProject" >
+		/* insertDroneProject */
+		<selectKey keyProperty="drone_project_id" resultType="int" order="BEFORE">
+    		SELECT NEXTVAL('drone_project_seq')
+  		</selectKey>
+		INSERT INTO drone_project (
+			drone_project_id, drone_id, drone_project_name, drone_project_type, shooting_area, 
+			shooting_upper_left_latitude, shooting_upper_left_longitude, 
+			shooting_upper_right_latitude, shooting_upper_right_longitude, 
+			shooting_lower_right_latitude, shooting_lower_right_longitude, 
+			shooting_lower_left_latitude, shooting_lower_left_longitude,
+			location, shooting_date, description 
+		) VALUES (
+			#{drone_project_id}, #{drone_id}, #{drone_project_name}, #{drone_project_type}, #{shooting_area},
+			#{shooting_upper_left_latitude}, #{shooting_upper_left_longitude}, 
+			#{shooting_upper_right_latitude}, #{shooting_upper_right_longitude}, 
+			#{shooting_lower_right_latitude}, #{shooting_lower_right_longitude}, 
+			#{shooting_lower_left_latitude}, #{shooting_lower_left_longitude},
+			ST_GeographyFromText(#{location}), TO_TIMESTAMP(#{shooting_date}, 'YYYYMMDDHH24MISSUS'), #{description} 
+		)
+	</insert>
+	
+	<!-- drone project 수정 -->
+	<update id="updateDroneProject" parameterType="droneProject">
+		/* updateDroneProject */
+		UPDATE drone_project
+		SET status = #{status},
+			ortho_image_count = ortho_image_count + #{ortho_image_count},
+			postprocessing_image_count = postprocessing_image_count + #{postprocessing_image_count},
+			detected_object_item1_count = detected_object_item1_count + #{detected_object_item1_count}, 
+			detected_object_item2_count = detected_object_item2_count + #{detected_object_item2_count}, 
+			detected_object_item3_count = detected_object_item3_count + #{detected_object_item3_count}, 
+			detected_object_item4_count = detected_object_item4_count + #{detected_object_item4_count}, 
+			<if test="location != null and location != ''">
+				location = ST_GeographyFromText(#{location}),
+			</if>
+			update_date = NOW()
+		WHERE drone_project_id = #{drone_project_id}
+	</update>
+	
+	<!-- drone project 종료 -->
+	<update id="updateDroneProjectClose">
+		/* updateDroneProjectClose */
+		UPDATE drone_project
+		SET status = '4'
+		WHERE status != '4'
+		AND status != '5'
+		<![CDATA[
+		AND update_date < now() - interval '1 day'
+		]]>
+	</update>
+</mapper>

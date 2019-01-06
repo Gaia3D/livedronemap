@@ -1,5 +1,6 @@
 package gaia3d;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 public class LivedronemapAdminApplicationTests {
 
-	@Test
+	@Ignore
 	public void testSqlSession() throws Exception {
 		log.debug("@@@@@@@@@@@@ sqlSession : ");
 	}

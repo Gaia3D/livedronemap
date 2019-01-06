@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta content="IE=edge" http-equiv="X-UA-Compatible">
+<title>라이브드론맵</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+<div id="header">
+	<h1><span>Live Drone Map</span></h1>
+	<ul class="condition">
+		<li class="time">
+			최종시간 : 
+			<span>2018-10-10</span>
+			<span>09:37:51</span>
+		</li>
+		<li>
+			Drone
+			<span class="down">다운</span>
+		</li>
+		<li>
+			AI
+			<span class="unknown">알수없음</span>
+		</li>
+		<li>
+			Converter
+			<span class="ok">정상</span>
+		</li>
+	</ul>
+	<ul class="gnb">
+		<li>로그인</li>
+		<li>도움말</li>
+	</ul>
+</div>
+<!-- E: HEADER -->
+
+<div id="contentsWrap"><!-- 브라우저에 맞게 높이조절 -->
+	<div id="nav">
+		<ul>
+			<li class="menu" title="메뉴"><span>메뉴</span></li>
+			<li class="project" title="프로젝트"><span>프로젝트</span></li>
+			<li class="simulation" title="시물레이션"><span>시물레이션</span></li>
+			<li class="log" title="로그"><span>로그</span></li>
+			<li class="schedule on" title="스케쥴"><span>스케쥴</span></li>
+			<li class="device" title="장비"><span>장비</span></li>
+			<li class="setup" title="환경설정"><span>환경설정</span></li>
+		</ul>
+	</div>
+	<!-- E: NAV -->
+	
+	<div class="snb">
+		<h2 class="log"><span>로그</span></h2>
+		<!-- 
+		<h2 class="monitor"><span>모니터링</span></h2>
+		<h2 class="log"><span>로그</span></h2>
+		<h2 class="schedule"><span>스케쥴</span></h2>
+		<h2 class="setup"><span>설정</span></h2>
+		-->
+		<ul>
+			<li class="" title="프로젝트상태">프로젝트상태</li>
+			<li class="on" title="드론상태">드론상태</li>
+			<li class="" title="시립대상태">시립대상태</li>
+			<li class="" title="AI상태">AI상태</li>
+			<li class="" title="이미지컨버터상태">이미지컨버터상태</li>
+		</ul>
+		<div class="footer">
+			<span>LiveDroneMap&#64; Gaia3d Corp.</span>
+			<span>All Rights Reserved</span>
+		</div>
+	</div>
+
+	<div class="contents limited"><!-- 컨텐츠영역을 100%로 사용하려면 limited를 삭제하세요 -->
+		<h3>페이지제목</h3>
+		<!-- 검색폼 -->
+		<ul class="searchForm">
+			<li>
+				<label for="">프로젝트명</label>
+				<select name="" id="">
+					<option value="">전체</option>
+				</select>
+			</li>
+			<li>
+				<label for="">검색어</label>
+				<select name="" id="">
+					<option value="">전체</option>
+				</select>
+				<select name="" id="">
+					<option value="">전체</option>
+				</select>
+				<select name="" id="">
+					<option value="">전체</option>
+				</select>
+			</li>
+			<li>
+				<label for="">검색</label>
+				<input type="text">
+			</li>
+		</ul>
+		<div class="alignRight">
+			<button type="button" class="point">검색</button>
+		</div>
+		
+		<!-- 목록정렬 -->
+		<div class="boardHeader">
+			<p>
+				<span>10</span>건 / 총200건
+			</p>
+			<div class="tableBtn">
+				<button type="button" title="일괄삭제">일괄삭제</button>
+				<button type="button" title="등록">등록</button>
+				<button type="button" title="엑셀로 자료받기">엑셀로 자료받기</button>
+			</div>
+		</div>
+		<div class="boardList">
+			<table>
+				<thead>
+					<th><input type="checkbox"></th>
+					<th>번호</th>
+					<th>프로젝트명</th>
+					<th>데이터명</th>
+					<th>제어속성</th>
+					<th>등록일</th>
+					<th>수정/삭제</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+					<tr>
+						<td class="alignCenter"><input type="checkbox"></td>
+						<td>123</td>
+						<td>3DS</td>
+						<td>imun_del</td>
+						<td>definite ptkurpose circuit breaker</td>
+						<td class="alignCenter">2018-10-10  17:11:59</td>
+						<td class="alignCenter">
+							<button type="button" title="수정" class="intd">수정</button>
+							<button type="button" title="삭제" class="intd">삭제</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<ul class="pagination">
+				<li class="ico first" title="맨앞으로">처음</li>
+				<li class="ico forward" title="앞으로">앞으로</li>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li class="on">4</li>
+				<li>5</li>
+				<li>6</li>
+				<li class="ico back" title="뒤로">뒤로</li>
+				<li class="ico end" title="맨뒤로">마지막</li>
+			</ul>
+		</div>
+		<!-- END BOARDLIST -->
+	</div>
+	<!-- E: CONTENTS -->
+</div>
+<!-- E: CONTENTSWRAP -->
+</body>
+</html>

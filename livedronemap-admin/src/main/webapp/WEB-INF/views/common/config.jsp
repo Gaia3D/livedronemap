@@ -3,7 +3,6 @@
 <%@ page import="gaia3d.domain.SessionKey"%>
 <%
 	String accessibility = "en-US";
-	
 	String lang = (String)request.getSession().getAttribute(SessionKey.LANG.name());
 	if(lang == null || "".equals(lang)) {
 		Locale myLocale = request.getLocale();

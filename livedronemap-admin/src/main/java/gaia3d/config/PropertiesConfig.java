@@ -8,21 +8,19 @@ import lombok.Data;
 
 @Data
 @Configuration
-@PropertySource("classpath:livedrone.properties")
-@ConfigurationProperties(prefix = "livedrone")
+@PropertySource("classpath:livedronemap.properties")
+@ConfigurationProperties(prefix = "livedronemap")
 public class PropertiesConfig {
 
 //	private String osType;
 //	private boolean callRemoteEnable;
 //	private String serverIp;
 //	private String restAuthKey;
-//	
-//	private String licenseFile;
-//	private String licenseFileChecker;
 	
+	// transfer data
+	private String orthoImageDir;
+	private String postprocessingImageDir;
 	
-	// User excel batch registration
-	private String userUploadDir;
-	private String userConverterDir;
-	
+	// cesium ion token
+	private String cesiumIonToken;
 }

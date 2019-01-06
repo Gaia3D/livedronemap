@@ -1,0 +1,25 @@
+// db 접속
+//C:\PostgreSQL\9.6\bin>psql -U postgres -d postgres
+psql -h localhost -p 5432 -U postgress nipa
+
+// db 목록 조회
+\l
+\c 디비명 ......................... 디비를 면경
+
+
+UPDATE drone_project
+SET location=ST_GeographyFromText(subquery.location)
+FROM (
+
+	SELECT ST_AsText(ST_Centroid(ST_Collect(geom))) as location 
+	FROM 
+	 (
+		VALUES ('POINT (125.9970610000 36.6532520000)'), ('POINT (126.1234370000 36.6449630000)'), 
+			('POINT (126.0071920000 36.5525720000)'), ('POINT (126.1138560000 36.5573610000)')) sq (geom)
+	
+) AS subquery
+WHERE drone_project.drone_project_id = 1;
+
+// geography data type
+update drone_project
+set location = 'POINT(128.38965794847263 34.77336445704367)';

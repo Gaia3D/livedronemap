@@ -3,8 +3,8 @@ final String DEFAULT_PROFILE = 'local'
 
 buildscript {
 	ext {
-		springBootVersion = '2.0.4.RELEASE'
-		lombokVersion = '1.18.2'
+		springBootVersion = '2.1.0.RELEASE'
+		lombokVersion = '1.18.4'
 	}
 	repositories {
 		mavenCentral()
@@ -41,6 +41,10 @@ configurations {
 	providedRuntime
 }
 
+test {
+	ignoreFailures = true
+}
+
 sourceSets {
 	main {
 		resources {
@@ -51,11 +55,26 @@ sourceSets {
 			
 			if (profile == 'real') {
 				println " ===========> profile file is ${profile}"
-				srcDir "src/main/resources/${profile}"
+				println " ===========> copy from src/main/resources/real to src/main/resources"
+				
+				copy {
+					from("src/main/resources/real") {
+						//exclude 'logback.xml'
+						include 'application.properties'
+						include 'livedronemap.properties'
+						include 'logback-spring.xml'
+					}
+					into "src/main/resources"
+				}
+				
 				//copy {
-		        //	from "src/main/resources/${profile}"
-				//	into "src/main/resources"
-		        //}
+				//	from("src/main/resources/properties-$targetServer") {
+				//		include 'logback.xml'
+				//	}
+				//	into("src/main/resources/")
+				//}
+				
+				//delete file("src/main/resources/properties-dev")
 			} else {
 				println " ===========> profile file is ${profile}"
 				//srcDir "src/main/resources"
@@ -66,17 +85,24 @@ sourceSets {
 }
 
 dependencies {
-	//compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-actuator')
 	//compile('org.springframework.boot:spring-boot-starter-mail')
 	//compile('org.springframework.boot:spring-boot-starter-quartz')
 	//compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
-	compile('javax.servlet:jstl')
+	compile('org.springframework.security:spring-security-core')
 	
-	compile ('org.apache.commons:commons-io:1.3.2')
-	compile 'com.zaxxer:HikariCP:3.2.0'
+	//compile ('org.apache.commons:commons-io:1.3.2')
+	compile 'commons-codec:commons-codec:1.11'
+	compile 'com.zaxxer:HikariCP'
 	compile 'org.apache.taglibs:taglibs-standard-jstlel:1.2.5'
+	compile 'org.apache.commons:commons-exec:1.3'
+	compile 'org.apache.httpcomponents:httpclient'
+	
+	compile 'io.springfox:springfox-swagger2:2.9.2'
+	compile 'io.springfox:springfox-swagger-ui:2.9.2'
+	compile 'org.mockito:mockito-core:2.22.0'
 	
 	runtime('org.springframework.boot:spring-boot-devtools')
 	runtime('org.postgresql:postgresql')

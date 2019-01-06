@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gaia3d.persistence.ClientGroupMapper">
+
+	<!-- client group 정보를 취득 -->
+	<select id="getClientGroup" parameterType="int" resultType="clientGroup">
+		/* getClientGroup */
+		SELECT * FROM client_group WHERE client_group_id = #{client_group_id}
+	</select>
+
+	<!-- client group 목록 -->
+	<select id="getListClientGroup" parameterType="clientGroup" resultType="clientGroup">
+		/* getListClientGroup */
+		SELECT * FROM client_group WHERE use_yn = #{use_yn}
+	</select>	
+
+</mapper>
