@@ -1,0 +1,10 @@
+  * https 적용을 위한 SSL(Secure Sockets Layer) 인증 
+  0. 개념 이해.
+   https://opentutorials.org/course/228/4894
+  1. JKS: Java 표준 키스터어 형식. JDK에 포함된 keytool 커낸드 라인툴로 생성가능.
+   https://joshuajangblog.wordpress.com/2016/09/02/tls-ssl-intro-and-tomcat-configuration/
+  2. PKCS12: 인터넷 표준형식. OpenSSL이나 Microsoft Key-Manager로 조작가능.
+   https://joshuajangblog.wordpress.com/2016/09/02/tls-ssl-intro-and-tomcat-configuration/
+   https://namjackson.tistory.com/24
+  3. Let's Encrypt : 도메인 네임(domain name)이 반드시 필요하다.!!
+   https://kr.minibrary.com/353/
