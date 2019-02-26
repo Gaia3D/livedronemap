@@ -8,3 +8,89 @@
    https://namjackson.tistory.com/24
   3. Let's Encrypt : 도메인 네임(domain name)이 반드시 필요하다.!!
    https://kr.minibrary.com/353/
+	  
+	< JKS 설정 방법 >  
+	1. keyStore 생성
+	// 윈도우
+	"%JAVA_HOME%\bin\keytool" -genkey -alias tomcat_https -keypass changeit -storepass changeit -keyalg RSA -keystore c:\https_setup_for_push\.keystore
+	// Linux
+	$JAVA_HOME/bin/keytool -genkey -alias tomcat_https -keypass changeit -storepass changeit -keyalg RSA -keystore /home/gaia3d/tomcat_https/.keystore
+
+	2. 생성한 Keystore를 인증서 cer 파일 형태로 저장하기
+	// 윈도우
+	"%JAVA_HOME%\bin\keytool" -export -alias tomcat_https -storepass changeit -file c:\https_setup_for_push\server.cer -keystore c:\https_setup_for_push\.keystore
+	// Linux
+	$JAVA_HOME/bin/keytool -export -alias tomcat_https -storepass changeit -file /home/gaia3d/tomcat_https/server.cer -keystore /home/gaia3d/tomcat_https/.keystore
+
+	3. cer 인증서를 keystore에 탑재한다.
+	// 윈도우
+	"%JAVA_HOME%\bin\keytool" -import -v -trustcacerts -alias tomcat_https -file c:\https_setup_for_push\server.cer -keystore c:\https_setup_for_push\.keystore -keypass changeit -storepass changeit
+	// Linux
+	$JAVA_HOME/bin/keytool -import -v -trustcacerts -alias tomcat_https -file /home/gaia3d/tomcat_https/server.cer -keystore /home/gaia3d/tomcat_https/.keystore -keypass changeit -storepass changeit
+	
+	4. tomcat의 https 설정 및 keystore 등록
+	<Connector SSLEnabled="true" clientAuth="false" 
+	  keyAlias="tomcat_https" keystoreFile="/home/gaia3d/tomcat_https/.keystore" 
+	  keystorePass="changeit" maxThreads="150" 
+	  port="8443" protocol="HTTP/1.1" scheme="https" secure="true" sslProtocol="TLS"/>
+	
+  * openssl이 설치되어 있어야 한다. 만약 설치되어 있지 않다면 openssl 설치
+  < openssl 설치(https://blog.bypass.sh/448) >
+   - 현재 버전 확인 (openssl version)
+   - GCC가 설치 안돼 있으면 설치 (yum install -y gcc)
+   - 설치할 폴더로 이동후 다운로드: https://www.openssl.org/source/
+   cd /usr/local/src
+   wget https://www.openssl.org/source/openssl-1.1.1a.tar.gz
+   tar -zxf openssl-1.1.1a.tar.gz
+   - OpenSSL 컴파일 설치
+   cd openssl-1.1.1a
+   ./config
+   make
+   make install
+   - OpenSSL 적용
+   mv /usr/bin/openssl /root/
+   ln -s /usr/local/ssl/bin/openssl /usr/bin/openssl
+   - OpenSSL 적용 확인
+   $ openssl version
+   
+	< PKCS12 설정 방법>
+	 https://namjackson.tistory.com/24
+	1. 개인키, 공개키 발급
+	 - openssl genrsa -des33 -out private.pem 2048
+	 - openssl -out private.key 2048
+	 - openssl rsa -in private.key -pubout -out public.key
+	 
+	2. CSR(인증요청서) 만들기
+	 - openssl req -new -key private.key -out private.csr
+	 
+	3. CRT(인증서) 맏들기
+	 3.1 rootCA.key 만들기
+	   - openssl genrsa -aes256 -out rootCA.key 2048
+	 3.2 rootCA 사설 CSR 생성하기
+	   - openssl req -x509 -new -nodes -key rootCA.key -days 3650 -out rootCA.pem
+	 3.3 CRT 생성
+	   - openssl x509 -req -in private.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out private.crt -days 3650 
+	   
+	 * Tomcat에 인증서를 적용하기 위한 pkcs12 형식으로 변환
+	   - pkcs12 -export -in private.crt -inkey private.key -out .keystore -name tomcat 
+	   
+	 < tomcat의 tomcat의 https 설정 및 keystore 등록>
+	    <Connector port="443" protocol="HTTP/1.1" SSLEnabled="true"
+	    maxThreads="150" scheme="https" secure="true" keystoreFile="/home/gaia3d/.keystore" 
+	    keystorePass="mago#d" keystoreType="pkcs12" clientAuth="false" sslProtocol="TLS"/>
+
+	< Tomcat SSL 적용시 리다이텍트설정 추가>
+	https://offbyone.tistory.com/262
+	web.xml 파일에 추가
+	
+	<security-constraint>
+    <web-resource-collection>
+        <web-resource-name>HTTPS or HTTP</web-resource-name>
+        <url-pattern>/images/*</url-pattern>
+        <url-pattern>/css/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+        <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+</security-constraint>
+
