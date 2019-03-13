@@ -1,0 +1,9 @@
+  시립대(UOS)에서의 개별정사영상 생성 과정 (전처리에 해당)
+  1. 원본 이미지 파일 및 EO 파일 전송
+  2. EO 파일을 파싱하여 탑재변수 적용
+  3. 원본 이미지 파일과 탑재변수를 적용한 EO파일을 이용하여 기하보정 수행
+  * 참고: https://github.com/uoslsm/livedronemap
+  
+  전체 정사영상의 후처리 영상 생성
+  * 참고: ODM(https://github.com/OpenDroneMap/ODM)
+  

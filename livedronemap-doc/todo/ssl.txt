@@ -94,3 +94,5 @@
     </user-data-constraint>
 </security-constraint>
 
+ 	<Let's Encrypt 인증시 certbot 사용>
+	 https://certbot.eff.org/
