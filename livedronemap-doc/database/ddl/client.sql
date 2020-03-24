@@ -2,7 +2,7 @@ drop table if exists client_group cascade;
 drop table if exists client cascade;
 drop table if exists client_group_role cascade;
 
--- ¼­¹ö ±×·ì
+-- ì„œë²„ ê·¸ë£¹
 create table client_group(
 	client_group_id				int,
 	group_key					varchar(60)			unique			not null,
@@ -18,21 +18,21 @@ create table client_group(
 	constraint client_group_pk 	primary key (client_group_id)	
 );
 
-comment on table client_group is '¼­¹ö ±×·ì';
-comment on column client_group.client_group_id is '°íÀ¯¹øÈ£';
-comment on column client_group.group_key is '¸µÅ© È°¿ë µîÀ» À§ÇÑ È®Àå ÄÃ·³';
-comment on column client_group.group_name is '±×·ì¸í';
-comment on column client_group.parent is 'ºÎ¸ğ °íÀ¯¹øÈ£';
-comment on column client_group.depth is '±íÀÌ';
-comment on column client_group.view_order is '³ª¿­ ¼ø¼­';
-comment on column client_group.child_yn is 'ÀÚ½Ä Á¸ÀçÀ¯¹«, Y : Á¸Àç, N : Á¸Àç¾ÈÇÔ(±âº»)';
-comment on column client_group.default_yn is '»èÁ¦ ºÒ°¡, Y : ±âº», N : ¼±ÅÃ';
-comment on column client_group.use_yn is '»ç¿ëÀ¯¹«, Y : »ç¿ë, N : »ç¿ë¾ÈÇÔ';
-comment on column client_group.description is '¼³¸í';
-comment on column client_group.insert_date is 'µî·ÏÀÏ';
+comment on table client_group is 'ì„œë²„ ê·¸ë£¹';
+comment on column client_group.client_group_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on column client_group.group_key is 'ë§í¬ í™œìš© ë“±ì„ ìœ„í•œ í™•ì¥ ì»¬ëŸ¼';
+comment on column client_group.group_name is 'ê·¸ë£¹ëª…';
+comment on column client_group.parent is 'ë¶€ëª¨ ê³ ìœ ë²ˆí˜¸';
+comment on column client_group.depth is 'ê¹Šì´';
+comment on column client_group.view_order is 'ë‚˜ì—´ ìˆœì„œ';
+comment on column client_group.child_yn is 'ìì‹ ì¡´ì¬ìœ ë¬´, Y : ì¡´ì¬, N : ì¡´ì¬ì•ˆí•¨(ê¸°ë³¸)';
+comment on column client_group.default_yn is 'ì‚­ì œ ë¶ˆê°€, Y : ê¸°ë³¸, N : ì„ íƒ';
+comment on column client_group.use_yn is 'ì‚¬ìš©ìœ ë¬´, Y : ì‚¬ìš©, N : ì‚¬ìš©ì•ˆí•¨';
+comment on column client_group.description is 'ì„¤ëª…';
+comment on column client_group.insert_date is 'ë“±ë¡ì¼';
 
+-- ì„œë²„ ê·¸ë£¹ë³„ Role
 
--- ¼­¹ö ±×·ìº° Role
 create table client_group_role (
 	client_group_role_id			int,
 	client_group_id					int 							not null,
@@ -42,15 +42,15 @@ create table client_group_role (
 	constraint client_group_role_pk primary key (client_group_role_id)
 );
 
-comment on table client_group_role is '¼­¹ö ±×·ìº° Role';
-comment on column client_group_role.client_group_role_id is '°íÀ¯¹øÈ£';
-comment on column client_group_role.client_group_id is '¼­¹ö ±×·ì °íÀ¯Å°';
-comment on column client_group_role.role_id is 'Role °íÀ¯Å°';
-comment on column client_group_role.role_key is 'Role KEY(¼Óµµ¸¦ À§ÇÑ Áßº¹)';
-comment on column client_group_role.insert_date is 'µî·ÏÀÏ';
+comment on table client_group_role is 'ì„œë²„ ê·¸ë£¹ë³„ Role';
+comment on column client_group_role.client_group_role_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on column client_group_role.client_group_id is 'ì„œë²„ ê·¸ë£¹ ê³ ìœ í‚¤';
+comment on column client_group_role.role_id is 'Role ê³ ìœ í‚¤';
+comment on column client_group_role.role_key is 'Role KEY(ì†ë„ë¥¼ ìœ„í•œ ì¤‘ë³µ)';
+comment on column client_group_role.insert_date is 'ë“±ë¡ì¼';
 
 
--- ¼­¹ö
+-- ì„œë²„
 create table client (
 	client_id					int,							
 	client_group_id				int,								
@@ -67,13 +67,13 @@ create table client (
 
 
 
-comment on table client is '¼­¹ö';
-comment on column client.client_id is '°íÀ¯¹øÈ£';
-comment on column client.client_group_id is '°íÀ¯¹øÈ£';
-comment on column client.client_name is '¼­¹ö¸í';
-comment on column client.client_ip is '¼­¹ö IP';
-comment on column client.use_yn is '»ç¿ëÀ¯¹«, Y : »ç¿ë, N : »ç¿ë¾ÈÇÔ(±âº»)';
+comment on table client is 'ì„œë²„';
+comment on column client.client_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on column client.client_group_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on column client.client_name is 'ì„œë²„ëª…';
+comment on column client.client_ip is 'ì„œë²„ IP';
+comment on column client.use_yn is 'ì‚¬ìš©ìœ ë¬´, Y : ì‚¬ìš©, N : ì‚¬ìš©ì•ˆí•¨(ê¸°ë³¸)';
 comment on column client.api_key is 'API KEY';
-comment on column client.description is '¼³¸í';
-comment on column client.update_date is '¼öÁ¤ÀÏ';
-comment on column client.insert_date is 'µî·ÏÀÏ';
+comment on column client.description is 'ì„¤ëª…';
+comment on column client.update_date is 'ìˆ˜ì •ì¼';
+comment on column client.insert_date is 'ë“±ë¡ì¼';

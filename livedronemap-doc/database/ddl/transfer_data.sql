@@ -1,11 +1,11 @@
--- FK, Index´Â º°µµ ÆÄÀÏ·Î ºĞ¸®.
+-- FK, IndexëŠ” ë³„ë„ íŒŒì¼ë¡œ ë¶„ë¦¬.
 drop table if exists transfer_data cascade;
 drop table if exists ortho_image cascade;
 drop table if exists ortho_detected_object cascade;
 drop table if exists postprocessing_image cascade;
 
 
--- Àü¼Û µ¥ÀÌÆ¼
+-- ì „ì†¡ ë°ì´í‹°
 create table transfer_data(
 	transfer_data_id				bigint,
 	drone_project_id				int						not null,
@@ -26,26 +26,26 @@ create table transfer_data(
 	constraint transfer_data_id_pk	primary key (transfer_data_id)
 );
 
-comment on table transfer_data is 'Àü¼Û µ¥ÀÌÅÍ';
-comment on column transfer_data.transfer_data_id is 'transfer data °íÀ¯¹øÈ£';
-comment on column transfer_data.drone_project_id is 'drone project °íÀ¯¹øÈ£';
-comment on column transfer_data.user_id is '»ç¿ëÀÚ ¾ÆÀÌµğ';
-comment on column transfer_data.data_type is 'µ¥ÀÌÅÍ Å¸ÀÔ. 0 : °³º° Á¤»ç ¿µ»ó, 1 : ÈÄÃ³¸® ¿µ»ó';
-comment on column transfer_data.file_name is 'ÆÄÀÏ ÀÌ¸§';
-comment on column transfer_data.ortho_detected_object_count is '°´Ã¼ Å½Áö °³¼ö';
-comment on column transfer_data.status is '»óÅÂ. 0 : Àü¼Û ¿Ï·á, 1 : ÈÄÃ³¸® ¿Ï·á, 2 : ÈÄÃ³¸® ½ÇÆĞ';
-comment on column transfer_data.drone_latitude is 'µå·Ğ À§µµ';
-comment on column transfer_data.drone_longitude is 'µå·Ğ °æµµ';
-comment on column transfer_data.drone_altitude is 'µå·Ğ ³ôÀÌ';
-comment on column transfer_data.drone_roll is 'µå·Ğ roll';
-comment on column transfer_data.drone_pitch is 'µå·Ğ pitch';
-comment on column transfer_data.drone_yaw is 'µå·Ğ Èçµé¸²';
-comment on column transfer_data.shooting_date is 'ÃÔ¿µÀÏ';
-comment on column transfer_data.update_date is '¼öÁ¤ÀÏ';
-comment on column transfer_data.insert_date is 'µî·ÏÀÏ';
+comment on table transfer_data is 'ì „ì†¡ ë°ì´í„°';
+comment on column transfer_data.transfer_data_id is 'transfer data ê³ ìœ ë²ˆí˜¸';
+comment on column transfer_data.drone_project_id is 'drone project ê³ ìœ ë²ˆí˜¸';
+comment on column transfer_data.user_id is 'ì‚¬ìš©ì ì•„ì´ë””';
+comment on column transfer_data.data_type is 'ë°ì´í„° íƒ€ì…. 0 : ê°œë³„ ì •ì‚¬ ì˜ìƒ, 1 : í›„ì²˜ë¦¬ ì˜ìƒ';
+comment on column transfer_data.file_name is 'íŒŒì¼ ì´ë¦„';
+comment on column transfer_data.ortho_detected_object_count is 'ê°ì²´ íƒì§€ ê°œìˆ˜';
+comment on column transfer_data.status is 'ìƒíƒœ. 0 : ì „ì†¡ ì™„ë£Œ, 1 : í›„ì²˜ë¦¬ ì™„ë£Œ, 2 : í›„ì²˜ë¦¬ ì‹¤íŒ¨';
+comment on column transfer_data.drone_latitude is 'ë“œë¡  ìœ„ë„';
+comment on column transfer_data.drone_longitude is 'ë“œë¡  ê²½ë„';
+comment on column transfer_data.drone_altitude is 'ë“œë¡  ë†’ì´';
+comment on column transfer_data.drone_roll is 'ë“œë¡  roll';
+comment on column transfer_data.drone_pitch is 'ë“œë¡  pitch';
+comment on column transfer_data.drone_yaw is 'ë“œë¡  í”ë“¤ë¦¼';
+comment on column transfer_data.shooting_date is 'ì´¬ì˜ì¼';
+comment on column transfer_data.update_date is 'ìˆ˜ì •ì¼';
+comment on column transfer_data.insert_date is 'ë“±ë¡ì¼';
 
 
--- °³º° Á¤»ç ¿µ»ó
+-- ê°œë³„ ì •ì‚¬ ì˜ìƒ
 create table ortho_image(
 	ortho_image_id								bigint,
 	drone_project_id							int									not null,
@@ -61,21 +61,21 @@ create table ortho_image(
 	constraint ortho_image_pk primary key (ortho_image_id)	
 );
 
-comment on table ortho_image is '°³º° Á¤»ç ¿µ»ó';
-comment on column ortho_image.ortho_image_id is '°íÀ¯¹øÈ£';
-comment on column ortho_image.drone_project_id is 'drone project °íÀ¯¹øÈ£';
-comment on column ortho_image.transfer_data_id is 'Àü¼Û µ¥ÀÌÅÍ °íÀ¯¹øÈ£';
-comment on column ortho_image.file_name is 'ÆÄÀÏ ÀÌ¸§';
-comment on column ortho_image.file_real_name is 'ÆÄÀÏ ½ÇÁ¦ ÀÌ¸§';
-comment on column ortho_image.file_path is 'ÆÄÀÏ °æ·Î';
-comment on column ortho_image.file_size is 'ÆÄÀÏ »çÀÌÁî';
-comment on column ortho_image.file_ext is 'ÆÄÀÏ È®ÀåÀÚ';
-comment on column ortho_image.status is '»óÅÂ. 0 : Àü¼Û ¿Ï·á, 1 : ÀÌ¹ÌÁö ÈÄÃ³¸® ¿Ï·á, 2 : ÀÌ¹ÌÁö ÈÄÃ³¸® ½ÇÆĞ, 3 : ÀÌ¹ÌÁö ÈÄÃ³¸® ¿¡·¯(È£Ãâ½ÇÆĞ)';
-comment on column ortho_image.update_date is '¼öÁ¤ÀÏ';
-comment on column ortho_image.insert_date is 'µî·ÏÀÏ';
+comment on table ortho_image is 'ê°œë³„ ì •ì‚¬ ì˜ìƒ';
+comment on column ortho_image.ortho_image_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on column ortho_image.drone_project_id is 'drone project ê³ ìœ ë²ˆí˜¸';
+comment on column ortho_image.transfer_data_id is 'ì „ì†¡ ë°ì´í„° ê³ ìœ ë²ˆí˜¸';
+comment on column ortho_image.file_name is 'íŒŒì¼ ì´ë¦„';
+comment on column ortho_image.file_real_name is 'íŒŒì¼ ì‹¤ì œ ì´ë¦„';
+comment on column ortho_image.file_path is 'íŒŒì¼ ê²½ë¡œ';
+comment on column ortho_image.file_size is 'íŒŒì¼ ì‚¬ì´ì¦ˆ';
+comment on column ortho_image.file_ext is 'íŒŒì¼ í™•ì¥ì';
+comment on column ortho_image.status is 'ìƒíƒœ. 0 : ì „ì†¡ ì™„ë£Œ, 1 : ì´ë¯¸ì§€ í›„ì²˜ë¦¬ ì™„ë£Œ, 2 : ì´ë¯¸ì§€ í›„ì²˜ë¦¬ ì‹¤íŒ¨, 3 : ì´ë¯¸ì§€ í›„ì²˜ë¦¬ ì—ëŸ¬(í˜¸ì¶œì‹¤íŒ¨)';
+comment on column ortho_image.update_date is 'ìˆ˜ì •ì¼';
+comment on column ortho_image.insert_date is 'ë“±ë¡ì¼';
 
 
--- ÈÄÃ³¸® ¿µ»ó
+-- í›„ì²˜ë¦¬ ì˜ìƒ
 create table postprocessing_image(
 	postprocessing_image_id						bigint,
 	drone_project_id							int									not null,
@@ -92,22 +92,22 @@ create table postprocessing_image(
 	constraint postprocessing_image_pk primary key (postprocessing_image_id)	
 );
 
-comment on table postprocessing_image is 'ÈÄÃ³¸® ¿µ»ó';
-comment on column postprocessing_image.postprocessing_image_id is '°íÀ¯¹øÈ£';
-comment on column postprocessing_image.drone_project_id is 'drone project °íÀ¯¹øÈ£';
-comment on column postprocessing_image.transfer_data_id is 'Àü¼Û µ¥ÀÌÅÍ °íÀ¯¹øÈ£';
-comment on column postprocessing_image.file_type is 'ÆÄÀÏ À¯Çü';
-comment on column postprocessing_image.file_name is 'ÆÄÀÏ ÀÌ¸§';
-comment on column postprocessing_image.file_real_name is 'ÆÄÀÏ ½ÇÁ¦ ÀÌ¸§';
-comment on column postprocessing_image.file_path is 'ÆÄÀÏ °æ·Î';
-comment on column postprocessing_image.file_size is 'ÆÄÀÏ »çÀÌÁî';
-comment on column postprocessing_image.file_ext is 'ÆÄÀÏ È®ÀåÀÚ';
-comment on column postprocessing_image.status is '»óÅÂ. 0 : Àü¼Û ¿Ï·á, 1 : ÀÌ¹ÌÁö ÈÄÃ³¸® ¿Ï·á, 2 : ÀÌ¹ÌÁö ÈÄÃ³¸® ½ÇÆĞ';
-comment on column postprocessing_image.update_date is '¼öÁ¤ÀÏ';
-comment on column postprocessing_image.insert_date is 'µî·ÏÀÏ';
+comment on table postprocessing_image is 'í›„ì²˜ë¦¬ ì˜ìƒ';
+comment on column postprocessing_image.postprocessing_image_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on column postprocessing_image.drone_project_id is 'drone project ê³ ìœ ë²ˆí˜¸';
+comment on column postprocessing_image.transfer_data_id is 'ì „ì†¡ ë°ì´í„° ê³ ìœ ë²ˆí˜¸';
+comment on column postprocessing_image.file_type is 'íŒŒì¼ ìœ í˜•';
+comment on column postprocessing_image.file_name is 'íŒŒì¼ ì´ë¦„';
+comment on column postprocessing_image.file_real_name is 'íŒŒì¼ ì‹¤ì œ ì´ë¦„';
+comment on column postprocessing_image.file_path is 'íŒŒì¼ ê²½ë¡œ';
+comment on column postprocessing_image.file_size is 'íŒŒì¼ ì‚¬ì´ì¦ˆ';
+comment on column postprocessing_image.file_ext is 'íŒŒì¼ í™•ì¥ì';
+comment on column postprocessing_image.status is 'ìƒíƒœ. 0 : ì „ì†¡ ì™„ë£Œ, 1 : ì´ë¯¸ì§€ í›„ì²˜ë¦¬ ì™„ë£Œ, 2 : ì´ë¯¸ì§€ í›„ì²˜ë¦¬ ì‹¤íŒ¨';
+comment on column postprocessing_image.update_date is 'ìˆ˜ì •ì¼';
+comment on column postprocessing_image.insert_date is 'ë“±ë¡ì¼';
 
 
--- °´Ã¼ Å½Áö
+-- ê°ì²´ íƒì§€
 create table ortho_detected_object(
 	ortho_detected_object_id					bigint,
 	drone_project_id							int									not null,
@@ -127,22 +127,21 @@ create table ortho_detected_object(
 	constraint ortho_detected_object_pk primary key (ortho_detected_object_id)	
 );
 
-comment on table ortho_detected_object is '°´Ã¼ Å½Áö';
-comment on column ortho_detected_object.ortho_detected_object_id is '°íÀ¯¹øÈ£';
-comment on column ortho_detected_object.drone_project_id is 'drone project °íÀ¯¹øÈ£';
-comment on column ortho_detected_object.transfer_data_id is 'µ¥ÀÌÅÍ Àü¼Û °íÀ¯¹øÈ£(Áßº¹, layer)';
-comment on column ortho_detected_object.ortho_image_id is '°³º° Á¤»ç ¿µ»ó °íÀ¯¹øÈ£';
-comment on column ortho_detected_object.object_type is '°´Ã¼ Å¸ÀÔ';
+comment on table ortho_detected_object is 'ê°ì²´ íƒì§€';
+comment on column ortho_detected_object.ortho_detected_object_id is 'ê³ ìœ ë²ˆí˜¸';
+comment on column ortho_detected_object.drone_project_id is 'drone project ê³ ìœ ë²ˆí˜¸';
+comment on column ortho_detected_object.transfer_data_id is 'ë°ì´í„° ì „ì†¡ ê³ ìœ ë²ˆí˜¸(ì¤‘ë³µ, layer)';
+comment on column ortho_detected_object.ortho_image_id is 'ê°œë³„ ì •ì‚¬ ì˜ìƒ ê³ ìœ ë²ˆí˜¸';
+comment on column ortho_detected_object.object_type is 'ê°ì²´ íƒ€ì…';
 comment on column ortho_detected_object.geometry is 'geometry';
-comment on column ortho_detected_object.detected_date is '¹ß°ßÀÏ';
-comment on column ortho_detected_object.bounding_box_geometry is 'bounding box °ø°£ Á¤º¸';
-comment on column ortho_detected_object.major_axis is 'ÃÖ´ë';
-comment on column ortho_detected_object.minor_axis is 'ÃÖ¼Ò';
-comment on column ortho_detected_object.orientation is '¹æÇâ';
-comment on column ortho_detected_object.bounding_box_area is 'bounding box ¸éÀû';
-comment on column ortho_detected_object.length is '±æÀÌ';
-comment on column ortho_detected_object.speed is '¼Óµµ';
-comment on column ortho_detected_object.insert_date is 'µî·ÏÀÏ';
-
+comment on column ortho_detected_object.detected_date is 'ë°œê²¬ì¼';
+comment on column ortho_detected_object.bounding_box_geometry is 'bounding box ê³µê°„ ì •ë³´';
+comment on column ortho_detected_object.major_axis is 'ìµœëŒ€';
+comment on column ortho_detected_object.minor_axis is 'ìµœì†Œ';
+comment on column ortho_detected_object.orientation is 'ë°©í–¥';
+comment on column ortho_detected_object.bounding_box_area is 'bounding box ë©´ì ';
+comment on column ortho_detected_object.length is 'ê¸¸ì´';
+comment on column ortho_detected_object.speed is 'ì†ë„';
+comment on column ortho_detected_object.insert_date is 'ë“±ë¡ì¼';
 
 
