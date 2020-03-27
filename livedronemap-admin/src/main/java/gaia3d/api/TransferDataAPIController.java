@@ -110,7 +110,7 @@ public class TransferDataAPIController implements APIController {
 			//fileInfo.setUser_id(userSession.getUser_id());
 			
 			transferDataService.insertTransferData(fileInfo, transferDataResource);
-			
+			aPIResult.setResult("success");
 			httpStatus = HttpStatus.OK;
 			aPIResult.setStatusCode(httpStatus.value());
 		} catch(Exception e) {
@@ -172,7 +172,7 @@ public class TransferDataAPIController implements APIController {
 			//fileInfo.setUser_id(userSession.getUser_id());
 			
 			transferDataService.insertTransferData(fileInfo, transferDataResource);
-			
+			aPIResult.setResult("success");
 			httpStatus = HttpStatus.OK;
 			aPIResult.setStatusCode(httpStatus.value());
 		} catch(Exception e) {
