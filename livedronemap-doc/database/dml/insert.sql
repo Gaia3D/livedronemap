@@ -1,21 +1,21 @@
--- »ç¿ëÀÚ ±×·ì Å×ÀÌºí ±âº»°ª ÀÔ·Â
+-- ì‚¬ìš©ì ê·¸ë£¹ í…Œì´ë¸” ê¸°ë³¸ê°’ ì…ë ¥
 insert into user_group(
 	user_group_id, group_key, group_name, parent, depth, view_order, default_yn, use_yn, description
 ) values(
-	1, 'SUPER_ADMIN', '½´ÆÛ °ü¸®ÀÚ', 0, 1, 1, 'Y', 'Y', '±âº»°ª'
+	1, 'SUPER_ADMIN', 'ìŠˆí¼ ê´€ë¦¬ì', 0, 1, 1, 'Y', 'Y', 'ê¸°ë³¸ê°’'
 ), 
 (
-	2, 'USER', '»ç¿ëÀÚ', 0, 1, 2, 'Y', 'Y', '±âº»°ª'
+	2, 'USER', 'ì‚¬ìš©ì', 0, 1, 2, 'Y', 'Y', 'ê¸°ë³¸ê°’'
 );
 
--- ½´ÆÛ °ü¸®ÀÚ µî·Ï
+-- ìŠˆí¼ ê´€ë¦¬ì ë“±ë¡
 insert into user_info(
 	user_id, user_group_id, user_name, password, salt, user_role_check_yn, last_login_date
 ) values (
-	'admin', 1, '½´ÆÛ°ü¸®ÀÚ', '$2a$10$fkiRMbYDuDlnZ.pLZjn5z.U.TDTmh8PTAasMzKi0Btgsp0wzKY4ty', '$2a$10$fkiRMbYDuDlnZ.pLZjn5z.', 'N', now()
+	'admin', 1, 'ìŠˆí¼ê´€ë¦¬ì', '$2a$10$fkiRMbYDuDlnZ.pLZjn5z.U.TDTmh8PTAasMzKi0Btgsp0wzKY4ty', '$2a$10$fkiRMbYDuDlnZ.pLZjn5z.', 'N', now()
 );
 
--- ¿î¿µ Á¤Ã¥
+-- ìš´ì˜ ì •ì±…
 insert into policy(	policy_id, rest_api_encryption_yn,
 					geoserver_data_url, geoserver_data_workspace, geoserver_data_format, 
 					geoserver_user, geoserver_password,

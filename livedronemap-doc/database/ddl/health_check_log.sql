@@ -1,6 +1,6 @@
 drop table if exists health_check_log cascade;
 
--- API È£Ãâ ÀÌ·Â
+-- API í˜¸ì¶œ ì´ë ¥
 create table health_check_log(
 	health_check_log_id					bigint,
 	client_id							int,
@@ -12,15 +12,14 @@ create table health_check_log(
 	constraint health_check_log_pk 		primary key (health_check_log_id)	
 );
 
-comment on table health_check_log is '»óÅÂ Á¡°Ë ÀÌ·Â';
-comment on column health_check_log.health_check_log_id is '°íÀ¯Å°';
-comment on column health_check_log.client_id is 'client °íÀ¯Å°';
-comment on column health_check_log.client_name is 'client¸í(Áßº¹)';
-comment on column health_check_log.status is '»óÅÂ Á¡°Ë »óÅÂ';
+comment on table health_check_log is 'ìƒíƒœ ì ê²€ ì´ë ¥';
+comment on column health_check_log.health_check_log_id is 'ê³ ìœ í‚¤';
+comment on column health_check_log.client_id is 'client ê³ ìœ í‚¤';
+comment on column health_check_log.client_name is 'clientëª…(ì¤‘ë³µ)';
+comment on column health_check_log.status is 'ìƒíƒœ ì ê²€ ìƒíƒœ';
 comment on column health_check_log.status_code is 'http status code';
-comment on column health_check_log.message is '»ó¼¼ ¸Þ½ÃÁö';
-comment on column health_check_log.insert_date is 'µî·ÏÀÏ';
-
+comment on column health_check_log.message is 'ìƒì„¸ ë©”ì‹œì§€';
+comment on column health_check_log.insert_date is 'ë“±ë¡ì¼';
 
 create table health_check_log_2018 (
 	check ( insert_date >= to_timestamp('20180101000000000000', 'YYYYMMDDHH24MISSUS') and insert_date < to_timestamp('20190101000000000000', 'YYYYMMDDHH24MISSUS') )
