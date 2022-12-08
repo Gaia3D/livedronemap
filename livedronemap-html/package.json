@@ -11,7 +11,7 @@
   "license": "ISC",
   "devDependencies": {
     "compression": "^1.7.2",
-    "express": "^4.16.2",
+    "express": "^4.17.3",
     "request": "^2.83.0",
     "yargs": "^11.0.0"
   }
